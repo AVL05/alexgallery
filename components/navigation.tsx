@@ -134,7 +134,7 @@ export function Navigation() {
               
               {/* Portfolio Button */}
               <motion.a
-                href="https://modern-portfolio-eight-zeta.vercel.app/"
+                href="https://aleviclop.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-primary/20"
@@ -230,7 +230,7 @@ export function Navigation() {
             
             {/* Mobile Portfolio Button */}
             <motion.a
-              href="https://modern-portfolio-eight-zeta.vercel.app/"
+              href="https://aleviclop.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="block mx-4 mt-4 px-4 py-3 bg-gradient-to-r from-primary to-accent text-primary-foreground text-sm font-medium rounded-lg shadow-lg text-center transition-all duration-300"
