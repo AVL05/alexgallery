@@ -1,8 +1,8 @@
 {
-  "name": "galeria-fotografica",
+  "name": "alexgallery",
   "compatibility_date": "2025-12-21",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
-    "directory": "./out",
-  },
+    "directory": "./out"
+  }
 }
