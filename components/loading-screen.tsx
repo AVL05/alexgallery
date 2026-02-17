@@ -1,162 +1,219 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface LoadingScreenProps {
-  onComplete: () => void
+  onComplete: () => void;
 }
 
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
-  const [progress, setProgress] = useState(0)
-  const [isComplete, setIsComplete] = useState(false)
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
-    let stepIndex = 0
-    const steps = [8, 12, 7, 15, 10, 13, 9, 11, 6, 14, 5, 16] // Predefined increments
-    
-    const timer = setInterval(() => {
-      setProgress(prev => {
-        const increment = steps[stepIndex % steps.length]
-        stepIndex++
-        const newProgress = Math.min(prev + increment, 100)
-        
-        if (newProgress >= 100) {
-          clearInterval(timer)
-          setIsComplete(true)
-          setTimeout(() => onComplete(), 500)
-        }
-        
-        return newProgress
-      })
-    }, 150)
+    let animationFrame: number;
+    let progress = 0;
 
-    return () => clearInterval(timer)
-  }, [onComplete])
+    const updateProgress = () => {
+      // Simulate progress: faster and more responsive
+      const remaining = 100 - progress;
+
+      // Increased increments for a snappier feel
+      const increment = Math.random() * (remaining > 20 ? 1.0 : 0.5);
+
+      progress = Math.min(100, progress + increment);
+      setLoadingProgress(progress);
+
+      if (progress < 100) {
+        animationFrame = requestAnimationFrame(updateProgress);
+      } else {
+        setTimeout(() => {
+          setIsLoading(false);
+          if (onComplete) onComplete();
+        }, 400);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(updateProgress);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [onComplete]);
 
   return (
-    <motion.div
-      className="fixed inset-0 bg-background z-50 flex items-center justify-center"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: isComplete ? 0 : 1 }}
-      transition={{ duration: 0.5, delay: isComplete ? 0.2 : 0 }}
-    >
-      <div className="flex flex-col items-center space-y-8 max-w-md mx-auto px-6">
-        {/* Logo/Brand */}
+    <AnimatePresence>
+      {isLoading && (
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center overflow-hidden"
+          initial={{ opacity: 1 }}
+          exit={{
+            y: "-100%",
+            transition: {
+              duration: 1.2,
+              ease: [0.7, 0, 0.3, 1],
+              delay: 0.1,
+            },
+          }}
         >
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-            Alex Vicente López
-          </h1>
-        </motion.div>
+          {/* High-end ambient glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl aspect-square bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
-        {/* Loading animation circles */}
-        <div className="relative w-32 h-32">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute inset-0 border-2 border-primary/20 rounded-full"
-              style={{
-                borderTopColor: i === 0 ? 'rgba(var(--color-primary), 0.8)' : 
-                                i === 1 ? 'rgba(var(--color-accent), 0.6)' : 
-                                'rgba(var(--color-primary), 0.4)'
-              }}
-              animate={{ rotate: 360 }}
-              transition={{
-                duration: 2 + i * 0.5,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            />
-          ))}
-          
-          {/* Center dot */}
-          <motion.div
-            className="absolute top-1/2 left-1/2 w-3 h-3 bg-primary rounded-full transform -translate-x-1/2 -translate-y-1/2"
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.5, 1, 0.5]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        </div>
+          <div className="relative flex flex-col items-center w-full max-w-sm px-8">
+            {/* Typographic Logo Section */}
+            <div className="relative mb-12 flex flex-col items-center">
+              <div className="relative h-24 sm:h-32 mb-4 overflow-visible">
+                <svg
+                  width="240"
+                  height="120"
+                  viewBox="0 0 240 120"
+                  className="overflow-visible"
+                >
+                  <defs>
+                    <linearGradient
+                      id="logo-gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="var(--primary)" />
+                      <stop offset="100%" stopColor="var(--accent)" />
+                    </linearGradient>
+                  </defs>
 
-        {/* Progress bar */}
-        <div className="w-full max-w-xs">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-muted-foreground">Cargando...</span>
-            <span className="text-sm font-medium text-primary">
-              {Math.round(progress)}%
-            </span>
-          </div>
-          <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-gradient-to-r from-primary to-accent"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            />
-          </div>
-        </div>
+                  {/* Background Stroke Lettering */}
+                  <motion.text
+                    x="50%"
+                    y="50%"
+                    dominantBaseline="middle"
+                    textAnchor="middle"
+                    className="text-6xl sm:text-7xl font-bold fill-none stroke-white/10"
+                    strokeWidth="0.5"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    style={{
+                      letterSpacing: "0.15em",
+                      fontFamily: "var(--font-space-grotesk), sans-serif",
+                    }}
+                  >
+                    AVL
+                  </motion.text>
 
-        {/* Loading text with typewriter effect */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <div className="text-sm text-muted-foreground">
-            {progress < 30 && "Preparando experiencia visual..."}
-            {progress >= 30 && progress < 60 && "Cargando portafolio..."}
-            {progress >= 60 && progress < 90 && "Optimizando imágenes..."}
-            {progress >= 90 && "¡Casi listo!"}
-          </div>
-        </motion.div>
+                  {/* Foreground Animated Filling Lettering */}
+                  <motion.text
+                    x="50%"
+                    y="50%"
+                    dominantBaseline="middle"
+                    textAnchor="middle"
+                    className="text-6xl sm:text-7xl font-bold"
+                    fill="url(#logo-gradient)"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                      letterSpacing: "0.15em",
+                      fontFamily: "var(--font-space-grotesk), sans-serif",
+                      clipPath: `inset(0 ${100 - loadingProgress}% 0 0)`,
+                    }}
+                  >
+                    AVL
+                  </motion.text>
+                </svg>
+              </div>
 
-        {/* Floating particles - Fixed positions for hydration */}
-        <div className="absolute inset-0 pointer-events-none">
-          {Array.from({ length: 20 }).map((_, i) => {
-            // Use deterministic values based on index to avoid hydration mismatch
-            const positions = [
-              { left: 10, top: 15 }, { left: 25, top: 80 }, { left: 45, top: 35 }, { left: 60, top: 70 },
-              { left: 75, top: 20 }, { left: 85, top: 50 }, { left: 15, top: 90 }, { left: 35, top: 25 },
-              { left: 55, top: 85 }, { left: 90, top: 10 }, { left: 5, top: 45 }, { left: 70, top: 95 },
-              { left: 40, top: 5 }, { left: 95, top: 75 }, { left: 20, top: 60 }, { left: 80, top: 40 },
-              { left: 30, top: 85 }, { left: 65, top: 15 }, { left: 50, top: 75 }, { left: 85, top: 30 }
-            ]
-            const pos = positions[i] || positions[0]
-            
-            return (
+              {/* Name and Roles */}
               <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-primary/30 rounded-full"
-                style={{
-                  left: `${pos.left}%`,
-                  top: `${pos.top}%`
-                }}
-                animate={{
-                  y: [-20, -60],
-                  opacity: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 3 + (i % 5),
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                  ease: "easeOut"
-                }}
-              />
-            )
-          })}
-        </div>
-      </div>
-    </motion.div>
-  )
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="text-center space-y-3"
+              >
+                <h2 className="text-xs sm:text-sm uppercase tracking-[0.5em] text-white/40 font-light">
+                  Alex Vicente López
+                </h2>
+                <div className="flex items-center justify-center gap-3 text-[9px] sm:text-[10px] tracking-[0.3em] text-primary/60 uppercase font-medium">
+                  <span>Digital Developer</span>
+                  <span className="w-1 h-1 bg-primary/30 rounded-full" />
+                  <span>Visual Artist</span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Bottom Progress Area */}
+            <div className="w-full flex flex-col items-center gap-6 mt-8">
+              {/* Minimal Progress Line */}
+              <div className="w-full h-px bg-white/5 relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary to-accent"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${loadingProgress}%` }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 30,
+                    restDelta: 0.01,
+                  }}
+                />
+              </div>
+
+              {/* Elegant Counter */}
+              <div className="flex justify-between w-full px-1 items-baseline">
+                <motion.span className="text-[10px] tracking-widest text-white/20 uppercase font-mono">
+                  System Initializing
+                </motion.span>
+                <motion.span
+                  className="text-2xl font-mono text-white/30 tabular-nums"
+                  key={Math.floor(loadingProgress)}
+                >
+                  {Math.floor(loadingProgress).toString().padStart(3, "0")}
+                </motion.span>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative Corner Framing */}
+          <div className="absolute inset-8 sm:inset-12 pointer-events-none opacity-30">
+            <motion.div
+              className="absolute top-0 left-0 w-12 h-px bg-primary/50"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              style={{ originX: 0 }}
+            />
+            <motion.div
+              className="absolute top-0 left-0 w-px h-12 bg-primary/50"
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              style={{ originY: 0 }}
+            />
+
+            <motion.div
+              className="absolute bottom-0 right-0 w-12 h-px bg-primary/50"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              style={{ originX: 1 }}
+            />
+            <motion.div
+              className="absolute bottom-0 right-0 w-px h-12 bg-primary/50"
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              style={{ originY: 1 }}
+            />
+          </div>
+
+          {/* Shutter reveal panels for exit animation */}
+          <motion.div
+            className="absolute inset-0 z-[-1] flex flex-col"
+            exit={{ opacity: 1 }}
+          >
+            <motion.div className="flex-1 bg-[#0a0a0a]" />
+            <motion.div className="flex-1 bg-[#0a0a0a]" />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
