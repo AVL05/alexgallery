@@ -1,7 +1,0 @@
-# Sitemap - actualizado al dominio real
-Sitemap: https://aleviclop.vercel.app/sitemap.xml
-User-agent: *
-Allow: /
-
-# If you need to block paths, add:
-# Disallow: /private/
