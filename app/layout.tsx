@@ -1,5 +1,3 @@
-import { AnimatedBackground } from '@/components/animated-background'
-
 import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import type React from 'react'
@@ -74,7 +72,6 @@ export default function RootLayout({
       scroll-behavior="smooth"
     >
       <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
-        <AnimatedBackground />
         <Suspense fallback={null}>
           <div className="flex flex-col min-h-screen">{children}</div>
         </Suspense>

@@ -145,13 +145,15 @@ export function Gallery() {
               transition={{ type: 'spring', damping: 35, stiffness: 250 }}
             >
               {/* Top Minimal Bar */}
-              <div className="absolute top-0 left-0 right-0 p-5 md:p-8 flex justify-between items-center z-20 mix-blend-difference pointer-events-none">
-                <span className="text-white text-xs tracking-[0.3em] font-sans uppercase">
-                  {selectedPhoto.title}
-                </span>
-                <span className="text-white text-xs tracking-[0.3em] font-sans uppercase">
-                  {selectedPhoto.category}
-                </span>
+              <div className="absolute top-0 left-0 right-0 p-5 md:p-8 flex justify-between items-start z-20 mix-blend-difference pointer-events-none">
+                <div className="flex flex-col gap-1">
+                  <span className="text-white text-xs tracking-[0.3em] font-sans uppercase">
+                    {selectedPhoto.title}
+                  </span>
+                  <span className="text-white/60 text-[10px] tracking-[0.2em] font-sans uppercase">
+                    {selectedPhoto.category}
+                  </span>
+                </div>
               </div>
 
               {/* Close Button */}
