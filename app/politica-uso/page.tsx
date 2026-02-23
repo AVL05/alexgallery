@@ -1,8 +1,15 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { ArrowLeft, Copyright, Scale, Download, Share2, Award } from "lucide-react"
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import {
+  ArrowLeft,
+  Copyright,
+  Scale,
+  Download,
+  Share2,
+  Award,
+} from 'lucide-react'
 
 export default function PoliticaUso() {
   return (
@@ -14,7 +21,7 @@ export default function PoliticaUso() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link 
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors mb-12"
           >
@@ -34,7 +41,7 @@ export default function PoliticaUso() {
             <div className="p-4 bg-accent/10 rounded-lg">
               <Copyright className="h-8 w-8 text-accent" />
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-serif">
               Política de Uso
             </h1>
           </div>
@@ -53,11 +60,14 @@ export default function PoliticaUso() {
           <div className="flex items-start gap-4">
             <Award className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl font-bold mb-4">© Copyright</h2>
+              <h2 className="text-2xl font-bold mb-4 font-serif">
+                © Copyright
+              </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Todas las fotografías mostradas en esta galería son propiedad intelectual de <strong>Alex Vicente</strong> 
-                y están protegidas por las leyes de copyright internacionales. Cada imagen contiene metadatos de copyright 
-                embebidos con la información del autor.
+                Todas las fotografías mostradas en esta galería son propiedad
+                intelectual de <strong>Alex Vicente</strong>y están protegidas
+                por las leyes de copyright internacionales. Cada imagen contiene
+                metadatos de copyright embebidos con la información del autor.
               </p>
             </div>
           </div>
@@ -75,12 +85,17 @@ export default function PoliticaUso() {
               <Download className="h-5 w-5 text-red-500" />
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-2">Uso No Autorizado</h3>
+              <h3 className="text-xl font-bold mb-2 font-serif">
+                Uso No Autorizado
+              </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Queda <strong>estrictamente prohibido</strong>:
               </p>
               <ul className="list-disc list-inside mt-3 space-y-2 text-muted-foreground">
-                <li>Descargar, copiar o reproducir las imágenes sin autorización expresa</li>
+                <li>
+                  Descargar, copiar o reproducir las imágenes sin autorización
+                  expresa
+                </li>
                 <li>Uso comercial sin licencia</li>
                 <li>Modificación, edición o manipulación de las fotografías</li>
                 <li>Redistribución o publicación en otros medios</li>
@@ -94,13 +109,18 @@ export default function PoliticaUso() {
               <Scale className="h-5 w-5 text-accent" />
             </div>
             <div>
-              <h3 className="text-xl font-bold mb-2">Uso Permitido</h3>
+              <h3 className="text-xl font-bold mb-2 font-serif">
+                Uso Permitido
+              </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Se permite <strong>únicamente</strong>:
               </p>
               <ul className="list-disc list-inside mt-3 space-y-2 text-muted-foreground">
                 <li>Visualización personal en este sitio web</li>
-                <li>Compartir el enlace al portfolio (no las imágenes directamente)</li>
+                <li>
+                  Compartir el enlace al portfolio (no las imágenes
+                  directamente)
+                </li>
                 <li>Uso con licencia previa y por escrito del autor</li>
               </ul>
             </div>
@@ -117,7 +137,9 @@ export default function PoliticaUso() {
           <div className="flex items-start gap-4">
             <Share2 className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
             <div>
-              <h2 className="text-2xl font-bold mb-4">Licencias Disponibles</h2>
+              <h2 className="text-2xl font-bold mb-4 font-serif">
+                Licencias Disponibles
+              </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Si estás interesado en utilizar alguna fotografía para:
               </p>
@@ -129,8 +151,14 @@ export default function PoliticaUso() {
                 <li>Impresiones o productos</li>
               </ul>
               <p className="text-muted-foreground leading-relaxed">
-                Por favor, contacta a través del <Link href="/#contact" className="text-accent hover:underline font-medium">formulario de licencias</Link> para 
-                solicitar permisos y presupuestos personalizados.
+                Por favor, contacta a través del{' '}
+                <Link
+                  href="/#contact"
+                  className="text-accent hover:underline font-medium"
+                >
+                  formulario de licencias
+                </Link>{' '}
+                para solicitar permisos y presupuestos personalizados.
               </p>
             </div>
           </div>
@@ -143,7 +171,9 @@ export default function PoliticaUso() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <h3 className="text-lg font-semibold mb-3">Metadatos de Copyright</h3>
+          <h3 className="text-lg font-semibold mb-3 font-serif">
+            Metadatos de Copyright
+          </h3>
           <p className="text-sm text-muted-foreground mb-4">
             Todas las imágenes contienen los siguientes metadatos embebidos:
           </p>
@@ -162,10 +192,16 @@ export default function PoliticaUso() {
           transition={{ duration: 0.6, delay: 0.6 }}
         >
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Alex Vicente López. Todos los derechos reservados.
+            © {new Date().getFullYear()} Alex Vicente López. Todos los derechos
+            reservados.
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+            Última actualización:{' '}
+            {new Date().toLocaleDateString('es-ES', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
           </p>
         </motion.div>
       </div>

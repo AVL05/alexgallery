@@ -1,9 +1,8 @@
-"use client";
+'use client'
 
-import { categories, photos } from "@/lib/gallery-data";
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Camera } from "lucide-react";
-import { memo, useCallback, useState } from "react";
+import { categories, photos } from '@/lib/gallery-data'
+import { AnimatePresence, motion } from 'framer-motion'
+import { memo, useCallback, useState } from 'react'
 
 // Performance-optimized Item  (Natural Aspect Ratio).
 const PhotoItem = memo(
@@ -12,65 +11,63 @@ const PhotoItem = memo(
     index,
     onClick,
   }: {
-    photo: any;
-    index: number;
-    onClick: (p: any) => void;
+    photo: any
+    index: number
+    onClick: (p: any) => void
   }) => {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
         className="mb-4 sm:mb-6 md:mb-8 break-inside-avoid group cursor-pointer"
         onClick={() => onClick(photo)}
       >
-        <div className="relative overflow-hidden rounded-xl bg-card/10 border border-white/5 transition-all duration-500 hover:border-accent/40 active:scale-[0.98]">
+        <div className="relative overflow-hidden bg-card/10 border-0 transition-all duration-500 active:scale-[0.98]">
           <img
             src={photo.image}
             alt={photo.title}
-            className="w-full h-auto transition-transform duration-1000 group-hover:scale-[1.05]"
+            className="w-full h-auto transition-all duration-1000 group-hover:scale-[1.03] group-hover:brightness-75 group-hover:contrast-125"
             loading="lazy"
           />
 
-          {/* Modern Hover/Tap Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-4 sm:p-6">
-            <p className="text-accent text-[8px] sm:text-[10px] font-black tracking-[0.3em] uppercase mb-1">
-              {photo.category}
-            </p>
-            <h3 className="text-white text-base sm:text-lg md:text-xl font-bold tracking-tighter leading-none">
-              {photo.title}
-            </h3>
+          {/* Modern Minimal Hover Overlay */}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 ease-in-out" />
+          <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 pointer-events-none text-white">
+            <span className="text-[0.65rem] uppercase tracking-widest font-sans mix-blend-difference">
+              Shoot {index < 9 ? `0${index + 1}` : index + 1}
+            </span>
           </div>
         </div>
       </motion.div>
-    );
-  },
-);
+    )
+  }
+)
 
-PhotoItem.displayName = "PhotoItem";
+PhotoItem.displayName = 'PhotoItem'
 
 export function Gallery() {
-  const [selectedCategory, setSelectedCategory] = useState("Todo");
+  const [selectedCategory, setSelectedCategory] = useState('Todo')
   const [selectedPhoto, setSelectedPhoto] = useState<(typeof photos)[0] | null>(
-    null,
-  );
+    null
+  )
 
   const filteredPhotos =
-    selectedCategory === "Todo"
+    selectedCategory === 'Todo'
       ? photos
-      : photos.filter((p) => p.category === selectedCategory);
+      : photos.filter((p) => p.category === selectedCategory)
 
   const handleOpenPhoto = useCallback((photo: any) => {
-    setSelectedPhoto(photo);
+    setSelectedPhoto(photo)
     // Prevent body scroll on mobile
-    document.body.style.overflow = "hidden";
-  }, []);
+    document.body.style.overflow = 'hidden'
+  }, [])
 
   const handleClosePhoto = useCallback(() => {
-    setSelectedPhoto(null);
-    document.body.style.overflow = "auto";
-  }, []);
+    setSelectedPhoto(null)
+    document.body.style.overflow = 'auto'
+  }, [])
 
   return (
     <section
@@ -109,8 +106,8 @@ export function Gallery() {
                 onClick={() => setSelectedCategory(cat)}
                 className={`text-[10px] sm:text-[11px] font-black tracking-[0.2em] whitespace-nowrap uppercase transition-all relative py-2 ${
                   selectedCategory === cat
-                    ? "text-accent"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? 'text-accent'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {cat}
@@ -142,84 +139,44 @@ export function Gallery() {
           {selectedPhoto && (
             <motion.div
               className="fixed inset-0 z-[100] bg-background flex flex-col"
-              initial={{ y: "100%" }}
+              initial={{ y: '100%' }}
               animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 35, stiffness: 250 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 35, stiffness: 250 }}
             >
-              {/* Top Mobile Bar */}
-              <div className="flex items-center justify-between p-5 md:p-8 lg:p-10 border-b border-white/5 bg-background/80 backdrop-blur-md sticky top-0 z-20">
-                <button
-                  onClick={handleClosePhoto}
-                  className="flex items-center gap-3 text-[10px] font-black tracking-[0.2em] uppercase hover:text-accent transition-colors group"
-                >
-                  <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                  Volver
-                </button>
-                <div className="flex flex-col items-end">
-                  <span className="text-accent text-[8px] sm:text-[10px] font-black tracking-widest uppercase">
-                    {selectedPhoto.category}
-                  </span>
-                  <span className="text-foreground text-xs sm:text-sm font-bold tracking-tighter truncate max-w-[150px] sm:max-w-none">
-                    {selectedPhoto.title}
-                  </span>
-                </div>
+              {/* Top Minimal Bar */}
+              <div className="absolute top-0 left-0 right-0 p-5 md:p-8 flex justify-between items-center z-20 mix-blend-difference pointer-events-none">
+                <span className="text-white text-xs tracking-[0.3em] font-sans uppercase">
+                  {selectedPhoto.title}
+                </span>
+                <span className="text-white text-xs tracking-[0.3em] font-sans uppercase">
+                  {selectedPhoto.category}
+                </span>
               </div>
 
-              {/* Responsive Visual Experience */}
-              <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden bg-[#050505]">
-                {/* Image Focus Area */}
-                <div className="flex-[2] relative flex items-center justify-center p-4 min-h-[50vh] lg:min-h-0 lg:h-full">
-                  <motion.img
-                    src={selectedPhoto.image}
-                    alt={selectedPhoto.title}
-                    className="max-w-full max-h-full object-contain shadow-2xl rounded-sm"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2 }}
-                  />
-                </div>
+              {/* Close Button */}
+              <button
+                onClick={handleClosePhoto}
+                className="absolute top-5 md:top-8 right-5 md:right-8 z-30 text-white/50 hover:text-white transition-colors uppercase tracking-widest text-[10px]"
+              >
+                Cerrar
+              </button>
 
-                {/* Content Panel - Scrolls on Mobile */}
-                <div className="flex-1 p-8 md:p-14 lg:p-20 flex flex-col justify-center items-start lg:h-full bg-background/50 backdrop-blur-sm border-t lg:border-t-0 lg:border-l border-white/5">
-                  <div className="space-y-6 md:space-y-10 w-full">
-                    <div className="space-y-3 sm:space-y-5">
-                      <span className="text-accent text-[10px] font-mono uppercase tracking-[0.3em]">
-                        {selectedPhoto.year} COLLECTION
-                      </span>
-                      <h3 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter uppercase leading-none">
-                        {selectedPhoto.title}
-                      </h3>
-                    </div>
-
-                    <div className="h-0.5 w-12 bg-accent/30" />
-
-                    <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-light leading-relaxed">
-                      {selectedPhoto.description}
-                    </p>
-
-                    <div className="pt-8 sm:pt-12 border-t border-white/10 w-full">
-                      <div className="flex items-center gap-5">
-                        <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-card border border-white/10 flex items-center justify-center shrink-0">
-                          <Camera className="h-4 w-4 sm:h-6 sm:h-6 text-accent opacity-60" />
-                        </div>
-                        <div className="space-y-0.5">
-                          <p className="text-[8px] sm:text-[10px] uppercase font-black text-muted-foreground tracking-[0.2em]">
-                            Capture Specifications
-                          </p>
-                          <p className="text-xs sm:text-sm font-bold tracking-tight text-white/90">
-                            Sony A7R IV · 35mm f/1.4 GM
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              {/* Pure Lightroom Experience */}
+              <div className="flex-1 w-full h-full flex items-center justify-center p-4 md:p-12">
+                <motion.img
+                  src={selectedPhoto.image}
+                  alt={selectedPhoto.title}
+                  className="max-w-full max-h-full object-contain shadow-2xl"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                />
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </section>
-  );
+  )
 }

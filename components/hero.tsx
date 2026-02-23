@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import { useTypewriter } from "@/hooks/use-typewriter";
-import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
-import Image from "next/image";
+import { useTypewriter } from '@/hooks/use-typewriter'
+import { motion } from 'framer-motion'
+import { ArrowDown } from 'lucide-react'
+import Image from 'next/image'
 
 export function Hero() {
   const { text: typewriterText, isTypingComplete } = useTypewriter({
-    words: ["CAPTURANDO MOMENTOS"],
+    words: ['CAPTURANDO MOMENTOS'],
     typeSpeed: 80,
     loop: false,
-  });
+  })
 
   const scrollToGallery = () => {
-    const element = document.getElementById("gallery");
+    const element = document.getElementById('gallery')
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: 'smooth' })
     }
-  };
+  }
 
   return (
     <section
@@ -40,7 +40,7 @@ export function Hero() {
             scale: [1, 1.1, 1],
             opacity: [0.3, 0.6, 0.3],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
           className="absolute top-1/3 right-20 w-16 h-16 bg-accent/10 rounded-full"
@@ -48,7 +48,7 @@ export function Hero() {
             y: [-20, 20, -20],
             scale: [1, 1.2, 1],
           }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 
@@ -59,7 +59,7 @@ export function Hero() {
             className="space-y-8"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <div className="space-y-4">
               <motion.p
@@ -70,7 +70,7 @@ export function Hero() {
               >
                 Visual Storytelling
               </motion.p>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-[0.9] text-balance font-mono">
+              <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-[0.9] text-balance font-serif">
                 <span className="text-accent">
                   {typewriterText}
                   <motion.span
@@ -79,7 +79,7 @@ export function Hero() {
                     transition={{
                       duration: 1,
                       repeat: isTypingComplete ? 0 : Infinity,
-                      ease: "easeInOut",
+                      ease: 'easeInOut',
                     }}
                     aria-hidden="true"
                   >
@@ -120,7 +120,7 @@ export function Hero() {
             className="relative h-[400px] md:h-[600px] lg:h-[700px]"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
           >
             {/* Main large image */}
             <motion.div
@@ -167,7 +167,7 @@ export function Hero() {
       </div>
 
       <motion.button
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 p-3 rounded-full glass border border-accent/20 hover:bg-accent/10 transition-colors z-20 hidden md:flex"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 p-3 rounded-full glass border border-accent/20 hover:bg-accent/10 transition-colors z-20"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         onClick={scrollToGallery}
@@ -179,5 +179,5 @@ export function Hero() {
         </span>
       </motion.button>
     </section>
-  );
+  )
 }
