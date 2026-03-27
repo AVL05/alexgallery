@@ -2,46 +2,38 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useImagePreloader } from "@/hooks/use-image-preloader";
 
 interface LoadingScreenProps {
   onComplete: () => void;
 }
 
+const HERO_IMAGES = [
+  "/photos/optimized/original/14.webp",
+  "/photos/optimized/original/39.webp",
+  "/photos/optimized/original/1.webp",
+  "/photos/optimized/original/2.webp",
+];
+
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  const { progress, allLoaded } = useImagePreloader(HERO_IMAGES);
+  const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    let animationFrame: number;
-    let progress = 0;
+    if (allLoaded) {
+      const timer = setTimeout(() => {
+        setIsFinished(true);
+        if (onComplete) onComplete();
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [allLoaded, onComplete]);
 
-    const updateProgress = () => {
-      // Simulate progress: faster and more responsive
-      const remaining = 100 - progress;
-
-      // Increased increments for a snappier feel
-      const increment = Math.random() * (remaining > 20 ? 1.0 : 0.5);
-
-      progress = Math.min(100, progress + increment);
-      setLoadingProgress(progress);
-
-      if (progress < 100) {
-        animationFrame = requestAnimationFrame(updateProgress);
-      } else {
-        setTimeout(() => {
-          setIsLoading(false);
-          if (onComplete) onComplete();
-        }, 400);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(updateProgress);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [onComplete]);
+  const loadingProgress = progress;
 
   return (
     <AnimatePresence>
-      {isLoading && (
+      {!isFinished && (
         <motion.div
           className="fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}

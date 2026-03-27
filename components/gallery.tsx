@@ -1,43 +1,68 @@
 'use client'
 
-import { categories, photos } from '@/lib/gallery-data'
+import { categories, photos as basePhotos } from '@/lib/gallery-data'
+import imagesData from '@/lib/images-data.json'
+import type { Photo } from '@/types/photo'
 import { AnimatePresence, motion } from 'framer-motion'
-import { memo, useCallback, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
+import Masonry from 'react-masonry-css'
+import Lightbox from "yet-another-react-lightbox"
+import "yet-another-react-lightbox/styles.css"
+import { OptimizedImage } from './ui/optimized-image'
 
-// Performance-optimized Item  (Natural Aspect Ratio).
+// Combine static data with optimized image metadata
+const photos: Photo[] = basePhotos.map(photo => {
+  const optimized = imagesData.images.find(img => img.id === photo.id.toString())
+  return {
+    ...photo,
+    ...optimized,
+    src: optimized?.src || photo.image,
+    // Ensure we use the optimized src
+    image: optimized?.src || photo.image,
+    // Fallback to title if description is missing
+    alt: photo.description || photo.title
+  } as Photo
+})
+
 const PhotoItem = memo(
   ({
     photo,
     index,
     onClick,
   }: {
-    photo: any
+    photo: Photo
     index: number
-    onClick: (p: any) => void
+    onClick: () => void
   }) => {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
-        className="mb-4 sm:mb-6 md:mb-8 break-inside-avoid group cursor-pointer"
-        onClick={() => onClick(photo)}
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{ duration: 0.5, delay: (index % 4) * 0.05 }}
+        className="mb-4 sm:mb-6 md:mb-8 group cursor-pointer"
+        onClick={onClick}
       >
-        <div className="relative overflow-hidden bg-card/10 border-0 transition-all duration-500 active:scale-[0.98]">
-          <img
-            src={photo.image}
-            alt={photo.title}
+        <div className="relative overflow-hidden bg-card/10 transition-all duration-500 active:scale-[0.98]">
+          <OptimizedImage
+            src={(photo.src || photo.image) as string} // Preference for optimized src
+            width={photo.width || 800}
+            height={photo.height || 600}
+            alt={photo.alt || photo.description || photo.title}
+            blurDataURL={photo.blurDataURL}
+            priority={index < 4}
             className="w-full h-auto transition-all duration-1000 group-hover:scale-[1.03] group-hover:brightness-75 group-hover:contrast-125"
-            loading="lazy"
           />
 
-          {/* Modern Minimal Hover Overlay */}
+          {/* Hover Overlay */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 ease-in-out" />
           <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 pointer-events-none text-white">
             <span className="text-[0.65rem] uppercase tracking-widest font-sans mix-blend-difference">
-              Shoot {index < 9 ? `0${index + 1}` : index + 1}
+              {photo.category} — {photo.year}
             </span>
+            <h3 className="text-sm font-bold uppercase tracking-tighter mix-blend-difference">
+              {photo.title}
+            </h3>
           </div>
         </div>
       </motion.div>
@@ -49,25 +74,30 @@ PhotoItem.displayName = 'PhotoItem'
 
 export function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState('Todo')
-  const [selectedPhoto, setSelectedPhoto] = useState<(typeof photos)[0] | null>(
-    null
-  )
+  const [index, setIndex] = useState(-1)
 
-  const filteredPhotos =
-    selectedCategory === 'Todo'
+  const filteredPhotos = useMemo(() => {
+    return selectedCategory === 'Todo'
       ? photos
       : photos.filter((p) => p.category === selectedCategory)
+  }, [selectedCategory])
 
-  const handleOpenPhoto = useCallback((photo: any) => {
-    setSelectedPhoto(photo)
-    // Prevent body scroll on mobile
-    document.body.style.overflow = 'hidden'
-  }, [])
+  const slides = useMemo(() => {
+    return filteredPhotos.map(p => ({
+      src: p.src as string,
+      width: p.width,
+      height: p.height,
+      title: p.title,
+      description: p.description
+    }))
+  }, [filteredPhotos])
 
-  const handleClosePhoto = useCallback(() => {
-    setSelectedPhoto(null)
-    document.body.style.overflow = 'auto'
-  }, [])
+  const masonryBreakpoints = {
+    default: 4,
+    1280: 3,
+    1024: 2,
+    640: 1
+  }
 
   return (
     <section
@@ -75,7 +105,7 @@ export function Gallery() {
       className="bg-background py-16 md:py-32 lg:py-48 selection:bg-accent/30 overflow-x-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-        {/* Dynamic Editorial Header */}
+        {/* Editorial Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 md:mb-24 lg:mb-32 gap-10 md:gap-14">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -93,7 +123,7 @@ export function Gallery() {
             <div className="h-1 shadow-glow shadow-accent/50 w-16 sm:w-24 bg-accent" />
           </motion.div>
 
-          {/* Neo-Nav with Horizontal Scroll on Mobile */}
+          {/* Category Filter */}
           <motion.nav
             className="w-full lg:w-auto flex overflow-x-auto lg:overflow-visible no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 gap-6 sm:gap-8 border-b border-white/5 pb-4"
             initial={{ opacity: 0 }}
@@ -122,62 +152,29 @@ export function Gallery() {
           </motion.nav>
         </div>
 
-        {/* Improved Responsive Masonry */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 sm:gap-6 md:gap-8 space-y-4 sm:space-y-6 md:space-y-8">
-          {filteredPhotos.map((photo, index) => (
+        {/* Masonry Grid */}
+        <Masonry
+          breakpointCols={masonryBreakpoints}
+          className="flex -ml-4 w-auto sm:-ml-6 md:-ml-8"
+          columnClassName="pl-4 sm:pl-6 md:pl-8 bg-clip-padding"
+        >
+          {filteredPhotos.map((photo, i) => (
             <PhotoItem
               key={photo.id}
               photo={photo}
-              index={index}
-              onClick={handleOpenPhoto}
+              index={i}
+              onClick={() => setIndex(i)}
             />
           ))}
-        </div>
+        </Masonry>
 
-        {/* Modal - Fully Optimized for Mobile/Tablet */}
-        <AnimatePresence>
-          {selectedPhoto && (
-            <motion.div
-              className="fixed inset-0 z-[100] bg-background flex flex-col"
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 35, stiffness: 250 }}
-            >
-              {/* Top Minimal Bar */}
-              <div className="absolute top-0 left-0 right-0 p-5 md:p-8 flex justify-between items-start z-20 mix-blend-difference pointer-events-none">
-                <div className="flex flex-col gap-1">
-                  <span className="text-white text-xs tracking-[0.3em] font-sans uppercase">
-                    {selectedPhoto.title}
-                  </span>
-                  <span className="text-white/60 text-[10px] tracking-[0.2em] font-sans uppercase">
-                    {selectedPhoto.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Close Button */}
-              <button
-                onClick={handleClosePhoto}
-                className="absolute top-5 md:top-8 right-5 md:right-8 z-30 text-white/50 hover:text-white transition-colors uppercase tracking-widest text-[10px]"
-              >
-                Cerrar
-              </button>
-
-              {/* Pure Lightroom Experience */}
-              <div className="flex-1 w-full h-full flex items-center justify-center p-4 md:p-12">
-                <motion.img
-                  src={selectedPhoto.image}
-                  alt={selectedPhoto.title}
-                  className="max-w-full max-h-full object-contain shadow-2xl"
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1, duration: 0.4 }}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Lightbox */}
+        <Lightbox
+          index={index}
+          open={index >= 0}
+          close={() => setIndex(-1)}
+          slides={slides}
+        />
       </div>
     </section>
   )

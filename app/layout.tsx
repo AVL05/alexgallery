@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    url: 'https://alexvicente.es',
+    url: 'https://alexgallery.alexviclop.workers.dev',
     title: 'Alex Vicente - Galería Fotográfica',
     description:
       'Explora una colección única de momentos capturados a través de la lente. Paisajes, naturaleza y vida urbana.',
@@ -72,6 +72,35 @@ export default function RootLayout({
       scroll-behavior="smooth"
     >
       <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Alex Vicente",
+              "url": "https://alexgallery.alexviclop.workers.dev",
+              "jobTitle": "Professional Photographer",
+              "description": "Official photography portfolio of Alex Vicente López. Exploring landscapes, architecture, and nature through high-end visual storytelling.",
+              "sameAs": [],
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ImageGallery",
+              "name": "Photography Selection",
+              "description": "Highlights of personal photography by Alex Vicente.",
+              "creator": {
+                "@type": "Person",
+                "name": "Alex Vicente",
+              },
+            }),
+          }}
+        />
         <Suspense fallback={null}>
           <div className="flex flex-col min-h-screen">{children}</div>
         </Suspense>
