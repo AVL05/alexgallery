@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og'
 
+export const dynamic = 'force-static'
+
 export const alt = 'Alex Vicente | Profesional Photography'
 export const size = {
   width: 1200,
