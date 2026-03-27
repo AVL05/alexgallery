@@ -1,3 +1,12 @@
+export interface ExifData {
+  make?: string;
+  model?: string;
+  lensModel?: string;
+  fNumber?: string | number;
+  iso?: number;
+  exposureTime?: string;
+}
+
 export interface Photo {
   id: number | string;
   src: string;
@@ -11,6 +20,7 @@ export interface Photo {
   blurDataURL?: string;
   color?: string;
   alt?: string;
+  exif?: ExifData;
   variants?: {
     [key: number]: string;
   };

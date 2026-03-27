@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 import { getPlaiceholder } from 'plaiceholder';
+import exifr from 'exifr';
 
 const INPUT_DIR = './public/photos/raw';
 const OUTPUT_DIR = './public/photos/optimized';
@@ -64,6 +65,28 @@ async function optimizeImages() {
       // 3. Generate Blur Data URL
       const { base64 } = await getPlaiceholder(inputBuffer, { size: 10 });
 
+      // 4. Extract EXIF
+      let exif = {};
+      try {
+        const rawExif = await exifr.parse(inputBuffer, {
+          tiff: true,
+          exif: true,
+          reviveValues: true,
+        });
+        if (rawExif) {
+          exif = {
+            make: rawExif.Make,
+            model: rawExif.Model,
+            lensModel: rawExif.LensModel,
+            fNumber: rawExif.FNumber,
+            iso: rawExif.ISO,
+            exposureTime: rawExif.ExposureTime ? `1/${Math.round(1/rawExif.ExposureTime)}` : undefined,
+          };
+        }
+      } catch (e) {
+        console.warn(`Could not extract EXIF for ${file}:`, e);
+      }
+
       imagesData.push({
         id: fileName,
         src: `/photos/optimized/original/${fileName}${fileExt}`,
@@ -71,6 +94,7 @@ async function optimizeImages() {
         height: metadata.height,
         blurDataURL: base64,
         alt: `Photography by Alex Gallery - ${fileName}`,
+        exif,
         variants: SIZES.reduce((acc, size) => ({
           ...acc,
           [size]: `/photos/optimized/${size}/${fileName}${fileExt}`

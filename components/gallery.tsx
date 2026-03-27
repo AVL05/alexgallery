@@ -72,7 +72,7 @@ const PhotoItem = memo(
 
 PhotoItem.displayName = 'PhotoItem'
 
-export function Gallery() {
+export function Gallery({ dictionary }: { dictionary: any }) {
   const [selectedCategory, setSelectedCategory] = useState('Todo')
   const [index, setIndex] = useState(-1)
 
@@ -88,7 +88,8 @@ export function Gallery() {
       width: p.width,
       height: p.height,
       title: p.title,
-      description: p.description
+      description: p.description,
+      exif: p.exif
     }))
   }, [filteredPhotos])
 
@@ -114,10 +115,10 @@ export function Gallery() {
             className="w-full lg:max-w-3xl"
           >
             <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] mb-6 sm:mb-8">
-              SELECCIÓN
+              {dictionary.title}
               <br />
               <span className="text-accent italic font-serif lowercase block sm:inline">
-                Personal
+                {dictionary.subtitle}
               </span>
             </h2>
             <div className="h-1 shadow-glow shadow-accent/50 w-16 sm:w-24 bg-accent" />
@@ -140,7 +141,7 @@ export function Gallery() {
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {cat}
+                {dictionary.categories[cat] || cat}
                 {selectedCategory === cat && (
                   <motion.div
                     layoutId="activeTab"
@@ -174,6 +175,36 @@ export function Gallery() {
           open={index >= 0}
           close={() => setIndex(-1)}
           slides={slides}
+          render={{
+            slideFooter: ({ slide }: { slide: any }) => (
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 px-6 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 text-[10px] font-mono tracking-widest text-white/80 uppercase">
+                {slide.exif?.model && (
+                  <div className="flex flex-col items-center">
+                    <span className="text-[8px] opacity-40">Camera</span>
+                    <span>{slide.exif.model}</span>
+                  </div>
+                )}
+                {slide.exif?.fNumber && (
+                   <div className="flex flex-col items-center border-l border-white/10 pl-6">
+                    <span className="text-[8px] opacity-40">Aperture</span>
+                    <span>f/{slide.exif.fNumber}</span>
+                  </div>
+                )}
+                {slide.exif?.iso && (
+                   <div className="flex flex-col items-center border-l border-white/10 pl-6">
+                    <span className="text-[8px] opacity-40">ISO</span>
+                    <span>{slide.exif.iso}</span>
+                  </div>
+                )}
+                {slide.exif?.exposureTime && (
+                   <div className="flex flex-col items-center border-l border-white/10 pl-6">
+                    <span className="text-[8px] opacity-40">Speed</span>
+                    <span>{slide.exif.exposureTime}s</span>
+                  </div>
+                )}
+              </div>
+            )
+          }}
         />
       </div>
     </section>

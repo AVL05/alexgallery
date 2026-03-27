@@ -37,7 +37,7 @@ export function OptimizedImage({
         height={height}
         alt={alt}
         priority={priority}
-        placeholder={blurDataURL ? 'blur' : 'empty'}
+        placeholder={blurDataURL ? 'blur' : undefined}
         blurDataURL={blurDataURL}
         onLoad={() => setIsLoaded(true)}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

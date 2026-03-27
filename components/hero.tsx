@@ -5,9 +5,9 @@ import { motion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import Image from 'next/image'
 
-export function Hero() {
+export function Hero({ dictionary }: { dictionary: any }) {
   const { text: typewriterText, isTypingComplete } = useTypewriter({
-    words: ['CAPTURANDO MOMENTOS'],
+    words: [dictionary.title],
     typeSpeed: 80,
     loop: false,
   })
@@ -43,7 +43,7 @@ export function Hero() {
               >
                 &lt;visual-storytelling /&gt;
               </motion.p>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-[0.9] text-balance font-serif">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-[0.9] text-balance font-serif">
                 <span className="text-accent">
                   {typewriterText}
                   <motion.span
@@ -68,8 +68,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Un viaje visual a través de paisajes, cultura y emociones. Cada
-              fotograma cuenta una historia que vale la pena recordar.
+              {dictionary.description}
             </motion.p>
 
             <motion.div
@@ -82,20 +81,19 @@ export function Hero() {
                 onClick={scrollToGallery}
                 className="group px-8 py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all flex items-center gap-2 rounded-lg shadow-lg hover:shadow-xl cursor-hover"
               >
-                Ver trabajo
+                {dictionary.cta}
                 <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
               </button>
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Enhanced Image Grid */}
+          {/* Right Column - Image Grid */}
           <motion.div
             className="relative h-[400px] md:h-[600px] lg:h-[700px]"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
           >
-            {/* Main large image */}
             <motion.div
               className="absolute top-0 right-0 w-[80%] h-[70%] md:w-[70%] md:h-[60%] overflow-hidden rounded-lg shadow-2xl z-10"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -103,8 +101,8 @@ export function Hero() {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <Image
-                src="/14.webp"
-                alt="Fotografía de paisaje destacado"
+                src="/photos/optimized/original/14.webp"
+                alt="Landscape Highlights"
                 fill
                 className="object-cover"
                 priority
@@ -113,7 +111,6 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent pointer-events-none" />
             </motion.div>
 
-            {/* Secondary image */}
             <motion.div
               className="absolute bottom-0 left-0 w-[70%] h-[60%] md:w-[60%] md:h-[50%] border-4 border-accent overflow-hidden rounded-lg shadow-xl z-20 bg-background"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -121,8 +118,8 @@ export function Hero() {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <Image
-                src="/39.webp"
-                alt="Fotografía urbana destacada"
+                src="/photos/optimized/original/39.webp"
+                alt="Urban Selection"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 70vw, 40vw"
@@ -137,11 +134,10 @@ export function Hero() {
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         onClick={scrollToGallery}
-        aria-label="Desplazarse a la galería"
       >
         <ArrowDown className="h-6 w-6 text-accent" />
         <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-          Explorar
+          {dictionary.explore}
         </span>
       </motion.button>
     </section>

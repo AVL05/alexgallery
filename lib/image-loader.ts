@@ -1,5 +1,3 @@
-'use client'
-
 export default function imageLoader({ src, width }: { src: string; width: number }) {
   // If the src is already a full URL or doesn't start with / (except for public assets), return as is
   if (src.startsWith('http') || !src.startsWith('/')) return src;
@@ -18,3 +16,5 @@ export default function imageLoader({ src, width }: { src: string; width: number
   
   return `/photos/optimized/original/${fileName}`;
 }
+
+export { imageLoader };

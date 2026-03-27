@@ -1,0 +1,38 @@
+{
+  "hero": {
+    "title": "CAPTURING MOMENTS",
+    "description": "A visual journey through landscapes, culture, and emotions. Every frame tells a story worth remembering.",
+    "cta": "See work",
+    "explore": "Explore"
+  },
+  "nav": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "contact": "Contact"
+  },
+  "gallery": {
+    "title": "SELECTION",
+    "subtitle": "Personal",
+    "categories": {
+      "Todo": "All",
+      "Fauna": "Wildlife",
+      "Arquitectura": "Architecture",
+      "Paisaje": "Landscape",
+      "Retrato": "Portrait",
+      "Meteorología": "Weather"
+    }
+  },
+  "contact": {
+    "title": "Get in touch",
+    "description": "Have a project in mind or just want to say hello? Don't hesitate to reach out.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent!",
+      "error": "Something went wrong."
+    }
+  }
+}

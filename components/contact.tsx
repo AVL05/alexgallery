@@ -1,7 +1,10 @@
 'use client'
 
-import type React from 'react'
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,510 +15,182 @@ import {
   Mail,
   Send,
   Instagram,
-  Camera,
   FileImage,
   Copyright,
   CheckCircle,
   AlertCircle,
 } from 'lucide-react'
 
-export function Contact() {
+const contactSchema = z.object({
+  name: z.string().min(2, 'El nombre es muy corto'),
+  email: z.string().email('Email inválido'),
+  message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+})
+
+const licenseSchema = z.object({
+  name: z.string().min(2, 'Nombre requerido'),
+  email: z.string().email('Email inválido'),
+  company: z.string().optional(),
+  photoId: z.string().min(1, 'ID de foto requerido'),
+  usageType: z.string().min(1, 'Selecciona un tipo de uso'),
+  description: z.string().min(10, 'Describe el uso previsto'),
+})
+
+type ContactFormValues = z.infer<typeof contactSchema>
+type LicenseFormValues = z.infer<typeof licenseSchema>
+
+export function Contact({ dictionary }: { dictionary: any }) {
   const [formType, setFormType] = useState<'general' | 'license'>('general')
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
-  const [licenseData, setLicenseData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    photoId: '',
-    usageType: '',
-    description: '',
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error'
     message: string
   } | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const contactForm = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: { name: '', email: '', message: '' },
+  })
+
+  const licenseForm = useForm<LicenseFormValues>({
+    resolver: zodResolver(licenseSchema),
+    defaultValues: { name: '', email: '', company: '', photoId: '', usageType: '', description: '' },
+  })
+
+  const onContactSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true)
     setSubmitStatus(null)
-
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           access_key: 'd72eeacd-28fc-442b-83bd-b8c383c5997e',
-          subject: 'Nuevo mensaje de contacto - Galería Fotográfica',
-          from_name: formData.name,
-          email: formData.email,
-          message: formData.message,
+          ...data,
+          subject: 'Nuevo mensaje - Galería',
         }),
       })
-
-      const result = await response.json()
-
-      if (result.success) {
-        setSubmitStatus({
-          type: 'success',
-          message: '¡Mensaje enviado correctamente! Te responderé pronto.',
-        })
-        setFormData({ name: '', email: '', message: '' })
+      if (response.ok) {
+        setSubmitStatus({ type: 'success', message: dictionary.form.success })
+        contactForm.reset()
       } else {
-        throw new Error('Error al enviar')
+        throw new Error()
       }
-    } catch (error) {
-      setSubmitStatus({
-        type: 'error',
-        message:
-          'Error al enviar el mensaje. Intenta de nuevo o contáctame directamente por email.',
-      })
+    } catch {
+      setSubmitStatus({ type: 'error', message: dictionary.form.error })
     } finally {
-      setIsSubmitting(false)
+        setIsSubmitting(false)
     }
   }
 
-  const handleLicenseSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const onLicenseSubmit = async (data: LicenseFormValues) => {
     setIsSubmitting(true)
     setSubmitStatus(null)
-
     try {
-      const message = `
-📸 SOLICITUD DE LICENCIA FOTOGRÁFICA
-
-Nombre: ${licenseData.name}
-Email: ${licenseData.email}
-Empresa: ${licenseData.company || 'No especificada'}
-
-Fotografía de interés: ${licenseData.photoId}
-Tipo de uso: ${licenseData.usageType}
-
-Descripción del proyecto:
-${licenseData.description}
-      `
-
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: 'd72eeacd-28fc-442b-83bd-b8c383c5997e',
-          subject: `🔒 Solicitud de Licencia - ${licenseData.photoId}`,
-          from_name: licenseData.name,
-          email: licenseData.email,
-          message: message,
-        }),
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        setSubmitStatus({
-          type: 'success',
-          message:
-            '¡Solicitud de licencia enviada! Te contactaré pronto con información detallada.',
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: 'd72eeacd-28fc-442b-83bd-b8c383c5997e',
+            ...data,
+            subject: `Licencia: ${data.photoId}`,
+            message: `Empresa: ${data.company}\nUso: ${data.usageType}\nDesc: ${data.description}`
+          }),
         })
-        setLicenseData({
-          name: '',
-          email: '',
-          company: '',
-          photoId: '',
-          usageType: '',
-          description: '',
-        })
-      } else {
-        throw new Error('Error al enviar')
+        if (response.ok) {
+          setSubmitStatus({ type: 'success', message: 'Solicitud enviada' })
+          licenseForm.reset()
+        } else {
+          throw new Error()
+        }
+      } catch {
+        setSubmitStatus({ type: 'error', message: 'Error al enviar' })
+      } finally {
+          setIsSubmitting(false)
       }
-    } catch (error) {
-      setSubmitStatus({
-        type: 'error',
-        message:
-          'Error al enviar la solicitud. Contáctame directamente en alexviclop@gmail.com',
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
   }
 
   return (
-    <section
-      id="contact"
-      className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-background"
-    >
+    <section id="contact" className="py-24 px-4 bg-background">
       <div className="max-w-4xl mx-auto">
-        <div className="space-y-4 mb-8 sm:mb-12 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-balance font-serif">
-            Contáctame
-          </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto text-pretty leading-relaxed px-2">
-            ¿Quieres hablar sobre un proyecto o solicitar una licencia? Estoy
-            disponible en las siguientes plataformas
-          </p>
-
-          {/* Status Message */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold font-serif mb-4">{dictionary.title}</h2>
+          <p className="text-muted-foreground">{dictionary.description}</p>
+          
           {submitStatus && (
-            <div
-              className={
-                submitStatus.type === 'success'
-                  ? 'p-4 rounded-lg flex items-center gap-3 max-w-2xl mx-auto bg-green-500/10 border border-green-500/20'
-                  : 'p-4 rounded-lg flex items-center gap-3 max-w-2xl mx-auto bg-red-500/10 border border-red-500/20'
-              }
+            <motion.div 
+               initial={{ opacity: 0, y: -10 }} 
+               animate={{ opacity: 1, y: 0 }}
+               className={`mt-6 p-4 rounded-lg flex items-center gap-3 justify-center ${submitStatus.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}
             >
-              {submitStatus.type === 'success' ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <AlertCircle className="h-5 w-5 text-red-500" />
-              )}
-              <p
-                className={
-                  submitStatus.type === 'success'
-                    ? 'text-green-500'
-                    : 'text-red-500'
-                }
-              >
-                {submitStatus.message}
-              </p>
-            </div>
+              {submitStatus.type === 'success' ? <CheckCircle className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
+              {submitStatus.message}
+            </motion.div>
           )}
 
-          {/* Form Type Selector */}
-          <div className="flex justify-center gap-4 pt-4">
-            <Button
-              variant={formType === 'general' ? 'default' : 'outline'}
-              onClick={() => setFormType('general')}
-              className="flex items-center gap-2"
-            >
-              <Mail className="h-4 w-4" />
-              Contacto General
+          <div className="flex justify-center gap-4 mt-8">
+            <Button variant={formType === 'general' ? 'default' : 'outline'} onClick={() => setFormType('general')}>
+                {dictionary.form.send}
             </Button>
-            <Button
-              variant={formType === 'license' ? 'default' : 'outline'}
-              onClick={() => setFormType('license')}
-              className="flex items-center gap-2"
-            >
-              <Copyright className="h-4 w-4" />
-              Solicitar Licencia
+            <Button variant={formType === 'license' ? 'default' : 'outline'} onClick={() => setFormType('license')}>
+                Licencias
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          <Card className="p-6">
-            {formType === 'general' ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Nombre
-                  </label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="Tu nombre"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Mensaje
-                  </label>
-                  <Textarea
-                    id="message"
-                    placeholder="Cuéntame sobre tu proyecto..."
-                    rows={5}
-                    value={formData.message}
-                    onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  <Send className="h-4 w-4 mr-2" />
-                  {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
-                </Button>
-              </form>
-            ) : (
-              <form onSubmit={handleLicenseSubmit} className="space-y-4">
-                <div className="bg-accent/10 p-4 rounded-lg mb-4 border border-accent/20">
-                  <div className="flex items-start gap-3">
-                    <FileImage className="h-5 w-5 text-accent mt-0.5" />
+        <div className="grid md:grid-cols-2 gap-8">
+           <Card className="p-6">
+             {formType === 'general' ? (
+                <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="space-y-4">
                     <div>
-                      <h4 className="font-semibold text-sm mb-1">
-                        Solicitud de Licencia Fotográfica
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        Completa este formulario para solicitar permiso de uso
-                        de fotografías
-                      </p>
+                        <Input {...contactForm.register('name')} placeholder={dictionary.form.name} className={contactForm.formState.errors.name ? 'border-red-500' : ''} />
+                        {contactForm.formState.errors.name && <p className="text-[10px] text-red-500 mt-1">{contactForm.formState.errors.name.message}</p>}
                     </div>
-                  </div>
-                </div>
+                    <div>
+                        <Input {...contactForm.register('email')} placeholder={dictionary.form.email} className={contactForm.formState.errors.email ? 'border-red-500' : ''} />
+                        {contactForm.formState.errors.email && <p className="text-[10px] text-red-500 mt-1">{contactForm.formState.errors.email.message}</p>}
+                    </div>
+                    <div>
+                        <Textarea {...contactForm.register('message')} placeholder={dictionary.form.message} rows={5} className={contactForm.formState.errors.message ? 'border-red-500' : ''} />
+                        {contactForm.formState.errors.message && <p className="text-[10px] text-red-500 mt-1">{contactForm.formState.errors.message.message}</p>}
+                    </div>
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                        {isSubmitting ? dictionary.form.sending : dictionary.form.send}
+                    </Button>
+                </form>
+             ) : (
+                <form onSubmit={licenseForm.handleSubmit(onLicenseSubmit)} className="space-y-4">
+                    <Input {...licenseForm.register('name')} placeholder="Nombre completo" />
+                    <Input {...licenseForm.register('email')} placeholder="Email" />
+                    <Input {...licenseForm.register('photoId')} placeholder="ID de la foto / Título" />
+                    <select {...licenseForm.register('usageType')} className="w-full bg-background border rounded-md p-2 text-sm">
+                        <option value="">Tipo de uso</option>
+                        <option value="comercial">Comercial</option>
+                        <option value="editorial">Editorial</option>
+                        <option value="personal">Personal</option>
+                    </select>
+                    <Textarea {...licenseForm.register('description')} placeholder="Uso previsto..." rows={3} />
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                        Solicitar Licencia
+                    </Button>
+                </form>
+             )}
+           </Card>
 
-                <div>
-                  <label
-                    htmlFor="license-name"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Nombre Completo *
-                  </label>
-                  <Input
-                    id="license-name"
-                    type="text"
-                    placeholder="Tu nombre"
-                    value={licenseData.name}
-                    onChange={(e) =>
-                      setLicenseData({ ...licenseData, name: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="license-email"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Email *
-                  </label>
-                  <Input
-                    id="license-email"
-                    type="email"
-                    placeholder="tu@email.com"
-                    value={licenseData.email}
-                    onChange={(e) =>
-                      setLicenseData({ ...licenseData, email: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="company"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Empresa/Organización
-                  </label>
-                  <Input
-                    id="company"
-                    type="text"
-                    placeholder="Nombre de tu empresa (opcional)"
-                    value={licenseData.company}
-                    onChange={(e) =>
-                      setLicenseData({
-                        ...licenseData,
-                        company: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="photoId"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Fotografía de Interés *
-                  </label>
-                  <Input
-                    id="photoId"
-                    type="text"
-                    placeholder="Título o número de la foto"
-                    value={licenseData.photoId}
-                    onChange={(e) =>
-                      setLicenseData({
-                        ...licenseData,
-                        photoId: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="usageType"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Tipo de Uso *
-                  </label>
-                  <select
-                    id="usageType"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    value={licenseData.usageType}
-                    onChange={(e) =>
-                      setLicenseData({
-                        ...licenseData,
-                        usageType: e.target.value,
-                      })
-                    }
-                    required
-                  >
-                    <option value="">Selecciona un tipo</option>
-                    <option value="comercial">Uso Comercial</option>
-                    <option value="editorial">Publicación Editorial</option>
-                    <option value="web">Web/Redes Sociales</option>
-                    <option value="publicitario">Material Publicitario</option>
-                    <option value="impresion">Impresión/Productos</option>
-                    <option value="otro">Otro</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="description"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Descripción del Proyecto *
-                  </label>
-                  <Textarea
-                    id="description"
-                    placeholder="Describe cómo planeas usar la fotografía, duración, alcance, etc."
-                    rows={4}
-                    value={licenseData.description}
-                    onChange={(e) =>
-                      setLicenseData({
-                        ...licenseData,
-                        description: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  <FileImage className="h-4 w-4 mr-2" />
-                  {isSubmitting
-                    ? 'Enviando...'
-                    : 'Enviar Solicitud de Licencia'}
-                </Button>
-              </form>
-            )}
-          </Card>
-
-          <div className="space-y-6">
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-4 font-serif">
-                Redes Sociales
-              </h3>
-              <div className="space-y-4">
-                <a
-                  href="mailto:alexviclop@gmail.com"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="p-2 bg-muted rounded-lg group-hover:bg-primary/10 transition-colors">
-                    <Mail className="h-5 w-5 group-hover:text-primary transition-colors" />
-                  </div>
-                  <span>alexviclop@gmail.com</span>
-                </a>
-                <a
-                  href="https://github.com/AVL05"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="p-2 bg-muted rounded-lg group-hover:bg-primary/10 transition-colors">
-                    <Github className="h-5 w-5 group-hover:text-primary transition-colors" />
-                  </div>
-                  <span>github.com/AVL05</span>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/alex-vicente-lopez-083821309/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="p-2 bg-muted rounded-lg group-hover:bg-primary/10 transition-colors">
-                    <Linkedin className="h-5 w-5 group-hover:text-primary transition-colors" />
-                  </div>
-                  <span>linkedin.com/in/alexvicente</span>
-                </a>
-                <a
-                  href="https://www.instagram.com/aleexx_005/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  <div className="p-2 bg-muted rounded-lg group-hover:bg-primary/10 transition-colors">
-                    <Instagram className="h-5 w-5 group-hover:text-primary transition-colors" />
-                  </div>
-                  <span>@aleexx_005</span>
-                </a>
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
-              <div className="flex items-start gap-3">
-                <Camera className="h-6 w-6 text-primary mt-1" />
-                <div>
-                  <h3 className="text-xl font-semibold mb-2 font-serif">
-                    Portfolio
-                  </h3>
-                  <p className="text-muted-foreground text-pretty leading-relaxed mb-4">
-                    Explora mi portfolio
-                  </p>
-                  <Button variant="outline" asChild>
-                    <a href="https://aleviclop.vercel.app/">Ver</a>
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
+           <div className="space-y-4">
+              <Card className="p-6">
+                 <h3 className="font-bold mb-4">Redes sociales</h3>
+                 <div className="space-y-3">
+                    <a href="mailto:alexviclop@gmail.com" className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
+                        <Mail className="h-4 w-4" /> alexviclop@gmail.com
+                    </a>
+                    <a href="https://instagram.com/aleexx_005/" className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
+                        <Instagram className="h-4 w-4" /> @aleexx_005
+                    </a>
+                 </div>
+              </Card>
+           </div>
         </div>
-
-        <footer className="mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-border text-center text-xs sm:text-sm text-muted-foreground">
-          <p>© 2025 Alex Vicente López. Diseñado y desarrollado con pasión</p>
-        </footer>
       </div>
     </section>
   )

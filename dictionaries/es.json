@@ -1,0 +1,38 @@
+{
+  "hero": {
+    "title": "CAPTURANDO MOMENTOS",
+    "description": "Un viaje visual a través de paisajes, cultura y emociones. Cada fotograma cuenta una historia que vale la pena recordar.",
+    "cta": "Ver trabajo",
+    "explore": "Explorar"
+  },
+  "nav": {
+    "home": "Inicio",
+    "gallery": "Galería",
+    "contact": "Contacto"
+  },
+  "gallery": {
+    "title": "SELECCIÓN",
+    "subtitle": "Personal",
+    "categories": {
+      "Todo": "Todo",
+      "Fauna": "Fauna",
+      "Arquitectura": "Arquitectura",
+      "Paisaje": "Paisaje",
+      "Retrato": "Retrato",
+      "Meteorología": "Meteorología"
+    }
+  },
+  "contact": {
+    "title": "Hablemos",
+    "description": "¿Tienes un proyecto en mente o simplemente quieres saludar? No dudes en escribirme.",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "send": "Enviar mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado!",
+      "error": "Algo salió mal."
+    }
+  }
+}
