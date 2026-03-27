@@ -4,7 +4,7 @@ import { categories, photos as basePhotos } from '@/lib/gallery-data'
 import imagesData from '@/lib/images-data.json'
 import type { Photo } from '@/types/photo'
 import { AnimatePresence, motion } from 'framer-motion'
-import { memo, useMemo, useState } from 'react'
+import { memo, useMemo, useState, useEffect } from 'react'
 import Masonry from 'react-masonry-css'
 import Lightbox from "yet-another-react-lightbox"
 import "yet-another-react-lightbox/styles.css"
@@ -42,6 +42,11 @@ const PhotoItem = memo(
         transition={{ duration: 0.5, delay: (index % 4) * 0.05 }}
         className="mb-4 sm:mb-6 md:mb-8 group cursor-pointer"
         onClick={onClick}
+        onMouseEnter={() => {
+          // Preload on hover
+          const img = new Image();
+          img.src = (photo.src || photo.image) as string;
+        }}
       >
         <div className="relative overflow-hidden bg-card/10 transition-all duration-500 active:scale-[0.98]">
           <OptimizedImage
@@ -81,6 +86,26 @@ export function Gallery({ dictionary }: { dictionary: any }) {
       ? photos
       : photos.filter((p) => p.category === selectedCategory)
   }, [selectedCategory])
+
+  // Preload next 2 images when lightbox index changes
+  useEffect(() => {
+    if (index >= 0) {
+      const nextImages = filteredPhotos.slice(index + 1, index + 3);
+      nextImages.forEach(p => {
+        const img = new Image();
+        img.src = (p.src || p.image) as string;
+      });
+    }
+  }, [index, filteredPhotos]);
+
+  // Preload first 4 images of the selected category
+  useEffect(() => {
+    const firstImages = filteredPhotos.slice(0, 4);
+    firstImages.forEach(p => {
+       const img = new Image();
+       img.src = (p.src || p.image) as string;
+    });
+  }, [filteredPhotos]);
 
   const slides = useMemo(() => {
     return filteredPhotos.map(p => ({

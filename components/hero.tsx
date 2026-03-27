@@ -1,11 +1,15 @@
 'use client'
 
 import { useTypewriter } from '@/hooks/use-typewriter'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import Image from 'next/image'
 
 export function Hero({ dictionary }: { dictionary: any }) {
+  const { scrollY } = useScroll();
+  const yBig = useTransform(scrollY, [0, 800], [0, 100]); // 15% slower feel
+  const ySmall = useTransform(scrollY, [0, 800], [0, -150]); // 20% faster feel
+
   const { text: typewriterText, isTypingComplete } = useTypewriter({
     words: [dictionary.title],
     typeSpeed: 80,
@@ -95,9 +99,10 @@ export function Hero({ dictionary }: { dictionary: any }) {
             transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
           >
             <motion.div
-              className="absolute top-0 right-0 w-[80%] h-[70%] md:w-[70%] md:h-[60%] overflow-hidden rounded-lg shadow-2xl z-10"
+              className="absolute top-0 right-0 w-[80%] h-[70%] md:w-[70%] md:h-[60%] overflow-hidden rounded-lg shadow-2xl z-10 bg-black/40"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
+              style={{ y: yBig }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <Image
@@ -115,6 +120,7 @@ export function Hero({ dictionary }: { dictionary: any }) {
               className="absolute bottom-0 left-0 w-[70%] h-[60%] md:w-[60%] md:h-[50%] border-4 border-accent overflow-hidden rounded-lg shadow-xl z-20 bg-background"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
+              style={{ y: ySmall }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <Image

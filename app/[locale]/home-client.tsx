@@ -5,6 +5,7 @@ import { Gallery } from "@/components/gallery";
 import { Hero } from "@/components/hero";
 import { LoadingScreen } from "@/components/loading-screen";
 import { Navigation } from "@/components/navigation";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 
@@ -38,18 +39,20 @@ export default function HomeClient({ dictionary, locale }: { dictionary: any; lo
       </AnimatePresence>
 
       {showContent && (
-        <motion.main
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="min-h-screen relative"
-          role="main"
-        >
-          <Navigation dictionary={dictionary.nav} currentLocale={locale} />
-          <Hero dictionary={dictionary.hero} />
-          <Gallery dictionary={dictionary.gallery} />
-          <Contact dictionary={dictionary.contact} />
-        </motion.main>
+        <SmoothScroll>
+          <motion.main
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="min-h-screen relative"
+            role="main"
+          >
+            <Navigation dictionary={dictionary.nav} currentLocale={locale} />
+            <Hero dictionary={dictionary.hero} />
+            <Gallery dictionary={dictionary.gallery} />
+            <Contact dictionary={dictionary.contact} />
+          </motion.main>
+        </SmoothScroll>
       )}
     </div>
   );

@@ -10,6 +10,7 @@ export function Navigation({ dictionary, currentLocale }: { dictionary: any; cur
     { name: dictionary.home, href: "#hero" },
     { name: dictionary.gallery, href: "#gallery" },
     { name: dictionary.contact, href: "#contact" },
+    { name: dictionary.policies || "Políticas", href: `/${currentLocale}/politica-uso` },
     { name: "Portfolio", href: "https://aleviclop.vercel.app/" },
   ]
 
