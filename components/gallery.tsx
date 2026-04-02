@@ -3,12 +3,18 @@
 import { categories, photos as basePhotos } from '@/lib/gallery-data'
 import imagesData from '@/lib/images-data.json'
 import type { Photo } from '@/types/photo'
-import { AnimatePresence, motion } from 'framer-motion'
-import { memo, useMemo, useState, useEffect } from 'react'
+import { memo, useMemo, useState, useEffect, useRef } from 'react'
 import Masonry from 'react-masonry-css'
 import Lightbox from "yet-another-react-lightbox"
 import "yet-another-react-lightbox/styles.css"
 import { OptimizedImage } from './ui/optimized-image'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 // Combine static data with optimized image metadata
 const photos: Photo[] = basePhotos.map(photo => {
@@ -34,13 +40,29 @@ const PhotoItem = memo(
     index: number
     onClick: () => void
   }) => {
+    const itemRef = useRef<HTMLDivElement>(null)
+
+    useGSAP(() => {
+      gsap.fromTo(itemRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: itemRef.current,
+            start: 'top bottom-=50px',
+            toggleActions: 'play none none none'
+          }
+        }
+      )
+    }, { scope: itemRef })
+
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.5, delay: (index % 4) * 0.05 }}
-        className="mb-4 sm:mb-6 md:mb-8 group cursor-pointer"
+      <div
+        ref={itemRef}
+        className="mb-4 sm:mb-6 md:mb-8 group cursor-pointer opacity-0"
         onClick={onClick}
         onMouseEnter={() => {
           // Preload on hover
@@ -70,7 +92,7 @@ const PhotoItem = memo(
             </h3>
           </div>
         </div>
-      </motion.div>
+      </div>
     )
   }
 )
@@ -80,11 +102,52 @@ PhotoItem.displayName = 'PhotoItem'
 export function Gallery({ dictionary }: { dictionary: any }) {
   const [selectedCategory, setSelectedCategory] = useState('Todo')
   const [index, setIndex] = useState(-1)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const activeTabRef = useRef<HTMLDivElement>(null)
 
   const filteredPhotos = useMemo(() => {
     return selectedCategory === 'Todo'
       ? photos
       : photos.filter((p) => p.category === selectedCategory)
+  }, [selectedCategory])
+
+  useGSAP(() => {
+    // Header entrance
+    gsap.from(headerRef.current, {
+      opacity: 0,
+      x: -30,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: headerRef.current,
+        start: 'top bottom-=100px'
+      }
+    })
+
+    // Nav entrance
+    gsap.from(navRef.current, {
+      opacity: 0,
+      duration: 1,
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: navRef.current,
+        start: 'top bottom-=100px'
+      }
+    })
+  }, { scope: headerRef })
+
+  // Active tab indicator animation
+  useGSAP(() => {
+    const activeBtn = navRef.current?.querySelector(`button[data-active="true"]`) as HTMLElement
+    if (activeBtn && activeTabRef.current) {
+      gsap.to(activeTabRef.current, {
+        x: activeBtn.offsetLeft,
+        width: activeBtn.offsetWidth,
+        duration: 0.4,
+        ease: 'power2.inOut'
+      })
+    }
   }, [selectedCategory])
 
   // Preload next 2 images when lightbox index changes
@@ -133,12 +196,7 @@ export function Gallery({ dictionary }: { dictionary: any }) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         {/* Editorial Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 md:mb-24 lg:mb-32 gap-10 md:gap-14">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="w-full lg:max-w-3xl"
-          >
+          <div ref={headerRef} className="w-full lg:max-w-3xl">
             <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] mb-6 sm:mb-8">
               {dictionary.title}
               <br />
@@ -147,18 +205,17 @@ export function Gallery({ dictionary }: { dictionary: any }) {
               </span>
             </h2>
             <div className="h-1 shadow-glow shadow-accent/50 w-16 sm:w-24 bg-accent" />
-          </motion.div>
+          </div>
 
           {/* Category Filter */}
-          <motion.nav
-            className="w-full lg:w-auto flex overflow-x-auto lg:overflow-visible no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 gap-6 sm:gap-8 border-b border-white/5 pb-4"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+          <nav
+            ref={navRef}
+            className="w-full lg:w-auto flex overflow-x-auto lg:overflow-visible no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 gap-6 sm:gap-8 border-b border-white/5 pb-4 relative"
           >
             {categories.map((cat) => (
               <button
                 key={cat}
+                data-active={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={`text-[10px] sm:text-[11px] font-black tracking-[0.2em] whitespace-nowrap uppercase transition-all relative py-2 ${
                   selectedCategory === cat
@@ -167,15 +224,14 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                 }`}
               >
                 {dictionary.categories[cat] || cat}
-                {selectedCategory === cat && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute -bottom-4 left-0 right-0 h-0.5 bg-accent"
-                  />
-                )}
               </button>
             ))}
-          </motion.nav>
+            <div
+              ref={activeTabRef}
+              className="absolute bottom-0 left-0 h-0.5 bg-accent"
+              style={{ width: 0 }}
+            />
+          </nav>
         </div>
 
         {/* Masonry Grid */}

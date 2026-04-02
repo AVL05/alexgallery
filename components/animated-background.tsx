@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { motion } from "framer-motion"
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 interface Particle {
   id: number
@@ -13,10 +14,42 @@ interface Particle {
   opacity: number
 }
 
+const SHAPE_POSITIONS = [
+  { x: 100, y: 150, animX: 800, animY: 200 },
+  { x: 300, y: 400, animX: 600, animY: 100 },
+  { x: 700, y: 100, animX: 200, animY: 500 },
+  { x: 900, y: 350, animX: 400, animY: 300 },
+  { x: 200, y: 600, animX: 1000, animY: 150 },
+  { x: 500, y: 200, animX: 300, animY: 450 },
+  { x: 800, y: 500, animX: 150, animY: 350 },
+  { x: 400, y: 300, animX: 750, animY: 600 }
+];
+
 export function AnimatedBackground() {
+  const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particlesRef = useRef<Particle[]>([])
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | undefined>(undefined)
+  const shapesRef = useRef<(HTMLDivElement | null)[]>([])
+
+  useGSAP(() => {
+    shapesRef.current.forEach((shape, i) => {
+      if (!shape) return;
+      const pos = SHAPE_POSITIONS[i % SHAPE_POSITIONS.length];
+      
+      gsap.to(shape, {
+        x: pos.animX - pos.x,
+        y: pos.animY - pos.y,
+        scale: 1.5,
+        opacity: 0.7,
+        duration: 20 + i * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: i * 0.5
+      });
+    });
+  }, { scope: containerRef });
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -34,9 +67,8 @@ export function AnimatedBackground() {
       particlesRef.current = []
       const particleCount = Math.min(50, Math.floor(canvas.width / 20))
       
-      // Use deterministic seed-like values based on index to ensure consistent SSR/client rendering
       for (let i = 0; i < particleCount; i++) {
-        const seedX = (i * 73 + 17) % 1000 / 1000  // Pseudo-random but deterministic
+        const seedX = (i * 73 + 17) % 1000 / 1000  
         const seedY = (i * 137 + 29) % 1000 / 1000
         const seedSize = (i * 41 + 7) % 100 / 100
         const seedSpeedX = (i * 23 + 11) % 200 / 200 - 0.5
@@ -78,7 +110,6 @@ export function AnimatedBackground() {
         ctx.fill()
       })
 
-      // Draw connections between close particles
       particlesRef.current.forEach((particle1, i) => {
         particlesRef.current.slice(i + 1).forEach(particle2 => {
           const distance = Math.sqrt(
@@ -121,7 +152,7 @@ export function AnimatedBackground() {
   }, [])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0">
+    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0">
       {/* Gradient overlay - darker */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/98 to-background/95" />
       
@@ -132,45 +163,20 @@ export function AnimatedBackground() {
         style={{ mixBlendMode: 'multiply' }}
       />
 
-      {/* Floating geometric shapes - Fixed positions for hydration */}
+      {/* Floating geometric shapes */}
       <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 8 }).map((_, i) => {
-          // Use deterministic values based on index to avoid hydration mismatch
-          const positions = [
-            { x: 100, y: 150, animX: 800, animY: 200 },
-            { x: 300, y: 400, animX: 600, animY: 100 },
-            { x: 700, y: 100, animX: 200, animY: 500 },
-            { x: 900, y: 350, animX: 400, animY: 300 },
-            { x: 200, y: 600, animX: 1000, animY: 150 },
-            { x: 500, y: 200, animX: 300, animY: 450 },
-            { x: 800, y: 500, animX: 150, animY: 350 },
-            { x: 400, y: 300, animX: 750, animY: 600 }
-          ]
-          const pos = positions[i] || positions[0]
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-primary/10 rounded-full"
-              initial={{
-                x: pos.x,
-                y: pos.y,
-              }}
-              animate={{
-                x: pos.animX,
-                y: pos.animY,
-                scale: [1, 1.5, 1],
-                opacity: [0.3, 0.7, 0.3],
-              }}
-              transition={{
-                duration: 20 + i * 3,
-                repeat: Infinity,
-                ease: "linear",
-                delay: i * 2,
-              }}
-            />
-          )
-        })}
+        {SHAPE_POSITIONS.map((pos, i) => (
+          <div
+            key={i}
+            ref={el => { shapesRef.current[i] = el }}
+            className="absolute w-2 h-2 bg-primary/10 rounded-full"
+            style={{
+              left: pos.x,
+              top: pos.y,
+              opacity: 0.3
+            }}
+          />
+        ))}
       </div>
 
       {/* Subtle radial gradient - darker */}
@@ -182,4 +188,4 @@ export function AnimatedBackground() {
       />
     </div>
   )
-}
+}

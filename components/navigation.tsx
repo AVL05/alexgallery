@@ -1,9 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
-import { motion, useScroll, useSpring } from "framer-motion"
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 export function Navigation({ dictionary, currentLocale }: { dictionary: any; currentLocale: string }) {
   const items = [
@@ -18,12 +24,40 @@ export function Navigation({ dictionary, currentLocale }: { dictionary: any; cur
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("hero")
   
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  })
+  const progressBarRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(() => {
+    // Scroll progress bar
+    gsap.to(progressBarRef.current, {
+      scaleX: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.3
+      }
+    })
+
+    // Entrance animation for nav
+    gsap.from(navRef.current, {
+      y: -100,
+      duration: 1,
+      ease: "power3.out"
+    })
+  }, { scope: navRef })
+
+  // Mobile menu animation
+  useGSAP(() => {
+    if (isMobileMenuOpen) {
+      gsap.fromTo(mobileMenuRef.current,
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+      )
+    }
+  }, [isMobileMenuOpen])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,18 +84,16 @@ export function Navigation({ dictionary, currentLocale }: { dictionary: any; cur
 
   return (
     <>
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-secondary origin-left z-50"
-        style={{ scaleX }}
+      <div
+        ref={progressBarRef}
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-secondary origin-left z-50 scale-x-0"
       />
       
-      <motion.nav
+      <nav
+        ref={navRef}
         className={`fixed top-1 left-0 right-0 z-40 transition-all duration-500 ${
           isScrolled ? "bg-background/90 backdrop-blur-md border border-border/50 rounded-2xl mx-2 sm:mx-4 shadow-2xl" : "bg-transparent"
         }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
@@ -99,10 +131,9 @@ export function Navigation({ dictionary, currentLocale }: { dictionary: any; cur
         </div>
 
         {isMobileMenuOpen && (
-          <motion.div 
+          <div 
+            ref={mobileMenuRef}
             className="md:hidden bg-background/95 backdrop-blur-lg border-t border-white/5 p-4 space-y-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
           >
             {items.map((item) => (
               <a
@@ -118,9 +149,9 @@ export function Navigation({ dictionary, currentLocale }: { dictionary: any; cur
                 <a href="/es" className={currentLocale === 'es' ? 'text-primary' : ''}>ESPAÑOL</a>
                 <a href="/en" className={currentLocale === 'en' ? 'text-primary' : ''}>ENGLISH</a>
             </div>
-          </motion.div>
+          </div>
         )}
-      </motion.nav>
+      </nav>
     </>
   )
 }

@@ -1,28 +1,42 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
 import Link from 'next/link'
 import {
   ArrowLeft,
   Copyright,
-  Scale,
   Download,
   Share2,
   Award,
 } from 'lucide-react'
 import { SmoothScroll } from '@/components/smooth-scroll'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(useGSAP)
+}
 
 export function PoliticaClient({ locale }: { locale: string }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(() => {
+    const tl = gsap.timeline({ defaults: { ease: 'power2.out', duration: 0.6 } })
+
+    tl.from('.back-button', { opacity: 0, x: -20 })
+      .from('.policy-header', { opacity: 0, y: 30 }, '-=0.4')
+      .from('.copyright-notice', { opacity: 0, y: 20 }, '-=0.4')
+      .from('.restrictions', { opacity: 0, y: 20 }, '-=0.4')
+      .from('.licensing', { opacity: 0, y: 20 }, '-=0.4')
+      .from('.policy-footer', { opacity: 0 }, '-=0.2')
+  }, { scope: containerRef })
+
   return (
     <SmoothScroll>
-    <main className="min-h-screen py-20 px-6 lg:px-12 relative z-10">
+    <main ref={containerRef} className="min-h-screen py-20 px-6 lg:px-12 relative z-10">
       <div className="container mx-auto max-w-4xl relative z-10 bg-background/95 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
         {/* Back button */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="back-button">
           <Link
             href={`/${locale}`}
             className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors mb-12"
@@ -30,15 +44,10 @@ export function PoliticaClient({ locale }: { locale: string }) {
             <ArrowLeft className="h-4 w-4" />
             {locale === 'es' ? 'Volver al inicio' : 'Back to home'}
           </Link>
-        </motion.div>
+        </div>
 
         {/* Header */}
-        <motion.div
-          className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="policy-header mb-16">
           <div className="flex items-center gap-4 mb-6">
             <div className="p-4 bg-accent/10 rounded-lg">
               <Copyright className="h-8 w-8 text-accent" />
@@ -52,15 +61,10 @@ export function PoliticaClient({ locale }: { locale: string }) {
               ? 'Términos y condiciones de uso de las fotografías de Alex Vicente' 
               : 'Terms and conditions for the use of Alex Vicente\'s photographs'}
           </p>
-        </motion.div>
+        </div>
 
         {/* Copyright Notice */}
-        <motion.div
-          className="bg-white/5 p-8 rounded-xl mb-12 border border-white/10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <div className="copyright-notice bg-white/5 p-8 rounded-xl mb-12 border border-white/10">
           <div className="flex items-start gap-4">
             <Award className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
             <div>
@@ -74,15 +78,10 @@ export function PoliticaClient({ locale }: { locale: string }) {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Restrictions */}
-        <motion.div
-          className="space-y-8 mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <div className="restrictions space-y-8 mb-12">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-red-500/10 rounded-lg flex-shrink-0">
               <Download className="h-5 w-5 text-red-500" />
@@ -103,15 +102,10 @@ export function PoliticaClient({ locale }: { locale: string }) {
               </ul>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Licensing */}
-        <motion.div
-          className="bg-accent/5 p-8 rounded-xl mb-12 border border-accent/10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+        <div className="licensing bg-accent/5 p-8 rounded-xl mb-12 border border-accent/10">
           <div className="flex items-start gap-4">
             <Share2 className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
             <div>
@@ -135,19 +129,14 @@ export function PoliticaClient({ locale }: { locale: string }) {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Footer */}
-        <motion.div
-          className="mt-16 pt-8 border-t border-border text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
+        <div className="policy-footer mt-16 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Alex Vicente López.
           </p>
-        </motion.div>
+        </div>
       </div>
     </main>
     </SmoothScroll>

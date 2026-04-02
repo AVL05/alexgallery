@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -10,16 +9,17 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import {
-  Github,
-  Linkedin,
   Mail,
-  Send,
   Instagram,
-  FileImage,
-  Copyright,
   CheckCircle,
   AlertCircle,
 } from 'lucide-react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(useGSAP)
+}
 
 const contactSchema = z.object({
   name: z.string().min(2, 'El nombre es muy corto'),
@@ -47,6 +47,8 @@ export function Contact({ dictionary }: { dictionary: any }) {
     message: string
   } | null>(null)
 
+  const statusRef = useRef<HTMLDivElement>(null)
+
   const contactForm = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: '', email: '', message: '' },
@@ -56,6 +58,15 @@ export function Contact({ dictionary }: { dictionary: any }) {
     resolver: zodResolver(licenseSchema),
     defaultValues: { name: '', email: '', company: '', photoId: '', usageType: '', description: '' },
   })
+
+  useGSAP(() => {
+    if (submitStatus && statusRef.current) {
+      gsap.fromTo(statusRef.current,
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+      )
+    }
+  }, [submitStatus])
 
   const onContactSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true)
@@ -118,14 +129,13 @@ export function Contact({ dictionary }: { dictionary: any }) {
           <p className="text-muted-foreground">{dictionary.description}</p>
           
           {submitStatus && (
-            <motion.div 
-               initial={{ opacity: 0, y: -10 }} 
-               animate={{ opacity: 1, y: 0 }}
+            <div 
+               ref={statusRef}
                className={`mt-6 p-4 rounded-lg flex items-center gap-3 justify-center ${submitStatus.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}
             >
               {submitStatus.type === 'success' ? <CheckCircle className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
               {submitStatus.message}
-            </motion.div>
+            </div>
           )}
 
           <div className="flex justify-center gap-4 mt-8">
