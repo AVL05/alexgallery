@@ -128,15 +128,15 @@ export function Hero({ dictionary }: { dictionary: any }) {
       className="relative min-h-screen flex items-center overflow-hidden"
       aria-label="Hero section"
     >
-      <div className="container mx-auto px-6 lg:px-12 py-32 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-6 lg:px-12 py-20 md:py-32 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left Column - Typography */}
-          <div ref={leftColRef} className="space-y-8">
-            <div className="space-y-4">
-              <p className="hero-tag text-accent/60 text-xs sm:text-sm tracking-[0.3em] font-mono lowercase">
+          <div ref={leftColRef} className="space-y-6 md:space-y-8">
+            <div className="space-y-3 md:space-y-4">
+              <p className="hero-tag text-accent/60 text-[10px] sm:text-xs tracking-[0.3em] font-mono lowercase">
                 &lt;visual-storytelling /&gt;
               </p>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-[0.9] text-balance font-serif">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tighter leading-[0.95] text-balance font-serif">
                 <span className="text-accent">
                   {typewriterText}
                   <span
@@ -149,14 +149,14 @@ export function Hero({ dictionary }: { dictionary: any }) {
               </h1>
             </div>
 
-            <p className="hero-desc text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
+            <p className="hero-desc text-base md:text-lg lg:text-xl text-muted-foreground max-w-lg leading-relaxed">
               {dictionary.description}
             </p>
 
-            <div className="hero-buttons flex flex-wrap gap-4 pt-4">
+            <div className="hero-buttons flex flex-wrap gap-4 pt-2 md:pt-4">
               <button
                 onClick={scrollToGallery}
-                className="group px-8 py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all flex items-center gap-2 rounded-lg shadow-lg hover:shadow-xl cursor-hover"
+                className="group px-6 py-3 md:px-8 md:py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all flex items-center gap-2 rounded-lg shadow-lg hover:shadow-xl cursor-hover text-sm md:text-base"
               >
                 {dictionary.cta}
                 <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
@@ -165,7 +165,7 @@ export function Hero({ dictionary }: { dictionary: any }) {
           </div>
 
           {/* Right Column - Image Grid */}
-          <div ref={rightColRef} className="relative h-[400px] md:h-[600px] lg:h-[700px]">
+          <div ref={rightColRef} className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
             <div
               ref={image1Ref}
               className="absolute top-0 right-0 w-[80%] h-[70%] md:w-[70%] md:h-[60%] overflow-hidden rounded-lg shadow-2xl z-10 bg-black/40"

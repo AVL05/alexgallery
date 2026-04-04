@@ -183,21 +183,21 @@ export function Gallery({ dictionary }: { dictionary: any }) {
 
   const masonryBreakpoints = {
     default: 4,
-    1280: 3,
+    1536: 3,
     1024: 2,
-    640: 1
+    768: 1
   }
 
   return (
     <section
       id="gallery"
-      className="bg-background py-16 md:py-32 lg:py-48 selection:bg-accent/30 overflow-x-hidden"
+      className="bg-background py-16 md:py-24 lg:py-32 selection:bg-accent/30 overflow-x-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         {/* Editorial Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 md:mb-24 lg:mb-32 gap-10 md:gap-14">
-          <div ref={headerRef} className="w-full lg:max-w-3xl">
-            <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] mb-6 sm:mb-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 md:mb-20 lg:mb-24 gap-10">
+          <div ref={headerRef} className="w-full lg:max-w-4xl">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-6 sm:mb-8">
               {dictionary.title}
               <br />
               <span className="text-accent italic font-serif lowercase block sm:inline">
