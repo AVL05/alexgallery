@@ -97,8 +97,113 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    overflow-x: hidden;
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+    background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
+  }
+
+  .btn-glitch:hover span {
+    animation: glitch-text 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+  }
+
+  @keyframes glitch-text {
+    0% { transform: translate(0); text-shadow: none; }
+    20% { transform: translate(-2px, 2px); text-shadow: 2px 0 #0ff, -2px 0 #f0f; }
+    40% { transform: translate(-2px, -2px); text-shadow: 2px 0 #0ff, -2px 0 #f0f; }
+    60% { transform: translate(2px, 2px); text-shadow: -2px 0 #0ff, 2px 0 #f0f; }
+    80% { transform: translate(2px, -2px); text-shadow: -2px 0 #0ff, 2px 0 #f0f; }
+    100% { transform: translate(0); }
+  }
+
+  .scanline {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.02) 50%);
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+    animation: scanline 10s linear infinite;
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+  }
+  .mesh-bg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    filter: blur(100px);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .mesh-sphere {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    background: var(--accent);
+    filter: blur(80px);
+    opacity: 0.15;
+    animation: morph 20s infinite alternate;
+  }
+
+  @keyframes morph {
+    0% { transform: translate(-20%, -20%) scale(1); }
+    33% { transform: translate(30%, 10%) scale(1.2); }
+    66% { transform: translate(-10%, 40%) scale(0.8); }
+    100% { transform: translate(40%, -10%) scale(1.1); }
+  }
+
+  .noise-texture {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .chromatic-aberration {
+    transition: filter 0.2s ease-out;
+  }
+
+  .glow-highlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glow-highlight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .glow-highlight:hover::after {
+    opacity: 1;
+  }
+
+  /* Custom Scrollbar for modern look */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
   }
 
   html {

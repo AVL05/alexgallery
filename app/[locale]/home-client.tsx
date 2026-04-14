@@ -27,6 +27,18 @@ export default function HomeClient({ dictionary, locale }: { dictionary: any; lo
         { opacity: 0 },
         { opacity: 1, duration: 1, ease: 'power2.out' }
       );
+
+      // Global Parallax Text
+      gsap.to('.global-bg-text', {
+        xPercent: -50,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1
+        }
+      })
     }
   }, [showContent]);
 
@@ -54,6 +66,13 @@ export default function HomeClient({ dictionary, locale }: { dictionary: any; lo
             className="min-h-screen relative opacity-0"
             role="main"
           >
+            {/* Global Background Typography */}
+            <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden select-none flex items-center">
+                <span className="global-bg-text text-[40vh] md:text-[60vh] font-black uppercase tracking-tighter text-white/[0.02] whitespace-nowrap will-change-transform leading-none translate-x-1/2">
+                   {dictionary.hero.title} // {dictionary.hero.title}
+                </span>
+            </div>
+
             <Navigation dictionary={dictionary.nav} currentLocale={locale} />
             <Hero dictionary={dictionary.hero} />
             <Gallery dictionary={dictionary.gallery} />

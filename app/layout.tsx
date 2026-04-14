@@ -72,6 +72,12 @@ export default function RootLayout({
       scroll-behavior="smooth"
     >
       <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
+        <div className="mesh-bg">
+          <div className="mesh-sphere" />
+          <div className="mesh-sphere" style={{ animationDelay: '-5s', background: 'white', opacity: 0.05 }} />
+          <div className="mesh-sphere" style={{ animationDelay: '-10s', left: 'auto', right: '-10%', top: '20%' }} />
+        </div>
+        <div className="noise-texture" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

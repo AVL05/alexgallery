@@ -66,6 +66,20 @@ export function Contact({ dictionary }: { dictionary: any }) {
         { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
       )
     }
+
+    // New entrance animation for the section
+    gsap.from('.contact-reveal', {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#contact',
+        start: 'top bottom-=100px',
+        toggleActions: 'play none none none'
+      }
+    })
   }, [submitStatus])
 
   const onContactSubmit = async (data: ContactFormValues) => {
@@ -122,83 +136,86 @@ export function Contact({ dictionary }: { dictionary: any }) {
   }
 
   return (
-    <section id="contact" className="py-16 md:py-24 lg:py-32 px-6 sm:px-8 bg-background">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-serif mb-4">{dictionary.title}</h2>
-          <p className="text-muted-foreground">{dictionary.description}</p>
+    <section id="contact" className="py-24 md:py-32 lg:py-40 px-6 sm:px-8 bg-black relative overflow-hidden">
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 contact-reveal">
+          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">{dictionary.title}</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{dictionary.description}</p>
           
-          {submitStatus && (
-            <div 
-               ref={statusRef}
-               className={`mt-6 p-4 rounded-lg flex items-center gap-3 justify-center ${submitStatus.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}
+          <div className="flex justify-center gap-6 mt-12">
+            <button 
+                onClick={() => setFormType('general')}
+                className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === 'general' ? 'bg-accent text-black scale-105' : 'bg-white/5 text-white/40 hover:text-white'}`}
             >
-              {submitStatus.type === 'success' ? <CheckCircle className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-              {submitStatus.message}
-            </div>
-          )}
-
-          <div className="flex justify-center gap-4 mt-8">
-            <Button variant={formType === 'general' ? 'default' : 'outline'} onClick={() => setFormType('general')}>
                 {dictionary.form.send}
-            </Button>
-            <Button variant={formType === 'license' ? 'default' : 'outline'} onClick={() => setFormType('license')}>
+            </button>
+            <button 
+                onClick={() => setFormType('license')}
+                className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === 'license' ? 'bg-accent text-black scale-105' : 'bg-white/5 text-white/40 hover:text-white'}`}
+            >
                 Licencias
-            </Button>
+            </button>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-           <Card className="p-6">
-             {formType === 'general' ? (
-                <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="space-y-4">
-                    <div>
-                        <Input {...contactForm.register('name')} placeholder={dictionary.form.name} className={contactForm.formState.errors.name ? 'border-red-500' : ''} />
-                        {contactForm.formState.errors.name && <p className="text-[10px] text-red-500 mt-1">{contactForm.formState.errors.name.message}</p>}
-                    </div>
-                    <div>
-                        <Input {...contactForm.register('email')} placeholder={dictionary.form.email} className={contactForm.formState.errors.email ? 'border-red-500' : ''} />
-                        {contactForm.formState.errors.email && <p className="text-[10px] text-red-500 mt-1">{contactForm.formState.errors.email.message}</p>}
-                    </div>
-                    <div>
-                        <Textarea {...contactForm.register('message')} placeholder={dictionary.form.message} rows={5} className={contactForm.formState.errors.message ? 'border-red-500' : ''} />
-                        {contactForm.formState.errors.message && <p className="text-[10px] text-red-500 mt-1">{contactForm.formState.errors.message.message}</p>}
-                    </div>
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
-                        {isSubmitting ? dictionary.form.sending : dictionary.form.send}
-                    </Button>
-                </form>
-             ) : (
-                <form onSubmit={licenseForm.handleSubmit(onLicenseSubmit)} className="space-y-4">
-                    <Input {...licenseForm.register('name')} placeholder="Nombre completo" />
-                    <Input {...licenseForm.register('email')} placeholder="Email" />
-                    <Input {...licenseForm.register('photoId')} placeholder="ID de la foto / Título" />
-                    <select {...licenseForm.register('usageType')} className="w-full bg-background border rounded-md p-2 text-sm">
-                        <option value="">Tipo de uso</option>
-                        <option value="comercial">Comercial</option>
-                        <option value="editorial">Editorial</option>
-                        <option value="personal">Personal</option>
-                    </select>
-                    <Textarea {...licenseForm.register('description')} placeholder="Uso previsto..." rows={3} />
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
-                        Solicitar Licencia
-                    </Button>
-                </form>
-             )}
-           </Card>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+           <div className="lg:col-span-2 contact-reveal">
+             <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
+                 {formType === 'general' ? (
+                    <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <input {...contactForm.register('name')} placeholder={dictionary.form.name} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                            <input {...contactForm.register('email')} placeholder={dictionary.form.email} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                        </div>
+                        <textarea {...contactForm.register('message')} placeholder={dictionary.form.message} rows={6} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                        <button type="submit" className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-4" disabled={isSubmitting}>
+                            {isSubmitting ? dictionary.form.sending : dictionary.form.send}
+                        </button>
+                    </form>
+                 ) : (
+                    <form onSubmit={licenseForm.handleSubmit(onLicenseSubmit)} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <input {...licenseForm.register('name')} placeholder="Nombre completo" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                            <input {...licenseForm.register('email')} placeholder="Email" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                        </div>
+                        <input {...licenseForm.register('photoId')} placeholder="ID de la foto / Título" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                        <select {...licenseForm.register('usageType')} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors appearance-none text-white/40">
+                            <option value="">Tipo de uso</option>
+                            <option value="comercial">Comercial</option>
+                            <option value="editorial">Editorial</option>
+                            <option value="personal">Personal</option>
+                        </select>
+                        <textarea {...licenseForm.register('description')} placeholder="Uso previsto..." rows={4} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
+                        <button type="submit" className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] rounded-xl hover:brightness-110 transition-all" disabled={isSubmitting}>
+                            Solicitar Licencia
+                        </button>
+                    </form>
+                 )}
+             </div>
+           </div>
 
-           <div className="space-y-4">
-              <Card className="p-6">
-                 <h3 className="font-bold mb-4">Redes sociales</h3>
-                 <div className="space-y-3">
-                    <a href="mailto:alexviclop@gmail.com" className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
-                        <Mail className="h-4 w-4" /> alexviclop@gmail.com
+           <div className="space-y-8 contact-reveal">
+              <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
+                 <h3 className="text-xl font-black uppercase tracking-tighter mb-8">Social Connect</h3>
+                 <div className="space-y-6">
+                    <a href="mailto:alexviclop@gmail.com" className="flex items-center gap-4 group">
+                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
+                            <Mail className="h-5 w-5" />
+                        </div>
+                        <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">alexviclop@gmail.com</span>
                     </a>
-                    <a href="https://instagram.com/aleexx_005/" className="flex items-center gap-3 text-muted-foreground hover:text-foreground">
-                        <Instagram className="h-4 w-4" /> @aleexx_005
+                    <a href="https://instagram.com/aleexx_005/" className="flex items-center gap-4 group">
+                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
+                            <Instagram className="h-5 w-5" />
+                        </div>
+                        <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">@aleexx_005</span>
                     </a>
                  </div>
-              </Card>
+              </div>
+
+              <div className="p-8 border border-white/5 rounded-3xl flex items-center justify-center h-40">
+                 <span className="text-[10rem] font-black opacity-[0.03] select-none">AV</span>
+              </div>
            </div>
         </div>
       </div>
