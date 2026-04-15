@@ -4,27 +4,30 @@ import { photos } from '@/lib/gallery-data'
 export const dynamic = 'force-static'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://alexgallery.alexviclop.workers.dev/'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://alexgallery.alexviclop.workers.dev'
+  const locales = ['es', 'en']
+  const routes = ['', '/politica-uso']
 
-  // Standard routes
-  const routes = [
-    '',
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
+  const sitemapEntries: MetadataRoute.Sitemap = []
+
+  for (const locale of locales) {
+    for (const route of routes) {
+      sitemapEntries.push({
+        url: `${baseUrl}/${locale}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: route === '' ? 1.0 : 0.8,
+      })
+    }
+  }
+
+  // Add root redirect or main landing if needed
+  sitemapEntries.push({
+    url: `${baseUrl}/`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency: 'weekly',
     priority: 1.0,
-  }))
+  })
 
-  // You can add more specific photo routes here if you implement subpages
-  /*
-  const photoRoutes = photos.map((photo) => ({
-    url: `${baseUrl}/gallery/${photo.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }))
-  */
-
-  return [...routes]
+  return sitemapEntries
 }

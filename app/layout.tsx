@@ -22,41 +22,64 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://alexgallery.alexviclop.workers.dev'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: {
     default: 'Alex Vicente | Fotografía Profesional',
     template: '%s | Alex Vicente',
   },
   description:
-    'Portafolio de fotografía profesional de Alex Vicente. Capturando paisajes, fauna, arquitectura y momentos únicos con una visión artística.',
+    'Portafolio de fotografía profesional de Alex Vicente. Capturando paisajes, fauna, arquitectura y momentos únicos con una visión artística y técnica excepcional.',
   keywords: [
-    'fotografía',
-    'portafolio',
+    'fotografía profesional',
+    'portafolio fotográfico',
     'Alex Vicente',
-    'paisajes',
-    'fauna',
-    'arquitectura',
-    'fotógrafo',
+    'fotografía de naturaleza',
+    'fotografía de arquitectura',
+    'fotógrafo paisajes',
+    'arte visual',
+    'España',
   ],
   authors: [{ name: 'Alex Vicente' }],
   creator: 'Alex Vicente',
+  alternates: {
+    canonical: '/',
+    languages: {
+      'es-ES': '/es',
+      'en-US': '/en',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    url: 'https://alexgallery.alexviclop.workers.dev',
-    title: 'Alex Vicente - Galería Fotográfica',
+    url: baseUrl,
+    title: 'Alex Vicente - Galería Fotográfica Profesional',
     description:
-      'Explora una colección única de momentos capturados a través de la lente. Paisajes, naturaleza y vida urbana.',
+      'Explora una colección única de momentos capturados a través de la lente. Paisajes, naturaleza y vida urbana con un enfoque artístico.',
     siteName: 'Alex Vicente Fotografía',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Alex Vicente | Fotografía Profesional',
+    description: 'Explora mi portafolio de fotografía profesional. Capturando la esencia de lo efímero.',
+    creator: '@tu_usuario_si_tienes', // Recomendado cambiar por el real
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
   },
 }
 

@@ -12,12 +12,12 @@ const SIZES = [400, 800, 1200];
 
 async function optimizeImages() {
   console.log('--- Starting Image Optimization ---');
-  
+
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
-  const files = fs.readdirSync(INPUT_DIR).filter(file => 
+  const files = fs.readdirSync(INPUT_DIR).filter(file =>
     /\.(jpe?g|png|webp|avif)$/i.test(file)
   );
 
@@ -26,7 +26,7 @@ async function optimizeImages() {
   for (const file of files) {
     const inputPath = path.join(INPUT_DIR, file);
     const fileName = path.parse(file).name;
-    const fileExt = '.webp'; 
+    const fileExt = '.webp';
 
     console.log(`📸 Processing ${file}...`);
 
@@ -50,7 +50,12 @@ async function optimizeImages() {
         await sharp(inputBuffer)
           .resize(size, null, { withoutEnlargement: true })
           .webp({ quality: 80 })
-          .toFile(path.join(sizeDir, `${fileName}${fileExt}`));
+          .toFile(path.join(sizeDir, `${fileName}.webp`));
+
+        await sharp(inputBuffer)
+          .resize(size, null, { withoutEnlargement: true })
+          .avif({ quality: 65 })
+          .toFile(path.join(sizeDir, `${fileName}.avif`));
       }
 
       // 2. Generate original version (but optimized)
@@ -60,7 +65,11 @@ async function optimizeImages() {
       }
       await sharp(inputBuffer)
         .webp({ quality: 85 })
-        .toFile(path.join(originalDir, `${fileName}${fileExt}`));
+        .toFile(path.join(originalDir, `${fileName}.webp`));
+
+      await sharp(inputBuffer)
+        .avif({ quality: 70 })
+        .toFile(path.join(originalDir, `${fileName}.avif`));
 
       // 3. Generate Blur Data URL
       const { base64 } = await getPlaiceholder(inputBuffer, { size: 10 });
@@ -68,11 +77,16 @@ async function optimizeImages() {
       // 4. Extract EXIF
       let exif = {};
       try {
-        const rawExif = await exifr.parse(inputBuffer, {
+        const rawExif = await exifr.parse(inputPath, {
+          tiff: true,
+          exif: true,
+          reviveValues: true,
+        }) || await exifr.parse(inputBuffer, {
           tiff: true,
           exif: true,
           reviveValues: true,
         });
+
         if (rawExif) {
           exif = {
             make: rawExif.Make,
@@ -80,27 +94,52 @@ async function optimizeImages() {
             lensModel: rawExif.LensModel,
             fNumber: rawExif.FNumber,
             iso: rawExif.ISO,
-            exposureTime: rawExif.ExposureTime ? `1/${Math.round(1/rawExif.ExposureTime)}` : undefined,
+            exposureTime: rawExif.ExposureTime ? (rawExif.ExposureTime < 1 ? `1/${Math.round(1/rawExif.ExposureTime)}` : `${rawExif.ExposureTime}`) : undefined,
           };
         }
       } catch (e) {
         console.warn(`Could not extract EXIF for ${file}:`, e);
       }
 
+      // 5. Generate Histogram Data (Manual calculation from fresh instance)
+      const { data: rawData } = await sharp(inputBuffer)
+        .resize(100, 100, { fit: 'cover' })
+        .greyscale()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+      const binsCount = 20;
+      const binSize = 256 / binsCount;
+      const freq = Array(binsCount).fill(0);
+
+      for (let i = 0; i < rawData.length; i++) {
+        const value = rawData[i];
+        const binIdx = Math.floor(value / binSize);
+        freq[binIdx]++;
+      }
+
+      const histMax = Math.max(...freq);
+      const normalizedHistogram = freq.map(v =>
+        histMax > 0 ? Math.round((v / histMax) * 100) : 0
+      );
+
       imagesData.push({
         id: fileName,
-        src: `/photos/optimized/original/${fileName}${fileExt}`,
+        src: `/photos/optimized/original/${fileName}.webp`,
+        srcAvif: `/photos/optimized/original/${fileName}.avif`,
         width: metadata.width,
         height: metadata.height,
         blurDataURL: base64,
         alt: `Photography by Alex Gallery - ${fileName}`,
         exif,
+        histogram: normalizedHistogram,
         variants: SIZES.reduce((acc, size) => ({
           ...acc,
-          [size]: `/photos/optimized/${size}/${fileName}${fileExt}`
+          [size]: `/photos/optimized/${size}/${fileName}.webp`,
+          [`${size}avif`]: `/photos/optimized/${size}/${fileName}.avif`
         }), {})
       });
-      
+
       console.log(`✅ Finished ${file}`);
     } catch (err) {
       console.error(`❌ Failed to process ${file}:`, err);

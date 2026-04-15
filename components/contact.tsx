@@ -10,10 +10,28 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Mail,
-  Instagram,
+  Camera,
   CheckCircle,
   AlertCircle,
 } from 'lucide-react'
+
+const InstagramIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+)
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -141,15 +159,15 @@ export function Contact({ dictionary }: { dictionary: any }) {
         <div className="text-center mb-16 contact-reveal">
           <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">{dictionary.title}</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{dictionary.description}</p>
-          
+
           <div className="flex justify-center gap-6 mt-12">
-            <button 
+            <button
                 onClick={() => setFormType('general')}
                 className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === 'general' ? 'bg-accent text-black scale-105' : 'bg-white/5 text-white/40 hover:text-white'}`}
             >
                 {dictionary.form.send}
             </button>
-            <button 
+            <button
                 onClick={() => setFormType('license')}
                 className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === 'license' ? 'bg-accent text-black scale-105' : 'bg-white/5 text-white/40 hover:text-white'}`}
             >
@@ -206,7 +224,7 @@ export function Contact({ dictionary }: { dictionary: any }) {
                     </a>
                     <a href="https://instagram.com/aleexx_005/" className="flex items-center gap-4 group">
                         <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
-                            <Instagram className="h-5 w-5" />
+                            <InstagramIcon />
                         </div>
                         <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">@aleexx_005</span>
                     </a>

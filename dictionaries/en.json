@@ -36,5 +36,9 @@
       "success": "Message sent!",
       "error": "Something went wrong."
     }
+  },
+  "seo": {
+    "title": "Alex Vicente | Professional Photography & Art",
+    "description": "Explore the photography portfolio of Alex Vicente. Landscapes, wildlife, and architecture captured with a unique perspective."
   }
 }

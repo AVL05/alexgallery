@@ -21,8 +21,9 @@ export interface Photo {
   color?: string;
   alt?: string;
   exif?: ExifData;
+  histogram?: number[];
   variants?: {
-    [key: number]: string;
+    [key: string]: string;
   };
 }
 

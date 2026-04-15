@@ -36,5 +36,9 @@
       "success": "¡Mensaje enviado!",
       "error": "Algo salió mal."
     }
+  },
+  "seo": {
+    "title": "Alex Vicente | Fotografía Profesional y Artística",
+    "description": "Explora el portafolio fotográfico de Alex Vicente. Paisajes, fauna y arquitectura capturados con una visión única."
   }
 }
