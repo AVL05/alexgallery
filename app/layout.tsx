@@ -27,23 +27,31 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://alexgallery.alexvic
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Alex Vicente | Fotografía Profesional',
-    template: '%s | Alex Vicente',
+    default: 'Alex Vicente | Fotografía Profesional & Visual Storytelling',
+    template: '%s | Alex Vicente Photography',
   },
   description:
-    'Portafolio de fotografía profesional de Alex Vicente. Capturando paisajes, fauna, arquitectura y momentos únicos con una visión artística y técnica excepcional.',
+    'Explora el portafolio de Alex Vicente López. Fotografía profesional especializada en paisajes, arquitectura y naturaleza. Capturando momentos únicos con precisión técnica y visión artística.',
   keywords: [
     'fotografía profesional',
     'portafolio fotográfico',
-    'Alex Vicente',
-    'fotografía de naturaleza',
+    'Alex Vicente López',
+    'fotografía de paisajes',
     'fotografía de arquitectura',
-    'fotógrafo paisajes',
-    'arte visual',
+    'fotógrafo de naturaleza',
+    'fine art photography',
+    'fotografía editorial',
     'España',
+    'visual storytelling'
   ],
   authors: [{ name: 'Alex Vicente' }],
   creator: 'Alex Vicente',
+  publisher: 'Alex Vicente',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   alternates: {
     canonical: '/',
     languages: {
@@ -54,17 +62,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    url: baseUrl,
-    title: 'Alex Vicente - Galería Fotográfica Profesional',
-    description:
-      'Explora una colección única de momentos capturados a través de la lente. Paisajes, naturaleza y vida urbana con un enfoque artístico.',
-    siteName: 'Alex Vicente Fotografía',
+    url: '/',
+    title: 'Alex Vicente | Portafolio de Fotografía Profesional',
+    description: 'Colección curada de fotografía de paisajes, arquitectura y naturaleza. Momentos efímeros capturados con visión artística.',
+    siteName: 'Alex Vicente Photography',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Alex Vicente Photography Portfolio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Alex Vicente | Fotografía Profesional',
-    description: 'Explora mi portafolio de fotografía profesional. Capturando la esencia de lo efímero.',
-    creator: '@tu_usuario_si_tienes', // Recomendado cambiar por el real
+    description: 'Explora mi portafolio de fotografía y visual storytelling.',
+    images: ['/opengraph-image.png'],
   },
   robots: {
     index: true,
@@ -78,8 +93,13 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' },
+    ],
   },
 }
 
@@ -92,7 +112,7 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${playfair.variable} ${inter.variable}`}
-      scroll-behavior="smooth"
+      style={{ scrollBehavior: 'smooth' }}
     >
       <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
         <div className="mesh-bg">
@@ -101,35 +121,47 @@ export default function RootLayout({
           <div className="mesh-sphere" style={{ animationDelay: '-10s', left: 'auto', right: '-10%', top: '20%' }} />
         </div>
         <div className="noise-texture" />
+        
+        {/* Structured Data: Person & ProfessionalService */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Alex Vicente",
-              "url": "https://alexgallery.alexviclop.workers.dev",
-              "jobTitle": "Professional Photographer",
-              "description": "Official photography portfolio of Alex Vicente López. Exploring landscapes, architecture, and nature through high-end visual storytelling.",
-              "sameAs": [],
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": `${baseUrl}/#person`,
+                  "name": "Alex Vicente",
+                  "url": baseUrl,
+                  "image": `${baseUrl}/photos/optimized/original/14.webp`,
+                  "description": "Professional photographer specializing in landscapes, architecture, and nature.",
+                  "jobTitle": "Photographer",
+                  "sameAs": [
+                    "https://instagram.com/aleexx_005/",
+                    "mailto:alexviclop@gmail.com"
+                  ]
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": `${baseUrl}/#website`,
+                  "url": baseUrl,
+                  "name": "Alex Vicente Photography",
+                  "publisher": { "@id": `${baseUrl}/#person` },
+                  "inLanguage": ["es", "en"]
+                },
+                {
+                  "@type": "ImageGallery",
+                  "@id": `${baseUrl}/#gallery`,
+                  "name": "Alex Vicente Photography Collection",
+                  "description": "Selected architectural and landscape photography works.",
+                  "creator": { "@id": `${baseUrl}/#person` }
+                }
+              ]
             }),
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ImageGallery",
-              "name": "Photography Selection",
-              "description": "Highlights of personal photography by Alex Vicente.",
-              "creator": {
-                "@type": "Person",
-                "name": "Alex Vicente",
-              },
-            }),
-          }}
-        />
+
         <Suspense fallback={null}>
           <div className="flex flex-col min-h-screen">{children}</div>
         </Suspense>

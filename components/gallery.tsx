@@ -9,6 +9,7 @@ import Captions from "yet-another-react-lightbox/plugins/captions"
 import "yet-another-react-lightbox/styles.css"
 import "yet-another-react-lightbox/plugins/captions.css"
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   LayoutGrid, 
@@ -147,46 +148,55 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                   viewport={{ once: true }}
-                  className="gallery-item group cursor-pointer space-y-4 relative"
-                  onClick={() => setIndex(i)}
                 >
-                  <div className="relative aspect-[4/5] overflow-hidden bg-white/5 rounded-sm border border-white/5 group-hover:border-accent/40 transition-all duration-500 shadow-none group-hover:shadow-[0_0_40px_rgba(255,255,255,0.03)]">
-                    <Image
-                      src={(photo.src || photo.image) as string}
-                      alt={photo.title}
-                      fill
-                      className="object-cover transition-all duration-700 group-hover:scale-105 brightness-90 group-hover:brightness-110"
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      priority={i < 4}
-                    />
-                    
-                    {/* Histograma Decorativo */}
-                    {photo.histogram && (
-                      <div className="absolute top-4 right-4 flex items-end gap-[1.5px] h-8 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none translate-y-2 group-hover:translate-y-0">
-                        {photo.histogram.map((val, idx) => (
-                          <div 
-                            key={idx} 
-                            className="w-[2px] bg-accent/60" 
-                            style={{ height: `${val}%` }} 
-                          />
-                        ))}
+                  <Link
+                    href={`/${dictionary.locale || 'es'}/photo/${photo.id}`}
+                    className="gallery-item group cursor-pointer space-y-4 relative block"
+                    onClick={(e: React.MouseEvent) => {
+                      if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
+                        e.preventDefault()
+                        setIndex(i)
+                      }
+                    }}
+                  >
+                    <div className="relative aspect-[4/5] overflow-hidden bg-white/5 rounded-sm border border-white/5 group-hover:border-accent/40 transition-all duration-500 shadow-none group-hover:shadow-[0_0_40px_rgba(255,255,255,0.03)]">
+                      <Image
+                        src={(photo.src || photo.image) as string}
+                        alt={photo.title}
+                        fill
+                        className="object-cover transition-all duration-700 group-hover:scale-105 brightness-90 group-hover:brightness-110"
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        priority={i < 4}
+                      />
+                      
+                      {/* Histograma Decorativo */}
+                      {photo.histogram && (
+                        <div className="absolute top-4 right-4 flex items-end gap-[1.5px] h-8 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none translate-y-2 group-hover:translate-y-0">
+                          {photo.histogram.map((val, idx) => (
+                            <div 
+                              key={idx} 
+                              className="w-[2px] bg-accent/60" 
+                              style={{ height: `${val}%` }} 
+                            />
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="absolute top-4 left-4 text-[10px] font-mono text-white/60 bg-black/40 backdrop-blur-md px-2 py-1 rounded-sm group-hover:text-accent transition-colors">
+                          {String(i + 1).padStart(3, '0')}
                       </div>
-                    )}
-
-                    <div className="absolute top-4 left-4 text-[10px] font-mono text-white/60 bg-black/40 backdrop-blur-md px-2 py-1 rounded-sm group-hover:text-accent transition-colors">
-                        {String(i + 1).padStart(3, '0')}
                     </div>
-                  </div>
 
-                  <div className="space-y-1">
-                    <h3 className="text-[10px] font-black uppercase tracking-widest text-white/50 group-hover:text-white transition-colors">
-                        {photo.title}
-                    </h3>
-                    <div className="flex justify-between items-center text-[8px] font-mono text-white/10 group-hover:text-white/30 transition-colors uppercase">
-                        <span>{photo.category}</span>
-                        <span>{photo.year}</span>
+                    <div className="space-y-1">
+                      <h3 className="text-[10px] font-black uppercase tracking-widest text-white/50 group-hover:text-white transition-colors">
+                          {photo.title}
+                      </h3>
+                      <div className="flex justify-between items-center text-[8px] font-mono text-white/10 group-hover:text-white/30 transition-colors uppercase">
+                          <span>{photo.category}</span>
+                          <span>{photo.year}</span>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
             </motion.div>

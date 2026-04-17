@@ -11,21 +11,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const sitemapEntries: MetadataRoute.Sitemap = []
 
   for (const locale of locales) {
+    // Main pages
     for (const route of routes) {
       sitemapEntries.push({
         url: `${baseUrl}/${locale}${route}`,
         lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: route === '' ? 1.0 : 0.8,
+        changeFrequency: 'monthly',
+        priority: route === '' ? 1.0 : 0.7,
+      })
+    }
+
+    // Individual Photo pages
+    for (const photo of photos) {
+      sitemapEntries.push({
+        url: `${baseUrl}/${locale}/photo/${photo.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6,
       })
     }
   }
 
-  // Add root redirect or main landing if needed
+  // Root redirect entry
   sitemapEntries.push({
     url: `${baseUrl}/`,
     lastModified: new Date(),
-    changeFrequency: 'weekly',
+    changeFrequency: 'monthly',
     priority: 1.0,
   })
 
