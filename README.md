@@ -29,6 +29,26 @@ Este sitio presenta una selección curada de trabajos fotográficos de Alex Vice
 - **react-hook-form** + **zod** (validación de formularios)
 - **Sonner**, **Lucide React**, **date-fns**, **next-themes**, **Radix UI**
 
+## 🚀 Desarrollo
+
+Instala las dependencias:
+
+```bash
+pnpm install
+```
+
+Ejecuta el servidor de desarrollo:
+
+```bash
+pnpm dev
+```
+
+Genera la build de producción:
+
+```bash
+pnpm build
+```
+
 ## ⚖️ Licencia y derechos de autor
 
 **© 2026 Alex Vicente Lopez — Todos los derechos reservados.**
