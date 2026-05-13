@@ -121,7 +121,7 @@ export default function RootLayout({
           <div className="mesh-sphere" style={{ animationDelay: '-10s', left: 'auto', right: '-10%', top: '20%' }} />
         </div>
         <div className="noise-texture" />
-        
+
         {/* Structured Data: Person & ProfessionalService */}
         <script
           type="application/ld+json"
