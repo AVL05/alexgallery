@@ -17,6 +17,7 @@ export interface Photo {
   description: string;
   year?: string;
   category: string;
+  featured?: boolean;
   blurDataURL?: string;
   color?: string;
   alt?: string;

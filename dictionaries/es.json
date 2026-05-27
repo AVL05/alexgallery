@@ -1,10 +1,11 @@
 {
   "hero": {
-    "title": "CAPTURANDO MOMENTOS",
-    "description": "Un viaje visual a través de paisajes, cultura y emociones. Cada fotograma cuenta una historia que vale la pena recordar.",
-    "cta": "Ver trabajo",
+    "title": "LUZ Y LUGAR",
+    "eyebrow": "Fotografía de paisaje, arquitectura y viaje",
+    "description": "Una selección curada de fotografías tomadas entre naturaleza, ciudad y escenas cotidianas. Busco imágenes limpias, con atmósfera y una lectura visual clara.",
+    "cta": "Ver selección",
     "explore": "Explorar",
-    "featured_tag": "Destacados"
+    "featured_tag": "Destacadas"
   },
   "nav": {
     "home": "Inicio",
@@ -14,7 +15,14 @@
   },
   "gallery": {
     "title": "SELECCIÓN",
-    "subtitle": "Personal",
+    "subtitle": "Curada",
+    "collection_label": "Selección curada",
+    "archive_label": "Archivo completo",
+    "selected_works": "Trabajos seleccionados",
+    "items": "fotos",
+    "view_grid": "Vista grid",
+    "view_table": "Mesa de luz",
+    "light_table_hint": "Mesa de trabajo // interactúa",
     "categories": {
       "Todo": "Todo",
       "Fauna": "Fauna",
@@ -26,19 +34,22 @@
   },
   "contact": {
     "title": "Hablemos",
-    "description": "¿Tienes un proyecto en mente o simplemente quieres saludar? No dudes en escribirme.",
+    "description": "Si quieres comentar una foto, pedir una licencia o proponer una colaboración visual, escríbeme.",
+    "license": "Licencias",
+    "general": "Mensaje",
+    "social": "Contacto",
     "form": {
       "name": "Nombre",
       "email": "Correo electrónico",
       "message": "Mensaje",
       "send": "Enviar mensaje",
       "sending": "Enviando...",
-      "success": "¡Mensaje enviado!",
+      "success": "Mensaje enviado.",
       "error": "Algo salió mal."
     }
   },
   "seo": {
-    "title": "Alex Vicente | Fotografía Profesional y Artística",
-    "description": "Explora el portafolio fotográfico de Alex Vicente. Paisajes, fauna y arquitectura capturados con una visión única."
+    "title": "Alex Vicente | Portfolio fotográfico curado",
+    "description": "Selección fotográfica de Alex Vicente: paisaje, fauna, arquitectura y escenas de viaje con una mirada limpia y editorial."
   }
 }

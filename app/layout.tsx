@@ -27,11 +27,11 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://alexgallery.alexvic
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Alex Vicente | Fotografía Profesional & Visual Storytelling',
+    default: 'Alex Vicente | Portfolio fotográfico curado',
     template: '%s | Alex Vicente Photography',
   },
   description:
-    'Explora el portafolio de Alex Vicente López. Fotografía profesional especializada en paisajes, arquitectura y naturaleza. Capturando momentos únicos con precisión técnica y visión artística.',
+    'Selección fotográfica de Alex Vicente López: paisaje, fauna, arquitectura y escenas de viaje con una mirada limpia y editorial.',
   keywords: [
     'fotografía profesional',
     'portafolio fotográfico',
@@ -63,8 +63,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_ES',
     url: '/',
-    title: 'Alex Vicente | Portafolio de Fotografía Profesional',
-    description: 'Colección curada de fotografía de paisajes, arquitectura y naturaleza. Momentos efímeros capturados con visión artística.',
+    title: 'Alex Vicente | Portfolio fotográfico curado',
+    description: 'Colección curada de fotografía de paisaje, arquitectura, fauna y viaje con una mirada limpia y editorial.',
     siteName: 'Alex Vicente Photography',
     images: [
       {
@@ -77,8 +77,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alex Vicente | Fotografía Profesional',
-    description: 'Explora mi portafolio de fotografía y visual storytelling.',
+    title: 'Alex Vicente | Portfolio fotográfico curado',
+    description: 'Explora una selección curada de paisaje, arquitectura, fauna y viaje.',
     images: ['/opengraph-image.png'],
   },
   robots: {

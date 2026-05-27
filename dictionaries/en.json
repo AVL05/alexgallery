@@ -1,8 +1,9 @@
 {
   "hero": {
-    "title": "CAPTURING MOMENTS",
-    "description": "A visual journey through landscapes, culture, and emotions. Every frame tells a story worth remembering.",
-    "cta": "See work",
+    "title": "LIGHT AND PLACE",
+    "eyebrow": "Landscape, architecture and travel photography",
+    "description": "A curated selection of photographs taken between nature, cities, and everyday scenes. I look for clean images with atmosphere and a clear visual reading.",
+    "cta": "View selection",
     "explore": "Explore",
     "featured_tag": "Highlights"
   },
@@ -14,7 +15,14 @@
   },
   "gallery": {
     "title": "SELECTION",
-    "subtitle": "Personal",
+    "subtitle": "Curated",
+    "collection_label": "Curated selection",
+    "archive_label": "Full archive",
+    "selected_works": "Selected works",
+    "items": "photos",
+    "view_grid": "Grid view",
+    "view_table": "Light table",
+    "light_table_hint": "Working table // interactive",
     "categories": {
       "Todo": "All",
       "Fauna": "Wildlife",
@@ -26,19 +34,22 @@
   },
   "contact": {
     "title": "Get in touch",
-    "description": "Have a project in mind or just want to say hello? Don't hesitate to reach out.",
+    "description": "If you want to ask about a photo, request a license, or propose a visual collaboration, send me a message.",
+    "license": "Licenses",
+    "general": "Message",
+    "social": "Contact",
     "form": {
       "name": "Name",
       "email": "Email",
       "message": "Message",
-      "send": "Send Message",
+      "send": "Send message",
       "sending": "Sending...",
-      "success": "Message sent!",
+      "success": "Message sent.",
       "error": "Something went wrong."
     }
   },
   "seo": {
-    "title": "Alex Vicente | Professional Photography & Art",
-    "description": "Explore the photography portfolio of Alex Vicente. Landscapes, wildlife, and architecture captured with a unique perspective."
+    "title": "Alex Vicente | Curated photography portfolio",
+    "description": "Photography selection by Alex Vicente: landscape, wildlife, architecture, and travel scenes with a clean editorial eye."
   }
 }

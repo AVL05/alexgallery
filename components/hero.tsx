@@ -48,12 +48,12 @@ export function Hero({ dictionary }: { dictionary: any }) {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden"
+      className="relative min-h-[92vh] flex items-center justify-center bg-black overflow-hidden"
     >
       {/* Background Image - Clean & Subtle */}
       <div 
         ref={imageRef}
-        className="absolute inset-0 z-0 opacity-40 grayscale"
+        className="absolute inset-0 z-0 opacity-70"
       >
         <Image
           src="/photos/optimized/original/14.webp"
@@ -62,27 +62,28 @@ export function Hero({ dictionary }: { dictionary: any }) {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/40 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/35 to-black" />
+        <div className="absolute inset-0 bg-black/25" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10 text-center">
         <div className="space-y-6">
-          <p className="hero-text-reveal text-accent text-xs font-bold tracking-[0.6em] uppercase">
-            Visual Storyteller
+          <p className="hero-text-reveal text-accent text-[10px] sm:text-xs font-bold tracking-[0.24em] sm:tracking-[0.45em] uppercase max-w-[18rem] sm:max-w-none mx-auto leading-relaxed">
+            {dictionary.eyebrow}
           </p>
-          <h1 className="hero-text-reveal text-6xl sm:text-8xl md:text-[10rem] lg:text-[12rem] font-black uppercase tracking-tighter leading-none text-white">
+          <h1 className="hero-text-reveal text-5xl sm:text-7xl md:text-[8rem] lg:text-[9.5rem] font-black uppercase tracking-normal leading-none text-white max-w-6xl mx-auto">
             {typewriterText}
           </h1>
-          <p className="hero-text-reveal text-white/40 text-sm md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="hero-text-reveal text-white/65 text-sm md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
             {dictionary.description}
           </p>
           
           <div className="hero-text-reveal pt-10">
             <button
                onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-               className="group flex flex-col items-center gap-4 mx-auto text-white/20 hover:text-accent transition-colors"
+               className="group flex flex-col items-center gap-4 mx-auto text-white/45 hover:text-white transition-colors"
             >
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">View Collection</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">{dictionary.cta}</span>
                 <div className="w-px h-12 bg-current animate-bounce" />
             </button>
           </div>
@@ -90,7 +91,7 @@ export function Hero({ dictionary }: { dictionary: any }) {
       </div>
 
       {/* Modern Framing */}
-      <div className="absolute inset-12 border border-white/5 pointer-events-none hidden lg:block" />
+      <div className="absolute inset-x-12 bottom-12 h-px bg-white/10 pointer-events-none hidden lg:block" />
     </section>
   )
 }

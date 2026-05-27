@@ -38,15 +38,20 @@ const photos: Photo[] = basePhotos.map(photo => {
 export function Gallery({ dictionary }: { dictionary: any }) {
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid')
   const [selectedCategory, setSelectedCategory] = useState('Todo')
+  const [showFeaturedOnly, setShowFeaturedOnly] = useState(true)
   const [index, setIndex] = useState(-1)
   const containerRef = useRef<HTMLDivElement>(null)
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 })
 
+  const visibleCollection = useMemo(() => {
+    return showFeaturedOnly ? photos.filter((photo) => photo.featured) : photos
+  }, [showFeaturedOnly])
+
   const filteredPhotos = useMemo(() => {
     return selectedCategory === 'Todo'
-      ? photos
-      : photos.filter((p) => p.category === selectedCategory)
-  }, [selectedCategory])
+      ? visibleCollection
+      : visibleCollection.filter((p) => p.category === selectedCategory)
+  }, [selectedCategory, visibleCollection])
 
   const slides = useMemo(() => {
     return filteredPhotos.map(p => ({
@@ -70,59 +75,84 @@ export function Gallery({ dictionary }: { dictionary: any }) {
   return (
     <section 
       id="gallery" 
-      className="bg-black py-24 md:py-40 relative overflow-hidden"
+      className="bg-black py-24 md:py-32 relative overflow-hidden"
       onMouseMove={handleMouseMove}
       style={{
         '--mouse-x': `${mousePos.x}%`,
         '--mouse-y': `${mousePos.y}%`,
       } as any}
     >
-      {/* Luz Dinámica de Fondo (Efecto Linterna) */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 transition-opacity duration-500"
+      {/* Luz ambiental suave */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 transition-opacity duration-500"
            style={{
-             background: `radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.15) 0%, transparent 40%)`
+             background: `radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.12) 0%, transparent 38%)`
            }} />
 
       <div className="container mx-auto px-6 relative z-10" ref={containerRef}>
-        <div className="flex flex-col md:flex-row justify-between items-baseline mb-20 gap-8 border-b border-white/5 pb-10">
+        <div className="flex flex-col md:flex-row justify-between items-baseline mb-16 gap-8 border-b border-white/10 pb-8">
           <div className="flex flex-col gap-2">
-             <h2 className="text-sm font-black uppercase tracking-[0.4em] text-accent">Archive.024</h2>
-             <span className="text-white/20 text-[10px] font-mono uppercase tracking-widest">Selected Works // {filteredPhotos.length} Items</span>
+             <h2 className="text-sm font-black uppercase tracking-[0.4em] text-accent">
+              {showFeaturedOnly ? dictionary.collection_label : dictionary.archive_label}
+             </h2>
+             <span className="text-white/20 text-[10px] font-mono uppercase tracking-widest">
+              {dictionary.selected_works} // {filteredPhotos.length} {dictionary.items}
+             </span>
           </div>
 
-          <div className="flex items-center gap-12">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
+            <div className="flex bg-white/[0.03] p-1 rounded-sm border border-white/10 backdrop-blur-md">
+                <button
+                  onClick={() => {
+                    setShowFeaturedOnly(true)
+                    setSelectedCategory('Todo')
+                  }}
+                  className={`px-4 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all ${showFeaturedOnly ? 'bg-white text-black' : 'text-white/35 hover:text-white/70'}`}
+                >
+                    {dictionary.collection_label}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowFeaturedOnly(false)
+                    setSelectedCategory('Todo')
+                  }}
+                  className={`px-4 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all ${!showFeaturedOnly ? 'bg-white text-black' : 'text-white/35 hover:text-white/70'}`}
+                >
+                    {dictionary.archive_label}
+                </button>
+            </div>
+
             {/* View Mode Switcher */}
-            <div className="flex bg-white/5 p-1 rounded-full border border-white/10 backdrop-blur-md">
+            <div className="flex bg-white/[0.03] p-1 rounded-sm border border-white/10 backdrop-blur-md">
                 <button 
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-full transition-all ${viewMode === 'grid' ? 'bg-accent text-black shadow-lg' : 'text-white/20 hover:text-white/40'}`}
-                  title="Vista Grid"
+                  className={`p-2 rounded-sm transition-all ${viewMode === 'grid' ? 'bg-white text-black' : 'text-white/25 hover:text-white/60'}`}
+                  title={dictionary.view_grid}
                 >
                     <LayoutGrid size={14} />
                 </button>
                 <button 
                   onClick={() => setViewMode('table')}
-                  className={`p-2 rounded-full transition-all ${viewMode === 'table' ? 'bg-accent text-black shadow-lg' : 'text-white/20 hover:text-white/40'}`}
-                  title="Mesa de Luz"
+                  className={`p-2 rounded-sm transition-all ${viewMode === 'table' ? 'bg-white text-black' : 'text-white/25 hover:text-white/60'}`}
+                  title={dictionary.view_table}
                 >
                     <MousePointer2 size={14} />
                 </button>
             </div>
 
-            <nav className="flex flex-wrap gap-x-12 gap-y-4">
+            <nav className="flex flex-wrap gap-x-5 gap-y-3 max-w-2xl">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`text-[11px] font-black uppercase tracking-[0.3em] transition-all relative py-3 ${
-                    selectedCategory === cat ? 'text-accent' : 'text-white/20 hover:text-white/40'
+                  className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.14em] sm:tracking-[0.22em] transition-all relative py-2 ${
+                    selectedCategory === cat ? 'text-white' : 'text-white/25 hover:text-white/55'
                   }`}
                 >
                   {dictionary.categories[cat] || cat}
                   {selectedCategory === cat && (
                       <motion.div 
                         layoutId="activeTab"
-                        className="absolute -bottom-1 left-0 w-full h-[2px] bg-accent shadow-[0_0_10px_var(--accent)]" 
+                        className="absolute -bottom-1 left-0 w-full h-px bg-white" 
                       />
                   )}
                 </button>
@@ -139,7 +169,7 @@ export function Gallery({ dictionary }: { dictionary: any }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-8 md:gap-y-12"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-14 gap-x-6 md:gap-x-10"
             >
               {filteredPhotos.map((photo, i) => (
                 <motion.div
@@ -159,39 +189,27 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                       }
                     }}
                   >
-                    <div className="relative aspect-[4/5] overflow-hidden bg-white/5 rounded-sm border border-white/5 group-hover:border-accent/40 transition-all duration-500 shadow-none group-hover:shadow-[0_0_40px_rgba(255,255,255,0.03)]">
+                    <div className="relative aspect-[4/5] overflow-hidden bg-white/5 rounded-none border border-white/10 group-hover:border-white/35 transition-all duration-500 shadow-none">
                       <Image
                         src={(photo.src || photo.image) as string}
                         alt={photo.title}
                         fill
-                        className="object-cover transition-all duration-700 group-hover:scale-105 brightness-90 group-hover:brightness-110"
-                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover transition-all duration-700 group-hover:scale-[1.025] brightness-95 group-hover:brightness-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         priority={i < 4}
                       />
                       
                       {/* Histograma Decorativo */}
-                      {photo.histogram && (
-                        <div className="absolute top-4 right-4 flex items-end gap-[1.5px] h-8 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none translate-y-2 group-hover:translate-y-0">
-                          {photo.histogram.map((val, idx) => (
-                            <div 
-                              key={idx} 
-                              className="w-[2px] bg-accent/60" 
-                              style={{ height: `${val}%` }} 
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      <div className="absolute top-4 left-4 text-[10px] font-mono text-white/60 bg-black/40 backdrop-blur-md px-2 py-1 rounded-sm group-hover:text-accent transition-colors">
+                      <div className="absolute top-4 left-4 text-[10px] font-mono text-white/50 bg-black/35 backdrop-blur-md px-2 py-1 rounded-sm group-hover:text-white transition-colors">
                           {String(i + 1).padStart(3, '0')}
                       </div>
                     </div>
 
                     <div className="space-y-1">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest text-white/50 group-hover:text-white transition-colors">
+                      <h3 className="text-[10px] font-black uppercase tracking-widest text-white/65 group-hover:text-white transition-colors">
                           {photo.title}
                       </h3>
-                      <div className="flex justify-between items-center text-[8px] font-mono text-white/10 group-hover:text-white/30 transition-colors uppercase">
+                      <div className="flex justify-between items-center text-[8px] font-mono text-white/25 group-hover:text-white/45 transition-colors uppercase">
                           <span>{photo.category}</span>
                           <span>{photo.year}</span>
                       </div>
@@ -252,7 +270,7 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none pointer-events-none"
               >
                   <MousePointer2 size={20} className="animate-bounce text-accent" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white">Mesa de Trabajo // Interactúa</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white">{dictionary.light_table_hint}</span>
               </motion.div>
             </motion.div>
           )}

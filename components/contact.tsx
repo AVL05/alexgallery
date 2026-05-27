@@ -43,6 +43,7 @@ const contactSchema = z.object({
   name: z.string().min(2, 'El nombre es muy corto'),
   email: z.string().email('Email inválido'),
   message: z.string().min(10, 'El mensaje debe tener al menos 10 caracteres'),
+  botcheck: z.string().optional(),
 })
 
 const licenseSchema = z.object({
@@ -52,6 +53,7 @@ const licenseSchema = z.object({
   photoId: z.string().min(1, 'ID de foto requerido'),
   usageType: z.string().min(1, 'Selecciona un tipo de uso'),
   description: z.string().min(10, 'Describe el uso previsto'),
+  botcheck: z.string().optional(),
 })
 
 type ContactFormValues = z.infer<typeof contactSchema>
@@ -69,12 +71,12 @@ export function Contact({ dictionary }: { dictionary: any }) {
 
   const contactForm = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { name: '', email: '', message: '' },
+    defaultValues: { name: '', email: '', message: '', botcheck: '' },
   })
 
   const licenseForm = useForm<LicenseFormValues>({
     resolver: zodResolver(licenseSchema),
-    defaultValues: { name: '', email: '', company: '', photoId: '', usageType: '', description: '' },
+    defaultValues: { name: '', email: '', company: '', photoId: '', usageType: '', description: '', botcheck: '' },
   })
 
   useGSAP(() => {
@@ -110,7 +112,7 @@ export function Contact({ dictionary }: { dictionary: any }) {
         body: JSON.stringify({
           access_key: 'd72eeacd-28fc-442b-83bd-b8c383c5997e',
           ...data,
-          subject: 'Nuevo mensaje - Galería',
+          subject: 'Nuevo contacto - alexgallery',
         }),
       })
       if (response.ok) {
@@ -136,7 +138,7 @@ export function Contact({ dictionary }: { dictionary: any }) {
           body: JSON.stringify({
             access_key: 'd72eeacd-28fc-442b-83bd-b8c383c5997e',
             ...data,
-            subject: `Licencia: ${data.photoId}`,
+            subject: `Solicitud de licencia - alexgallery: ${data.photoId}`,
             message: `Empresa: ${data.company}\nUso: ${data.usageType}\nDesc: ${data.description}`
           }),
         })
@@ -165,13 +167,13 @@ export function Contact({ dictionary }: { dictionary: any }) {
                 onClick={() => setFormType('general')}
                 className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === 'general' ? 'bg-accent text-black scale-105' : 'bg-white/5 text-white/40 hover:text-white'}`}
             >
-                {dictionary.form.send}
+                {dictionary.general}
             </button>
             <button
                 onClick={() => setFormType('license')}
                 className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === 'license' ? 'bg-accent text-black scale-105' : 'bg-white/5 text-white/40 hover:text-white'}`}
             >
-                Licencias
+                {dictionary.license}
             </button>
           </div>
         </div>
@@ -181,6 +183,7 @@ export function Contact({ dictionary }: { dictionary: any }) {
              <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
                  {formType === 'general' ? (
                     <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="space-y-6">
+                        <input type="checkbox" className="hidden" tabIndex={-1} autoComplete="off" {...contactForm.register('botcheck')} />
                         <div className="grid md:grid-cols-2 gap-6">
                             <input {...contactForm.register('name')} placeholder={dictionary.form.name} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
                             <input {...contactForm.register('email')} placeholder={dictionary.form.email} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
@@ -192,6 +195,7 @@ export function Contact({ dictionary }: { dictionary: any }) {
                     </form>
                  ) : (
                     <form onSubmit={licenseForm.handleSubmit(onLicenseSubmit)} className="space-y-6">
+                        <input type="checkbox" className="hidden" tabIndex={-1} autoComplete="off" {...licenseForm.register('botcheck')} />
                         <div className="grid md:grid-cols-2 gap-6">
                             <input {...licenseForm.register('name')} placeholder="Nombre completo" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
                             <input {...licenseForm.register('email')} placeholder="Email" className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors" />
@@ -214,7 +218,7 @@ export function Contact({ dictionary }: { dictionary: any }) {
 
            <div className="space-y-8 contact-reveal">
               <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
-                 <h3 className="text-xl font-black uppercase tracking-tighter mb-8">Social Connect</h3>
+                 <h3 className="text-xl font-black uppercase tracking-tighter mb-8">{dictionary.social}</h3>
                  <div className="space-y-6">
                     <a href="mailto:alexviclop@gmail.com" className="flex items-center gap-4 group">
                         <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">

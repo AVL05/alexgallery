@@ -75,7 +75,7 @@ export default function HomeClient({ dictionary, locale }: { dictionary: any; lo
 
             <Navigation dictionary={dictionary.nav} currentLocale={locale} />
             <Hero dictionary={dictionary.hero} />
-            <Gallery dictionary={dictionary.gallery} />
+            <Gallery dictionary={{ ...dictionary.gallery, locale }} />
             <Contact dictionary={dictionary.contact} />
           </div>
         </SmoothScroll>
