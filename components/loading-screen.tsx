@@ -2,11 +2,11 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useImagePreloader } from "@/hooks/use-image-preloader";
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(useGSAP)
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(useGSAP);
 }
 
 interface LoadingScreenProps {
@@ -28,38 +28,41 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const logoForegroundRef = useRef<SVGTextElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
 
-  useGSAP(() => {
-    if (allLoaded) {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setIsVisible(false);
-          onComplete();
-        }
-      });
+  useGSAP(
+    () => {
+      if (allLoaded) {
+        const tl = gsap.timeline({
+          onComplete: () => {
+            setIsVisible(false);
+            onComplete();
+          },
+        });
 
-      tl.to(containerRef.current, {
-        yPercent: -100,
-        duration: 1.2,
-        ease: "expo.inOut",
-        delay: 0.5
-      });
-    }
-  }, { dependencies: [allLoaded], scope: containerRef });
+        tl.to(containerRef.current, {
+          yPercent: -100,
+          duration: 1.2,
+          ease: "expo.inOut",
+          delay: 0.5,
+        });
+      }
+    },
+    { dependencies: [allLoaded], scope: containerRef },
+  );
 
   useEffect(() => {
     if (progressBarRef.current) {
       gsap.to(progressBarRef.current, {
         width: `${progress}%`,
         duration: 0.4,
-        ease: "power2.out"
+        ease: "power2.out",
       });
     }
-    
+
     if (logoForegroundRef.current) {
       gsap.to(logoForegroundRef.current, {
-        attr: { 'clip-path': `inset(0 ${100 - progress}% 0 0)` },
+        attr: { "clip-path": `inset(0 ${100 - progress}% 0 0)` },
         duration: 0.4,
-        ease: "power2.out"
+        ease: "power2.out",
       });
     }
   }, [progress]);
@@ -96,7 +99,12 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                   <stop offset="100%" stopColor="var(--accent)" />
                 </linearGradient>
                 <clipPath id="logo-clip">
-                  <rect x="0" y="0" width={240 * (progress / 100)} height="120" />
+                  <rect
+                    x="0"
+                    y="0"
+                    width={240 * (progress / 100)}
+                    height="120"
+                  />
                 </clipPath>
               </defs>
 
@@ -128,7 +136,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 style={{
                   letterSpacing: "0.15em",
                   fontFamily: "var(--font-space-grotesk), sans-serif",
-                  clipPath: "url(#logo-clip)"
+                  clipPath: "url(#logo-clip)",
                 }}
               >
                 AVL
@@ -156,7 +164,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             <div
               ref={progressBarRef}
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary to-accent"
-              style={{ width: '0%' }}
+              style={{ width: "0%" }}
             />
           </div>
 

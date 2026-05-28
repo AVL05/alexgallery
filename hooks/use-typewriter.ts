@@ -24,7 +24,7 @@ export function useTypewriter({
 
   useEffect(() => {
     const currentWord = words[currentWordIndex]
-    
+
     const timer = setTimeout(() => {
       if (!isDeleting) {
         // Typing

@@ -1,40 +1,38 @@
 {
   "hero": {
-    "title": "LIGHT AND PLACE",
-    "eyebrow": "Landscape, architecture and travel photography",
-    "description": "A curated selection of photographs taken between nature, cities, and everyday scenes. I look for clean images with atmosphere and a clear visual reading.",
-    "cta": "View selection",
+    "title": "VISUAL ARCHIVE",
+    "eyebrow": "Photography, captures and visual worlds",
+    "description": "A personal archive in progress: trips, everyday scenes, cars, architecture, nature, and digital captures when they belong to the visual record.",
+    "cta": "Enter archive",
     "explore": "Explore",
     "featured_tag": "Highlights"
   },
   "nav": {
     "home": "Home",
-    "gallery": "Gallery",
+    "gallery": "Archive",
     "contact": "Contact",
     "policies": "Policies"
   },
   "gallery": {
-    "title": "SELECTION",
-    "subtitle": "Curated",
-    "collection_label": "Curated selection",
+    "title": "ARCHIVE",
+    "subtitle": "Archive",
     "archive_label": "Full archive",
-    "selected_works": "Selected works",
-    "items": "photos",
+    "selected_works": "Visible items",
+    "items": "items",
     "view_grid": "Grid view",
-    "view_table": "Light table",
-    "light_table_hint": "Working table // interactive",
     "categories": {
       "Todo": "All",
       "Fauna": "Wildlife",
       "Arquitectura": "Architecture",
       "Paisaje": "Landscape",
-      "Retrato": "Portrait",
-      "Meteorología": "Weather"
+      "Retrato": "People",
+      "Meteorología": "Weather",
+      "Virtual": "Virtual"
     }
   },
   "contact": {
-    "title": "Get in touch",
-    "description": "If you want to ask about a photo, request a license, or propose a visual collaboration, send me a message.",
+    "title": "Contact",
+    "description": "If you want to ask about an image, request a license, or propose a visual collaboration, send me a message.",
     "license": "Licenses",
     "general": "Message",
     "social": "Contact",
@@ -49,7 +47,7 @@
     }
   },
   "seo": {
-    "title": "Alex Vicente | Curated photography portfolio",
-    "description": "Photography selection by Alex Vicente: landscape, wildlife, architecture, and travel scenes with a clean editorial eye."
+    "title": "Alex Vicente | Visual archive",
+    "description": "Alex Vicente's visual archive: photography, travel, nature, city scenes, cars, everyday images, and digital captures in a global collection."
   }
 }

@@ -33,8 +33,8 @@ export function useImagePreloader(urls: string[]) {
     });
   }, [urls]);
 
-  return { 
-    progress: urls.length > 0 ? (imagesLoaded / urls.length) * 100 : 100, 
-    allLoaded 
+  return {
+    progress: urls.length > 0 ? (imagesLoaded / urls.length) * 100 : 100,
+    allLoaded
   };
 }

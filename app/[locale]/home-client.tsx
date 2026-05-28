@@ -9,6 +9,11 @@ import { SmoothScroll } from "@/components/smooth-scroll";
 import { useCallback, useEffect, useState, useRef } from "react";
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 export default function HomeClient({ dictionary, locale }: { dictionary: any; locale: string }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,35 +25,37 @@ export default function HomeClient({ dictionary, locale }: { dictionary: any; lo
     setShowContent(true);
   }, []);
 
-  // Entrance animation for content
   useGSAP(() => {
-    if (showContent) {
-      gsap.fromTo(mainRef.current, 
-        { opacity: 0 },
-        { opacity: 1, duration: 1, ease: 'power2.out' }
-      );
+    if (!showContent) return
 
-      // Global Parallax Text
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    gsap.fromTo(
+      mainRef.current,
+      { autoAlpha: 0 },
+      { autoAlpha: 1, duration: prefersReducedMotion ? 0.01 : 0.45, ease: 'power2.out' }
+    )
+
+    if (!prefersReducedMotion) {
       gsap.to('.global-bg-text', {
-        xPercent: -50,
+        xPercent: -18,
         ease: 'none',
         scrollTrigger: {
-          trigger: 'body',
+          trigger: mainRef.current,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 1
-        }
+          scrub: 0.8,
+        },
       })
     }
   }, [showContent]);
 
-  // Auto-complete loading after 3 seconds as fallback
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
       if (isLoading) {
         handleLoadingComplete();
       }
-    }, 5000); // Increased fallback for GSAP transition
+    }, 5000);
 
     return () => clearTimeout(fallbackTimer);
   }, [isLoading, handleLoadingComplete]);
@@ -66,7 +73,6 @@ export default function HomeClient({ dictionary, locale }: { dictionary: any; lo
             className="min-h-screen relative opacity-0"
             role="main"
           >
-            {/* Global Background Typography */}
             <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden select-none flex items-center">
                 <span className="global-bg-text text-[40vh] md:text-[60vh] font-black uppercase tracking-tighter text-white/[0.02] whitespace-nowrap will-change-transform leading-none translate-x-1/2">
                    {dictionary.hero.title} // {dictionary.hero.title}

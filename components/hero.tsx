@@ -1,48 +1,64 @@
-'use client'
+"use client";
 
-import { useTypewriter } from '@/hooks/use-typewriter'
-import { ArrowDown } from 'lucide-react'
-import Image from 'next/image'
-import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useTypewriter } from "@/hooks/use-typewriter";
+import { Archive, ArrowDown } from "lucide-react";
+import Image from "next/image";
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 export function Hero({ dictionary }: { dictionary: any }) {
-  const containerRef = useRef<HTMLElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   const { text: typewriterText } = useTypewriter({
     words: [dictionary.title],
     typeSpeed: 80,
     loop: false,
-  })
+  });
 
-  useGSAP(() => {
-    gsap.from('.hero-text-reveal', {
-      y: 100,
-      opacity: 0,
-      duration: 1.5,
-      stagger: 0.2,
-      ease: 'power4.out'
-    })
+  useGSAP(
+    () => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
-    gsap.to(imageRef.current, {
-      y: 100,
-      scale: 1.1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
+      if (prefersReducedMotion) {
+        gsap.set(".hero-text-reveal", { autoAlpha: 1, y: 0 });
+        return;
       }
-    })
-  }, { scope: containerRef })
+
+      gsap.fromTo(
+        ".hero-text-reveal",
+        { autoAlpha: 0, y: 42 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: "power3.out",
+        },
+      );
+
+      gsap.to(imageRef.current, {
+        yPercent: 8,
+        scale: 1.04,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.6,
+        },
+      });
+    },
+    { scope: containerRef },
+  );
 
   return (
     <section
@@ -51,10 +67,7 @@ export function Hero({ dictionary }: { dictionary: any }) {
       className="relative min-h-[92vh] flex items-center justify-center bg-black overflow-hidden"
     >
       {/* Background Image - Clean & Subtle */}
-      <div 
-        ref={imageRef}
-        className="absolute inset-0 z-0 opacity-70"
-      >
+      <div ref={imageRef} className="absolute inset-0 z-0 opacity-70">
         <Image
           src="/photos/optimized/original/14.webp"
           alt="Atmosphere"
@@ -66,25 +79,32 @@ export function Hero({ dictionary }: { dictionary: any }) {
         <div className="absolute inset-0 bg-black/25" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 text-center">
-        <div className="space-y-6">
-          <p className="hero-text-reveal text-accent text-[10px] sm:text-xs font-bold tracking-[0.24em] sm:tracking-[0.45em] uppercase max-w-[18rem] sm:max-w-none mx-auto leading-relaxed">
+      <div className="container mx-auto px-6 relative z-10 pt-24">
+        <div className="max-w-6xl space-y-6 text-left">
+          <p className="hero-text-reveal inline-flex items-center gap-3 border border-white/15 bg-black/35 px-3 py-2 text-accent text-[10px] sm:text-xs font-bold tracking-[0.24em] uppercase leading-relaxed backdrop-blur-md">
+            <Archive className="h-3.5 w-3.5" />
             {dictionary.eyebrow}
           </p>
-          <h1 className="hero-text-reveal text-5xl sm:text-7xl md:text-[8rem] lg:text-[9.5rem] font-black uppercase tracking-normal leading-none text-white max-w-6xl mx-auto">
+          <h1 className="hero-text-reveal text-5xl sm:text-7xl md:text-[8rem] lg:text-[9.5rem] font-black uppercase tracking-normal leading-none text-white max-w-6xl">
             {typewriterText}
           </h1>
-          <p className="hero-text-reveal text-white/65 text-sm md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+          <p className="hero-text-reveal text-white/65 text-sm md:text-lg max-w-2xl font-medium leading-relaxed">
             {dictionary.description}
           </p>
-          
-          <div className="hero-text-reveal pt-10">
+
+          <div className="hero-text-reveal pt-6">
             <button
-               onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-               className="group flex flex-col items-center gap-4 mx-auto text-white/45 hover:text-white transition-colors"
+              onClick={() =>
+                document
+                  .getElementById("gallery")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="group flex items-center gap-4 text-white/55 hover:text-white transition-colors"
             >
-                <span className="text-[10px] font-bold uppercase tracking-[0.4em]">{dictionary.cta}</span>
-                <div className="w-px h-12 bg-current animate-bounce" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">
+                {dictionary.cta}
+              </span>
+              <ArrowDown className="h-4 w-4 animate-bounce" />
             </button>
           </div>
         </div>
@@ -93,5 +113,5 @@ export function Hero({ dictionary }: { dictionary: any }) {
       {/* Modern Framing */}
       <div className="absolute inset-x-12 bottom-12 h-px bg-white/10 pointer-events-none hidden lg:block" />
     </section>
-  )
+  );
 }

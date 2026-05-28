@@ -1,85 +1,88 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
-import type React from 'react'
-import { Suspense } from 'react'
-import './globals.css'
+import type { Metadata, Viewport } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
+import type React from "react";
+import { Suspense } from "react";
+import "./globals.css";
 
 const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-serif',
-  display: 'swap',
-})
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
-  width: 'device-width',
+  themeColor: "#000000",
+  width: "device-width",
   initialScale: 1,
-}
+};
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://alexgallery.alexviclop.workers.dev'
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  "https://alexgallery.alexviclop.workers.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Alex Vicente | Portfolio fotográfico curado',
-    template: '%s | Alex Vicente Photography',
+    default: "Alex Vicente | Archivo visual",
+    template: "%s | Alex Vicente Visual Archive",
   },
   description:
-    'Selección fotográfica de Alex Vicente López: paisaje, fauna, arquitectura y escenas de viaje con una mirada limpia y editorial.',
+    "Archivo visual de Alex Vicente: fotografía, viajes, naturaleza, ciudad, coches, escenas cotidianas y capturas digitales.",
   keywords: [
-    'fotografía profesional',
-    'portafolio fotográfico',
-    'Alex Vicente López',
-    'fotografía de paisajes',
-    'fotografía de arquitectura',
-    'fotógrafo de naturaleza',
-    'fine art photography',
-    'fotografía editorial',
-    'España',
-    'visual storytelling'
+    "archivo visual",
+    "fotografía",
+    "Alex Vicente",
+    "galería fotográfica",
+    "capturas digitales",
+    "fotografía de viajes",
+    "fotografía urbana",
+    "fotografía de naturaleza",
+    "visual archive",
   ],
-  authors: [{ name: 'Alex Vicente' }],
-  creator: 'Alex Vicente',
-  publisher: 'Alex Vicente',
+  authors: [{ name: "Alex Vicente" }],
+  creator: "Alex Vicente",
+  publisher: "Alex Vicente",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   alternates: {
-    canonical: '/',
+    canonical: "/",
     languages: {
-      'es-ES': '/es',
-      'en-US': '/en',
+      "es-ES": "/es",
+      "en-US": "/en",
     },
   },
   openGraph: {
-    type: 'website',
-    locale: 'es_ES',
-    url: '/',
-    title: 'Alex Vicente | Portfolio fotográfico curado',
-    description: 'Colección curada de fotografía de paisaje, arquitectura, fauna y viaje con una mirada limpia y editorial.',
-    siteName: 'Alex Vicente Photography',
+    type: "website",
+    locale: "es_ES",
+    url: "/",
+    title: "Alex Vicente | Archivo visual",
+    description:
+      "Archivo global de fotografía, viajes, escenas urbanas, naturaleza y capturas digitales.",
+    siteName: "Alex Vicente Visual Archive",
     images: [
       {
-        url: '/opengraph-image.png',
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: 'Alex Vicente Photography Portfolio',
+        alt: "Alex Vicente Visual Archive",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Alex Vicente | Portfolio fotográfico curado',
-    description: 'Explora una selección curada de paisaje, arquitectura, fauna y viaje.',
-    images: ['/opengraph-image.png'],
+    card: "summary_large_image",
+    title: "Alex Vicente | Archivo visual",
+    description:
+      "Explora un archivo visual global de fotos y capturas digitales.",
+    images: ["/opengraph-image.png"],
   },
   robots: {
     index: true,
@@ -87,42 +90,34 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico' },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" },
     ],
-    apple: [
-      { url: '/apple-touch-icon.png' },
-    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html
       lang="es"
       className={`${playfair.variable} ${inter.variable}`}
-      style={{ scrollBehavior: 'smooth' }}
+      style={{ scrollBehavior: "smooth" }}
     >
       <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
-        <div className="mesh-bg">
-          <div className="mesh-sphere" />
-          <div className="mesh-sphere" style={{ animationDelay: '-5s', background: 'white', opacity: 0.05 }} />
-          <div className="mesh-sphere" style={{ animationDelay: '-10s', left: 'auto', right: '-10%', top: '20%' }} />
-        </div>
         <div className="noise-texture" />
 
-        {/* Structured Data: Person & ProfessionalService */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -132,32 +127,34 @@ export default function RootLayout({
                 {
                   "@type": "Person",
                   "@id": `${baseUrl}/#person`,
-                  "name": "Alex Vicente",
-                  "url": baseUrl,
-                  "image": `${baseUrl}/photos/optimized/original/14.webp`,
-                  "description": "Professional photographer specializing in landscapes, architecture, and nature.",
-                  "jobTitle": "Photographer",
-                  "sameAs": [
+                  name: "Alex Vicente",
+                  url: baseUrl,
+                  image: `${baseUrl}/photos/optimized/original/14.webp`,
+                  description:
+                    "Personal visual archive by Alex Vicente, including photography, travel images, daily scenes, and digital captures.",
+                  jobTitle: "Visual archivist",
+                  sameAs: [
                     "https://instagram.com/aleexx_005/",
-                    "mailto:alexviclop@gmail.com"
-                  ]
+                    "mailto:alexviclop@gmail.com",
+                  ],
                 },
                 {
                   "@type": "WebSite",
                   "@id": `${baseUrl}/#website`,
-                  "url": baseUrl,
-                  "name": "Alex Vicente Photography",
-                  "publisher": { "@id": `${baseUrl}/#person` },
-                  "inLanguage": ["es", "en"]
+                  url: baseUrl,
+                  name: "Alex Vicente Visual Archive",
+                  publisher: { "@id": `${baseUrl}/#person` },
+                  inLanguage: ["es", "en"],
                 },
                 {
                   "@type": "ImageGallery",
                   "@id": `${baseUrl}/#gallery`,
-                  "name": "Alex Vicente Photography Collection",
-                  "description": "Selected architectural and landscape photography works.",
-                  "creator": { "@id": `${baseUrl}/#person` }
-                }
-              ]
+                  name: "Alex Vicente Visual Archive",
+                  description:
+                    "Global visual archive of photography, travel scenes, nature, city images, and digital captures.",
+                  creator: { "@id": `${baseUrl}/#person` },
+                },
+              ],
             }),
           }}
         />
@@ -167,5 +164,5 @@ export default function RootLayout({
         </Suspense>
       </body>
     </html>
-  )
+  );
 }

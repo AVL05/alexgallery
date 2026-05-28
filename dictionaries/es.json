@@ -1,40 +1,38 @@
 {
   "hero": {
-    "title": "LUZ Y LUGAR",
-    "eyebrow": "Fotografía de paisaje, arquitectura y viaje",
-    "description": "Una selección curada de fotografías tomadas entre naturaleza, ciudad y escenas cotidianas. Busco imágenes limpias, con atmósfera y una lectura visual clara.",
-    "cta": "Ver selección",
+    "title": "ARCHIVO VISUAL",
+    "eyebrow": "Fotografía, capturas y mundos visuales",
+    "description": "Un archivo personal en expansión: viajes, escenas cotidianas, coches, arquitectura, naturaleza y capturas digitales cuando formen parte de la mirada.",
+    "cta": "Entrar al archivo",
     "explore": "Explorar",
     "featured_tag": "Destacadas"
   },
   "nav": {
     "home": "Inicio",
-    "gallery": "Galería",
+    "gallery": "Archivo",
     "contact": "Contacto",
     "policies": "Políticas"
   },
   "gallery": {
-    "title": "SELECCIÓN",
-    "subtitle": "Curada",
-    "collection_label": "Selección curada",
+    "title": "ARCHIVO",
+    "subtitle": "Archivo",
     "archive_label": "Archivo completo",
-    "selected_works": "Trabajos seleccionados",
-    "items": "fotos",
+    "selected_works": "Elementos visibles",
+    "items": "items",
     "view_grid": "Vista grid",
-    "view_table": "Mesa de luz",
-    "light_table_hint": "Mesa de trabajo // interactúa",
     "categories": {
       "Todo": "Todo",
       "Fauna": "Fauna",
       "Arquitectura": "Arquitectura",
       "Paisaje": "Paisaje",
-      "Retrato": "Retrato",
-      "Meteorología": "Meteorología"
+      "Retrato": "Personas",
+      "Meteorología": "Meteorología",
+      "Virtual": "Virtual"
     }
   },
   "contact": {
-    "title": "Hablemos",
-    "description": "Si quieres comentar una foto, pedir una licencia o proponer una colaboración visual, escríbeme.",
+    "title": "Contacto",
+    "description": "Si quieres comentar una imagen, pedir una licencia o proponer una colaboración visual, escríbeme.",
     "license": "Licencias",
     "general": "Mensaje",
     "social": "Contacto",
@@ -49,7 +47,7 @@
     }
   },
   "seo": {
-    "title": "Alex Vicente | Portfolio fotográfico curado",
-    "description": "Selección fotográfica de Alex Vicente: paisaje, fauna, arquitectura y escenas de viaje con una mirada limpia y editorial."
+    "title": "Alex Vicente | Archivo visual",
+    "description": "Archivo visual de Alex Vicente: fotografía, viajes, naturaleza, ciudad, coches, escenas cotidianas y capturas digitales en una colección global."
   }
 }

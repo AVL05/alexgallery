@@ -131,7 +131,7 @@ Ejemplo base:
 ```ts
 export async function getItems() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/items`);
-  if (!res.ok) throw new Error('Error al obtener items');
+  if (!res.ok) throw new Error("Error al obtener items");
   return res.json();
 }
 ```
