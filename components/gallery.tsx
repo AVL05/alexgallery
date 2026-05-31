@@ -2,9 +2,10 @@
 
 import { categories, photos as basePhotos } from "@/lib/gallery-data";
 import imagesData from "@/lib/images-data.json";
-import type { Photo } from "@/types/photo";
+import type { GalleryDictionary, Locale } from "@/types/dictionary";
+import type { GalleryFilter, ImagesData, Photo } from "@/types/photo";
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
@@ -20,8 +21,18 @@ import {
   Zap,
 } from "lucide-react";
 
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
+  ssr: false,
+});
+
+type GalleryProps = {
+  dictionary: GalleryDictionary & { locale: Locale };
+};
+
+const optimizedImages = imagesData as ImagesData;
+
 const photos: Photo[] = basePhotos.map((photo) => {
-  const optimized = imagesData.images.find(
+  const optimized = optimizedImages.images.find(
     (img) => img.id === photo.id.toString(),
   );
 
@@ -31,12 +42,13 @@ const photos: Photo[] = basePhotos.map((photo) => {
     src: optimized?.src || photo.image,
     image: optimized?.src || photo.image,
     alt: photo.description || photo.title,
-    histogram: (optimized as any)?.histogram,
+    width: optimized?.width ?? 1200,
+    height: optimized?.height ?? 1600,
   } as Photo;
 });
 
-export function Gallery({ dictionary }: { dictionary: any }) {
-  const [selectedCategory, setSelectedCategory] = useState("Todo");
+export function Gallery({ dictionary }: GalleryProps) {
+  const [selectedCategory, setSelectedCategory] = useState<GalleryFilter>("Todo");
   const [index, setIndex] = useState(-1);
 
   const filteredPhotos = useMemo(() => {
@@ -67,7 +79,7 @@ export function Gallery({ dictionary }: { dictionary: any }) {
             <h2 className="text-sm font-black uppercase tracking-[0.4em] text-accent">
               {dictionary.archive_label}
             </h2>
-            <span className="text-white/20 text-[10px] font-mono uppercase tracking-widest">
+            <span className="text-white/40 text-[10px] font-mono uppercase tracking-widest">
               {dictionary.selected_works} // {filteredPhotos.length}{" "}
               {dictionary.items}
             </span>
@@ -79,10 +91,12 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
+                  aria-pressed={selectedCategory === cat}
+                  aria-label={`${dictionary.categories[cat] || cat}: ${dictionary.view_grid}`}
                   className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.14em] sm:tracking-[0.22em] transition-all relative py-2 ${
                     selectedCategory === cat
                       ? "text-white"
-                      : "text-white/25 hover:text-white/55"
+                      : "text-white/45 hover:text-white/70"
                   }`}
                 >
                   {dictionary.categories[cat] || cat}
@@ -129,11 +143,13 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                 <div className="relative aspect-[4/5] overflow-hidden bg-white/5 rounded-none border border-white/10 group-hover:border-white/35 transition-all duration-500 shadow-none">
                   <Image
                     src={(photo.src || photo.image) as string}
-                    alt={photo.title}
+                    alt={photo.alt || photo.title}
                     fill
                     className="object-cover transition-all duration-700 group-hover:scale-[1.025] brightness-95 group-hover:brightness-105"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     priority={i < 4}
+                    placeholder={photo.blurDataURL ? "blur" : undefined}
+                    blurDataURL={photo.blurDataURL}
                   />
 
                   <div className="absolute top-4 left-4 text-[10px] font-mono text-white/50 bg-black/35 backdrop-blur-md px-2 py-1 rounded-sm group-hover:text-white transition-colors">
@@ -145,7 +161,7 @@ export function Gallery({ dictionary }: { dictionary: any }) {
                   <h3 className="text-[10px] font-black uppercase tracking-widest text-white/65 group-hover:text-white transition-colors">
                     {photo.title}
                   </h3>
-                  <div className="flex justify-between items-center text-[8px] font-mono text-white/25 group-hover:text-white/45 transition-colors uppercase">
+                  <div className="flex justify-between items-center text-[8px] font-mono text-white/45 group-hover:text-white/65 transition-colors uppercase">
                     <span>{photo.category}</span>
                     <span>{photo.year}</span>
                   </div>
@@ -168,6 +184,8 @@ export function Gallery({ dictionary }: { dictionary: any }) {
         render={{
           buttonPrev: () => (
             <button
+              type="button"
+              aria-label="Previous image"
               onClick={() =>
                 setIndex((prev) => (prev > 0 ? prev - 1 : slides.length - 1))
               }
@@ -178,6 +196,8 @@ export function Gallery({ dictionary }: { dictionary: any }) {
           ),
           buttonNext: () => (
             <button
+              type="button"
+              aria-label="Next image"
               onClick={() =>
                 setIndex((prev) => (prev < slides.length - 1 ? prev + 1 : 0))
               }
@@ -187,7 +207,7 @@ export function Gallery({ dictionary }: { dictionary: any }) {
             </button>
           ),
           slideFooter: ({ slide }) => {
-            const exif = (slide as any).exif;
+            const exif = (slide as { exif?: Photo["exif"] }).exif;
             if (!exif || Object.keys(exif).length === 0) return null;
 
             return (

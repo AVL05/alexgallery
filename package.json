@@ -7,7 +7,8 @@
     "build": "next build",
     "optimize-images": "tsx scripts/optimize-images.ts",
     "start": "next start",
-    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "lint": "pnpm typecheck",
     "export": "next build",
     "deploy:wrangler": "pnpm run build && npx wrangler deploy --assets=./out"
   },

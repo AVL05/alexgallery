@@ -1,14 +1,11 @@
 "use client";
 
+import type { ContactDictionary } from "@/types/dictionary";
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Camera, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail } from "lucide-react";
 
 const InstagramIcon = () => (
   <svg
@@ -54,7 +51,7 @@ const licenseSchema = z.object({
 type ContactFormValues = z.infer<typeof contactSchema>;
 type LicenseFormValues = z.infer<typeof licenseSchema>;
 
-export function Contact({ dictionary }: { dictionary: any }) {
+export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   const [formType, setFormType] = useState<"general" | "license">("general");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -175,13 +172,17 @@ export function Contact({ dictionary }: { dictionary: any }) {
 
           <div className="flex justify-center gap-6 mt-12">
             <button
+              type="button"
               onClick={() => setFormType("general")}
+              aria-pressed={formType === "general"}
               className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === "general" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
             >
               {dictionary.general}
             </button>
             <button
+              type="button"
               onClick={() => setFormType("license")}
+              aria-pressed={formType === "license"}
               className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === "license" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
             >
               {dictionary.license}
@@ -208,20 +209,38 @@ export function Contact({ dictionary }: { dictionary: any }) {
                     <input
                       {...contactForm.register("name")}
                       placeholder={dictionary.form.name}
+                      aria-label={dictionary.form.name}
                       className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                     />
                     <input
                       {...contactForm.register("email")}
+                      type="email"
                       placeholder={dictionary.form.email}
+                      aria-label={dictionary.form.email}
                       className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                     />
                   </div>
                   <textarea
                     {...contactForm.register("message")}
                     placeholder={dictionary.form.message}
+                    aria-label={dictionary.form.message}
                     rows={6}
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                   />
+                  {submitStatus && (
+                    <div
+                      ref={statusRef}
+                      role="status"
+                      aria-live="polite"
+                      className={`border px-4 py-3 text-sm ${
+                        submitStatus.type === "success"
+                          ? "border-white/20 text-white"
+                          : "border-white/30 text-white/80"
+                      }`}
+                    >
+                      {submitStatus.message}
+                    </div>
+                  )}
                   <button
                     type="submit"
                     className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-4"
@@ -248,21 +267,26 @@ export function Contact({ dictionary }: { dictionary: any }) {
                     <input
                       {...licenseForm.register("name")}
                       placeholder="Nombre completo"
+                      aria-label="Nombre completo"
                       className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                     />
                     <input
                       {...licenseForm.register("email")}
+                      type="email"
                       placeholder="Email"
+                      aria-label="Email"
                       className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                     />
                   </div>
                   <input
                     {...licenseForm.register("photoId")}
                     placeholder="ID de la foto / Título"
+                    aria-label="ID de la foto o título"
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                   />
                   <select
                     {...licenseForm.register("usageType")}
+                    aria-label="Tipo de uso"
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors appearance-none text-white/40"
                   >
                     <option value="">Tipo de uso</option>
@@ -273,9 +297,24 @@ export function Contact({ dictionary }: { dictionary: any }) {
                   <textarea
                     {...licenseForm.register("description")}
                     placeholder="Uso previsto..."
+                    aria-label="Uso previsto"
                     rows={4}
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
                   />
+                  {submitStatus && (
+                    <div
+                      ref={statusRef}
+                      role="status"
+                      aria-live="polite"
+                      className={`border px-4 py-3 text-sm ${
+                        submitStatus.type === "success"
+                          ? "border-white/20 text-white"
+                          : "border-white/30 text-white/80"
+                      }`}
+                    >
+                      {submitStatus.message}
+                    </div>
+                  )}
                   <button
                     type="submit"
                     className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] rounded-xl hover:brightness-110 transition-all"

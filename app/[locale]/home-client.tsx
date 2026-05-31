@@ -6,6 +6,7 @@ import { Hero } from "@/components/hero";
 import { LoadingScreen } from "@/components/loading-screen";
 import { Navigation } from "@/components/navigation";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import type { Dictionary, Locale } from "@/types/dictionary";
 import { useCallback, useEffect, useState, useRef } from "react";
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -15,7 +16,13 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-export default function HomeClient({ dictionary, locale }: { dictionary: any; locale: string }) {
+export default function HomeClient({
+  dictionary,
+  locale,
+}: {
+  dictionary: Dictionary;
+  locale: Locale;
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);

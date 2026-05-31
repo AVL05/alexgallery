@@ -1,6 +1,7 @@
 "use client";
 
 import { useTypewriter } from "@/hooks/use-typewriter";
+import type { HeroDictionary } from "@/types/dictionary";
 import { Archive, ArrowDown } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
@@ -12,7 +13,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export function Hero({ dictionary }: { dictionary: any }) {
+export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
   const containerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -70,10 +71,11 @@ export function Hero({ dictionary }: { dictionary: any }) {
       <div ref={imageRef} className="absolute inset-0 z-0 opacity-70">
         <Image
           src="/photos/optimized/original/14.webp"
-          alt="Atmosphere"
+          alt=""
           fill
           className="object-cover"
           priority
+          aria-hidden="true"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/35 to-black" />
         <div className="absolute inset-0 bg-black/25" />
@@ -94,6 +96,8 @@ export function Hero({ dictionary }: { dictionary: any }) {
 
           <div className="hero-text-reveal pt-6">
             <button
+              type="button"
+              aria-label={dictionary.cta}
               onClick={() =>
                 document
                   .getElementById("gallery")

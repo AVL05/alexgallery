@@ -240,18 +240,6 @@
     opacity: 0.45;
   }
 
-  /* Custom Scrollbar for modern look */
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.35);
-    border-radius: 10px;
-  }
-
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
@@ -278,17 +266,17 @@
   /* Glass morphism effect */
   .glass {
     backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(var(--color-background), 0.75);
+    background-color: color-mix(in srgb, var(--background) 75%, transparent);
     border: 1px solid rgba(255, 255, 255, 0.125);
   }
 
   /* Neon text effect */
   .neon-text {
     text-shadow:
-      0 0 5px rgba(var(--color-primary), 0.8),
-      0 0 10px rgba(var(--color-primary), 0.6),
-      0 0 15px rgba(var(--color-primary), 0.4),
-      0 0 20px rgba(var(--color-primary), 0.2);
+      0 0 5px color-mix(in srgb, var(--primary) 80%, transparent),
+      0 0 10px color-mix(in srgb, var(--primary) 60%, transparent),
+      0 0 15px color-mix(in srgb, var(--primary) 40%, transparent),
+      0 0 20px color-mix(in srgb, var(--primary) 20%, transparent);
   }
 
   /* Smooth scrollbar */
@@ -297,7 +285,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(var(--color-muted), 0.3);
+    background: color-mix(in srgb, var(--muted) 30%, transparent);
   }
 
   ::-webkit-scrollbar-thumb {
@@ -311,13 +299,13 @@
 
   /* Selection color */
   ::selection {
-    background-color: rgba(var(--color-primary), 0.3);
-    color: rgb(var(--color-foreground));
+    background-color: color-mix(in srgb, var(--primary) 30%, transparent);
+    color: var(--foreground);
   }
 
   /* Focus styles */
   :focus-visible {
-    outline: 2px solid rgba(var(--color-primary), 0.8);
+    outline: 2px solid color-mix(in srgb, var(--primary) 80%, transparent);
     outline-offset: 2px;
   }
 

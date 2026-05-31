@@ -1,12 +1,16 @@
+import { locales } from '@/lib/dictionary'
 import { photos } from '@/lib/gallery-data'
 import imagesData from '@/lib/images-data.json'
+import type { Locale } from '@/types/dictionary'
+import type { ImagesData } from '@/types/photo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, Camera, Layers, Zap, Image as ImageIcon } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
+const optimizedImages = imagesData as ImagesData;
+
 export async function generateStaticParams() {
-  const locales = ['en', 'es']
   const params = []
 
   for (const locale of locales) {
@@ -21,9 +25,10 @@ export async function generateStaticParams() {
   return params
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string, id: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale, id: string }> }) {
   const { id, locale } = await params
   const photo = photos.find(p => p.id.toString() === id)
+  const optimized = optimizedImages.images.find(img => img.id === id)
   
   if (!photo) return {}
 
@@ -37,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: photo.description,
       images: [
         {
-          url: `/photos/optimized/original/${photo.id}.webp`,
+          url: optimized?.src || `/photos/optimized/original/${photo.id}.webp`,
           width: 1200,
           height: 630,
           alt: photo.title,
@@ -47,10 +52,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 }
 
-export default async function PhotoPage({ params }: { params: Promise<{ locale: string, id: string }> }) {
+export default async function PhotoPage({ params }: { params: Promise<{ locale: Locale, id: string }> }) {
   const { id, locale } = await params
   const photo = photos.find(p => p.id.toString() === id)
-  const optimized = imagesData.images.find(img => img.id === id)
+  const optimized = optimizedImages.images.find(img => img.id === id)
 
   if (!photo) notFound()
 
@@ -72,12 +77,14 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
           <div className="lg:col-span-2 space-y-8">
             <div className="relative aspect-[4/5] md:aspect-auto md:h-[70vh] w-full overflow-hidden rounded-sm bg-white/5 border border-white/10">
               <Image
-                src={`/photos/optimized/original/${photo.id}.webp`}
+                src={optimized?.src || `/photos/optimized/original/${photo.id}.webp`}
                 alt={photo.title}
                 fill
                 priority
                 className="object-contain"
                 sizes="(max-width: 1024px) 100vw, 66vw"
+                placeholder={optimized?.blurDataURL ? "blur" : undefined}
+                blurDataURL={optimized?.blurDataURL}
               />
             </div>
           </div>
@@ -103,40 +110,40 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                   Metadata
                 </h3>
                 <div className="grid grid-cols-2 gap-y-6 gap-x-4">
-                  {(optimized.exif as any).model && (
+                  {optimized.exif.model && (
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-accent/60">
                         <Camera className="w-3 h-3" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Camera</span>
                       </div>
-                      <p className="text-sm font-mono text-white/80">{(optimized.exif as any).model}</p>
+                      <p className="text-sm font-mono text-white/80">{optimized.exif.model}</p>
                     </div>
                   )}
-                  {(optimized.exif as any).fNumber && (
+                  {optimized.exif.fNumber && (
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-accent/60">
                         <Layers className="w-3 h-3" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Aperture</span>
                       </div>
-                      <p className="text-sm font-mono text-white/80">f/{(optimized.exif as any).fNumber}</p>
+                      <p className="text-sm font-mono text-white/80">f/{optimized.exif.fNumber}</p>
                     </div>
                   )}
-                  {(optimized.exif as any).exposureTime && (
+                  {optimized.exif.exposureTime && (
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-accent/60">
                         <Zap className="w-3 h-3" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Shutter</span>
                       </div>
-                      <p className="text-sm font-mono text-white/80">{(optimized.exif as any).exposureTime}s</p>
+                      <p className="text-sm font-mono text-white/80">{optimized.exif.exposureTime}s</p>
                     </div>
                   )}
-                  {(optimized.exif as any).iso && (
+                  {optimized.exif.iso && (
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-accent/60">
                         <ImageIcon className="w-3 h-3" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Sensitivity</span>
                       </div>
-                      <p className="text-sm font-mono text-white/80">ISO {(optimized.exif as any).iso}</p>
+                      <p className="text-sm font-mono text-white/80">ISO {optimized.exif.iso}</p>
                     </div>
                   )}
                 </div>
@@ -165,7 +172,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                   "@graph": [
                     {
                       "@type": "ImageObject",
-                      "contentUrl": `/photos/optimized/original/${photo.id}.webp`,
+                      "contentUrl": optimized?.src || `/photos/optimized/original/${photo.id}.webp`,
                       "name": photo.title,
                       "description": photo.description,
                       "author": { "@type": "Person", "name": "Alex Vicente" },

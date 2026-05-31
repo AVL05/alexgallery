@@ -1,14 +1,12 @@
-import { getDictionary } from '@/lib/dictionary'
+import { getDictionary, locales } from '@/lib/dictionary'
+import type { Locale } from '@/types/dictionary'
 import HomeClient from './home-client'
 
 export async function generateStaticParams() {
-  return [
-    { locale: 'en' },
-    { locale: 'es' },
-  ]
+  return locales.map((locale) => ({ locale }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: 'en' | 'es' }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
   
@@ -21,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: '
   }
 }
 
-export default async function Page({ params }: { params: Promise<{ locale: 'en' | 'es' }> }) {
+export default async function Page({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const dictionary = await getDictionary(locale);
   return <HomeClient dictionary={dictionary} locale={locale} />

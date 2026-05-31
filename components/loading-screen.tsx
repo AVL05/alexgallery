@@ -170,7 +170,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
           {/* Elegant Counter */}
           <div className="flex justify-between w-full px-1 items-baseline">
-            <span className="text-[10px] tracking-widest text-white/20 uppercase font-mono">
+            <span className="text-[10px] tracking-widest text-white/40 uppercase font-mono">
               System Initializing
             </span>
             <span

@@ -1,66 +1,56 @@
-# 📸 Galería Fotográfica — Portafolio de Alex Vicente Lopez
+# Alexgallery
 
-**Portafolio fotográfico profesional para mostrar series, proyectos y contacto.**
+Portfolio fotografico y archivo visual de Alex Vicente Lopez construido con Next.js App Router y exportacion estatica.
 
----
+## Stack
 
-## 📌 Descripción
+- Next.js 16 con App Router
+- React 19
+- TypeScript estricto
+- Tailwind CSS 4
+- GSAP y Framer Motion para animaciones
+- `sharp`, `plaiceholder` y `exifr` para optimizacion y metadata de imagenes
+- Wrangler para desplegar los assets exportados en Cloudflare
 
-Este sitio presenta una selección curada de trabajos fotográficos de Alex Vicente Lopez. Está pensado para exhibir imágenes con un enfoque editorial y profesional, mostrando series, proyectos y la información de contacto del autor.
-
-## ✨ Características principales
-
-- Diseño responsivo y accesible
-- Galería con carga perezosa y carrusel
-- Animaciones y transiciones suaves
-- Componentes reutilizables y organización modular
-- Formulario de contacto y meta datos para SEO
-
-## 🛠 Tecnologías
-
-- **Next.js** (App Router)
-- **React**
-- **TypeScript**
-- **Tailwind CSS**
-- **PostCSS**
-- **Framer Motion** (animaciones)
-- **Embla Carousel** (carruseles)
-- **Recharts** (gráficos, si aplica)
-- **react-hook-form** + **zod** (validación de formularios)
-- **Sonner**, **Lucide React**, **date-fns**, **next-themes**, **Radix UI**
-
-## 🚀 Desarrollo
-
-Instala las dependencias:
+## Desarrollo
 
 ```bash
 pnpm install
-```
-
-Ejecuta el servidor de desarrollo:
-
-```bash
 pnpm dev
 ```
 
-Genera la build de producción:
+## Scripts
+
+- `pnpm dev`: servidor local de desarrollo.
+- `pnpm build`: build estatica de produccion.
+- `pnpm typecheck`: validacion TypeScript.
+- `pnpm lint`: alias de `pnpm typecheck`.
+- `pnpm optimize-images`: genera versiones WebP/AVIF, blur placeholders y metadata desde `public/photos/raw`.
+- `pnpm deploy:wrangler`: build y despliegue con Wrangler assets desde `out/`.
+
+## Estructura
+
+- `app/`: rutas, layouts, metadata, sitemap y robots.
+- `components/`: secciones y componentes UI.
+- `dictionaries/`: textos en `es` y `en`.
+- `hooks/`: hooks reutilizables.
+- `lib/`: datos de galeria, diccionarios y loader de imagenes.
+- `public/photos/`: imagenes raw y optimizadas.
+- `scripts/optimize-images.ts`: pipeline de optimizacion.
+- `types/`: tipos compartidos.
+
+## Imagenes
+
+Las imagenes originales viven en `public/photos/raw`. No deben modificarse salvo que sea intencional. Para regenerar derivados:
 
 ```bash
-pnpm build
+pnpm optimize-images
 ```
 
-## ⚖️ Licencia y derechos de autor
+El script escribe versiones optimizadas en `public/photos/optimized` y actualiza `lib/images-data.json`.
 
-**© 2026 Alex Vicente Lopez — Todos los derechos reservados.**
+## Licencia
 
-Todas las fotografías, imágenes y contenidos visuales publicados en este repositorio y en el sitio web están protegidos por derechos de autor. Se prohíbe expresamente la reproducción, distribución, modificación, explotación, publicación o creación de obras derivadas de las fotografías y contenidos visuales sin el permiso previo, expreso y por escrito del autor.
+© 2026 Alex Vicente Lopez. Todas las fotografias, imagenes y contenidos visuales estan protegidos por derechos de autor. Queda prohibida su reproduccion, distribucion, modificacion o explotacion sin permiso previo y por escrito.
 
-Para solicitar permisos de uso o licencias, contacte a: **alexviclop@gmail.com**.
-
-> Nota: Este documento pretende dejar claras las restricciones de uso; no sustituye asesoramiento legal profesional.
-
-## 📞 Contacto
-
-- **Autor:** Alex Vicente Lopez
-- **Correo:** `alexviclop@gmail.com`
-- **Repositorio:** `https://github.com/AVL05/Galeria-Fotografica`
+Contacto: `alexviclop@gmail.com`.

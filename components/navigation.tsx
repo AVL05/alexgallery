@@ -1,5 +1,6 @@
 "use client";
 
+import type { Locale, NavDictionary } from "@/types/dictionary";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import gsap from "gsap";
@@ -14,8 +15,8 @@ export function Navigation({
   dictionary,
   currentLocale,
 }: {
-  dictionary: any;
-  currentLocale: string;
+  dictionary: NavDictionary;
+  currentLocale: Locale;
 }) {
   const items = [
     { name: dictionary.gallery, href: "#gallery" },
@@ -92,6 +93,9 @@ export function Navigation({
           <button
             className="md:hidden text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -100,6 +104,7 @@ export function Navigation({
 
       {/* Mobile Menu */}
       <div
+        id="mobile-navigation"
         className={`fixed inset-0 bg-black z-[90] md:hidden transition-transform duration-500 ${isMobileMenuOpen ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">

@@ -1,0 +1,9 @@
+import type esDictionary from "@/dictionaries/es.json";
+
+export type Locale = "en" | "es";
+export type Dictionary = typeof esDictionary;
+export type NavDictionary = Dictionary["nav"];
+export type HeroDictionary = Dictionary["hero"];
+export type GalleryDictionary = Dictionary["gallery"];
+export type ContactDictionary = Dictionary["contact"];
+

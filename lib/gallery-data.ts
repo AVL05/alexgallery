@@ -1,3 +1,5 @@
+import type { BasePhoto, GalleryFilter } from "@/types/photo";
+
 export const categories = [
   "Todo",
   "Fauna",
@@ -5,7 +7,8 @@ export const categories = [
   "Paisaje",
   "Retrato",
   "Meteorología",
-];
+  "Virtual",
+] as const satisfies readonly GalleryFilter[];
 
 export const photos = [
   {
@@ -277,16 +280,6 @@ export const photos = [
       "Un músico acompaña el atardecer en Oporto mientras la ciudad se despide del día.",
   },
   {
-    id: 28,
-    title: "Camino a Celis",
-    category: "Retrato",
-    year: "2023",
-    image: "/28.webp",
-    color: "secondary",
-    description:
-      "Bajo el cielo dorado, la ruta señala destino mientras el paisaje respira calma y horizonte.",
-  },
-  {
     id: 29,
     title: "La flecha dorada entre pasos urbanos",
     category: "Arquitectura",
@@ -328,17 +321,6 @@ export const photos = [
       "Las cumbres se desvanecen en la niebla, como pensamientos que se pierden en la distancia.",
   },
   {
-    id: 33,
-    title: "Ritmo rojo en Temple Bar",
-    category: "Retrato",
-    featured: true,
-    year: "2025",
-    image: "/33.webp",
-    color: "chart-3",
-    description:
-      "Entre flores, banderas y adoquines, Dublín celebra su esencia en cada rincón del Temple Bar.",
-  },
-  {
     id: 34,
     title: "Silencio, corriente y color",
     category: "Paisaje",
@@ -360,16 +342,6 @@ export const photos = [
       "La cascada de la Cola de Caballo en Ordesa invita al silencio y la contemplación entre rocas y espuma.",
   },
   {
-    id: 36,
-    title: "Entre edificios y siglos",
-    category: "Retrato",
-    year: "2025",
-    image: "/36.webp",
-    color: "chart-3",
-    description:
-      "Bajo el cielo de Dublín, la historia se alza en torreones mientras la vida moderna pasea por sus jardines.",
-  },
-  {
     id: 37,
     title: "Donde termina el paso",
     category: "Paisaje",
@@ -389,17 +361,6 @@ export const photos = [
     color: "chart-3",
     description:
       "Entre bicicletas, taxis y arquitectura centenaria, la vida urbana fluye en un instante cotidiano.",
-  },
-  {
-    id: 40,
-    title: "Al filo del Atlántico",
-    category: "Retrato",
-    featured: true,
-    year: "2025",
-    image: "/40.webp",
-    color: "secondary",
-    description:
-      "Frente a los majestuosos acantilados de Moher, la inmensidad del océano se funde con el cielo irlandés.",
   },
   {
     id: 41,
@@ -542,4 +503,58 @@ export const photos = [
     description:
       "Un avión en el cielo, un viaje terminado, un destino alcanzado.",
   },
-];
+  {
+    id: 55,
+    title: "Neón a ras de calle",
+    category: "Virtual",
+    featured: true,
+    year: "2026",
+    image: "/55.webp",
+    color: "chart-3",
+    description:
+      "Un deportivo atraviesa una avenida nocturna entre escaparates, velocidad y luces de ciudad.",
+  },
+  {
+    id: 56,
+    title: "Túnel de neón",
+    category: "Virtual",
+    year: "2026",
+    image: "/56.webp",
+    color: "accent",
+    description:
+      "La cámara persigue la zaga de un coche entre rótulos japoneses y estelas de movimiento.",
+  },
+  {
+    id: 57,
+    title: "Curva entre cerezos",
+    category: "Virtual",
+    featured: true,
+    year: "2026",
+    image: "/57.webp",
+    color: "secondary",
+    description:
+      "Un Porsche blanco corta una carretera de montaña bajo la floración rosada del paisaje.",
+  },
+  {
+    id: 58,
+    title: "Monte Fuji en calma",
+    category: "Virtual",
+    featured: true,
+    year: "2026",
+    image: "/58.webp",
+    color: "accent",
+    description:
+      "Un clásico de rally descansa frente al Fuji en una escena quieta de luz dorada.",
+  },
+  {
+    id: 59,
+    title: "Asfalto bajo lluvia",
+    category: "Virtual",
+    featured: true,
+    year: "2026",
+    image: "/59.webp",
+    color: "secondary",
+    description:
+      "La lluvia convierte la carretera en un espejo oscuro mientras el coche desaparece entre niebla.",
+  },
+] satisfies BasePhoto[];
