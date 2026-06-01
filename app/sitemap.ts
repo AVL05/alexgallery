@@ -4,7 +4,7 @@ import { photos } from '@/lib/gallery-data'
 export const dynamic = 'force-static'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://alexgallery.alexviclop.workers.dev'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://gallery.aleviclop.dev'
   const locales = ['es', 'en']
   const routes = ['', '/politica-uso']
 

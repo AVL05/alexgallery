@@ -2,6 +2,12 @@
   "name": "alexgallery",
   "compatibility_date": "2025-12-21",
   "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    {
+      "pattern": "gallery.aleviclop.dev",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./out"
   }

@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://alexgallery.alexviclop.workers.dev";
+  "https://gallery.aleviclop.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
