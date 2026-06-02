@@ -32,19 +32,27 @@ if (typeof window !== "undefined") {
 }
 
 const contactSchema = z.object({
-  name: z.string().min(2, "El nombre es muy corto"),
-  email: z.string().email("Email inválido"),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
+  name: z.string().trim().min(2, "El nombre es muy corto").max(80),
+  email: z.string().trim().email("Email inválido").max(120),
+  message: z
+    .string()
+    .trim()
+    .min(10, "El mensaje debe tener al menos 10 caracteres")
+    .max(2000),
   botcheck: z.string().optional(),
 });
 
 const licenseSchema = z.object({
-  name: z.string().min(2, "Nombre requerido"),
-  email: z.string().email("Email inválido"),
-  company: z.string().optional(),
-  photoId: z.string().min(1, "ID de foto requerido"),
-  usageType: z.string().min(1, "Selecciona un tipo de uso"),
-  description: z.string().min(10, "Describe el uso previsto"),
+  name: z.string().trim().min(2, "Nombre requerido").max(80),
+  email: z.string().trim().email("Email inválido").max(120),
+  company: z.string().trim().max(120).optional(),
+  photoId: z.string().trim().min(1, "ID de foto requerido").max(120),
+  usageType: z.string().trim().min(1, "Selecciona un tipo de uso").max(40),
+  description: z
+    .string()
+    .trim()
+    .min(10, "Describe el uso previsto")
+    .max(2000),
   botcheck: z.string().optional(),
 });
 
@@ -80,15 +88,27 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   });
 
   useGSAP(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     if (submitStatus && statusRef.current) {
-      gsap.fromTo(
-        statusRef.current,
-        { opacity: 0, y: -10 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-      );
+      if (prefersReducedMotion) {
+        gsap.set(statusRef.current, { opacity: 1, y: 0 });
+      } else {
+        gsap.fromTo(
+          statusRef.current,
+          { opacity: 0, y: -10 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+        );
+      }
     }
 
-    // New entrance animation for the section
+    if (prefersReducedMotion) {
+      gsap.set(".contact-reveal", { opacity: 1, y: 0 });
+      return;
+    }
+
     gsap.from(".contact-reveal", {
       y: 50,
       opacity: 0,
@@ -104,6 +124,11 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   }, [submitStatus]);
 
   const onContactSubmit = async (data: ContactFormValues) => {
+    if (data.botcheck) {
+      contactForm.reset();
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
     try {
@@ -130,6 +155,11 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   };
 
   const onLicenseSubmit = async (data: LicenseFormValues) => {
+    if (data.botcheck) {
+      licenseForm.reset();
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
     try {

@@ -31,6 +31,16 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   useGSAP(
     () => {
       if (allLoaded) {
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        if (prefersReducedMotion) {
+          setIsVisible(false);
+          onComplete();
+          return;
+        }
+
         const tl = gsap.timeline({
           onComplete: () => {
             setIsVisible(false);
@@ -50,10 +60,14 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   );
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     if (progressBarRef.current) {
       gsap.to(progressBarRef.current, {
         width: `${progress}%`,
-        duration: 0.4,
+        duration: prefersReducedMotion ? 0 : 0.4,
         ease: "power2.out",
       });
     }
@@ -61,7 +75,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     if (logoForegroundRef.current) {
       gsap.to(logoForegroundRef.current, {
         attr: { "clip-path": `inset(0 ${100 - progress}% 0 0)` },
-        duration: 0.4,
+        duration: prefersReducedMotion ? 0 : 0.4,
         ease: "power2.out",
       });
     }

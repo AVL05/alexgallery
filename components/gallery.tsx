@@ -11,7 +11,7 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Camera,
   ChevronLeft,
@@ -50,6 +50,7 @@ const photos: Photo[] = basePhotos.map((photo) => {
 export function Gallery({ dictionary }: GalleryProps) {
   const [selectedCategory, setSelectedCategory] = useState<GalleryFilter>("Todo");
   const [index, setIndex] = useState(-1);
+  const shouldReduceMotion = useReducedMotion();
 
   const filteredPhotos = useMemo(() => {
     return selectedCategory === "Todo"
@@ -113,19 +114,25 @@ export function Gallery({ dictionary }: GalleryProps) {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
+          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={
+            shouldReduceMotion
+              ? undefined
+              : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+          }
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-14 gap-x-6 md:gap-x-10"
         >
           {filteredPhotos.map((photo, i) => (
             <motion.div
               key={photo.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
+              whileInView={
+                shouldReduceMotion ? undefined : { opacity: 1, y: 0 }
+              }
               transition={{
-                duration: 0.55,
-                delay: Math.min(i, 8) * 0.035,
+                duration: shouldReduceMotion ? 0 : 0.55,
+                delay: shouldReduceMotion ? 0 : Math.min(i, 8) * 0.035,
                 ease: [0.22, 1, 0.36, 1],
               }}
               viewport={{ once: true }}

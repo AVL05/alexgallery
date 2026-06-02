@@ -34,6 +34,12 @@ export function AnimatedBackground() {
 
   useGSAP(
     () => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReducedMotion) return;
+
       shapesRef.current.forEach((shape, i) => {
         if (!shape) return;
         const pos = SHAPE_POSITIONS[i % SHAPE_POSITIONS.length];
@@ -55,6 +61,9 @@ export function AnimatedBackground() {
   );
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -140,18 +149,25 @@ export function AnimatedBackground() {
 
     resizeCanvas();
     createParticles();
-    animate();
+    drawParticles();
 
-    window.addEventListener("resize", () => {
+    if (!prefersReducedMotion) {
+      animate();
+    }
+
+    const handleResize = () => {
       resizeCanvas();
       createParticles();
-    });
+      drawParticles();
+    };
+
+    window.addEventListener("resize", handleResize);
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

@@ -1,11 +1,21 @@
 import { locales } from '@/lib/dictionary'
 import { photos } from '@/lib/gallery-data'
 import imagesData from '@/lib/images-data.json'
+import { PhotoKeyboardNavigation } from '@/components/photo-keyboard-navigation'
 import type { Locale } from '@/types/dictionary'
 import type { ImagesData } from '@/types/photo'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronLeft, Camera, Layers, Zap, Image as ImageIcon } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Camera,
+  ChevronLeft,
+  Grid3X3,
+  Image as ImageIcon,
+  Layers,
+  Zap,
+} from 'lucide-react'
 import { notFound } from 'next/navigation'
 
 const optimizedImages = imagesData as ImagesData;
@@ -54,18 +64,36 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function PhotoPage({ params }: { params: Promise<{ locale: Locale, id: string }> }) {
   const { id, locale } = await params
-  const photo = photos.find(p => p.id.toString() === id)
+  const photoIndex = photos.findIndex(p => p.id.toString() === id)
+  const photo = photos[photoIndex]
   const optimized = optimizedImages.images.find(img => img.id === id)
 
   if (!photo) notFound()
 
   const backText = locale === 'es' ? 'Volver a la galería' : 'Back to Gallery'
+  const previousText = locale === 'es' ? 'Anterior' : 'Previous'
+  const nextText = locale === 'es' ? 'Siguiente' : 'Next'
+  const keyboardText =
+    locale === 'es'
+      ? 'Usa flecha izquierda, flecha derecha o Escape.'
+      : 'Use left arrow, right arrow, or Escape.'
+  const previousPhoto = photos[(photoIndex - 1 + photos.length) % photos.length]
+  const nextPhoto = photos[(photoIndex + 1) % photos.length]
+  const galleryHref = `/${locale}#gallery`
+  const previousHref = `/${locale}/photo/${previousPhoto.id}`
+  const nextHref = `/${locale}/photo/${nextPhoto.id}`
 
   return (
     <main className="min-h-screen bg-black text-white py-20 px-6">
+      <PhotoKeyboardNavigation
+        previousHref={previousHref}
+        nextHref={nextHref}
+        galleryHref={galleryHref}
+      />
+
       <div className="container mx-auto max-w-6xl">
         <Link 
-          href={`/${locale}`}
+          href={galleryHref}
           className="inline-flex items-center gap-2 text-white/40 hover:text-accent transition-colors mb-12 group"
         >
           <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -162,6 +190,57 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                 )}
               </div>
             )}
+
+            <nav
+              aria-label={
+                locale === 'es'
+                  ? 'Navegación entre fotografías'
+                  : 'Photo navigation'
+              }
+              className="space-y-4"
+            >
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  href={previousHref}
+                  rel="prev"
+                  className="group min-h-24 border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/30 hover:bg-white/[0.06]"
+                >
+                  <span className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-white/35 group-hover:text-accent">
+                    <ArrowLeft className="h-3.5 w-3.5" />
+                    {previousText}
+                  </span>
+                  <span className="block text-sm font-bold uppercase leading-snug tracking-normal text-white/75 group-hover:text-white">
+                    {previousPhoto.title}
+                  </span>
+                </Link>
+
+                <Link
+                  href={nextHref}
+                  rel="next"
+                  className="group min-h-24 border border-white/10 bg-white/[0.03] p-4 text-right transition-colors hover:border-white/30 hover:bg-white/[0.06]"
+                >
+                  <span className="mb-3 flex items-center justify-end gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-white/35 group-hover:text-accent">
+                    {nextText}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="block text-sm font-bold uppercase leading-snug tracking-normal text-white/75 group-hover:text-white">
+                    {nextPhoto.title}
+                  </span>
+                </Link>
+              </div>
+
+              <Link
+                href={galleryHref}
+                className="flex items-center justify-center gap-3 border border-white/10 py-4 text-[10px] font-black uppercase tracking-[0.28em] text-white/45 transition-colors hover:border-white/30 hover:text-white"
+              >
+                <Grid3X3 className="h-3.5 w-3.5" />
+                {backText}
+              </Link>
+
+              <p className="text-center text-[10px] font-mono uppercase tracking-widest text-white/25">
+                {keyboardText}
+              </p>
+            </nav>
 
             {/* Structured Data: Image + Breadcrumbs */}
             <script

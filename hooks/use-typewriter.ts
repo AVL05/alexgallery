@@ -8,6 +8,7 @@ interface UseTypewriterOptions {
   deleteSpeed?: number
   delayBetweenWords?: number
   loop?: boolean
+  disabled?: boolean
 }
 
 export function useTypewriter({
@@ -15,15 +16,23 @@ export function useTypewriter({
   typeSpeed = 100,
   deleteSpeed = 50,
   delayBetweenWords = 2000,
-  loop = true
+  loop = true,
+  disabled = false
 }: UseTypewriterOptions) {
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [currentText, setCurrentText] = useState("")
+  const [currentText, setCurrentText] = useState(disabled ? words[0] || "" : "")
   const [isDeleting, setIsDeleting] = useState(false)
   const [isTypingComplete, setIsTypingComplete] = useState(false)
 
   useEffect(() => {
     const currentWord = words[currentWordIndex]
+
+    if (disabled) {
+      setCurrentText(currentWord)
+      setIsTypingComplete(true)
+      setIsDeleting(false)
+      return
+    }
 
     const timer = setTimeout(() => {
       if (!isDeleting) {
@@ -53,7 +62,7 @@ export function useTypewriter({
     }, isDeleting ? deleteSpeed : typeSpeed)
 
     return () => clearTimeout(timer)
-  }, [currentText, isDeleting, currentWordIndex, words, typeSpeed, deleteSpeed, delayBetweenWords, loop])
+  }, [currentText, isDeleting, currentWordIndex, words, typeSpeed, deleteSpeed, delayBetweenWords, loop, disabled])
 
   return {
     text: currentText,

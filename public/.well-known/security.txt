@@ -1,0 +1,4 @@
+Contact: mailto:alexviclop@gmail.com
+Preferred-Languages: es, en
+Canonical: https://gallery.aleviclop.dev/.well-known/security.txt
+Policy: https://gallery.aleviclop.dev/es/politica-uso

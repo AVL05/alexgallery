@@ -9,6 +9,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   useGSAP(
     () => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReducedMotion) {
+        gsap.set(containerRef.current, { opacity: 1, y: 0 });
+        return;
+      }
+
       gsap.fromTo(
         containerRef.current,
         { opacity: 0, y: 15 },

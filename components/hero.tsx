@@ -4,7 +4,7 @@ import { useTypewriter } from "@/hooks/use-typewriter";
 import type { HeroDictionary } from "@/types/dictionary";
 import { Archive, ArrowDown } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -16,19 +16,28 @@ if (typeof window !== "undefined") {
 export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
   const containerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const titleWords = useMemo(() => [dictionary.title], [dictionary.title]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+
+    updatePreference();
+    media.addEventListener("change", updatePreference);
+
+    return () => media.removeEventListener("change", updatePreference);
+  }, []);
 
   const { text: typewriterText } = useTypewriter({
-    words: [dictionary.title],
+    words: titleWords,
     typeSpeed: 80,
     loop: false,
+    disabled: prefersReducedMotion,
   });
 
   useGSAP(
     () => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
       if (prefersReducedMotion) {
         gsap.set(".hero-text-reveal", { autoAlpha: 1, y: 0 });
         return;
@@ -58,7 +67,7 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
         },
       });
     },
-    { scope: containerRef },
+    { dependencies: [prefersReducedMotion], scope: containerRef },
   );
 
   return (
@@ -101,14 +110,18 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
               onClick={() =>
                 document
                   .getElementById("gallery")
-                  ?.scrollIntoView({ behavior: "smooth" })
+                  ?.scrollIntoView({
+                    behavior: prefersReducedMotion ? "auto" : "smooth",
+                  })
               }
               className="group flex items-center gap-4 text-white/55 hover:text-white transition-colors"
             >
               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">
                 {dictionary.cta}
               </span>
-              <ArrowDown className="h-4 w-4 animate-bounce" />
+              <ArrowDown
+                className={`h-4 w-4 ${prefersReducedMotion ? "" : "animate-bounce"}`}
+              />
             </button>
           </div>
         </div>
