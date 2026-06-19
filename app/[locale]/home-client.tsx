@@ -7,6 +7,7 @@ import { LoadingScreen } from "@/components/loading-screen";
 import { Navigation } from "@/components/navigation";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import type { Dictionary, Locale } from "@/types/dictionary";
+import type { ImagesData } from "@/types/photo";
 import { useCallback, useEffect, useState, useRef } from "react";
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -19,9 +20,11 @@ if (typeof window !== 'undefined') {
 export default function HomeClient({
   dictionary,
   locale,
+  imagesData,
 }: {
   dictionary: Dictionary;
   locale: Locale;
+  imagesData: ImagesData;
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
@@ -88,7 +91,7 @@ export default function HomeClient({
 
             <Navigation dictionary={dictionary.nav} currentLocale={locale} />
             <Hero dictionary={dictionary.hero} />
-            <Gallery dictionary={{ ...dictionary.gallery, locale }} />
+            <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
             <Contact dictionary={dictionary.contact} />
           </div>
         </SmoothScroll>

@@ -329,6 +329,24 @@
     }
   }
 
+  /* Masonry grid layout */
+  .masonry-grid {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .masonry-grid {
+      gap: 2.5rem;
+    }
+  }
+
+  .masonry-col {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
   /* Reduce motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
     *,

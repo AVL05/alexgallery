@@ -1,7 +1,6 @@
 "use client";
 
 import { categories, photos as basePhotos } from "@/lib/gallery-data";
-import imagesData from "@/lib/images-data.json";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import type { GalleryFilter, ImagesData, Photo } from "@/types/photo";
 import dynamic from "next/dynamic";
@@ -11,6 +10,7 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import Image from "next/image";
 import Link from "next/link";
+import Masonry from "react-masonry-css";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Camera,
@@ -27,36 +27,44 @@ const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
 
 type GalleryProps = {
   dictionary: GalleryDictionary & { locale: Locale };
+  imagesData: ImagesData;
 };
 
-const optimizedImages = imagesData as ImagesData;
+const breakpointCols = {
+  default: 3,
+  1024: 2,
+  640: 1,
+};
 
-const photos: Photo[] = basePhotos.map((photo) => {
-  const optimized = optimizedImages.images.find(
-    (img) => img.id === photo.id.toString(),
-  );
-
-  return {
-    ...photo,
-    ...optimized,
-    src: optimized?.src || photo.image,
-    image: optimized?.src || photo.image,
-    alt: photo.description || photo.title,
-    width: optimized?.width ?? 1200,
-    height: optimized?.height ?? 1600,
-  } as Photo;
-});
-
-export function Gallery({ dictionary }: GalleryProps) {
+export function Gallery({ dictionary, imagesData }: GalleryProps) {
   const [selectedCategory, setSelectedCategory] = useState<GalleryFilter>("Todo");
   const [index, setIndex] = useState(-1);
   const shouldReduceMotion = useReducedMotion();
+
+  const photos: Photo[] = useMemo(
+    () =>
+      basePhotos.map((photo) => {
+        const optimized = imagesData.images.find(
+          (img) => img.id === photo.id.toString(),
+        );
+        return {
+          ...photo,
+          ...optimized,
+          src: optimized?.src || photo.image,
+          image: optimized?.src || photo.image,
+          alt: photo.description || photo.title,
+          width: optimized?.width ?? 1200,
+          height: optimized?.height ?? 1600,
+        } as Photo;
+      }),
+    [imagesData],
+  );
 
   const filteredPhotos = useMemo(() => {
     return selectedCategory === "Todo"
       ? photos
       : photos.filter((photo) => photo.category === selectedCategory);
-  }, [selectedCategory]);
+  }, [selectedCategory, photos]);
 
   const slides = useMemo(() => {
     return filteredPhotos.map((photo) => ({
@@ -113,15 +121,10 @@ export function Gallery({ dictionary }: GalleryProps) {
           </div>
         </div>
 
-        <motion.div
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={
-            shouldReduceMotion
-              ? undefined
-              : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-          }
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-14 gap-x-6 md:gap-x-10"
+        <Masonry
+          breakpointCols={breakpointCols}
+          className="masonry-grid"
+          columnClassName="masonry-col"
         >
           {filteredPhotos.map((photo, i) => (
             <motion.div
@@ -147,7 +150,10 @@ export function Gallery({ dictionary }: GalleryProps) {
                   }
                 }}
               >
-                <div className="relative aspect-[4/5] overflow-hidden bg-white/5 rounded-none border border-white/10 group-hover:border-white/35 transition-all duration-500 shadow-none">
+                <div
+                  className="relative overflow-hidden bg-white/5 border border-white/10 group-hover:border-white/35 transition-all duration-500"
+                  style={{ aspectRatio: `${photo.width}/${photo.height}` }}
+                >
                   <Image
                     src={(photo.src || photo.image) as string}
                     alt={photo.alt || photo.title}
@@ -176,7 +182,7 @@ export function Gallery({ dictionary }: GalleryProps) {
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </Masonry>
       </div>
 
       <Lightbox

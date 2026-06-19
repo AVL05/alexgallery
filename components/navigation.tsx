@@ -30,6 +30,8 @@ export function Navigation({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +40,47 @@ export function Navigation({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const menu = mobileMenuRef.current;
+    if (!menu) return;
+
+    const focusable = Array.from(
+      menu.querySelectorAll<HTMLElement>(
+        'a[href], button, [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    first?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false);
+        mobileToggleRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
 
   return (
     <>
@@ -91,6 +134,7 @@ export function Navigation({
 
           {/* Mobile Toggle */}
           <button
+            ref={mobileToggleRef}
             className="md:hidden text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -104,7 +148,11 @@ export function Navigation({
 
       {/* Mobile Menu */}
       <div
+        ref={mobileMenuRef}
         id="mobile-navigation"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menú de navegación"
         className={`fixed inset-0 bg-black z-[90] md:hidden transition-transform duration-500 ${isMobileMenuOpen ? "translate-y-0" : "-translate-y-full"}`}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">
@@ -118,6 +166,16 @@ export function Navigation({
               {item.name}
             </a>
           ))}
+          <button
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              mobileToggleRef.current?.focus();
+            }}
+            className="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 hover:text-white transition-colors"
+            aria-label="Cerrar menú"
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     </>

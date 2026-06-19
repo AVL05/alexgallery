@@ -26,8 +26,55 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const logoForegroundRef = useRef<SVGTextElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
 
+  // Entrance animations on mount
+  useGSAP(
+    () => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReducedMotion) {
+        gsap.set(".entrance-up", { opacity: 1, y: 0 });
+        gsap.set('[data-corner="h"]', { scaleX: 1 });
+        gsap.set('[data-corner="v"]', { scaleY: 1 });
+        return;
+      }
+
+      gsap.fromTo(
+        ".entrance-up",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.3 },
+      );
+
+      gsap.fromTo(
+        '[data-corner="h"]',
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.1,
+          delay: 0.2,
+        },
+      );
+
+      gsap.fromTo(
+        '[data-corner="v"]',
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.1,
+          delay: 0.25,
+        },
+      );
+    },
+    { scope: containerRef },
+  );
+
+  // Exit animation when all images are loaded
   useGSAP(
     () => {
       if (allLoaded) {
@@ -59,6 +106,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     { dependencies: [allLoaded], scope: containerRef },
   );
 
+  // Progress bar and logo fill animation
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -88,11 +136,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
       ref={containerRef}
       className="fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center overflow-hidden"
     >
-      {/* High-end ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl aspect-square bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="relative flex flex-col items-center w-full max-w-sm px-8">
-        {/* Typographic Logo Section */}
         <div className="relative mb-12 flex flex-col items-center">
           <div className="relative h-24 sm:h-32 mb-4 overflow-visible">
             <svg
@@ -122,7 +168,6 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 </clipPath>
               </defs>
 
-              {/* Background Stroke Lettering */}
               <text
                 x="50%"
                 y="50%"
@@ -132,13 +177,12 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 strokeWidth="0.5"
                 style={{
                   letterSpacing: "0.15em",
-                  fontFamily: "var(--font-space-grotesk), sans-serif",
+                  fontFamily: "var(--font-inter), sans-serif",
                 }}
               >
                 AVL
               </text>
 
-              {/* Foreground Animated Filling Lettering */}
               <text
                 ref={logoForegroundRef}
                 x="50%"
@@ -149,7 +193,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 fill="url(#logo-gradient)"
                 style={{
                   letterSpacing: "0.15em",
-                  fontFamily: "var(--font-space-grotesk), sans-serif",
+                  fontFamily: "var(--font-inter), sans-serif",
                   clipPath: "url(#logo-clip)",
                 }}
               >
@@ -158,7 +202,6 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             </svg>
           </div>
 
-          {/* Name and Roles */}
           <div className="text-center space-y-3 opacity-0 entrance-up">
             <h2 className="text-xs sm:text-sm uppercase tracking-[0.5em] text-white/40 font-light">
               Alex Vicente López
@@ -171,9 +214,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           </div>
         </div>
 
-        {/* Bottom Progress Area */}
         <div className="w-full flex flex-col items-center gap-6 mt-8">
-          {/* Minimal Progress Line */}
           <div className="w-full h-px bg-white/5 relative overflow-hidden">
             <div
               ref={progressBarRef}
@@ -182,27 +223,34 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
             />
           </div>
 
-          {/* Elegant Counter */}
           <div className="flex justify-between w-full px-1 items-baseline">
             <span className="text-[10px] tracking-widest text-white/40 uppercase font-mono">
               System Initializing
             </span>
-            <span
-              ref={counterRef}
-              className="text-2xl font-mono text-white/30 tabular-nums"
-            >
+            <span className="text-2xl font-mono text-white/30 tabular-nums">
               {Math.floor(progress).toString().padStart(3, "0")}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Decorative Corner Framing */}
       <div className="absolute inset-8 sm:inset-12 pointer-events-none opacity-30">
-        <div className="absolute top-0 left-0 w-12 h-px bg-primary/50 origin-left scale-x-0 entrance-corner" />
-        <div className="absolute top-0 left-0 w-px h-12 bg-primary/50 origin-top scale-y-0 entrance-corner" />
-        <div className="absolute bottom-0 right-0 w-12 h-px bg-primary/50 origin-right scale-x-0 entrance-corner" />
-        <div className="absolute bottom-0 right-0 w-px h-12 bg-primary/50 origin-bottom scale-y-0 entrance-corner" />
+        <div
+          data-corner="h"
+          className="absolute top-0 left-0 w-12 h-px bg-primary/50 origin-left scale-x-0"
+        />
+        <div
+          data-corner="v"
+          className="absolute top-0 left-0 w-px h-12 bg-primary/50 origin-top scale-y-0"
+        />
+        <div
+          data-corner="h"
+          className="absolute bottom-0 right-0 w-12 h-px bg-primary/50 origin-right scale-x-0"
+        />
+        <div
+          data-corner="v"
+          className="absolute bottom-0 right-0 w-px h-12 bg-primary/50 origin-bottom scale-y-0"
+        />
       </div>
     </div>
   );

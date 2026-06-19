@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Mail } from "lucide-react";
+import { ChevronDown, Mail } from "lucide-react";
 
 const InstagramIcon = () => (
   <svg
@@ -58,6 +58,10 @@ const licenseSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactSchema>;
 type LicenseFormValues = z.infer<typeof licenseSchema>;
+
+const fieldClass =
+  "w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors";
+const errorClass = "mt-1.5 text-[10px] font-mono text-white/50";
 
 export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   const [formType, setFormType] = useState<"general" | "license">("general");
@@ -236,27 +240,51 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                     {...contactForm.register("botcheck")}
                   />
                   <div className="grid md:grid-cols-2 gap-6">
-                    <input
-                      {...contactForm.register("name")}
-                      placeholder={dictionary.form.name}
-                      aria-label={dictionary.form.name}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                    />
-                    <input
-                      {...contactForm.register("email")}
-                      type="email"
-                      placeholder={dictionary.form.email}
-                      aria-label={dictionary.form.email}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                    />
+                    <div>
+                      <input
+                        {...contactForm.register("name")}
+                        placeholder={dictionary.form.name}
+                        aria-label={dictionary.form.name}
+                        aria-invalid={!!contactForm.formState.errors.name}
+                        className={fieldClass}
+                      />
+                      {contactForm.formState.errors.name && (
+                        <p className={errorClass} role="alert">
+                          {contactForm.formState.errors.name.message}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        {...contactForm.register("email")}
+                        type="email"
+                        placeholder={dictionary.form.email}
+                        aria-label={dictionary.form.email}
+                        aria-invalid={!!contactForm.formState.errors.email}
+                        className={fieldClass}
+                      />
+                      {contactForm.formState.errors.email && (
+                        <p className={errorClass} role="alert">
+                          {contactForm.formState.errors.email.message}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <textarea
-                    {...contactForm.register("message")}
-                    placeholder={dictionary.form.message}
-                    aria-label={dictionary.form.message}
-                    rows={6}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                  />
+                  <div>
+                    <textarea
+                      {...contactForm.register("message")}
+                      placeholder={dictionary.form.message}
+                      aria-label={dictionary.form.message}
+                      aria-invalid={!!contactForm.formState.errors.message}
+                      rows={6}
+                      className={fieldClass}
+                    />
+                    {contactForm.formState.errors.message && (
+                      <p className={errorClass} role="alert">
+                        {contactForm.formState.errors.message.message}
+                      </p>
+                    )}
+                  </div>
                   {submitStatus && (
                     <div
                       ref={statusRef}
@@ -294,43 +322,86 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                     {...licenseForm.register("botcheck")}
                   />
                   <div className="grid md:grid-cols-2 gap-6">
-                    <input
-                      {...licenseForm.register("name")}
-                      placeholder="Nombre completo"
-                      aria-label="Nombre completo"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                    />
-                    <input
-                      {...licenseForm.register("email")}
-                      type="email"
-                      placeholder="Email"
-                      aria-label="Email"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                    />
+                    <div>
+                      <input
+                        {...licenseForm.register("name")}
+                        placeholder="Nombre completo"
+                        aria-label="Nombre completo"
+                        aria-invalid={!!licenseForm.formState.errors.name}
+                        className={fieldClass}
+                      />
+                      {licenseForm.formState.errors.name && (
+                        <p className={errorClass} role="alert">
+                          {licenseForm.formState.errors.name.message}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        {...licenseForm.register("email")}
+                        type="email"
+                        placeholder="Email"
+                        aria-label="Email"
+                        aria-invalid={!!licenseForm.formState.errors.email}
+                        className={fieldClass}
+                      />
+                      {licenseForm.formState.errors.email && (
+                        <p className={errorClass} role="alert">
+                          {licenseForm.formState.errors.email.message}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <input
-                    {...licenseForm.register("photoId")}
-                    placeholder="ID de la foto / Título"
-                    aria-label="ID de la foto o título"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                  />
-                  <select
-                    {...licenseForm.register("usageType")}
-                    aria-label="Tipo de uso"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors appearance-none text-white/40"
-                  >
-                    <option value="">Tipo de uso</option>
-                    <option value="comercial">Comercial</option>
-                    <option value="editorial">Editorial</option>
-                    <option value="personal">Personal</option>
-                  </select>
-                  <textarea
-                    {...licenseForm.register("description")}
-                    placeholder="Uso previsto..."
-                    aria-label="Uso previsto"
-                    rows={4}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors"
-                  />
+                  <div>
+                    <input
+                      {...licenseForm.register("photoId")}
+                      placeholder="ID de la foto / Título"
+                      aria-label="ID de la foto o título"
+                      aria-invalid={!!licenseForm.formState.errors.photoId}
+                      className={fieldClass}
+                    />
+                    {licenseForm.formState.errors.photoId && (
+                      <p className={errorClass} role="alert">
+                        {licenseForm.formState.errors.photoId.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <div className="relative">
+                      <select
+                        {...licenseForm.register("usageType")}
+                        aria-label="Tipo de uso"
+                        aria-invalid={!!licenseForm.formState.errors.usageType}
+                        className={`${fieldClass} appearance-none pr-10 text-white/60`}
+                      >
+                        <option value="">Tipo de uso</option>
+                        <option value="comercial">Comercial</option>
+                        <option value="editorial">Editorial</option>
+                        <option value="personal">Personal</option>
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                    </div>
+                    {licenseForm.formState.errors.usageType && (
+                      <p className={errorClass} role="alert">
+                        {licenseForm.formState.errors.usageType.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <textarea
+                      {...licenseForm.register("description")}
+                      placeholder="Uso previsto..."
+                      aria-label="Uso previsto"
+                      aria-invalid={!!licenseForm.formState.errors.description}
+                      rows={4}
+                      className={fieldClass}
+                    />
+                    {licenseForm.formState.errors.description && (
+                      <p className={errorClass} role="alert">
+                        {licenseForm.formState.errors.description.message}
+                      </p>
+                    )}
+                  </div>
                   {submitStatus && (
                     <div
                       ref={statusRef}
@@ -388,10 +459,13 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               </div>
             </div>
 
-            <div className="p-8 border border-white/5 rounded-3xl flex items-center justify-center h-40">
-              <span className="text-[10rem] font-black opacity-[0.03] select-none">
-                AV
-              </span>
+            <div className="p-8 border border-white/5 rounded-3xl space-y-4">
+              <p className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
+                © {new Date().getFullYear()} Alex Vicente López
+              </p>
+              <p className="text-[11px] text-white/20 leading-relaxed font-light">
+                Todas las imágenes están protegidas por derechos de autor. Contacta para solicitar una licencia de uso comercial o editorial.
+              </p>
             </div>
           </div>
         </div>
