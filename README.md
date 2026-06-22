@@ -1,56 +1,45 @@
 # Alexgallery
 
-Portfolio fotografico y archivo visual de Alex Vicente Lopez construido con Next.js App Router y exportacion estatica.
+Portfolio fotográfico de Alex Vicente Lopez — Next.js + exportación estática en Cloudflare.
 
 ## Stack
 
-- Next.js 16 con App Router
-- React 19
-- TypeScript estricto
-- Tailwind CSS 4
-- GSAP y Framer Motion para animaciones
-- `sharp`, `plaiceholder` y `exifr` para optimizacion y metadata de imagenes
-- Wrangler para desplegar los assets exportados en Cloudflare
+- Next.js 16 (App Router, `output: "export"`)
+- React 19 · TypeScript estricto · Tailwind CSS 4
+- GSAP + Framer Motion · Lenis smooth scroll
+- `sharp` · `plaiceholder` · `exifr` para imágenes
 
-## Desarrollo
+## Comandos
 
 ```bash
-pnpm install
-pnpm dev
+pnpm dev               # desarrollo local
+pnpm build             # build estática → out/
+pnpm typecheck         # validación TypeScript
+pnpm optimize-images   # genera WebP/AVIF, blur placeholders y EXIF desde public/photos/raw
+pnpm deploy:wrangler   # build + deploy a Cloudflare
 ```
 
-## Scripts
+## Imágenes
 
-- `pnpm dev`: servidor local de desarrollo.
-- `pnpm build`: build estatica de produccion.
-- `pnpm typecheck`: validacion TypeScript.
-- `pnpm lint`: alias de `pnpm typecheck`.
-- `pnpm optimize-images`: genera versiones WebP/AVIF, blur placeholders y metadata desde `public/photos/raw`.
-- `pnpm deploy:wrangler`: build y despliegue con Wrangler assets desde `out/`.
-
-## Estructura
-
-- `app/`: rutas, layouts, metadata, sitemap y robots.
-- `components/`: secciones y componentes UI.
-- `dictionaries/`: textos en `es` y `en`.
-- `hooks/`: hooks reutilizables.
-- `lib/`: datos de galeria, diccionarios y loader de imagenes.
-- `public/photos/`: imagenes raw y optimizadas.
-- `scripts/optimize-images.ts`: pipeline de optimizacion.
-- `types/`: tipos compartidos.
-
-## Imagenes
-
-Las imagenes originales viven en `public/photos/raw`. No deben modificarse salvo que sea intencional. Para regenerar derivados:
+Originales en `public/photos/raw/`. Después de añadir o cambiar fotos:
 
 ```bash
 pnpm optimize-images
 ```
 
-El script escribe versiones optimizadas en `public/photos/optimized` y actualiza `lib/images-data.json`.
+Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/images-data.json`.
 
 ## Licencia
 
-© 2026 Alex Vicente Lopez. Todas las fotografias, imagenes y contenidos visuales estan protegidos por derechos de autor. Queda prohibida su reproduccion, distribucion, modificacion o explotacion sin permiso previo y por escrito.
+El **código fuente** de este proyecto está disponible públicamente con fines de referencia únicamente.
 
-Contacto: `alexviclop@gmail.com`.
+Las **fotografías, imágenes y contenidos visuales** son obra exclusiva de Alex Vicente Lopez y están protegidos por derechos de autor. **Queda expresamente prohibido**:
+
+- Reproducir, copiar o descargar las imágenes
+- Distribuir o publicar las imágenes en cualquier medio
+- Modificar, transformar o crear obras derivadas
+- Usar las imágenes con fines comerciales o no comerciales sin autorización
+
+Para solicitar permisos de uso: [alexviclop@gmail.com](mailto:alexviclop@gmail.com)
+
+© 2026 Alex Vicente Lopez. Todos los derechos reservados.
