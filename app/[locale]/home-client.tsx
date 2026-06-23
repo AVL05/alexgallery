@@ -1,5 +1,6 @@
 "use client";
 
+import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
 import { Gallery } from "@/components/gallery";
 import { Hero } from "@/components/hero";
@@ -91,6 +92,7 @@ export default function HomeClient({
 
             <Navigation dictionary={dictionary.nav} currentLocale={locale} />
             <Hero dictionary={dictionary.hero} />
+            <About dictionary={dictionary.about} />
             <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
             <Contact dictionary={dictionary.contact} />
           </div>

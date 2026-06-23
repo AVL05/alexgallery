@@ -60,7 +60,7 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 type LicenseFormValues = z.infer<typeof licenseSchema>;
 
 const fieldClass =
-  "w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-accent outline-none transition-colors";
+  "w-full bg-white/5 border border-white/10 p-4 focus:border-accent outline-none transition-colors";
 const errorClass = "mt-1.5 text-[10px] font-mono text-white/50";
 
 export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
@@ -197,7 +197,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     >
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 contact-reveal">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
+          <h2 className="font-serif text-5xl md:text-7xl font-medium tracking-tight mb-6">
             {dictionary.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -209,7 +209,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               type="button"
               onClick={() => setFormType("general")}
               aria-pressed={formType === "general"}
-              className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === "general" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
+              className={`px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "general" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
             >
               {dictionary.general}
             </button>
@@ -217,7 +217,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               type="button"
               onClick={() => setFormType("license")}
               aria-pressed={formType === "license"}
-              className={`px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${formType === "license" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
+              className={`px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "license" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
             >
               {dictionary.license}
             </button>
@@ -226,7 +226,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 contact-reveal">
-            <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
+            <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10">
               {formType === "general" ? (
                 <form
                   onSubmit={contactForm.handleSubmit(onContactSubmit)}
@@ -301,7 +301,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   )}
                   <button
                     type="submit"
-                    className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-4"
+                    className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all flex items-center justify-center gap-4"
                     disabled={isSubmitting}
                   >
                     {isSubmitting
@@ -418,7 +418,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   )}
                   <button
                     type="submit"
-                    className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] rounded-xl hover:brightness-110 transition-all"
+                    className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all"
                     disabled={isSubmitting}
                   >
                     Solicitar Licencia
@@ -429,7 +429,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
           </div>
 
           <div className="space-y-8 contact-reveal">
-            <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
+            <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10">
               <h3 className="text-xl font-black uppercase tracking-tighter mb-8">
                 {dictionary.social}
               </h3>
@@ -438,7 +438,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   href="mailto:alexviclop@gmail.com"
                   className="flex items-center gap-4 group"
                 >
-                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
+                  <div className="w-12 h-12 bg-white/5 flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
                     <Mail className="h-5 w-5" />
                   </div>
                   <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">
@@ -449,7 +449,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   href="https://instagram.com/aleexx_005/"
                   className="flex items-center gap-4 group"
                 >
-                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
+                  <div className="w-12 h-12 bg-white/5 flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
                     <InstagramIcon />
                   </div>
                   <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">
@@ -459,7 +459,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               </div>
             </div>
 
-            <div className="p-8 border border-white/5 rounded-3xl space-y-4">
+            <div className="p-8 border border-white/5 space-y-4">
               <p className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
                 © {new Date().getFullYear()} Alex Vicente López
               </p>

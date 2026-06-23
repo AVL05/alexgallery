@@ -9,9 +9,18 @@
   },
   "nav": {
     "home": "Inicio",
+    "about": "Sobre mí",
     "gallery": "Archivo",
     "contact": "Contacto",
     "policies": "Políticas"
+  },
+  "about": {
+    "label": "Sobre mí",
+    "title": "Detrás del visor",
+    "body": "Soy Alex Vicente. Fotografío lo que me cruza en el camino: la luz de un acantilado al amanecer, un músico solitario, una calle que respira. No persigo la postal perfecta, sino el instante que merece quedarse.",
+    "body2": "Este archivo crece con cada viaje y cada paseo. Aquí selecciono solo las imágenes que de verdad me hacen parar a mirar.",
+    "role": "Fotógrafo · Archivo visual",
+    "location": "España"
   },
   "gallery": {
     "title": "ARCHIVO",

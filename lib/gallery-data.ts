@@ -7,7 +7,6 @@ export const categories = [
   "Paisaje",
   "Retrato",
   "Meteorología",
-  "Virtual",
 ] as const satisfies readonly GalleryFilter[];
 
 export const photos = [
@@ -19,15 +18,6 @@ export const photos = [
     image: "/1.webp",
     color: "secondary",
     description: "Tres caballos, un instante de ternura en la bruma.",
-  },
-  {
-    id: 2,
-    title: "Eco del bosque",
-    category: "Fauna",
-    year: "2024",
-    image: "/2.webp",
-    color: "accent",
-    description: "Un pájaro carpintero se posa en su reino de hojas y corteza",
   },
   {
     id: 3,
@@ -79,33 +69,6 @@ export const photos = [
     description: "Un cisne reposa con la calma de un poema.",
   },
   {
-    id: 8,
-    title: "Sueño junto al agua",
-    category: "Fauna",
-    year: "2025",
-    image: "/8.webp",
-    color: "secondary",
-    description: "Un pato duerme plácidamente junto al lago.",
-  },
-  {
-    id: 9,
-    title: "Baile en el agua",
-    category: "Fauna",
-    year: "2025",
-    image: "/9.webp",
-    color: "chart-3",
-    description: "Un pato se divierte en el agua con una graciosa patada.",
-  },
-  {
-    id: 10,
-    title: "El vigilante del prado",
-    category: "Fauna",
-    year: "2025",
-    image: "/10.webp",
-    color: "secondary",
-    description: "Un cuervo explora el campo con mirada atenta.",
-  },
-  {
     id: 11,
     title: "Alas sobre púrpura",
     category: "Fauna",
@@ -135,27 +98,6 @@ export const photos = [
       "Un lago tranquilo se extiende entre colinas cubiertas de brezo.",
   },
   {
-    id: 14,
-    title: "Gigantes de piedra",
-    category: "Paisaje",
-    featured: true,
-    year: "2025",
-    image: "/14.webp",
-    color: "accent",
-    description: "Los acantilados se alzan solemnes frente al mar infinito.",
-  },
-  {
-    id: 15,
-    title: "La luz que guía, mar que atrapa",
-    category: "Paisaje",
-    featured: true,
-    year: "2025",
-    image: "/15.webp",
-    color: "secondary",
-    description:
-      "Un faro solitario observa el paso silencioso de un barco bajo cielos grises y mares brillantes.",
-  },
-  {
     id: 16,
     title: "El centinela del océano",
     category: "Paisaje",
@@ -177,17 +119,6 @@ export const photos = [
       "Una torre solitaria se asoma al vacío, mientras los acantilados se desvanecen en la bruma del Atlántico.",
   },
   {
-    id: 18,
-    title: "Donde nace el agua",
-    category: "Paisaje",
-    featured: true,
-    year: "2025",
-    image: "/18.webp",
-    color: "secondary",
-    description:
-      "Un arroyo desciende entre montañas cubiertas de niebla, alimentando un lago sereno rodeado de bosques.",
-  },
-  {
     id: 19,
     title: "Puente hacia el alma de Oporto",
     category: "Arquitectura",
@@ -199,16 +130,6 @@ export const photos = [
       "El puente de Oporto une historia y modernidad sobre las aguas del Duero.",
   },
   {
-    id: 20,
-    title: "Balcones que cuentan historias",
-    category: "Arquitectura",
-    year: "2024",
-    image: "/20.webp",
-    color: "secondary",
-    description:
-      "Una fachada de madera envejecida revela la memoria viva de un pueblo asturiano.",
-  },
-  {
     id: 21,
     title: "Última parada: la noche",
     category: "Arquitectura",
@@ -218,17 +139,6 @@ export const photos = [
     color: "secondary",
     description:
       "Un tranvía atraviesa la noche de Oporto, mientras la ciudad respira entre sombras and encuentros.",
-  },
-  {
-    id: 22,
-    title: "Abrazo al horizonte",
-    category: "Retrato",
-    featured: true,
-    year: "2023",
-    image: "/22.webp",
-    color: "accent",
-    description:
-      "Con los brazos abiertos, el alma se funde con la luz dorada de las montañas al despertar o despedirse el día.",
   },
   {
     id: 23,
@@ -248,16 +158,6 @@ export const photos = [
     color: "accent",
     description:
       "La Navidad une pasado y futuro frente al ayuntamiento de Oporto.",
-  },
-  {
-    id: 25,
-    title: "Luces que abrazan la plaza",
-    category: "Arquitectura",
-    year: "2024",
-    image: "/25.webp",
-    color: "secondary",
-    description:
-      "Braga se ilumina con espíritu navideño frente a un cielo que guarda siglos de historia.",
   },
   {
     id: 26,
@@ -311,26 +211,6 @@ export const photos = [
       "Las góndolas navegan por Aveiro entre puentes, fachadas y luz de invierno.",
   },
   {
-    id: 32,
-    title: "Susurros entre montañas",
-    category: "Paisaje",
-    year: "2023",
-    image: "/32.webp",
-    color: "accent",
-    description:
-      "Las cumbres se desvanecen en la niebla, como pensamientos que se pierden en la distancia.",
-  },
-  {
-    id: 34,
-    title: "Silencio, corriente y color",
-    category: "Paisaje",
-    year: "2023",
-    image: "/34.webp",
-    color: "accent",
-    description:
-      "Kayaks descansan en la orilla mientras el río serpentea entre bosques y cielos grises.",
-  },
-  {
     id: 35,
     title: "El murmullo de Ordesa",
     category: "Paisaje",
@@ -352,17 +232,6 @@ export const photos = [
       "Dos pies descalzos se funden con la arena mojada, en un instante sereno entre tierra y mar.",
   },
   {
-    id: 39,
-    title: "Cruce de historias en la ciudad",
-    category: "Retrato",
-    featured: true,
-    year: "2025",
-    image: "/39.webp",
-    color: "chart-3",
-    description:
-      "Entre bicicletas, taxis y arquitectura centenaria, la vida urbana fluye en un instante cotidiano.",
-  },
-  {
     id: 41,
     title: "Corte eléctrico sobre la ciudad",
     category: "Meteorología",
@@ -372,16 +241,6 @@ export const photos = [
     color: "secondary",
     description:
       "Un relámpago rasga el cielo nocturno, iluminando fugazmente las siluetas urbanas bajo su trazo eléctrico.",
-  },
-  {
-    id: 42,
-    title: "Concentración en la costa",
-    category: "Retrato",
-    year: "2025",
-    image: "/42.webp",
-    color: "accent",
-    description:
-      "Un jugador practica su golpe en la hierba costera, mientras la vida urbana fluye detrás.",
   },
   {
     id: 43,
@@ -404,16 +263,6 @@ export const photos = [
       "Un piloto retro irrumpe en la ciudad con estilo y actitud, como salido de una escena de acción.",
   },
   {
-    id: 45,
-    title: "El guardián del horizonte",
-    category: "Arquitectura",
-    year: "2025",
-    image: "/45.webp",
-    color: "secondary",
-    description:
-      "Un faro solitario observa el paso de los siglos entre sombras y curiosos.",
-  },
-  {
     id: 46,
     title: "El acordeón y el abismo",
     category: "Retrato",
@@ -422,16 +271,6 @@ export const photos = [
     color: "chart-3",
     description:
       "Un músico solitario llena de música los acantilados de Moher, donde la tierra se encuentra con el cielo.",
-  },
-  {
-    id: 47,
-    title: "Clásico escondido tras la ciudad",
-    category: "Arquitectura",
-    year: "2025",
-    image: "/47.webp",
-    color: "accent",
-    description:
-      "Un Triumph descansa bajo la sombra, rodeado de texturas urbanas y memorias de carretera.",
   },
   {
     id: 48,
@@ -472,89 +311,5 @@ export const photos = [
     color: "secondary",
     description:
       "Una antigua iglesia irlandesa se alza bajo cielos densos, guardando siglos de silencio.",
-  },
-    {
-    id: 52,
-    title: "Una llegada a la meta",
-    category: "Retrato",
-    year: "2025",
-    image: "/52.webp",
-    color: "secondary",
-    description:
-      "Una llegada a la meta, un viaje terminado, un destino alcanzado.",
-  },
-  {
-    id: 53,
-    title: "Maratón 2025 Valencia",
-    category: "Retrato",
-    year: "2025",
-    image: "/53.webp",
-    color: "secondary",
-    description:
-      "Maratón 2025 Valencia, un viaje terminado, un destino alcanzado.",
-  },
-  {
-    id: 54,
-    title: "Un avión en el cielo",
-    category: "Retrato",
-    year: "2025",
-    image: "/54.webp",
-    color: "secondary",
-    description:
-      "Un avión en el cielo, un viaje terminado, un destino alcanzado.",
-  },
-  {
-    id: 55,
-    title: "Neón a ras de calle",
-    category: "Virtual",
-    featured: true,
-    year: "2026",
-    image: "/55.webp",
-    color: "chart-3",
-    description:
-      "Un deportivo atraviesa una avenida nocturna entre escaparates, velocidad y luces de ciudad.",
-  },
-  {
-    id: 56,
-    title: "Túnel de neón",
-    category: "Virtual",
-    year: "2026",
-    image: "/56.webp",
-    color: "accent",
-    description:
-      "La cámara persigue la zaga de un coche entre rótulos japoneses y estelas de movimiento.",
-  },
-  {
-    id: 57,
-    title: "Curva entre cerezos",
-    category: "Virtual",
-    featured: true,
-    year: "2026",
-    image: "/57.webp",
-    color: "secondary",
-    description:
-      "Un Porsche blanco corta una carretera de montaña bajo la floración rosada del paisaje.",
-  },
-  {
-    id: 58,
-    title: "Monte Fuji en calma",
-    category: "Virtual",
-    featured: true,
-    year: "2026",
-    image: "/58.webp",
-    color: "accent",
-    description:
-      "Un clásico de rally descansa frente al Fuji en una escena quieta de luz dorada.",
-  },
-  {
-    id: 59,
-    title: "Asfalto bajo lluvia",
-    category: "Virtual",
-    featured: true,
-    year: "2026",
-    image: "/59.webp",
-    color: "secondary",
-    description:
-      "La lluvia convierte la carretera en un espejo oscuro mientras el coche desaparece entre niebla.",
   },
 ] satisfies BasePhoto[];

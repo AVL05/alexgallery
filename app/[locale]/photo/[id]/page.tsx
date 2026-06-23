@@ -9,12 +9,8 @@ import Link from 'next/link'
 import {
   ArrowLeft,
   ArrowRight,
-  Camera,
   ChevronLeft,
   Grid3X3,
-  Image as ImageIcon,
-  Layers,
-  Zap,
 } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
@@ -130,66 +126,6 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                 {photo.description}
               </p>
             </div>
-
-            {/* Technical Data Card */}
-            {optimized?.exif && Object.keys(optimized.exif).length > 0 && (
-              <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl space-y-6">
-                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-white/40 border-b border-white/5 pb-4">
-                  Metadata
-                </h3>
-                <div className="grid grid-cols-2 gap-y-6 gap-x-4">
-                  {optimized.exif.model && (
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-accent/60">
-                        <Camera className="w-3 h-3" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Camera</span>
-                      </div>
-                      <p className="text-sm font-mono text-white/80">{optimized.exif.model}</p>
-                    </div>
-                  )}
-                  {optimized.exif.fNumber && (
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-accent/60">
-                        <Layers className="w-3 h-3" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Aperture</span>
-                      </div>
-                      <p className="text-sm font-mono text-white/80">f/{optimized.exif.fNumber}</p>
-                    </div>
-                  )}
-                  {optimized.exif.exposureTime && (
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-accent/60">
-                        <Zap className="w-3 h-3" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Shutter</span>
-                      </div>
-                      <p className="text-sm font-mono text-white/80">{optimized.exif.exposureTime}s</p>
-                    </div>
-                  )}
-                  {optimized.exif.iso && (
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-accent/60">
-                        <ImageIcon className="w-3 h-3" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Sensitivity</span>
-                      </div>
-                      <p className="text-sm font-mono text-white/80">ISO {optimized.exif.iso}</p>
-                    </div>
-                  )}
-                </div>
-
-                {optimized.histogram && (
-                  <div className="pt-4">
-                     <div className="flex justify-between items-center mb-4">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-white/20">Histogram</span>
-                     </div>
-                     <div className="flex items-end gap-[2px] h-12 w-full">
-                        {optimized.histogram.map((val, i) => (
-                           <div key={i} className="flex-1 bg-accent/40 rounded-t-[1px]" style={{ height: `${val}%` }} />
-                        ))}
-                     </div>
-                  </div>
-                )}
-              </div>
-            )}
 
             <nav
               aria-label={

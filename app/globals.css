@@ -17,7 +17,7 @@
   --secondary-foreground: #ffffff;
   --muted: #1a1a1a;
   --muted-foreground: #a3a3a3;
-  --accent: #ffffff;
+  --accent: #c8a47e; /* Tono cálido film/arena: rompe el monocromo puro */
   --accent-foreground: #000000;
   --destructive: #000000;
   --destructive-foreground: #ffffff;
@@ -41,7 +41,7 @@
   --secondary-foreground: #ffffff;
   --muted: #1a1a1a;
   --muted-foreground: #a3a3a3;
-  --accent: #ffffff;
+  --accent: #c8a47e;
   --accent-foreground: #000000;
   --destructive: #000000;
   --destructive-foreground: #ffffff;

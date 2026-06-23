@@ -1,10 +1,9 @@
 "use client";
 
-import { useTypewriter } from "@/hooks/use-typewriter";
 import type { HeroDictionary } from "@/types/dictionary";
 import { Archive, ArrowDown } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,7 +16,6 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
   const containerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const titleWords = useMemo(() => [dictionary.title], [dictionary.title]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -28,13 +26,6 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
 
     return () => media.removeEventListener("change", updatePreference);
   }, []);
-
-  const { text: typewriterText } = useTypewriter({
-    words: titleWords,
-    typeSpeed: 80,
-    loop: false,
-    disabled: prefersReducedMotion,
-  });
 
   useGSAP(
     () => {
@@ -86,8 +77,7 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
           priority
           aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/35 to-black" />
-        <div className="absolute inset-0 bg-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-black" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10 pt-24">
@@ -96,8 +86,8 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
             <Archive className="h-3.5 w-3.5" />
             {dictionary.eyebrow}
           </p>
-          <h1 className="hero-text-reveal text-5xl sm:text-7xl md:text-[8rem] lg:text-[9.5rem] font-black uppercase tracking-normal leading-none text-white max-w-6xl">
-            {typewriterText}
+          <h1 className="hero-text-reveal font-serif text-6xl sm:text-7xl md:text-[8rem] lg:text-[9.5rem] font-medium tracking-tight leading-[0.95] text-white max-w-6xl">
+            {dictionary.title}
           </h1>
           <p className="hero-text-reveal text-white/65 text-sm md:text-lg max-w-2xl font-medium leading-relaxed">
             {dictionary.description}

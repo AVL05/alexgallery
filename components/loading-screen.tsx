@@ -15,9 +15,9 @@ interface LoadingScreenProps {
 
 const HERO_IMAGES = [
   "/photos/optimized/original/14.webp",
-  "/photos/optimized/original/39.webp",
+  "/photos/optimized/original/46.webp",
   "/photos/optimized/original/1.webp",
-  "/photos/optimized/original/2.webp",
+  "/photos/optimized/original/3.webp",
 ];
 
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {

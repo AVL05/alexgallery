@@ -9,9 +9,18 @@
   },
   "nav": {
     "home": "Home",
+    "about": "About",
     "gallery": "Archive",
     "contact": "Contact",
     "policies": "Policies"
+  },
+  "about": {
+    "label": "About",
+    "title": "Behind the viewfinder",
+    "body": "I'm Alex Vicente. I photograph whatever crosses my path: the light on a cliff at dawn, a lone musician, a street that breathes. I'm not after the perfect postcard, but the moment worth keeping.",
+    "body2": "This archive grows with every trip and every walk. Here I keep only the images that truly make me stop and look.",
+    "role": "Photographer · Visual archive",
+    "location": "Spain"
   },
   "gallery": {
     "title": "ARCHIVE",

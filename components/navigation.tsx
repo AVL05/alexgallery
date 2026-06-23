@@ -19,6 +19,7 @@ export function Navigation({
   currentLocale: Locale;
 }) {
   const items = [
+    { name: dictionary.about, href: "#about" },
     { name: dictionary.gallery, href: "#gallery" },
     { name: dictionary.contact, href: "#contact" },
     {
