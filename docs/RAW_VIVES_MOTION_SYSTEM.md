@@ -295,3 +295,14 @@ deben depender del canvas para conservar navegación y contenido.
 media queries, reduced-motion snapshot, locks anidados, restauración de
 `will-change`, import SSR de GSAP y reversión de contextos. Se ejecuta con
 `pnpm test` usando Node Test Runner mediante la dependencia `tsx` ya existente.
+
+## Aplicación en la home narrativa de la Fase 5
+
+`ExpansivePhoto` añade un único scrub propio. El contenedor sticky lo resuelve
+CSS y GSAP interpola solo `scale` entre 0.82 y 1. El trigger pertenece al scope
+del componente, se revierte mediante `useGSAP` y retira `will-change`. Touch y
+reduced motion no crean este trigger.
+
+Las demás secciones reutilizan `Reveal` y `StaggerGroup`; no se añaden loops,
+instancias Lenis ni listeners de scroll. La configuración y los límites están
+documentados en `RAW_VIVES_HOME_NARRATIVE.md`.

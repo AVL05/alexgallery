@@ -280,3 +280,14 @@ GSAP, ScrollTrigger y Lenis mediante el sistema centralizado documentado en
 - No se crea `/dev/design-system`: `output: "export"` la publicaría. `DESIGN.md`,
   `.impeccable/design.json` y este catálogo documentan la referencia sin exponer
   una ruta interna en producción.
+
+## Composición narrativa de la Fase 5
+
+La home aplica el sistema a una secuencia de fondo oscuro, fotografía grande,
+divisores finos y tipografía display. Las secciones usan `rv-container`, los
+tokens de texto y borde existentes y una retícula de 12 columnas únicamente
+cuando la composición lo requiere.
+
+`SectionMarker` formaliza la numeración `01 / 08` a `08 / 08`; `NarrativeImage` conserva
+ratios reales y evita superficies de tarjeta. No se añaden colores, radios,
+sombras ni fuentes fuera del sistema definido en esta guía.

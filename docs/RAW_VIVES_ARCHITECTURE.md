@@ -250,3 +250,19 @@ No hay analítica, CMS, almacenamiento, autenticación ni API propia confirmados
 
 No eliminar archivos, derivados, dependencias o categorías por parecer sin uso
 sin comprobar historial, build, sitemap y comportamiento publicado.
+
+## Home narrativa de la Fase 5
+
+La composición localizada continúa en `app/[locale]/home-client.tsx`. Entre el
+hero y la galería se monta `components/home/home-narrative.tsx`, que compone
+módulos pequeños sin cambiar las rutas ni el origen de datos.
+
+`lib/home/curation.ts` contiene exclusivamente decisiones editoriales por ID.
+`lib/home/selectors.ts` cruza esas decisiones con `gallery-data.ts` e
+`images-data.json`, deriva recuentos y proporciona fallbacks. Los componentes no
+buscan fotografías por su cuenta.
+
+La navegación de capítulos al archivo conserva `#gallery` y utiliza
+`lib/gallery-filter-events.ts` para solicitar el filtro al componente existente.
+Este evento no sustituye el estado de la galería ni crea una segunda fuente de
+verdad. La guía detallada vive en `RAW_VIVES_HOME_NARRATIVE.md`.
