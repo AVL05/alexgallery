@@ -12,11 +12,16 @@
     "accessibleLabel": "Loading the raw.vives visual archive"
   },
   "hero": {
-    "title": "raw.vives",
-    "eyebrow": "Visual Archive by Alex Vicente",
-    "description": "A personal archive in progress: trips, everyday scenes, cars, architecture, nature, and digital captures when they belong to the visual record.",
-    "cta": "Enter archive",
-    "explore": "Explore",
+    "title": "Stories between light and silence.",
+    "titleLineOne": "Stories between",
+    "titleLineTwo": "light and silence.",
+    "eyebrow": "Personal visual archive",
+    "description": "Visual archive by Alex Vicente.",
+    "cta": "Explore archive",
+    "scroll": "Scroll to explore",
+    "photographs": "photographs",
+    "location": "Valencia, Spain",
+    "imageAlt": "The Cliffs of Moher fading into mist above the Atlantic",
     "featured_tag": "Highlights"
   },
   "nav": {

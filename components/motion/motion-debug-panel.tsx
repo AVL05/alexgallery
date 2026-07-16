@@ -15,6 +15,11 @@ import {
   readIntroSession,
   resetIntroSession,
 } from "@/lib/intro/persistence";
+import {
+  HERO_STATE_EVENT,
+  requestHeroPreview,
+  type HeroStateDetail,
+} from "@/lib/hero/development";
 import { useEffect, useState } from "react";
 
 export function MotionDebugPanel() {
@@ -24,6 +29,7 @@ export function MotionDebugPanel() {
   const [triggerCount, setTriggerCount] = useState(0);
   const [introState, setIntroState] = useState<IntroStateDetail | null>(null);
   const [introSeen, setIntroSeen] = useState(false);
+  const [heroState, setHeroState] = useState<HeroStateDetail | null>(null);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -50,6 +56,15 @@ export function MotionDebugPanel() {
     syncSession();
     window.addEventListener(INTRO_STATE_EVENT, handleIntroState);
     return () => window.removeEventListener(INTRO_STATE_EVENT, handleIntroState);
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+    const handleHeroState = (event: Event) => {
+      setHeroState((event as CustomEvent<HeroStateDetail>).detail);
+    };
+    window.addEventListener(HERO_STATE_EVENT, handleHeroState);
+    return () => window.removeEventListener(HERO_STATE_EVENT, handleHeroState);
   }, [visible]);
 
   const previewLocale = (locale: "en" | "es") => {
@@ -118,6 +133,32 @@ export function MotionDebugPanel() {
             </div>
             <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
               scroll {motion.isScrollLocked ? "locked" : "open"} / triggers {triggerCount}
+            </p>
+          </section>
+          <section className="border border-border p-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="rv-meta">Hero system</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+                  {heroState?.phase ?? "idle"} / {heroState?.duration.toFixed(2) ?? "0.00"}s / image {heroState?.imageState ?? "--"}
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-accent">
+                {motion.isTouchDevice ? "TOUCH" : "DESKTOP"}
+              </span>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ source: "manual" })}>Replay</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ finalState: true, source: "manual" })}>Final state</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ reducedMotion: true, source: "manual" })}>Reduced</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ slowImage: true, source: "manual" })}>Slow image</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ failImage: true, source: "manual" })}>Image fail</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ source: "intro-completed" })}>Intro complete</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHeroPreview({ source: "intro-omitted" })}>Intro omitted</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => previewLocale("en")}>Hero EN</button>
+            </div>
+            <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
+              source {heroState?.source ?? "initial"} / triggers {triggerCount} / scroll {motion.isScrollLocked ? "locked" : "open"}
             </p>
           </section>
           <Reveal><p className="rv-card-title">Reveal simple</p></Reveal>

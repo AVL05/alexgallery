@@ -35,16 +35,30 @@ import {
 
 type ActiveIntro = IntroPreviewOptions & { key: number };
 
+export type IntroSettledResult = "completed" | "skipped" | "omitted";
+
 export function IntroOverlay({
   dictionary,
   locale,
+  onInitialSettled,
 }: {
   dictionary: IntroDictionary;
   locale: Locale;
+  onInitialSettled?: (result: IntroSettledResult) => void;
 }) {
   const { prefersReducedMotion } = useMotion();
   const [activeIntro, setActiveIntro] = useState<ActiveIntro | null>(null);
   const sequenceKeyRef = useRef(0);
+  const initialSettledRef = useRef(false);
+
+  const settleInitialIntro = useCallback(
+    (result: IntroSettledResult) => {
+      if (initialSettledRef.current) return;
+      initialSettledRef.current = true;
+      onInitialSettled?.(result);
+    },
+    [onInitialSettled],
+  );
 
   const startIntro = useCallback((options: IntroPreviewOptions = {}) => {
     sequenceKeyRef.current += 1;
@@ -71,11 +85,12 @@ export function IntroOverlay({
       startIntro({ reducedMotion: forcePreview && prefersReducedMotion });
     } else {
       reportIntroState({ phase: "completed", locale, duration: 0 });
+      settleInitialIntro("omitted");
     }
 
     delete document.documentElement.dataset.introPending;
     delete document.documentElement.dataset.introExpired;
-  }, [locale, prefersReducedMotion, startIntro]);
+  }, [locale, prefersReducedMotion, settleInitialIntro, startIntro]);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -97,7 +112,10 @@ export function IntroOverlay({
       dictionary={dictionary}
       locale={activeIntro.locale ?? locale}
       options={activeIntro}
-      onFinished={() => setActiveIntro(null)}
+      onFinished={(result) => {
+        setActiveIntro(null);
+        settleInitialIntro(result);
+      }}
     />
   );
 }
@@ -111,7 +129,7 @@ function IntroExperience({
   dictionary: IntroDictionary;
   locale: Locale;
   options: IntroPreviewOptions;
-  onFinished: () => void;
+  onFinished: (result: "completed" | "skipped") => void;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const releaseScrollRef = useRef<(() => void) | null>(null);
@@ -147,7 +165,7 @@ function IntroExperience({
 
       const shouldRestoreFocus = rootRef.current?.contains(document.activeElement) ?? false;
       releaseScroll();
-      onFinished();
+      onFinished(result);
 
       window.requestAnimationFrame(() => {
         refreshScrollTriggers();

@@ -11,7 +11,7 @@ import { useMotion } from "@/components/motion/motion-provider";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export default function HomeClient({
   dictionary,
@@ -23,7 +23,9 @@ export default function HomeClient({
   imagesData: ImagesData;
 }) {
   const mainRef = useRef<HTMLDivElement>(null);
+  const [heroEntryReady, setHeroEntryReady] = useState(false);
   const { prefersReducedMotion, isTouchDevice } = useMotion();
+  const handleIntroSettled = useCallback(() => setHeroEntryReady(true), []);
 
   useGSAP(() => {
     if (!prefersReducedMotion && !isTouchDevice) {
@@ -42,7 +44,11 @@ export default function HomeClient({
 
   return (
     <div className="relative">
-      <IntroOverlay dictionary={dictionary.intro} locale={locale} />
+      <IntroOverlay
+        dictionary={dictionary.intro}
+        locale={locale}
+        onInitialSettled={handleIntroSettled}
+      />
 
       <div
         ref={mainRef}
@@ -53,12 +59,16 @@ export default function HomeClient({
       >
         <div className="pointer-events-none fixed inset-0 -z-10 flex select-none items-center overflow-hidden" aria-hidden="true">
           <span className="global-bg-text translate-x-1/2 whitespace-nowrap font-serif text-[40vh] leading-none tracking-[-0.06em] text-white/[0.015] md:text-[60vh]">
-            {dictionary.hero.title} // {dictionary.hero.title}
+            raw.vives // raw.vives
           </span>
         </div>
 
         <Navigation dictionary={dictionary.nav} currentLocale={locale} />
-        <Hero dictionary={dictionary.hero} />
+        <Hero
+          dictionary={dictionary.hero}
+          imagesData={imagesData}
+          entryReady={heroEntryReady}
+        />
         <About dictionary={dictionary.about} />
         <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
         <Contact dictionary={dictionary.contact} />

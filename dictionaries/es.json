@@ -12,11 +12,16 @@
     "accessibleLabel": "Cargando el archivo visual raw.vives"
   },
   "hero": {
-    "title": "raw.vives",
-    "eyebrow": "Visual Archive by Alex Vicente",
-    "description": "Un archivo personal en expansión: viajes, escenas cotidianas, coches, arquitectura, naturaleza y capturas digitales cuando formen parte de la mirada.",
-    "cta": "Entrar al archivo",
-    "explore": "Explorar",
+    "title": "Historias entre la luz y el silencio.",
+    "titleLineOne": "Historias entre",
+    "titleLineTwo": "la luz y el silencio.",
+    "eyebrow": "Archivo visual personal",
+    "description": "Archivo visual de Alex Vicente.",
+    "cta": "Explorar archivo",
+    "scroll": "Desliza para explorar",
+    "photographs": "fotografías",
+    "location": "Valencia, España",
+    "imageAlt": "Acantilados de Moher desapareciendo en la bruma sobre el Atlántico",
     "featured_tag": "Destacadas"
   },
   "nav": {
