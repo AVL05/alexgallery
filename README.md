@@ -19,6 +19,12 @@ pnpm optimize-images   # genera WebP/AVIF, blur placeholders y EXIF desde public
 pnpm deploy:wrangler   # build + deploy a Cloudflare
 ```
 
+## Configuración
+
+Copia `.env.example` a `.env.local` si necesitas cambiar la URL canónica en
+desarrollo. En producción, `NEXT_PUBLIC_BASE_URL` debe apuntar a
+`https://gallery.aleviclop.dev`.
+
 ## Imágenes
 
 Originales en `public/photos/raw/`. Después de añadir o cambiar fotos:
@@ -28,6 +34,11 @@ pnpm optimize-images
 ```
 
 Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/images-data.json`.
+
+## Documentación técnica
+
+- [Auditoría RAW.VIVES](docs/RAW_VIVES_AUDIT.md)
+- [Arquitectura RAW.VIVES](docs/RAW_VIVES_ARCHITECTURE.md)
 
 ## Licencia
 
