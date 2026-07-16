@@ -1,0 +1,90 @@
+"use client";
+
+import { AnimatedDivider } from "@/components/motion/animated-divider";
+import { MotionImage } from "@/components/motion/motion-image";
+import { useMotion } from "@/components/motion/motion-provider";
+import { MaskReveal, Reveal, StaggerGroup } from "@/components/motion/reveal";
+import { MotionText } from "@/components/motion/motion-text";
+import { useEffect, useState } from "react";
+
+export function MotionDebugPanel() {
+  const motion = useMotion();
+  const [visible, setVisible] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [triggerCount, setTriggerCount] = useState(0);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") return;
+    setVisible(new URLSearchParams(window.location.search).get("motion-debug") === "1");
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    const update = () => setTriggerCount(motion.getActiveTriggerCount());
+    update();
+    const interval = window.setInterval(update, 750);
+    return () => window.clearInterval(interval);
+  }, [motion, visible]);
+
+  if (process.env.NODE_ENV !== "development" || !visible) return null;
+
+  return (
+    <aside className="fixed bottom-4 right-4 z-[999] w-[min(24rem,calc(100vw-2rem))] border border-border bg-[var(--color-surface-elevated)] p-4 text-foreground">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="rv-kicker">Motion debug</p>
+          <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+            triggers {triggerCount} / lenis {motion.isSmoothScrollEnabled ? "on" : "off"}
+          </p>
+        </div>
+        <button
+          type="button"
+          className="min-h-11 border border-border px-3 text-[10px] uppercase tracking-wider"
+          onClick={() => setExpanded((value) => !value)}
+        >
+          {expanded ? "Close" : "Reference"}
+        </button>
+      </div>
+
+      <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[10px] text-[var(--color-text-muted)]">
+        <div><dt>reduced</dt><dd>{String(motion.prefersReducedMotion)}</dd></div>
+        <div><dt>touch</dt><dd>{String(motion.isTouchDevice)}</dd></div>
+        <div><dt>hover</dt><dd>{String(motion.hasHover)}</dd></div>
+        <div><dt>locked</dt><dd>{String(motion.isScrollLocked)}</dd></div>
+      </dl>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button type="button" className="min-h-11 border border-border px-3 text-xs" onClick={motion.refreshScrollTriggers}>Refresh</button>
+        <button type="button" className="min-h-11 border border-border px-3 text-xs" onClick={() => motion.pauseScroll("debug")}>Pause</button>
+        <button type="button" className="min-h-11 border border-border px-3 text-xs" onClick={() => motion.resumeScroll("debug")}>Resume</button>
+      </div>
+
+      {expanded && (
+        <div className="mt-4 max-h-[55vh] space-y-5 overflow-y-auto border-t border-border pt-4">
+          <Reveal><p className="rv-card-title">Reveal simple</p></Reveal>
+          <MotionText text="Reveal by word" className="rv-body" />
+          <MotionText text={'Reveal by\nline'} mode="line" className="rv-body" />
+          <StaggerGroup className="flex gap-2">
+            <span data-motion-item className="rv-meta">01</span>
+            <span data-motion-item className="rv-meta">02</span>
+            <span data-motion-item className="rv-meta">03</span>
+          </StaggerGroup>
+          <MaskReveal><p className="rv-card-title">Mask reveal</p></MaskReveal>
+          <MotionImage
+            src="/photos/optimized/400/46.webp"
+            alt="Motion image reference"
+            width={400}
+            height={500}
+            className="h-full w-full object-cover"
+            frameClassName="aspect-[4/3]"
+          />
+          <AnimatedDivider />
+          <div className="border border-border p-3">
+            <p className="rv-meta">Reduced-motion fallback</p>
+            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">Visible immediately, without displacement.</p>
+          </div>
+        </div>
+      )}
+    </aside>
+  );
+}
