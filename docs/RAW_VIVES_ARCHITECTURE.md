@@ -43,12 +43,14 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | `app/globals.css` | Tokens RAW.VIVES, tipos, layout, foco y reduced motion |
 | `components/` | Secciones, navegación, footer y comportamientos reutilizables |
 | `components/intro/` | Gate, piezas visuales y timeline de `RAW.VIVES SYSTEM` |
+| `components/hero/` | Media LCP, contenido editorial y motion scoped del hero |
 | `components/ui/` | Botones, layout y metadatos conectados a páginas |
 | `PRODUCT.md` | Contexto estratégico y límites duraderos de producto |
 | `DESIGN.md` | Tokens machine-readable y reglas visuales resumidas |
 | `docs/RAW_VIVES_DESIGN_SYSTEM.md` | Contrato visual completo de Fase 1 |
 | `dictionaries/` | Copia localizada de la interfaz |
 | `lib/intro/` | Persistencia, decisión, bootstrap, tiempos y desarrollo de la intro |
+| `lib/hero/` | Selección de imagen, facts, perfiles motion y preview de desarrollo |
 | `lib/gallery-data.ts` | Fuente de verdad del catálogo y su orden |
 | `lib/images-data.json` | Metadatos generados; no editar a mano |
 | `lib/image-loader.ts` | Mapeo de anchos de Next a variantes locales |
@@ -83,6 +85,10 @@ numérico convertido a string.
 
 La entrada 14 no está en `photos`: es una imagen editorial reservada para hero,
 Open Graph estructurado y precarga. No es un huérfano accidental.
+
+El hero resuelve la entrada 14 y el fallback 46 desde `imagesData`; así reutiliza
+las variantes, dimensiones y blur placeholder generados por el pipeline. Los
+metadatos 30 y 2022–2025 se derivan de `photos` y no se duplican en JSX.
 
 ## Cómo añadir una fotografía
 
@@ -211,6 +217,10 @@ completa y los ejemplos están en `docs/RAW_VIVES_MOTION_SYSTEM.md`.
 La intro se documenta en `docs/RAW_VIVES_INTRO_SYSTEM.md`. Su gate usa
 `sessionStorage`, solo se monta en la home y no espera fotografías.
 
+El hero se documenta en `docs/RAW_VIVES_HERO_SYSTEM.md`. `HomeClient` entrega un
+handoff explícito cuando la intro termina, se salta o se omite. Su timeline y su
+único ScrollTrigger permanecen dentro del scope de `components/hero/`.
+
 ## Integraciones externas
 
 - Cloudflare Assets y dominio personalizado.
@@ -232,6 +242,8 @@ No hay analítica, CMS, almacenamiento, autenticación ni API propia confirmados
 - `public/_headers`: errores pueden bloquear scripts, imágenes o Web3Forms.
 - `wrangler.json`: dominio y directorio de publicación.
 - Intro/home: mantener la home en HTML, el criterio de sesión y el timeout seguro.
+- Hero: conservar `primaryId`/`fallbackId`, prioridad LCP, un único `h1` y el
+  contrato explícito de handoff con la intro.
 - `MotionProvider`, Lenis y GSAP ticker: configuración global compartida; no crear
   instancias, registros o loops fuera de esta capa.
 - Diccionario español: actúa como contrato TypeScript de todos los idiomas.

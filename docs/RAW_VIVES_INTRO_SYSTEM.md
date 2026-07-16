@@ -239,14 +239,25 @@ sesión normalmente la omitan.
 Usar `Reset session` en el panel de motion. También puede cerrarse la sesión del
 navegador. No se ofrece un control público permanente en esta fase.
 
-## 26. Riesgos y Fase 4
+## 26. Integración resuelta con el hero de Fase 4
+
+`IntroOverlay` expone `onInitialSettled` una sola vez con `completed`, `skipped`
+u `omitted`. `HomeClient` usa ese resultado para habilitar la timeline del hero;
+no existe timeout, consulta de storage ni evento global duplicado. Los replays
+del panel de desarrollo no vuelven a resolver el handoff inicial.
+
+La imagen del hero se renderiza y precarga bajo el overlay, pero su animación
+solo comienza tras la salida completa. En reduced motion la intro se omite y el
+hero muestra inmediatamente su estado final. El contrato detallado vive en
+`RAW_VIVES_HERO_SYSTEM.md`.
+
+## 27. Riesgos posteriores
 
 - La cubierta previa depende de un script inline ya compatible con la CSP actual;
   cualquier endurecimiento futuro de `script-src` debe incluir nonce/hash.
 - El HTML estático raíz conserva `lang="es"` hasta hidratación, deuda previa.
-- La posición final de marca deberá ajustarse al hero definitivo sin convertirla
-  en una shared-element transition frágil.
-- Fase 4 puede coordinar la salida con la primera imagen, pero no debe volver a
-  esperar todo el archivo ni romper persistencia, reduced motion o timeout.
+- Una transición compartida futura debe preservar el callback de handoff sin
+  convertirlo en una dependencia de selectores o timings visuales.
+- La narrativa posterior no debe hacer que la intro espere el archivo completo.
 
-La Fase 3 no implementa el hero cinematográfico definitivo ni la home narrativa.
+La intro y el hero no implementan todavía la home narrativa de Fase 5.

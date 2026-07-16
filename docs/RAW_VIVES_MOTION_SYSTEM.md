@@ -192,9 +192,10 @@ transición breve. El lightbox mantiene su gestión de foco propia.
 
 ## 20. Mobile y touch
 
-Lenis queda desactivado, los batch se limitan a dos elementos, las distancias se
-reducen y no se aplica el parallax actual del hero. No existe lógica dependiente
-de hover ni media queries por modelo de dispositivo.
+Lenis queda desactivado, los batch se limitan a dos elementos y las distancias se
+reducen. El hero usa una entrada de 0,82 s pero no crea su efecto de scroll en
+touch. No existe lógica dependiente de hover ni media queries por modelo de
+dispositivo.
 
 ## 21. Reduced motion
 
@@ -202,7 +203,7 @@ La preferencia se observa en JavaScript y CSS. Cuando está activa:
 
 - Lenis no se crea;
 - Reveal/Stagger/Mask/Divider/MotionImage muestran el estado final;
-- hero y fondo no usan parallax;
+- el hero resuelve inmediatamente y no crea su ScrollTrigger;
 - la intro se omite y los cambios de ruta se resuelven inmediatamente o casi;
 - `scrollTo` usa comportamiento `auto`;
 - las transiciones CSS se reducen a 0.01 ms.
@@ -264,16 +265,22 @@ useEffect(() => open ? lockScroll("overlay-name") : undefined, [open, lockScroll
 - Usar ancho como única señal de touch.
 - Animar width/height/top/left cuando un transform resuelve el efecto.
 
-## 27. Integración de Fase 3
+## 27. Integración de Fases 3 y 4
 
 `RAW.VIVES SYSTEM` consume `useMotion`, reutiliza un lock con source propia y crea
 una timeline scoped. La home permanece en HTML, reduced motion omite la secuencia
 y el overlay sale del DOM al finalizar. El contrato completo está en
 `RAW_VIVES_INTRO_SYSTEM.md`.
 
-La siguiente fase no debe duplicar el gate, crear otro loader ni alterar la única
-instancia Lenis. El hero final, pinning, storytelling y secuencias de imágenes
-siguen fuera del alcance de esta fase.
+El hero de Fase 4 espera el callback inicial `completed | skipped | omitted` de
+la intro. Su entrada dura 1,28 s en escritorio y 0,82 s en touch; reduced motion
+queda en estado final. Crea un solo ScrollTrigger scoped en escritorio para una
+escala y traslación mínimas, sin pinning. Entrada y scroll usan capas distintas
+para evitar competir por `transform`; ambas timelines se matan al desmontar.
+
+La referencia completa está en `RAW_VIVES_HERO_SYSTEM.md`. La siguiente fase no
+debe duplicar el gate, crear otro loader ni alterar la única instancia Lenis. El
+pinning, storytelling y las secuencias de imágenes siguen fuera del alcance.
 
 ## 28. Futuro WebGL
 
