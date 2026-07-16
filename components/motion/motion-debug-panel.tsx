@@ -5,6 +5,16 @@ import { MotionImage } from "@/components/motion/motion-image";
 import { useMotion } from "@/components/motion/motion-provider";
 import { MaskReveal, Reveal, StaggerGroup } from "@/components/motion/reveal";
 import { MotionText } from "@/components/motion/motion-text";
+import {
+  INTRO_STATE_EVENT,
+  requestIntroReplay,
+  type IntroStateDetail,
+} from "@/lib/intro/development";
+import {
+  getBrowserSessionStorage,
+  readIntroSession,
+  resetIntroSession,
+} from "@/lib/intro/persistence";
 import { useEffect, useState } from "react";
 
 export function MotionDebugPanel() {
@@ -12,6 +22,8 @@ export function MotionDebugPanel() {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [triggerCount, setTriggerCount] = useState(0);
+  const [introState, setIntroState] = useState<IntroStateDetail | null>(null);
+  const [introSeen, setIntroSeen] = useState(false);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -25,6 +37,25 @@ export function MotionDebugPanel() {
     const interval = window.setInterval(update, 750);
     return () => window.clearInterval(interval);
   }, [motion, visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+
+    const syncSession = () => setIntroSeen(readIntroSession(getBrowserSessionStorage()).seen);
+    const handleIntroState = (event: Event) => {
+      setIntroState((event as CustomEvent<IntroStateDetail>).detail);
+      syncSession();
+    };
+
+    syncSession();
+    window.addEventListener(INTRO_STATE_EVENT, handleIntroState);
+    return () => window.removeEventListener(INTRO_STATE_EVENT, handleIntroState);
+  }, [visible]);
+
+  const previewLocale = (locale: "en" | "es") => {
+    resetIntroSession(getBrowserSessionStorage());
+    window.location.assign(`/${locale}?motion-debug=1&intro-preview=1`);
+  };
 
   if (process.env.NODE_ENV !== "development" || !visible) return null;
 
@@ -61,6 +92,34 @@ export function MotionDebugPanel() {
 
       {expanded && (
         <div className="mt-4 max-h-[55vh] space-y-5 overflow-y-auto border-t border-border pt-4">
+          <section className="border border-border p-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="rv-meta">Intro system</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+                  {introState?.phase ?? "idle"} / {introState?.duration.toFixed(2) ?? "0.00"}s / session {introSeen ? "seen" : "new"}
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-accent">
+                {introState?.locale?.toUpperCase() ?? "--"}
+              </span>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestIntroReplay()}>Replay</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => {
+                resetIntroSession(getBrowserSessionStorage());
+                setIntroSeen(false);
+              }}>Reset session</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestIntroReplay({ reducedMotion: true })}>Reduced</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestIntroReplay({ slow: true })}>Slow load</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestIntroReplay({ fail: true })}>Resource fail</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => previewLocale("es")}>Preview ES</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => previewLocale("en")}>Preview EN</button>
+            </div>
+            <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
+              scroll {motion.isScrollLocked ? "locked" : "open"} / triggers {triggerCount}
+            </p>
+          </section>
           <Reveal><p className="rv-card-title">Reveal simple</p></Reveal>
           <MotionText text="Reveal by word" className="rv-body" />
           <MotionText text={'Reveal by\nline'} mode="line" className="rv-body" />

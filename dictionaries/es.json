@@ -1,4 +1,16 @@
 {
+  "intro": {
+    "descriptor": "Archivo visual",
+    "author": "por Alex Vicente",
+    "system": "Sistema 001",
+    "location": "Valencia / ES",
+    "index": "Índice visual",
+    "memory": "Memoria activa",
+    "initializing": "Inicializando archivo",
+    "ready": "Sistema listo",
+    "skip": "Saltar introducción",
+    "accessibleLabel": "Cargando el archivo visual raw.vives"
+  },
   "hero": {
     "title": "raw.vives",
     "eyebrow": "Visual Archive by Alex Vicente",

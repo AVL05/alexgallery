@@ -4,6 +4,7 @@ import type React from "react";
 import { Suspense } from "react";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { MotionDevelopmentTools } from "@/components/motion/development-tools";
+import { IntroBootstrapScript } from "@/components/intro/intro-bootstrap-script";
 import "./globals.css";
 
 const prata = Prata({
@@ -115,6 +116,9 @@ export default function RootLayout({
       className={`${prata.variable} ${manrope.variable}`}
       data-scroll-behavior="smooth"
     >
+      <head>
+        <IntroBootstrapScript />
+      </head>
       <body className="relative bg-background font-sans text-foreground">
         <div className="noise-texture" aria-hidden="true" />
 

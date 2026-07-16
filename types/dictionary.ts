@@ -7,4 +7,4 @@ export type HeroDictionary = Dictionary["hero"];
 export type AboutDictionary = Dictionary["about"];
 export type GalleryDictionary = Dictionary["gallery"];
 export type ContactDictionary = Dictionary["contact"];
-
+export type IntroDictionary = Dictionary["intro"];
