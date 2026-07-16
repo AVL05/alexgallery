@@ -1,8 +1,8 @@
 # Sistema visual de RAW.VIVES
 
-Documento de referencia de la Fase 1. Describe únicamente el sistema que existe
-en el código actual; no habilita la home narrativa ni la arquitectura de motion de
-fases posteriores.
+Documento de referencia visual de la Fase 1. La infraestructura de movimiento
+añadida en Fase 2 se documenta por separado en `RAW_VIVES_MOTION_SYSTEM.md`; no
+habilita todavía la home narrativa ni el motion de fases posteriores.
 
 ## 1. Identidad de marca
 
@@ -229,14 +229,14 @@ El atributo `lang` inicial del HTML exportado sigue siendo español por limitaci
 del layout raíz compartido; `DocumentLanguage` lo corrige al hidratar. Resolverlo
 en HTML estático requerirá una decisión de arquitectura/SEO posterior.
 
-## 19. Motion básico permitido en esta fase
+## 19. Motion básico y ampliación de Fase 2
 
 Tokens: `--duration-fast` 140 ms, `--duration-normal` 240 ms,
 `--duration-slow` 420 ms, `--ease-standard`, `--ease-enter` y `--ease-exit`.
 
-Solo se aplican a hover, foco, color, borde, opacidad, pequeños transforms y panel
-móvil. No se han añadido GSAP, Lenis, ScrollTrigger, Framer Motion, parallax, smooth
-scroll ni timelines. Las integraciones previas permanecen sin ampliarse.
+Los tokens CSS se mantienen para hover, foco y transiciones simples. Fase 2 añade
+GSAP, ScrollTrigger y Lenis mediante el sistema centralizado documentado en
+`RAW_VIVES_MOTION_SYSTEM.md`; Framer Motion se elimina tras sustituir sus dos usos.
 
 ## 20. Ejemplos de uso
 

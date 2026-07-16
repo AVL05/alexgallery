@@ -197,17 +197,14 @@ debe validar también sobre el artefacto estático o el hosting, no solo con dev
 
 ## Motion actual
 
-- `app/template.tsx`: transición entre rutas.
-- `home-client.tsx`: reveal de home y texto de fondo ligado a scroll.
-- `hero.tsx`: reveal, parallax y CTA.
-- `loading-screen.tsx`: entrada, progreso y salida.
-- `about.tsx` y `gallery.tsx`: Framer Motion al entrar en viewport.
-- `contact.tsx`: ScrollTrigger y estado de envío.
-- `politica-client.tsx`: timeline de entrada.
-- `smooth-scroll.tsx`: Lenis sincronizado con ticker/ScrollTrigger.
+La Fase 2 centraliza GSAP, ScrollTrigger y Lenis. `app/layout.tsx` monta un único
+`MotionProvider`; `lib/motion/gsap.ts` registra plugins una vez; hooks y primitivas
+viven en `hooks/` y `components/motion/`. Lenis solo se habilita con puntero fino,
+hover y movimiento permitido. Touch y reduced motion usan scroll nativo.
 
-Antes de añadir efectos, seguir la propuesta de `RAW_VIVES_AUDIT.md`: registro
-único, preferencias centralizadas, timelines por sección y cleanup verificable.
+Menú, lightbox y loader comparten `ScrollLockManager`. Cada animación usa scope y
+cleanup local; la galería agrupa reveals con `ScrollTrigger.batch`. La referencia
+completa y los ejemplos están en `docs/RAW_VIVES_MOTION_SYSTEM.md`.
 
 ## Integraciones externas
 
@@ -230,7 +227,8 @@ No hay analítica, CMS, almacenamiento, autenticación ni API propia confirmados
 - `public/_headers`: errores pueden bloquear scripts, imágenes o Web3Forms.
 - `wrangler.json`: dominio y directorio de publicación.
 - Loader/home: actualmente controla cuándo existe el contenido en DOM.
-- Lenis/GSAP ticker: configuración global compartida por secciones.
+- `MotionProvider`, Lenis y GSAP ticker: configuración global compartida; no crear
+  instancias, registros o loops fuera de esta capa.
 - Diccionario español: actúa como contrato TypeScript de todos los idiomas.
 
 No eliminar archivos, derivados, dependencias o categorías por parecer sin uso

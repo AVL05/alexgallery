@@ -6,7 +6,7 @@ Portfolio fotográfico de Alex Vicente Lopez — Next.js + exportación estátic
 
 - Next.js 16 (App Router, `output: "export"`)
 - React 19 · TypeScript estricto · Tailwind CSS 4
-- GSAP + Framer Motion · Lenis smooth scroll
+- GSAP + ScrollTrigger · Lenis smooth scroll adaptativo
 - `sharp` · `plaiceholder` · `exifr` para imágenes
 
 ## Comandos
@@ -15,6 +15,7 @@ Portfolio fotográfico de Alex Vicente Lopez — Next.js + exportación estátic
 pnpm dev               # desarrollo local
 pnpm build             # build estática → out/
 pnpm typecheck         # validación TypeScript
+pnpm test              # pruebas de infraestructura motion
 pnpm optimize-images   # genera WebP/AVIF, blur placeholders y EXIF desde public/photos/raw
 pnpm deploy:wrangler   # build + deploy a Cloudflare
 ```
@@ -40,6 +41,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Auditoría RAW.VIVES](docs/RAW_VIVES_AUDIT.md)
 - [Arquitectura RAW.VIVES](docs/RAW_VIVES_ARCHITECTURE.md)
 - [Sistema visual RAW.VIVES](docs/RAW_VIVES_DESIGN_SYSTEM.md)
+- [Sistema motion RAW.VIVES](docs/RAW_VIVES_MOTION_SYSTEM.md)
 
 ## Licencia
 
