@@ -39,6 +39,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 
 - [Auditoría RAW.VIVES](docs/RAW_VIVES_AUDIT.md)
 - [Arquitectura RAW.VIVES](docs/RAW_VIVES_ARCHITECTURE.md)
+- [Sistema visual RAW.VIVES](docs/RAW_VIVES_DESIGN_SYSTEM.md)
 
 ## Licencia
 

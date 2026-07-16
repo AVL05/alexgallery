@@ -1,8 +1,8 @@
 # Arquitectura de RAW.VIVES
 
 Este documento describe la aplicación existente `alexgallery`, publicada en
-`https://gallery.aleviclop.dev/`. RAW.VIVES es el nombre de la evolución prevista;
-la Fase 0 conserva URLs, contenido y presentación actual.
+`https://gallery.aleviclop.dev/`. La Fase 0 confirmó la base técnica y la Fase 1
+añadió el sistema visual sin cambiar rutas, catálogo, idiomas ni despliegue.
 
 ## Arquitectura actual
 
@@ -34,15 +34,18 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | --- | --- |
 | `app/layout.tsx` | HTML raíz, fuentes, metadata global, JSON-LD y estilos |
 | `app/page.tsx` | Landing raíz con elección de idioma |
-| `app/[locale]/layout.tsx` | Validación común de locales |
+| `app/[locale]/layout.tsx` | Validación de locales y sincronización de `lang` en cliente |
 | `app/not-found.tsx` | Página 404 estática con recuperación bilingüe |
 | `app/[locale]/page.tsx` | Carga del diccionario y datos de home |
 | `app/[locale]/home-client.tsx` | Composición cliente y loader |
 | `app/[locale]/photo/[id]/page.tsx` | Ficha SSG, metadata y navegación circular |
 | `app/[locale]/politica-uso/` | Política bilingüe |
-| `app/globals.css` | Tokens, Tailwind, foco, reduced motion y utilidades globales |
-| `components/` | Secciones y comportamientos reutilizables |
-| `components/ui/` | Primitivas genéricas; actualmente no conectadas a páginas |
+| `app/globals.css` | Tokens RAW.VIVES, tipos, layout, foco y reduced motion |
+| `components/` | Secciones, navegación, footer y comportamientos reutilizables |
+| `components/ui/` | Botones, layout y metadatos conectados a páginas |
+| `PRODUCT.md` | Contexto estratégico y límites duraderos de producto |
+| `DESIGN.md` | Tokens machine-readable y reglas visuales resumidas |
+| `docs/RAW_VIVES_DESIGN_SYSTEM.md` | Contrato visual completo de Fase 1 |
 | `dictionaries/` | Copia localizada de la interfaz |
 | `hooks/use-image-preloader.ts` | Precarga imperativa de imágenes del intro |
 | `lib/gallery-data.ts` | Fuente de verdad del catálogo y su orden |

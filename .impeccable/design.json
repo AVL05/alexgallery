@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-16T20:03:25.6303983+02:00",
+  "title": "Design System: RAW.VIVES",
+  "extensions": {
+    "colorMeta": {
+      "archive-black": { "role": "neutral", "displayName": "Archive Black", "canonical": "#080808", "tonalRamp": ["#080808", "#0d0d0c", "#121211", "#181817"] },
+      "paper-white": { "role": "neutral", "displayName": "Paper White", "canonical": "#f1f0eb", "tonalRamp": ["#85827b", "#b7b5ae", "#f1f0eb"] },
+      "archival-accent": { "role": "primary", "displayName": "Archival Accent", "canonical": "#cfc6b5", "tonalRamp": ["#858078", "#cfc6b5", "#e2d9c8"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Brand, hero, and editorial titles only." },
+      "body": { "displayName": "Reading", "purpose": "Interface and long-form reading." },
+      "label": { "displayName": "Technical Label", "purpose": "Navigation, actions, and metadata." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "fast", "value": "140ms", "purpose": "Hover and focus feedback." },
+      { "name": "normal", "value": "240ms", "purpose": "Interface state changes." },
+      { "name": "slow", "value": "420ms", "purpose": "Simple panel transitions." },
+      { "name": "standard", "value": "cubic-bezier(0.2, 0, 0, 1)", "purpose": "Default state easing." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Restrained archival action with a 44px minimum target.",
+      "html": "<button class=\"ds-button-primary\">Explore archive</button>",
+      "css": ".ds-button-primary{min-height:44px;border:1px solid transparent;border-radius:2px;padding:12px 28px;background:var(--color-accent);color:var(--color-background);font:600 11px var(--font-reading);letter-spacing:.16em;text-transform:uppercase;transition:background-color 140ms cubic-bezier(.2,0,0,1)}.ds-button-primary:hover{background:var(--color-accent-strong)}.ds-button-primary:focus-visible{outline:2px solid var(--color-focus);outline-offset:3px}"
+    },
+    {
+      "name": "Editorial Link",
+      "kind": "custom",
+      "description": "Text action with a quiet archival underline.",
+      "html": "<a class=\"ds-editorial-link\" href=\"#\">View photograph →</a>",
+      "css": ".ds-editorial-link{display:inline-flex;min-height:44px;align-items:center;color:var(--color-text);font:600 11px var(--font-reading);letter-spacing:.16em;text-transform:uppercase;text-decoration:underline;text-decoration-color:var(--color-border-strong);text-underline-offset:7px}.ds-editorial-link:hover{color:var(--color-accent-strong);text-decoration-color:var(--color-accent)}.ds-editorial-link:focus-visible{outline:2px solid var(--color-focus);outline-offset:3px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "description": "Flat field with explicit label and high-contrast focus.",
+      "html": "<label class=\"ds-label\">Email<input class=\"ds-field\" type=\"email\"></label>",
+      "css": ".ds-label{display:grid;gap:8px;color:var(--color-text-secondary);font:600 11px var(--font-reading);letter-spacing:.2em;text-transform:uppercase}.ds-field{min-height:48px;border:1px solid var(--color-border);border-radius:2px;background:var(--color-background-secondary);padding:14px 16px;color:var(--color-text)}.ds-field:focus-visible{border-color:var(--color-focus);outline:2px solid var(--color-focus);outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Projected Archive",
+    "overview": "A nocturnal, tactile, and exact photographic archive where interface elements behave like precise museum captions and photographs remain the most expressive objects.",
+    "keyCharacteristics": ["Photography first", "Editorial hierarchy", "Flat tonal depth", "Accessible technical metadata"],
+    "rules": [
+      { "name": "The Rare Accent Rule", "body": "Use the archival accent only for actions and active states.", "section": "colors" },
+      { "name": "The Flat-by-Default Rule", "body": "Prefer tone, border, and spacing over shadows or blur.", "section": "elevation" }
+    ],
+    "dos": ["Use the shared gutter and type roles.", "Preserve image ratios and visible focus."],
+    "donts": ["Do not use SaaS cards, gamer neon, permanent glassmorphism, or effects that compete with photographs."]
+  }
+}
