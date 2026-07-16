@@ -24,6 +24,55 @@
     "imageAlt": "The Cliffs of Moher fading into mist above the Atlantic",
     "featured_tag": "Highlights"
   },
+  "home": {
+    "chapterLabel": "Chapter {current} of {total}",
+    "manifesto": {
+      "title": "Photography is a way of learning to pause.",
+      "lead": "raw.vives gathers scenes found between travel, city and nature. A personal archive shaped by light, time and attention.",
+      "archiveNote": "Each image remains here because it still asks for a second look."
+    },
+    "featured": {
+      "label": "Featured story",
+      "cta": "View photograph"
+    },
+    "expansive": {
+      "label": "Atmospheric memory",
+      "cta": "Open image"
+    },
+    "chapters": {
+      "title": "Five ways of looking.",
+      "description": "The archive is organised through encounters, spaces and conditions of light.",
+      "action": "Explore chapter",
+      "empty": "There are no chapters available at the moment.",
+      "descriptions": {
+        "Fauna": "Brief encounters with living forms that do not pose.",
+        "Arquitectura": "Structures, movement and traces of inhabited space.",
+        "Paisaje": "Territories whose scale asks us to look more slowly.",
+        "Retrato": "Human presences within a larger scene.",
+        "Meteorología": "Atmosphere as matter, tension and event."
+      }
+    },
+    "selected": {
+      "title": "Selected work",
+      "description": "A concise sequence through the rhythm and range of the archive.",
+      "cta": "View photograph",
+      "empty": "The selection is temporarily empty. The full archive remains available."
+    },
+    "archive": {
+      "title": "The archive continues.",
+      "description": "Photographs made between {startYear} and {endYear}, organised by year and category.",
+      "photographs": "Photographs",
+      "categories": "Categories",
+      "years": "Active years",
+      "cta": "Explore archive"
+    },
+    "closing": {
+      "title": "To keep looking is also a way of remembering.",
+      "description": "raw.vives is an open archive: it changes with every journey, every walk and every scene worth keeping.",
+      "archiveCta": "Explore archive",
+      "contactCta": "Get in touch"
+    }
+  },
   "nav": {
     "home": "Home",
     "about": "About",

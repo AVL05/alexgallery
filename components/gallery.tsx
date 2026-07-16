@@ -17,6 +17,7 @@ import { PhotoIndex } from "@/components/ui/metadata";
 import { useMotion } from "@/components/motion/motion-provider";
 import { useBatchReveal } from "@/hooks/use-batch-reveal";
 import { Reveal } from "@/components/motion/reveal";
+import { GALLERY_FILTER_EVENT } from "@/lib/gallery-filter-events";
 
 const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
   ssr: false,
@@ -80,6 +81,19 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
     if (index < 0) return;
     return lockScroll("gallery-lightbox");
   }, [index, lockScroll]);
+
+  useEffect(() => {
+    const handleRequestedFilter = (event: Event) => {
+      const category = (event as CustomEvent<GalleryFilter>).detail;
+      if (!(categories as readonly GalleryFilter[]).includes(category)) return;
+      setSelectedCategory(category);
+      setIndex(-1);
+      window.requestAnimationFrame(refreshScrollTriggers);
+    };
+
+    window.addEventListener(GALLERY_FILTER_EVENT, handleRequestedFilter);
+    return () => window.removeEventListener(GALLERY_FILTER_EVENT, handleRequestedFilter);
+  }, [refreshScrollTriggers]);
 
   return (
     <section

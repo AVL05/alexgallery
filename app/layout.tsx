@@ -115,6 +115,7 @@ export default function RootLayout({
       lang="es"
       className={`${prata.variable} ${manrope.variable}`}
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
     >
       <head>
         <IntroBootstrapScript />

@@ -1,17 +1,23 @@
 import type { HeroArchiveFacts } from "@/lib/hero/config";
 import type { HeroDictionary } from "@/types/dictionary";
 import { ArrowDownRight } from "lucide-react";
+import { SectionMarker } from "@/components/home/section-marker";
 
 export function HeroContent({
   dictionary,
   facts,
+  chapterLabel,
 }: {
   dictionary: HeroDictionary;
   facts: HeroArchiveFacts;
+  chapterLabel: string;
 }) {
   return (
     <div data-hero-content className="relative z-10 flex h-full flex-col justify-end pb-[max(2rem,env(safe-area-inset-bottom))] pt-[calc(var(--layout-nav-height)+3.5rem)] sm:justify-center sm:pb-12 sm:pt-[calc(var(--layout-nav-height)+2rem)] lg:pb-14">
       <div className="max-w-[72rem]">
+        <div data-hero-secondary className="mb-5 sm:mb-7">
+          <SectionMarker current={1} label={chapterLabel} />
+        </div>
         <p data-hero-secondary className="rv-kicker flex items-center gap-3 text-[var(--color-text-secondary)]">
           <span aria-hidden="true" className="h-px w-8 bg-accent" />
           {dictionary.eyebrow}

@@ -20,6 +20,11 @@ import {
   requestHeroPreview,
   type HeroStateDetail,
 } from "@/lib/hero/development";
+import {
+  HOME_STATE_EVENT,
+  requestHomePreview,
+  type HomeStateDetail,
+} from "@/lib/home/development";
 import { useEffect, useState } from "react";
 
 export function MotionDebugPanel() {
@@ -30,6 +35,7 @@ export function MotionDebugPanel() {
   const [introState, setIntroState] = useState<IntroStateDetail | null>(null);
   const [introSeen, setIntroSeen] = useState(false);
   const [heroState, setHeroState] = useState<HeroStateDetail | null>(null);
+  const [homeState, setHomeState] = useState<HomeStateDetail | null>(null);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -56,6 +62,15 @@ export function MotionDebugPanel() {
     syncSession();
     window.addEventListener(INTRO_STATE_EVENT, handleIntroState);
     return () => window.removeEventListener(INTRO_STATE_EVENT, handleIntroState);
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+    const handleHomeState = (event: Event) => {
+      setHomeState((event as CustomEvent<HomeStateDetail>).detail);
+    };
+    window.addEventListener(HOME_STATE_EVENT, handleHomeState);
+    return () => window.removeEventListener(HOME_STATE_EVENT, handleHomeState);
   }, [visible]);
 
   useEffect(() => {
@@ -161,6 +176,32 @@ export function MotionDebugPanel() {
               source {heroState?.source ?? "initial"} / triggers {triggerCount} / scroll {motion.isScrollLocked ? "locked" : "open"}
             </p>
           </section>
+          <section className="border border-border p-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="rv-meta">Home narrative</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+                  chapters {homeState?.chapterCount ?? 5} / selected {homeState?.selectedCount ?? 6}
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-accent">
+                {homeState?.alternate ? "ALT" : "CURATED"}
+              </span>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview()}>Default</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview({ alternate: true })}>Alternate</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview({ reducedMotion: true })}>Reduced</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview({ slowImages: true })}>Slow images</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview({ failImages: true })}>Image fail</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview({ fewPhotos: true })}>Few photos</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestHomePreview({ emptyCategories: true })}>No chapters</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => document.querySelector("#selected-work")?.scrollIntoView()}>Selected</button>
+            </div>
+            <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
+              images {homeState?.failImages ? "fallback" : "primary"} / motion {homeState?.reducedMotion ? "reduced" : "system"}
+            </p>
+          </section>
           <Reveal><p className="rv-card-title">Reveal simple</p></Reveal>
           <MotionText text="Reveal by word" className="rv-body" />
           <MotionText text={'Reveal by\nline'} mode="line" className="rv-body" />
@@ -175,6 +216,7 @@ export function MotionDebugPanel() {
             alt="Motion image reference"
             width={400}
             height={500}
+            unoptimized
             className="h-full w-full object-cover"
             frameClassName="aspect-[4/3]"
           />

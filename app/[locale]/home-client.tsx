@@ -1,10 +1,11 @@
 "use client";
 
-import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
 import { Gallery } from "@/components/gallery";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
+import { ClosingStatement } from "@/components/home/closing-statement";
+import { HomeNarrative } from "@/components/home/home-narrative";
 import { IntroOverlay } from "@/components/intro/intro-overlay";
 import { Navigation } from "@/components/navigation";
 import { useMotion } from "@/components/motion/motion-provider";
@@ -66,12 +67,14 @@ export default function HomeClient({
         <Navigation dictionary={dictionary.nav} currentLocale={locale} />
         <Hero
           dictionary={dictionary.hero}
+          chapterLabel={dictionary.home.chapterLabel}
           imagesData={imagesData}
           entryReady={heroEntryReady}
         />
-        <About dictionary={dictionary.about} />
+        <HomeNarrative dictionary={dictionary} locale={locale} imagesData={imagesData} />
         <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
         <Contact dictionary={dictionary.contact} />
+        <ClosingStatement dictionary={dictionary.home} />
         <Footer currentLocale={locale} dictionary={dictionary.nav} />
       </div>
     </div>

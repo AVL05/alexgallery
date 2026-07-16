@@ -17,10 +17,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export function HeroSection({
   dictionary,
+  chapterLabel,
   imagesData,
   entryReady,
 }: {
   dictionary: HeroDictionary;
+  chapterLabel: string;
   imagesData: ImagesData;
   entryReady: boolean;
 }) {
@@ -100,7 +102,7 @@ export function HeroSection({
         onStateChange={handleImageState}
       />
       <Container className="relative z-10 h-full">
-        <HeroContent dictionary={dictionary} facts={facts} />
+        <HeroContent dictionary={dictionary} facts={facts} chapterLabel={chapterLabel} />
       </Container>
     </section>
   );

@@ -24,6 +24,55 @@
     "imageAlt": "Acantilados de Moher desapareciendo en la bruma sobre el Atlántico",
     "featured_tag": "Destacadas"
   },
+  "home": {
+    "chapterLabel": "Capítulo {current} de {total}",
+    "manifesto": {
+      "title": "Fotografiar es aprender a detenerse.",
+      "lead": "raw.vives reúne escenas encontradas entre viajes, ciudad y naturaleza. Un archivo personal construido desde la luz, el tiempo y la atención.",
+      "archiveNote": "Cada imagen permanece aquí porque todavía pide una segunda mirada."
+    },
+    "featured": {
+      "label": "Historia destacada",
+      "cta": "Ver fotografía"
+    },
+    "expansive": {
+      "label": "Memoria atmosférica",
+      "cta": "Abrir imagen"
+    },
+    "chapters": {
+      "title": "Cinco formas de mirar.",
+      "description": "El archivo se ordena por encuentros, espacios y condiciones de luz.",
+      "action": "Explorar capítulo",
+      "empty": "No hay capítulos disponibles en este momento.",
+      "descriptions": {
+        "Fauna": "Encuentros breves con formas de vida que no posan.",
+        "Arquitectura": "Estructuras, tránsito y huellas del espacio habitado.",
+        "Paisaje": "Territorios donde la escala obliga a mirar más despacio.",
+        "Retrato": "Presencias humanas dentro de una escena mayor.",
+        "Meteorología": "La atmósfera como materia, tensión y acontecimiento."
+      }
+    },
+    "selected": {
+      "title": "Trabajo seleccionado",
+      "description": "Una secuencia breve para recorrer el ritmo y la diversidad del archivo.",
+      "cta": "Ver fotografía",
+      "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible."
+    },
+    "archive": {
+      "title": "El archivo continúa.",
+      "description": "Fotografías realizadas entre {startYear} y {endYear}, organizadas por año y categoría.",
+      "photographs": "Fotografías",
+      "categories": "Categorías",
+      "years": "Años activos",
+      "cta": "Explorar archivo"
+    },
+    "closing": {
+      "title": "Seguir mirando también es una forma de recordar.",
+      "description": "raw.vives es un archivo abierto: cambia con cada viaje, cada paseo y cada escena que merece quedarse.",
+      "archiveCta": "Explorar archivo",
+      "contactCta": "Contactar"
+    }
+  },
   "nav": {
     "home": "Inicio",
     "about": "Sobre mí",
