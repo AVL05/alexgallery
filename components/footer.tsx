@@ -1,4 +1,6 @@
-import { Container, Divider } from "@/components/ui/layout";
+import { Container } from "@/components/ui/layout";
+import { AnimatedDivider } from "@/components/motion/animated-divider";
+import { Reveal } from "@/components/motion/reveal";
 import type { Locale, NavDictionary } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +23,7 @@ export function Footer({
   return (
     <footer className="bg-[var(--color-background-secondary)] pt-16 sm:pt-20">
       <Container>
-        <div className="grid gap-12 pb-12 md:grid-cols-12 md:gap-8 md:pb-16">
+        <Reveal className="grid gap-12 pb-12 md:grid-cols-12 md:gap-8 md:pb-16">
           <div className="md:col-span-6">
             <Link href={`/${currentLocale}`} className="inline-flex flex-col">
               <span className="font-serif text-[clamp(2.5rem,6vw,5.5rem)] leading-none tracking-[-0.04em] text-foreground">
@@ -75,9 +77,9 @@ export function Footer({
               Email
             </a>
           </div>
-        </div>
+        </Reveal>
 
-        <Divider />
+        <AnimatedDivider />
         <div className="flex flex-col gap-4 py-6 text-[10px] uppercase tracking-[0.12em] text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Alex Vicente</p>
           <p>{copyright}</p>

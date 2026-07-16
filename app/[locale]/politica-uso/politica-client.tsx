@@ -2,18 +2,14 @@
 
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import { Container, PageShell } from "@/components/ui/layout";
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDuration, motionEase, motionStagger } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { Locale, NavDictionary } from "@/types/dictionary";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import { ArrowLeft, Award, Download, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(useGSAP);
-}
 
 export function PoliticaClient({
   locale,
@@ -24,23 +20,23 @@ export function PoliticaClient({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spanish = locale === "es";
+  const { prefersReducedMotion } = useMotion();
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (prefersReducedMotion) {
         gsap.set(".policy-reveal", { opacity: 1, y: 0, x: 0 });
         return;
       }
       gsap
-        .timeline({ defaults: { ease: "power2.out", duration: 0.55 } })
+        .timeline({ defaults: { ease: motionEase.standard, duration: motionDuration.normal } })
         .from(".policy-back", { opacity: 0, x: -16 })
-        .from(".policy-reveal", { opacity: 0, y: 24, stagger: 0.1 }, "-=0.3");
+        .from(".policy-reveal", { opacity: 0, y: 24, stagger: motionStagger.normal }, "-=0.2");
     },
-    { scope: containerRef },
+    { dependencies: [prefersReducedMotion], scope: containerRef, revertOnUpdate: true },
   );
 
   return (
-    <SmoothScroll>
       <PageShell as="div">
         <div ref={containerRef}>
           <Navigation dictionary={navigation} currentLocale={locale} isHome={false} currentPath={`/${locale}/politica-uso`} />
@@ -117,6 +113,5 @@ export function PoliticaClient({
           <Footer currentLocale={locale} dictionary={navigation} />
         </div>
       </PageShell>
-    </SmoothScroll>
   );
 }

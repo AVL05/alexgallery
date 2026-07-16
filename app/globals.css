@@ -148,8 +148,8 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  html[data-menu-open="true"],
-  html[data-menu-open="true"] body {
+  html[data-scroll-locked="true"],
+  html[data-scroll-locked="true"] body {
     overflow: hidden;
   }
 

@@ -5,9 +5,10 @@ import { PhotoKeyboardNavigation } from '@/components/photo-keyboard-navigation'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Container, PageShell } from '@/components/ui/layout'
+import { MotionImage } from '@/components/motion/motion-image'
+import { Reveal, StaggerGroup } from '@/components/motion/reveal'
 import type { Locale } from '@/types/dictionary'
 import type { ImagesData } from '@/types/photo'
-import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowLeft,
@@ -93,34 +94,35 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
       <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/photo/${id}`} />
 
       <Container className="pb-20 pt-32 sm:pt-36 lg:pb-28">
-        <Link 
-          href={galleryHref}
-          className="rv-editorial-link group mb-10 sm:mb-12"
-        >
-          <ChevronLeft aria-hidden="true" className="size-4 transition-transform group-hover:-translate-x-0.5" />
-          <span>{backText}</span>
-        </Link>
+        <Reveal distance={8}>
+          <Link
+            href={galleryHref}
+            className="rv-editorial-link group mb-10 sm:mb-12"
+          >
+            <ChevronLeft aria-hidden="true" className="size-4 transition-transform group-hover:-translate-x-0.5" />
+            <span>{backText}</span>
+          </Link>
+        </Reveal>
 
         <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16 xl:gap-24">
           {/* Main Image View */}
-          <div className="lg:col-span-8">
-            <div className="relative h-[62svh] min-h-[25rem] w-full overflow-hidden border border-border bg-[var(--color-surface)] sm:h-[70svh] lg:h-[76svh]">
-              <Image
+          <Reveal className="lg:col-span-8">
+              <MotionImage
                 src={optimized?.src || `/photos/optimized/original/${photo.id}.webp`}
                 alt={photo.title}
                 fill
                 priority
                 className="object-contain"
+                frameClassName="h-[62svh] min-h-[25rem] w-full border border-border sm:h-[70svh] lg:h-[76svh]"
                 sizes="(max-width: 1024px) 100vw, 66vw"
                 placeholder={optimized?.blurDataURL ? "blur" : undefined}
                 blurDataURL={optimized?.blurDataURL}
               />
-            </div>
-          </div>
+          </Reveal>
 
           {/* Photo Details */}
-          <div className="space-y-12 lg:col-span-4 lg:sticky lg:top-28">
-            <div>
+          <StaggerGroup className="space-y-12 lg:col-span-4 lg:sticky lg:top-28">
+            <div data-motion-item>
               <span className="rv-meta mb-5 block text-accent">
                 {photo.category} // {photo.year}
               </span>
@@ -133,6 +135,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
             </div>
 
             <nav
+              data-motion-item
               aria-label={
                 locale === 'es'
                   ? 'Navegación entre fotografías'
@@ -226,7 +229,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                 }),
               }}
             />
-          </div>
+          </StaggerGroup>
         </div>
       </Container>
       <Footer currentLocale={locale} dictionary={dictionary.nav} />

@@ -1,19 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Container, Section } from "@/components/ui/layout";
+import { Container } from "@/components/ui/layout";
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDistance, motionDuration, motionEase, motionStagger } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { ContactDictionary } from "@/types/dictionary";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(useGSAP);
-}
 
 type ContactFormValues = {
   name: string;
@@ -43,6 +40,8 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     message: string;
   } | null>(null);
   const statusRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const { prefersReducedMotion, isTouchDevice } = useMotion();
 
   const contactSchema = useMemo(
     () =>
@@ -103,31 +102,33 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   });
 
   useGSAP(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (submitStatus && statusRef.current) {
       gsap.fromTo(
         statusRef.current,
-        { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : -8 },
-        { opacity: 1, y: 0, duration: reduceMotion ? 0 : 0.3, ease: "power2.out" },
+        { opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : -8 },
+        { opacity: 1, y: 0, duration: prefersReducedMotion ? 0 : motionDuration.fast, ease: motionEase.standard },
       );
     }
-    if (reduceMotion) {
+  }, { dependencies: [prefersReducedMotion, submitStatus], scope: statusRef, revertOnUpdate: true });
+
+  useGSAP(() => {
+    if (prefersReducedMotion) {
       gsap.set(".contact-reveal", { opacity: 1, y: 0 });
       return;
     }
     gsap.from(".contact-reveal", {
-      y: 36,
+      y: isTouchDevice ? 12 : motionDistance.section,
       opacity: 0,
-      duration: 0.8,
-      stagger: 0.12,
-      ease: "power3.out",
+      duration: isTouchDevice ? motionDuration.normal : motionDuration.slow,
+      stagger: isTouchDevice ? motionStagger.tight : motionStagger.normal,
+      ease: motionEase.enter,
       scrollTrigger: {
-        trigger: "#contact",
+        trigger: containerRef.current,
         start: "top bottom-=100px",
         toggleActions: "play none none none",
       },
     });
-  }, [submitStatus]);
+  }, { dependencies: [isTouchDevice, prefersReducedMotion], scope: containerRef, revertOnUpdate: true });
 
   const submit = async (
     data: ContactFormValues | LicenseFormValues,
@@ -181,7 +182,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   );
 
   return (
-    <Section id="contact" className="overflow-hidden bg-background">
+    <section ref={containerRef} id="contact" className="rv-section overflow-hidden bg-background">
       <Container>
         <div className="contact-reveal mb-12 max-w-3xl md:mb-16">
           <p className="rv-kicker mb-5">raw.vives / Contact</p>
@@ -370,6 +371,6 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
           </aside>
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }

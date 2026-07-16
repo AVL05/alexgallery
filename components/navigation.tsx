@@ -1,10 +1,13 @@
 "use client";
 
 import { Container } from "@/components/ui/layout";
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDistance, motionDuration, motionEase } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { Locale, NavDictionary } from "@/types/dictionary";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function Navigation({
   dictionary,
@@ -30,17 +33,76 @@ export function Navigation({
   const alternatePath = pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuMounted, setIsMobileMenuMounted] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const { prefersReducedMotion, lockScroll } = useMotion();
   const openMenuLabel = currentLocale === "es" ? "Abrir menú" : "Open menu";
   const closeMenuLabel = currentLocale === "es" ? "Cerrar menú" : "Close menu";
   const navigationLabel =
     currentLocale === "es" ? "Navegación principal" : "Primary navigation";
 
-  const closeMobileMenu = () => {
+  const finishClosingMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
+    setIsMobileMenuMounted(false);
     window.requestAnimationFrame(() => mobileToggleRef.current?.focus());
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    if (!mobileMenuRef.current || prefersReducedMotion) {
+      finishClosingMenu();
+      return;
+    }
+
+    gsap.to(mobileMenuRef.current, {
+      autoAlpha: 0,
+      y: -motionDistance.compact,
+      duration: motionDuration.fast,
+      ease: motionEase.exit,
+      onComplete: finishClosingMenu,
+    });
+  }, [finishClosingMenu, prefersReducedMotion]);
+
+  const openMobileMenu = () => {
+    setIsMobileMenuMounted(true);
+    setIsMobileMenuOpen(true);
   };
+
+  useGSAP(
+    () => {
+      if (!headerRef.current || prefersReducedMotion) return;
+      gsap.fromTo(
+        headerRef.current,
+        { autoAlpha: 0, y: -motionDistance.compact },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: motionDuration.normal,
+          ease: motionEase.enter,
+          clearProps: "opacity,transform,visibility",
+        },
+      );
+    },
+    { dependencies: [prefersReducedMotion], scope: headerRef, revertOnUpdate: true },
+  );
+
+  useGSAP(
+    () => {
+      if (!isMobileMenuOpen || !mobileMenuRef.current || prefersReducedMotion) return;
+      gsap.fromTo(
+        mobileMenuRef.current,
+        { autoAlpha: 0, y: -motionDistance.compact },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: motionDuration.normal,
+          ease: motionEase.enter,
+        },
+      );
+    },
+    { dependencies: [isMobileMenuOpen, prefersReducedMotion], scope: mobileMenuRef, revertOnUpdate: true },
+  );
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 32);
@@ -50,11 +112,9 @@ export function Navigation({
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.menuOpen = String(isMobileMenuOpen);
-    return () => {
-      delete document.documentElement.dataset.menuOpen;
-    };
-  }, [isMobileMenuOpen]);
+    if (!isMobileMenuMounted) return;
+    return lockScroll("mobile-navigation");
+  }, [isMobileMenuMounted, lockScroll]);
 
   useEffect(() => {
     if (!isMobileMenuOpen) return;
@@ -90,12 +150,13 @@ export function Navigation({
       window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isMobileMenuOpen]);
+  }, [closeMobileMenu, isMobileMenuOpen]);
 
   return (
     <>
       <header
-        inert={isMobileMenuOpen}
+        ref={headerRef}
+        inert={isMobileMenuMounted}
         className={`fixed inset-x-0 top-0 z-[var(--z-nav)] border-b transition-[background-color,border-color] duration-300 ${
           isScrolled || !isHome
             ? "border-border bg-background/92 backdrop-blur-md"
@@ -124,13 +185,19 @@ export function Navigation({
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+                  className={`relative inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${
                     active
                       ? "text-accent"
                       : "text-[var(--color-text-secondary)] hover:text-foreground"
                   }`}
                 >
                   {item.name}
+                  {active && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-1 h-px origin-left bg-accent"
+                    />
+                  )}
                 </Link>
               );
             })}
@@ -171,7 +238,7 @@ export function Navigation({
             ref={mobileToggleRef}
             type="button"
             className="inline-flex size-11 items-center justify-center text-foreground lg:hidden"
-            onClick={() => setIsMobileMenuOpen((open) => !open)}
+            onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
             aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-navigation"
@@ -181,7 +248,7 @@ export function Navigation({
         </Container>
       </header>
 
-      {isMobileMenuOpen && (
+      {isMobileMenuMounted && (
       <div
         ref={mobileMenuRef}
         id="mobile-navigation"
@@ -211,7 +278,7 @@ export function Navigation({
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="group flex min-h-16 items-center justify-between border-b border-border py-4"
               >
                 <span className="font-serif text-[clamp(1.8rem,9vw,3.25rem)] leading-none text-foreground transition-colors group-hover:text-accent">
@@ -237,7 +304,7 @@ export function Navigation({
                 href={alternatePath || `/${alternateLocale}`}
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="inline-flex size-11 items-center justify-center border border-border font-mono text-xs text-foreground"
               >
                 {alternateLocale.toUpperCase()}

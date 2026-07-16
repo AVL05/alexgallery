@@ -2,12 +2,9 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useImagePreloader } from "@/hooks/use-image-preloader";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(useGSAP);
-}
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDuration, motionEase, motionStagger } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -25,14 +22,13 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const { prefersReducedMotion, lockScroll } = useMotion();
+
+  useEffect(() => lockScroll("loading-screen"), [lockScroll]);
 
   // Entrance animations on mount
   useGSAP(
     () => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
       if (prefersReducedMotion) {
         gsap.set(".entrance-up", { opacity: 1, y: 0 });
         gsap.set('[data-corner="h"]', { scaleX: 1 });
@@ -43,7 +39,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
       gsap.fromTo(
         ".entrance-up",
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.3 },
+        { opacity: 1, y: 0, duration: motionDuration.slow, ease: motionEase.enter, delay: 0.2 },
       );
 
       gsap.fromTo(
@@ -51,9 +47,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         { scaleX: 0 },
         {
           scaleX: 1,
-          duration: 0.5,
-          ease: "power2.out",
-          stagger: 0.1,
+          duration: motionDuration.normal,
+          ease: motionEase.standard,
+          stagger: motionStagger.normal,
           delay: 0.2,
         },
       );
@@ -63,24 +59,20 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         { scaleY: 0 },
         {
           scaleY: 1,
-          duration: 0.5,
-          ease: "power2.out",
-          stagger: 0.1,
+          duration: motionDuration.normal,
+          ease: motionEase.standard,
+          stagger: motionStagger.normal,
           delay: 0.25,
         },
       );
     },
-    { scope: containerRef },
+    { dependencies: [prefersReducedMotion], scope: containerRef, revertOnUpdate: true },
   );
 
   // Exit animation when all images are loaded
   useGSAP(
     () => {
       if (allLoaded) {
-        const prefersReducedMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
-
         if (prefersReducedMotion) {
           setIsVisible(false);
           onComplete();
@@ -96,37 +88,35 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
         tl.to(containerRef.current, {
           yPercent: -100,
-          duration: 1.2,
-          ease: "expo.inOut",
-          delay: 0.5,
+          duration: motionDuration.cinematic,
+          ease: motionEase.cinematic,
+          delay: 0.35,
         });
       }
     },
-    { dependencies: [allLoaded], scope: containerRef },
+    { dependencies: [allLoaded, prefersReducedMotion], scope: containerRef, revertOnUpdate: true },
   );
 
   // Progress bar and logo fill animation
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
     if (progressBarRef.current) {
-      gsap.to(progressBarRef.current, {
+      const tween = gsap.to(progressBarRef.current, {
         width: `${progress}%`,
-        duration: prefersReducedMotion ? 0 : 0.4,
-        ease: "power2.out",
+        duration: prefersReducedMotion ? 0 : motionDuration.normal,
+        ease: motionEase.standard,
       });
+      return () => {
+        tween.kill();
+      };
     }
-
-  }, [progress]);
+  }, [prefersReducedMotion, progress]);
 
   if (!isVisible) return null;
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center overflow-hidden bg-background"
+      className="rv-loading-screen fixed inset-0 z-[var(--z-modal)] flex items-center justify-center overflow-hidden bg-background"
       aria-label="raw.vives — System Initializing"
     >
       <div className="relative flex w-full max-w-xl flex-col px-6 sm:px-10">

@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Prata } from "next/font/google";
 import type React from "react";
 import { Suspense } from "react";
+import { MotionProvider } from "@/components/motion/motion-provider";
+import { MotionDevelopmentTools } from "@/components/motion/development-tools";
 import "./globals.css";
 
 const prata = Prata({
@@ -111,7 +113,6 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${prata.variable} ${manrope.variable}`}
-      style={{ scrollBehavior: "smooth" }}
       data-scroll-behavior="smooth"
     >
       <body className="relative bg-background font-sans text-foreground">
@@ -159,7 +160,10 @@ export default function RootLayout({
         />
 
         <Suspense fallback={null}>
-          <div className="flex flex-col min-h-screen">{children}</div>
+          <MotionProvider>
+            <div className="flex min-h-screen flex-col">{children}</div>
+            <MotionDevelopmentTools />
+          </MotionProvider>
         </Suspense>
       </body>
     </html>

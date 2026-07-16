@@ -4,29 +4,15 @@ import type { HeroDictionary } from "@/types/dictionary";
 import { Container } from "@/components/ui/layout";
 import { ArrowDown } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useRef } from "react";
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDistance, motionDuration, motionEase, motionStagger } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 
 export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
   const containerRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setPrefersReducedMotion(media.matches);
-
-    updatePreference();
-    media.addEventListener("change", updatePreference);
-
-    return () => media.removeEventListener("change", updatePreference);
-  }, []);
+  const { prefersReducedMotion, isTouchDevice, scrollTo } = useMotion();
 
   useGSAP(
     () => {
@@ -37,17 +23,17 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
 
       gsap.fromTo(
         ".hero-text-reveal",
-        { autoAlpha: 0, y: 42 },
+        { autoAlpha: 0, y: isTouchDevice ? 12 : motionDistance.image },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.9,
-          stagger: 0.1,
-          ease: "power3.out",
+          duration: isTouchDevice ? motionDuration.normal : motionDuration.slow,
+          stagger: isTouchDevice ? motionStagger.tight : motionStagger.normal,
+          ease: motionEase.enter,
         },
       );
 
-      gsap.to(imageRef.current, {
+      if (!isTouchDevice) gsap.to(imageRef.current, {
         yPercent: 8,
         scale: 1.04,
         ease: "none",
@@ -59,7 +45,7 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
         },
       });
     },
-    { dependencies: [prefersReducedMotion], scope: containerRef },
+    { dependencies: [isTouchDevice, prefersReducedMotion], scope: containerRef, revertOnUpdate: true },
   );
 
   return (
@@ -98,13 +84,7 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
             <button
               type="button"
               aria-label={dictionary.cta}
-              onClick={() =>
-                document
-                  .getElementById("gallery")
-                  ?.scrollIntoView({
-                    behavior: prefersReducedMotion ? "auto" : "smooth",
-                  })
-              }
+              onClick={() => scrollTo("#gallery")}
               className="rv-editorial-link group border-0 bg-transparent p-0"
             >
               <span>{dictionary.cta}</span>

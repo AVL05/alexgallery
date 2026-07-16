@@ -4,17 +4,19 @@ import { categories, photos as basePhotos } from "@/lib/gallery-data";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import type { GalleryFilter, ImagesData, Photo } from "@/types/photo";
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import Image from "next/image";
 import Link from "next/link";
 import Masonry from "react-masonry-css";
-import { motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Container, Section } from "@/components/ui/layout";
+import { Container } from "@/components/ui/layout";
 import { PhotoIndex } from "@/components/ui/metadata";
+import { useMotion } from "@/components/motion/motion-provider";
+import { useBatchReveal } from "@/hooks/use-batch-reveal";
+import { Reveal } from "@/components/motion/reveal";
 
 const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
   ssr: false,
@@ -34,7 +36,8 @@ const breakpointCols = {
 export function Gallery({ dictionary, imagesData }: GalleryProps) {
   const [selectedCategory, setSelectedCategory] = useState<GalleryFilter>("Todo");
   const [index, setIndex] = useState(-1);
-  const shouldReduceMotion = useReducedMotion();
+  const galleryRef = useRef<HTMLElement>(null);
+  const { lockScroll, refreshScrollTriggers } = useMotion();
 
   const photos: Photo[] = useMemo(
     () =>
@@ -71,13 +74,21 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
     }));
   }, [filteredPhotos]);
 
+  useBatchReveal(galleryRef, "[data-gallery-reveal]", selectedCategory);
+
+  useEffect(() => {
+    if (index < 0) return;
+    return lockScroll("gallery-lightbox");
+  }, [index, lockScroll]);
+
   return (
-    <Section
+    <section
+      ref={galleryRef}
       id="gallery"
-      className="overflow-hidden bg-[var(--color-background-secondary)]"
+      className="rv-section overflow-hidden bg-[var(--color-background-secondary)]"
     >
       <Container className="relative z-10">
-        <div className="mb-12 flex flex-col gap-8 border-b border-border pb-8 md:mb-16 md:flex-row md:items-end md:justify-between">
+        <Reveal className="mb-12 flex flex-col gap-8 border-b border-border pb-8 md:mb-16 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-4">
             <p className="rv-kicker">Visual Archive</p>
             <h2 className="rv-section-title">
@@ -109,9 +120,8 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
                 >
                   {dictionary.categories[cat] || cat}
                   {selectedCategory === cat && (
-                    <motion.span
+                    <span
                       aria-hidden="true"
-                      layoutId="activeTab"
                       className="absolute bottom-0 left-0 h-px w-full bg-accent"
                     />
                   )}
@@ -119,7 +129,7 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
               ))}
             </nav>
           </div>
-        </div>
+        </Reveal>
 
         <Masonry
           breakpointCols={breakpointCols}
@@ -127,18 +137,9 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
           columnClassName="masonry-col"
         >
           {filteredPhotos.map((photo, i) => (
-            <motion.div
+            <div
               key={photo.id}
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
-              whileInView={
-                shouldReduceMotion ? undefined : { opacity: 1, y: 0 }
-              }
-              transition={{
-                duration: shouldReduceMotion ? 0 : 0.55,
-                delay: shouldReduceMotion ? 0 : Math.min(i, 8) * 0.035,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              viewport={{ once: true }}
+              data-gallery-reveal
             >
               <Link
                 href={`/${dictionary.locale || "es"}/photo/${photo.id}`}
@@ -162,6 +163,7 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     placeholder={photo.blurDataURL ? "blur" : undefined}
                     blurDataURL={photo.blurDataURL}
+                    onLoad={refreshScrollTriggers}
                   />
 
                   <PhotoIndex
@@ -180,7 +182,7 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </Masonry>
       </Container>
@@ -224,6 +226,6 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
           container: { backgroundColor: "rgba(8, 8, 8, .98)" },
         }}
       />
-    </Section>
+    </section>
   );
 }

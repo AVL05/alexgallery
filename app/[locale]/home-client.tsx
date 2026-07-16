@@ -7,17 +7,12 @@ import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { LoadingScreen } from "@/components/loading-screen";
 import { Navigation } from "@/components/navigation";
-import { SmoothScroll } from "@/components/smooth-scroll";
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDuration, motionEase } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { useCallback, useEffect, useState, useRef } from "react";
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 export default function HomeClient({
   dictionary,
@@ -31,6 +26,7 @@ export default function HomeClient({
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
+  const { prefersReducedMotion, isTouchDevice } = useMotion();
 
   const handleLoadingComplete = useCallback(() => {
     setIsLoading(false);
@@ -40,15 +36,17 @@ export default function HomeClient({
   useGSAP(() => {
     if (!showContent) return
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
     gsap.fromTo(
       mainRef.current,
       { autoAlpha: 0 },
-      { autoAlpha: 1, duration: prefersReducedMotion ? 0.01 : 0.45, ease: 'power2.out' }
+      {
+        autoAlpha: 1,
+        duration: prefersReducedMotion ? motionDuration.instant : motionDuration.normal,
+        ease: motionEase.standard,
+      },
     )
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isTouchDevice) {
       gsap.to('.global-bg-text', {
         xPercent: -18,
         ease: 'none',
@@ -60,7 +58,7 @@ export default function HomeClient({
         },
       })
     }
-  }, [showContent]);
+  }, { dependencies: [isTouchDevice, prefersReducedMotion, showContent], scope: mainRef, revertOnUpdate: true });
 
   useEffect(() => {
     const fallbackTimer = setTimeout(() => {
@@ -74,19 +72,20 @@ export default function HomeClient({
 
   return (
     <div className="relative">
+      <noscript>
+        <style>{`.rv-loading-screen { display: none !important; }`}</style>
+      </noscript>
       {isLoading && (
         <LoadingScreen onComplete={handleLoadingComplete} />
       )}
 
-      {showContent && (
-        <SmoothScroll>
-          <div
-            ref={mainRef}
-            className="min-h-screen relative opacity-0"
-            role="main"
-          >
+      <div
+        ref={mainRef}
+        className="relative min-h-screen"
+        role="main"
+      >
             <div className="fixed inset-0 -z-10 flex select-none items-center overflow-hidden pointer-events-none" aria-hidden="true">
-                <span className="global-bg-text translate-x-1/2 whitespace-nowrap font-serif text-[40vh] leading-none tracking-[-0.06em] text-white/[0.015] will-change-transform md:text-[60vh]">
+                <span className="global-bg-text translate-x-1/2 whitespace-nowrap font-serif text-[40vh] leading-none tracking-[-0.06em] text-white/[0.015] md:text-[60vh]">
                    {dictionary.hero.title} // {dictionary.hero.title}
                 </span>
             </div>
@@ -97,9 +96,7 @@ export default function HomeClient({
             <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
             <Contact dictionary={dictionary.contact} />
             <Footer currentLocale={locale} dictionary={dictionary.nav} />
-          </div>
-        </SmoothScroll>
-      )}
+      </div>
     </div>
   );
 }

@@ -2,23 +2,10 @@
 
 import type { AboutDictionary } from "@/types/dictionary";
 import { Container, Section } from "@/components/ui/layout";
-import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { MotionImage } from "@/components/motion/motion-image";
+import { Reveal } from "@/components/motion/reveal";
 
 export function About({ dictionary }: { dictionary: AboutDictionary }) {
-  const shouldReduceMotion = useReducedMotion();
-
-  const reveal = (delay: number) => ({
-    initial: shouldReduceMotion ? false : { opacity: 0, y: 30 },
-    whileInView: shouldReduceMotion ? undefined : { opacity: 1, y: 0 },
-    transition: {
-      duration: shouldReduceMotion ? 0 : 0.7,
-      delay: shouldReduceMotion ? 0 : delay,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-    viewport: { once: true, margin: "-80px" },
-  });
-
   return (
     <Section
       id="about"
@@ -27,25 +14,23 @@ export function About({ dictionary }: { dictionary: AboutDictionary }) {
       <Container className="relative z-10">
         <div className="grid items-center gap-12 md:grid-cols-12 md:gap-16 lg:gap-24">
           {/* Retrato */}
-          <motion.div
-            {...reveal(0)}
-            className="md:col-span-5 lg:col-span-4"
-          >
+          <Reveal className="md:col-span-5 lg:col-span-4">
             <div className="relative aspect-[4/5] w-full overflow-hidden border border-border bg-[var(--color-surface)]">
-              <Image
+              <MotionImage
                 src="/photos/optimized/800/46.webp"
                 alt={dictionary.title}
                 fill
                 className="object-cover"
+                frameClassName="absolute inset-0"
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Texto */}
-          <motion.div
-            {...reveal(0.1)}
+          <Reveal
+            delay={0.08}
             className="space-y-6 md:col-span-7 lg:col-span-8 lg:space-y-8"
           >
             <span className="rv-kicker">
@@ -64,7 +49,7 @@ export function About({ dictionary }: { dictionary: AboutDictionary }) {
               <span>{dictionary.role}</span>
               <span>{dictionary.location}</span>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </Container>
     </Section>

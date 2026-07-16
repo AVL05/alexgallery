@@ -1,18 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { useMotion } from "@/components/motion/motion-provider";
+import { motionDistance, motionDuration, motionEase } from "@/lib/motion/config";
+import { gsap, useGSAP } from "@/lib/motion/gsap";
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { prefersReducedMotion } = useMotion();
 
   useGSAP(
     () => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
       if (prefersReducedMotion) {
         gsap.set(containerRef.current, { opacity: 1, y: 0 });
         return;
@@ -20,11 +18,17 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
       gsap.fromTo(
         containerRef.current,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+        { opacity: 0, y: motionDistance.compact },
+        {
+          opacity: 1,
+          y: 0,
+          duration: motionDuration.normal,
+          ease: motionEase.enter,
+          clearProps: "opacity,transform",
+        },
       );
     },
-    { scope: containerRef },
+    { dependencies: [prefersReducedMotion], scope: containerRef, revertOnUpdate: true },
   );
 
   return <div ref={containerRef}>{children}</div>;
