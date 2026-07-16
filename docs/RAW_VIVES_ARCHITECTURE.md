@@ -37,17 +37,18 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | `app/[locale]/layout.tsx` | Validación de locales y sincronización de `lang` en cliente |
 | `app/not-found.tsx` | Página 404 estática con recuperación bilingüe |
 | `app/[locale]/page.tsx` | Carga del diccionario y datos de home |
-| `app/[locale]/home-client.tsx` | Composición cliente y loader |
+| `app/[locale]/home-client.tsx` | Composición cliente e intro de sesión |
 | `app/[locale]/photo/[id]/page.tsx` | Ficha SSG, metadata y navegación circular |
 | `app/[locale]/politica-uso/` | Política bilingüe |
 | `app/globals.css` | Tokens RAW.VIVES, tipos, layout, foco y reduced motion |
 | `components/` | Secciones, navegación, footer y comportamientos reutilizables |
+| `components/intro/` | Gate, piezas visuales y timeline de `RAW.VIVES SYSTEM` |
 | `components/ui/` | Botones, layout y metadatos conectados a páginas |
 | `PRODUCT.md` | Contexto estratégico y límites duraderos de producto |
 | `DESIGN.md` | Tokens machine-readable y reglas visuales resumidas |
 | `docs/RAW_VIVES_DESIGN_SYSTEM.md` | Contrato visual completo de Fase 1 |
 | `dictionaries/` | Copia localizada de la interfaz |
-| `hooks/use-image-preloader.ts` | Precarga imperativa de imágenes del intro |
+| `lib/intro/` | Persistencia, decisión, bootstrap, tiempos y desarrollo de la intro |
 | `lib/gallery-data.ts` | Fuente de verdad del catálogo y su orden |
 | `lib/images-data.json` | Metadatos generados; no editar a mano |
 | `lib/image-loader.ts` | Mapeo de anchos de Next a variantes locales |
@@ -61,7 +62,8 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 ## Flujo de navegación
 
 1. `/` ofrece enlaces a `/es` y `/en`.
-2. La home localizada muestra el intro `System Initializing`.
+2. La primera home localizada de una sesión muestra `RAW.VIVES SYSTEM`; rutas
+   internas, cambio de idioma y reduced motion la omiten.
 3. La navegación usa anchors `#hero`, `#about`, `#gallery` y `#contact`.
 4. Los filtros actualizan la colección local sin cambiar URL.
 5. Un clic normal en una tarjeta abre el lightbox; la URL de la tarjeta sigue
@@ -202,9 +204,12 @@ La Fase 2 centraliza GSAP, ScrollTrigger y Lenis. `app/layout.tsx` monta un úni
 viven en `hooks/` y `components/motion/`. Lenis solo se habilita con puntero fino,
 hover y movimiento permitido. Touch y reduced motion usan scroll nativo.
 
-Menú, lightbox y loader comparten `ScrollLockManager`. Cada animación usa scope y
+Menú, lightbox e intro comparten `ScrollLockManager`. Cada animación usa scope y
 cleanup local; la galería agrupa reveals con `ScrollTrigger.batch`. La referencia
 completa y los ejemplos están en `docs/RAW_VIVES_MOTION_SYSTEM.md`.
+
+La intro se documenta en `docs/RAW_VIVES_INTRO_SYSTEM.md`. Su gate usa
+`sessionStorage`, solo se monta en la home y no espera fotografías.
 
 ## Integraciones externas
 
@@ -226,7 +231,7 @@ No hay analítica, CMS, almacenamiento, autenticación ni API propia confirmados
 - `app/layout.tsx`: metadata global, CSP indirecta, fuentes y `lang`.
 - `public/_headers`: errores pueden bloquear scripts, imágenes o Web3Forms.
 - `wrangler.json`: dominio y directorio de publicación.
-- Loader/home: actualmente controla cuándo existe el contenido en DOM.
+- Intro/home: mantener la home en HTML, el criterio de sesión y el timeout seguro.
 - `MotionProvider`, Lenis y GSAP ticker: configuración global compartida; no crear
   instancias, registros o loops fuera de esta capa.
 - Diccionario español: actúa como contrato TypeScript de todos los idiomas.

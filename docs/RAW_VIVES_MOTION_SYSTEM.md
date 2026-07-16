@@ -175,7 +175,7 @@ actual no se ha migrado completamente: conserva `next/image` y solo añade refre
 
 ## 19. Overlays
 
-`ScrollLockManager` identifica cada bloqueo por source. Menú, lightbox, loader y
+`ScrollLockManager` identifica cada bloqueo por source. Menú, lightbox, intro y
 debug pueden coexistir: Lenis solo se reanuda cuando desaparece el último lock.
 El atributo `data-scroll-locked` bloquea el scroll nativo y sustituye la antigua
 lógica exclusiva `data-menu-open`.
@@ -203,7 +203,7 @@ La preferencia se observa en JavaScript y CSS. Cuando está activa:
 - Lenis no se crea;
 - Reveal/Stagger/Mask/Divider/MotionImage muestran el estado final;
 - hero y fondo no usan parallax;
-- loader y cambios de ruta se resuelven inmediatamente o casi;
+- la intro se omite y los cambios de ruta se resuelven inmediatamente o casi;
 - `scrollTo` usa comportamiento `auto`;
 - las transiciones CSS se reducen a 0.01 ms.
 
@@ -264,15 +264,16 @@ useEffect(() => open ? lockScroll("overlay-name") : undefined, [open, lockScroll
 - Usar ancho como única señal de touch.
 - Animar width/height/top/left cuando un transform resuelve el efecto.
 
-## 27. Indicaciones para la Fase 3
+## 27. Integración de Fase 3
 
-La intro futura debe consumir `useMotion`, reutilizar el lock con source propia,
-crear una timeline scoped y tener salida inmediata en reduced motion. Debe mantener
-la home presente en HTML y el `<noscript>` actual. Antes de ampliar motion, medir
-bundle, LCP, CLS, INP, triggers y memoria en móvil físico.
+`RAW.VIVES SYSTEM` consume `useMotion`, reutiliza un lock con source propia y crea
+una timeline scoped. La home permanece en HTML, reduced motion omite la secuencia
+y el overlay sale del DOM al finalizar. El contrato completo está en
+`RAW_VIVES_INTRO_SYSTEM.md`.
 
-No implementar todavía hero final, pinning, scroll storytelling ni secuencias de
-imágenes.
+La siguiente fase no debe duplicar el gate, crear otro loader ni alterar la única
+instancia Lenis. El hero final, pinning, storytelling y secuencias de imágenes
+siguen fuera del alcance de esta fase.
 
 ## 28. Futuro WebGL
 

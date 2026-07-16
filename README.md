@@ -15,7 +15,7 @@ Portfolio fotográfico de Alex Vicente Lopez — Next.js + exportación estátic
 pnpm dev               # desarrollo local
 pnpm build             # build estática → out/
 pnpm typecheck         # validación TypeScript
-pnpm test              # pruebas de infraestructura motion
+pnpm test              # pruebas de infraestructura motion e intro
 pnpm optimize-images   # genera WebP/AVIF, blur placeholders y EXIF desde public/photos/raw
 pnpm deploy:wrangler   # build + deploy a Cloudflare
 ```
@@ -42,6 +42,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Arquitectura RAW.VIVES](docs/RAW_VIVES_ARCHITECTURE.md)
 - [Sistema visual RAW.VIVES](docs/RAW_VIVES_DESIGN_SYSTEM.md)
 - [Sistema motion RAW.VIVES](docs/RAW_VIVES_MOTION_SYSTEM.md)
+- [Sistema de intro RAW.VIVES](docs/RAW_VIVES_INTRO_SYSTEM.md)
 
 ## Licencia
 
