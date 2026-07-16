@@ -209,7 +209,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               type="button"
               onClick={() => setFormType("general")}
               aria-pressed={formType === "general"}
-              className={`px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "general" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
+              className={`min-h-11 px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "general" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
             >
               {dictionary.general}
             </button>
@@ -217,7 +217,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               type="button"
               onClick={() => setFormType("license")}
               aria-pressed={formType === "license"}
-              className={`px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "license" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
+              className={`min-h-11 px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "license" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
             >
               {dictionary.license}
             </button>

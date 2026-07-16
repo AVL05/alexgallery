@@ -3,11 +3,13 @@ import { MetadataRoute } from 'next'
 export const dynamic = 'force-static'
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://gallery.aleviclop.dev'
+
   return {
     rules: {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://alexgallery.alexviclop.workers.dev/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   }
 }

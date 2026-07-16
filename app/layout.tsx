@@ -110,6 +110,7 @@ export default function RootLayout({
       lang="es"
       className={`${playfair.variable} ${inter.variable}`}
       style={{ scrollBehavior: "smooth" }}
+      data-scroll-behavior="smooth"
     >
       <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
         <div className="noise-texture" />

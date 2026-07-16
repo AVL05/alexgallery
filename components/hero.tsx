@@ -104,7 +104,7 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
                     behavior: prefersReducedMotion ? "auto" : "smooth",
                   })
               }
-              className="group flex items-center gap-4 text-white/55 hover:text-white transition-colors"
+              className="group flex min-h-11 items-center gap-4 text-white/55 hover:text-white transition-colors"
             >
               <span className="text-[10px] font-bold uppercase tracking-[0.4em]">
                 {dictionary.cta}

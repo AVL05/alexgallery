@@ -3,13 +3,6 @@
 import type { Locale, NavDictionary } from "@/types/dictionary";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export function Navigation({
   dictionary,
@@ -30,6 +23,10 @@ export function Navigation({
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const openMenuLabel = currentLocale === "es" ? "Abrir menú" : "Open menu";
+  const closeMenuLabel = currentLocale === "es" ? "Cerrar menú" : "Close menu";
+  const navigationLabel =
+    currentLocale === "es" ? "Menú de navegación" : "Navigation menu";
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
@@ -96,37 +93,37 @@ export function Navigation({
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <a
             href="#hero"
-            className="text-2xl font-black uppercase tracking-tighter text-white"
+            className="inline-flex min-h-11 items-center text-2xl font-black uppercase tracking-tighter text-white"
           >
             ALEX <span className="text-accent italic">ARCHIVE</span>
           </a>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden lg:flex items-center gap-10">
             {items.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/50 hover:text-white transition-colors"
+                className="inline-flex min-h-11 items-center text-[10px] font-bold uppercase tracking-[0.3em] text-white/50 hover:text-white transition-colors"
               >
                 {item.name}
               </a>
             ))}
 
-            <div className="flex items-center gap-4 border-l border-white/10 pl-12 text-[10px] font-bold">
+            <div className="flex items-center border-l border-white/10 pl-6 text-[10px] font-bold">
               <a
                 href="/es"
-                className={
+                className={`inline-flex min-h-11 min-w-11 items-center justify-center ${
                   currentLocale === "es" ? "text-accent" : "text-white/30"
-                }
+                }`}
               >
                 ES
               </a>
               <a
                 href="/en"
-                className={
+                className={`inline-flex min-h-11 min-w-11 items-center justify-center ${
                   currentLocale === "en" ? "text-accent" : "text-white/30"
-                }
+                }`}
               >
                 EN
               </a>
@@ -136,9 +133,9 @@ export function Navigation({
           {/* Mobile Toggle */}
           <button
             ref={mobileToggleRef}
-            className="md:hidden text-white"
+            className="-m-2.5 inline-flex min-h-11 min-w-11 items-center justify-center text-white lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-navigation"
           >
@@ -153,8 +150,10 @@ export function Navigation({
         id="mobile-navigation"
         role="dialog"
         aria-modal="true"
-        aria-label="Menú de navegación"
-        className={`fixed inset-0 bg-black z-[90] md:hidden transition-transform duration-500 ${isMobileMenuOpen ? "translate-y-0" : "-translate-y-full"}`}
+        aria-label={navigationLabel}
+        aria-hidden={!isMobileMenuOpen}
+        inert={!isMobileMenuOpen}
+        className={`fixed inset-0 bg-black z-[90] transition-transform duration-500 lg:hidden ${isMobileMenuOpen ? "translate-y-0" : "pointer-events-none -translate-y-full"}`}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">
           {items.map((item) => (
@@ -162,7 +161,7 @@ export function Navigation({
               key={item.href}
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-3xl font-black uppercase tracking-tighter transition-colors text-white"
+              className="inline-flex min-h-11 items-center text-3xl font-black uppercase tracking-tighter transition-colors text-white"
             >
               {item.name}
             </a>
@@ -172,10 +171,10 @@ export function Navigation({
               setIsMobileMenuOpen(false);
               mobileToggleRef.current?.focus();
             }}
-            className="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 hover:text-white transition-colors"
-            aria-label="Cerrar menú"
+            className="mt-4 inline-flex min-h-11 items-center px-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 hover:text-white transition-colors"
+            aria-label={closeMenuLabel}
           >
-            Cerrar
+            {currentLocale === "es" ? "Cerrar" : "Close"}
           </button>
         </div>
       </div>

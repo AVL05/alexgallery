@@ -94,7 +94,7 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
                   onClick={() => setSelectedCategory(cat)}
                   aria-pressed={selectedCategory === cat}
                   aria-label={`${dictionary.categories[cat] || cat}: ${dictionary.view_grid}`}
-                  className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.14em] sm:tracking-[0.22em] transition-all relative py-2 ${
+                  className={`relative inline-flex min-h-11 items-center py-2 text-[10px] font-black uppercase tracking-[0.14em] transition-all sm:text-[11px] sm:tracking-[0.22em] ${
                     selectedCategory === cat
                       ? "text-white"
                       : "text-white/45 hover:text-white/70"
