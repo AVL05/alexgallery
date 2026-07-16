@@ -1,0 +1,109 @@
+import { Container, Divider } from "@/components/ui/layout";
+import type { Locale, NavDictionary } from "@/types/dictionary";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+
+export function Footer({
+  currentLocale,
+  dictionary,
+}: {
+  currentLocale: Locale;
+  dictionary: NavDictionary;
+}) {
+  const year = new Date().getFullYear();
+  const copyright =
+    currentLocale === "es"
+      ? "Todas las fotografías están protegidas por derechos de autor."
+      : "All photographs are protected by copyright.";
+  const navigationLabel =
+    currentLocale === "es" ? "Navegación secundaria" : "Secondary navigation";
+
+  return (
+    <footer className="bg-[var(--color-background-secondary)] pt-16 sm:pt-20">
+      <Container>
+        <div className="grid gap-12 pb-12 md:grid-cols-12 md:gap-8 md:pb-16">
+          <div className="md:col-span-6">
+            <Link href={`/${currentLocale}`} className="inline-flex flex-col">
+              <span className="font-serif text-[clamp(2.5rem,6vw,5.5rem)] leading-none tracking-[-0.04em] text-foreground">
+                raw.vives
+              </span>
+              <span className="mt-4 text-sm text-[var(--color-text-secondary)]">
+                Visual Archive by Alex Vicente
+              </span>
+            </Link>
+          </div>
+
+          <nav
+            aria-label={navigationLabel}
+            className="grid grid-cols-2 gap-x-6 gap-y-2 md:col-span-3"
+          >
+            <Link className="rv-editorial-link" href={`/${currentLocale}#gallery`}>
+              {dictionary.gallery}
+            </Link>
+            <Link className="rv-editorial-link" href={`/${currentLocale}#about`}>
+              {dictionary.about}
+            </Link>
+            <Link className="rv-editorial-link" href={`/${currentLocale}#contact`}>
+              {dictionary.contact}
+            </Link>
+            <Link
+              className="rv-editorial-link"
+              href={`/${currentLocale}/politica-uso`}
+            >
+              {dictionary.policies}
+            </Link>
+          </nav>
+
+          <div className="flex flex-col items-start md:col-span-3 md:items-end">
+            <a
+              className="rv-editorial-link"
+              href="https://instagram.com/aleexx_005/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram <ArrowUpRight aria-hidden="true" className="size-3.5" />
+            </a>
+            <a
+              className="rv-editorial-link"
+              href="https://aleviclop.dev/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              aleviclop.dev <ArrowUpRight aria-hidden="true" className="size-3.5" />
+            </a>
+            <a className="rv-editorial-link" href="mailto:alexviclop@gmail.com">
+              Email
+            </a>
+          </div>
+        </div>
+
+        <Divider />
+        <div className="flex flex-col gap-4 py-6 text-[10px] uppercase tracking-[0.12em] text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} Alex Vicente</p>
+          <p>{copyright}</p>
+          <div className="flex items-center font-mono">
+            <Link
+              href="/es"
+              hrefLang="es"
+              lang="es"
+              aria-current={currentLocale === "es" ? "page" : undefined}
+              className={`inline-flex size-11 items-center justify-center ${currentLocale === "es" ? "text-accent" : "hover:text-foreground"}`}
+            >
+              ES
+            </Link>
+            <span aria-hidden="true">/</span>
+            <Link
+              href="/en"
+              hrefLang="en"
+              lang="en"
+              aria-current={currentLocale === "en" ? "page" : undefined}
+              className={`inline-flex size-11 items-center justify-center ${currentLocale === "en" ? "text-accent" : "hover:text-foreground"}`}
+            >
+              EN
+            </Link>
+          </div>
+        </div>
+      </Container>
+    </footer>
+  );
+}

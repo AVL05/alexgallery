@@ -1,7 +1,10 @@
-import { locales } from '@/lib/dictionary'
+import { getDictionary, locales } from '@/lib/dictionary'
 import { photos } from '@/lib/gallery-data'
 import imagesData from '@/lib/images-data.json'
 import { PhotoKeyboardNavigation } from '@/components/photo-keyboard-navigation'
+import { Navigation } from '@/components/navigation'
+import { Footer } from '@/components/footer'
+import { Container, PageShell } from '@/components/ui/layout'
 import type { Locale } from '@/types/dictionary'
 import type { ImagesData } from '@/types/photo'
 import Image from 'next/image'
@@ -63,6 +66,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
   const photoIndex = photos.findIndex(p => p.id.toString() === id)
   const photo = photos[photoIndex]
   const optimized = optimizedImages.images.find(img => img.id === id)
+  const dictionary = await getDictionary(locale)
 
   if (!photo) notFound()
 
@@ -80,26 +84,27 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
   const nextHref = `/${locale}/photo/${nextPhoto.id}`
 
   return (
-    <main className="min-h-screen bg-black text-white py-20 px-6">
+    <PageShell>
       <PhotoKeyboardNavigation
         previousHref={previousHref}
         nextHref={nextHref}
         galleryHref={galleryHref}
       />
+      <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/photo/${id}`} />
 
-      <div className="container mx-auto max-w-6xl">
+      <Container className="pb-20 pt-32 sm:pt-36 lg:pb-28">
         <Link 
           href={galleryHref}
-          className="inline-flex items-center gap-2 text-white/40 hover:text-accent transition-colors mb-12 group"
+          className="rv-editorial-link group mb-10 sm:mb-12"
         >
-          <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-          <span className="text-xs font-bold uppercase tracking-widest">{backText}</span>
+          <ChevronLeft aria-hidden="true" className="size-4 transition-transform group-hover:-translate-x-0.5" />
+          <span>{backText}</span>
         </Link>
 
-        <div className="grid lg:grid-cols-3 gap-16 items-start">
+        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16 xl:gap-24">
           {/* Main Image View */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="relative aspect-[4/5] md:aspect-auto md:h-[70vh] w-full overflow-hidden rounded-sm bg-white/5 border border-white/10">
+          <div className="lg:col-span-8">
+            <div className="relative h-[62svh] min-h-[25rem] w-full overflow-hidden border border-border bg-[var(--color-surface)] sm:h-[70svh] lg:h-[76svh]">
               <Image
                 src={optimized?.src || `/photos/optimized/original/${photo.id}.webp`}
                 alt={photo.title}
@@ -114,15 +119,15 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
           </div>
 
           {/* Photo Details */}
-          <div className="space-y-12">
+          <div className="space-y-12 lg:col-span-4 lg:sticky lg:top-28">
             <div>
-              <span className="text-accent text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
+              <span className="rv-meta mb-5 block text-accent">
                 {photo.category} // {photo.year}
               </span>
-              <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6 leading-tight">
+              <h1 className="rv-page-title mb-7">
                 {photo.title}
               </h1>
-              <p className="text-white/60 text-lg leading-relaxed font-light">
+              <p className="rv-intro">
                 {photo.description}
               </p>
             </div>
@@ -133,19 +138,19 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                   ? 'Navegación entre fotografías'
                   : 'Photo navigation'
               }
-              className="space-y-4"
+              className="space-y-0 border-t border-border"
             >
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 <Link
                   href={previousHref}
                   rel="prev"
-                  className="group min-h-24 border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/30 hover:bg-white/[0.06]"
+                  className="group min-h-28 border-b border-border py-5 pr-4 transition-colors hover:bg-[var(--color-hover)] sm:border-r lg:border-r-0 xl:border-r"
                 >
-                  <span className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-white/35 group-hover:text-accent">
-                    <ArrowLeft className="h-3.5 w-3.5" />
+                  <span className="rv-label mb-3 flex items-center gap-2 text-[var(--color-text-muted)] group-hover:text-accent">
+                    <ArrowLeft aria-hidden="true" className="size-3.5" />
                     {previousText}
                   </span>
-                  <span className="block text-sm font-bold uppercase leading-snug tracking-normal text-white/75 group-hover:text-white">
+                  <span className="block font-serif text-lg leading-snug text-[var(--color-text-secondary)] group-hover:text-foreground">
                     {previousPhoto.title}
                   </span>
                 </Link>
@@ -153,13 +158,13 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                 <Link
                   href={nextHref}
                   rel="next"
-                  className="group min-h-24 border border-white/10 bg-white/[0.03] p-4 text-right transition-colors hover:border-white/30 hover:bg-white/[0.06]"
+                  className="group min-h-28 border-b border-border py-5 pl-4 text-right transition-colors hover:bg-[var(--color-hover)] lg:pl-0 xl:pl-4"
                 >
-                  <span className="mb-3 flex items-center justify-end gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-white/35 group-hover:text-accent">
+                  <span className="rv-label mb-3 flex items-center justify-end gap-2 text-[var(--color-text-muted)] group-hover:text-accent">
                     {nextText}
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight aria-hidden="true" className="size-3.5" />
                   </span>
-                  <span className="block text-sm font-bold uppercase leading-snug tracking-normal text-white/75 group-hover:text-white">
+                  <span className="block font-serif text-lg leading-snug text-[var(--color-text-secondary)] group-hover:text-foreground">
                     {nextPhoto.title}
                   </span>
                 </Link>
@@ -167,13 +172,13 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
 
               <Link
                 href={galleryHref}
-                className="flex items-center justify-center gap-3 border border-white/10 py-4 text-[10px] font-black uppercase tracking-[0.28em] text-white/45 transition-colors hover:border-white/30 hover:text-white"
+                className="rv-editorial-link w-full justify-center border-b border-border py-4 no-underline"
               >
-                <Grid3X3 className="h-3.5 w-3.5" />
+                <Grid3X3 aria-hidden="true" className="size-3.5" />
                 {backText}
               </Link>
 
-              <p className="text-center text-[10px] font-mono uppercase tracking-widest text-white/25">
+              <p className="rv-meta pt-4 text-center">
                 {keyboardText}
               </p>
             </nav>
@@ -223,7 +228,8 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
             />
           </div>
         </div>
-      </div>
-    </main>
+      </Container>
+      <Footer currentLocale={locale} dictionary={dictionary.nav} />
+    </PageShell>
   )
 }

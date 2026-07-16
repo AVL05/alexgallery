@@ -3,6 +3,7 @@
 import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
 import { Gallery } from "@/components/gallery";
+import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { LoadingScreen } from "@/components/loading-screen";
 import { Navigation } from "@/components/navigation";
@@ -84,8 +85,8 @@ export default function HomeClient({
             className="min-h-screen relative opacity-0"
             role="main"
           >
-            <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden select-none flex items-center">
-                <span className="global-bg-text text-[40vh] md:text-[60vh] font-black uppercase tracking-tighter text-white/[0.02] whitespace-nowrap will-change-transform leading-none translate-x-1/2">
+            <div className="fixed inset-0 -z-10 flex select-none items-center overflow-hidden pointer-events-none" aria-hidden="true">
+                <span className="global-bg-text translate-x-1/2 whitespace-nowrap font-serif text-[40vh] leading-none tracking-[-0.06em] text-white/[0.015] will-change-transform md:text-[60vh]">
                    {dictionary.hero.title} // {dictionary.hero.title}
                 </span>
             </div>
@@ -95,6 +96,7 @@ export default function HomeClient({
             <About dictionary={dictionary.about} />
             <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
             <Contact dictionary={dictionary.contact} />
+            <Footer currentLocale={locale} dictionary={dictionary.nav} />
           </div>
         </SmoothScroll>
       )}

@@ -1,4 +1,5 @@
 import { isLocale, locales } from "@/lib/dictionary";
+import { DocumentLanguage } from "@/components/document-language";
 import { notFound } from "next/navigation";
 
 export function generateStaticParams() {
@@ -16,5 +17,10 @@ export default async function LocaleLayout({
 
   if (!isLocale(locale)) notFound();
 
-  return children;
+  return (
+    <>
+      <DocumentLanguage locale={locale} />
+      {children}
+    </>
+  );
 }

@@ -1,67 +1,39 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Container, Section } from "@/components/ui/layout";
 import type { ContactDictionary } from "@/types/dictionary";
-import { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { ChevronDown, Mail } from "lucide-react";
-
-const InstagramIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-  </svg>
-);
-import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP);
 }
 
-const contactSchema = z.object({
-  name: z.string().trim().min(2, "El nombre es muy corto").max(80),
-  email: z.string().trim().email("Email inválido").max(120),
-  message: z
-    .string()
-    .trim()
-    .min(10, "El mensaje debe tener al menos 10 caracteres")
-    .max(2000),
-  botcheck: z.string().optional(),
-});
+type ContactFormValues = {
+  name: string;
+  email: string;
+  message: string;
+  botcheck?: string;
+};
 
-const licenseSchema = z.object({
-  name: z.string().trim().min(2, "Nombre requerido").max(80),
-  email: z.string().trim().email("Email inválido").max(120),
-  company: z.string().trim().max(120).optional(),
-  photoId: z.string().trim().min(1, "ID de foto requerido").max(120),
-  usageType: z.string().trim().min(1, "Selecciona un tipo de uso").max(40),
-  description: z
-    .string()
-    .trim()
-    .min(10, "Describe el uso previsto")
-    .max(2000),
-  botcheck: z.string().optional(),
-});
+type LicenseFormValues = {
+  name: string;
+  email: string;
+  company?: string;
+  photoId: string;
+  usageType: string;
+  description: string;
+  botcheck?: string;
+};
 
-type ContactFormValues = z.infer<typeof contactSchema>;
-type LicenseFormValues = z.infer<typeof licenseSchema>;
-
-const fieldClass =
-  "w-full bg-white/5 border border-white/10 p-4 focus:border-accent outline-none transition-colors";
-const errorClass = "mt-1.5 text-[10px] font-mono text-white/50";
+const labelClass = "rv-label mb-2 block text-[var(--color-text-secondary)]";
+const errorClass = "mt-2 text-xs leading-relaxed text-[var(--color-error)]";
 
 export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   const [formType, setFormType] = useState<"general" | "license">("general");
@@ -70,14 +42,53 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     type: "success" | "error";
     message: string;
   } | null>(null);
-
   const statusRef = useRef<HTMLDivElement>(null);
+
+  const contactSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().trim().min(2, dictionary.form.validation.name).max(80),
+        email: z.string().trim().email(dictionary.form.validation.email).max(120),
+        message: z
+          .string()
+          .trim()
+          .min(10, dictionary.form.validation.message)
+          .max(2000),
+        botcheck: z.string().optional(),
+      }),
+    [dictionary],
+  );
+
+  const licenseSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().trim().min(2, dictionary.form.validation.name).max(80),
+        email: z.string().trim().email(dictionary.form.validation.email).max(120),
+        company: z.string().trim().max(120).optional(),
+        photoId: z
+          .string()
+          .trim()
+          .min(1, dictionary.form.validation.photo_id)
+          .max(120),
+        usageType: z
+          .string()
+          .trim()
+          .min(1, dictionary.form.validation.usage_type)
+          .max(40),
+        description: z
+          .string()
+          .trim()
+          .min(10, dictionary.form.validation.usage_description)
+          .max(2000),
+        botcheck: z.string().optional(),
+      }),
+    [dictionary],
+  );
 
   const contactForm = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: "", email: "", message: "", botcheck: "" },
   });
-
   const licenseForm = useForm<LicenseFormValues>({
     resolver: zodResolver(licenseSchema),
     defaultValues: {
@@ -92,32 +103,23 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   });
 
   useGSAP(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (submitStatus && statusRef.current) {
-      if (prefersReducedMotion) {
-        gsap.set(statusRef.current, { opacity: 1, y: 0 });
-      } else {
-        gsap.fromTo(
-          statusRef.current,
-          { opacity: 0, y: -10 },
-          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-        );
-      }
+      gsap.fromTo(
+        statusRef.current,
+        { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : -8 },
+        { opacity: 1, y: 0, duration: reduceMotion ? 0 : 0.3, ease: "power2.out" },
+      );
     }
-
-    if (prefersReducedMotion) {
+    if (reduceMotion) {
       gsap.set(".contact-reveal", { opacity: 1, y: 0 });
       return;
     }
-
     gsap.from(".contact-reveal", {
-      y: 50,
+      y: 36,
       opacity: 0,
-      duration: 1,
-      stagger: 0.2,
+      duration: 0.8,
+      stagger: 0.12,
       ease: "power3.out",
       scrollTrigger: {
         trigger: "#contact",
@@ -127,12 +129,11 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     });
   }, [submitStatus]);
 
-  const onContactSubmit = async (data: ContactFormValues) => {
-    if (data.botcheck) {
-      contactForm.reset();
-      return;
-    }
-
+  const submit = async (
+    data: ContactFormValues | LicenseFormValues,
+    kind: "general" | "license",
+  ) => {
+    if (data.botcheck) return;
     setIsSubmitting(true);
     setSubmitStatus(null);
     try {
@@ -142,15 +143,21 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
         body: JSON.stringify({
           access_key: "d72eeacd-28fc-442b-83bd-b8c383c5997e",
           ...data,
-          subject: "Nuevo contacto - alexgallery",
+          subject:
+            kind === "general"
+              ? "Nuevo contacto - raw.vives"
+              : `Solicitud de licencia - raw.vives: ${(data as LicenseFormValues).photoId}`,
         }),
       });
-      if (response.ok) {
-        setSubmitStatus({ type: "success", message: dictionary.form.success });
-        contactForm.reset();
-      } else {
-        throw new Error();
-      }
+      if (!response.ok) throw new Error();
+      setSubmitStatus({
+        type: "success",
+        message:
+          kind === "general"
+            ? dictionary.form.success
+            : dictionary.form.license_success,
+      });
+      kind === "general" ? contactForm.reset() : licenseForm.reset();
     } catch {
       setSubmitStatus({ type: "error", message: dictionary.form.error });
     } finally {
@@ -158,318 +165,211 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     }
   };
 
-  const onLicenseSubmit = async (data: LicenseFormValues) => {
-    if (data.botcheck) {
-      licenseForm.reset();
-      return;
-    }
-
-    setIsSubmitting(true);
-    setSubmitStatus(null);
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: "d72eeacd-28fc-442b-83bd-b8c383c5997e",
-          ...data,
-          subject: `Solicitud de licencia - alexgallery: ${data.photoId}`,
-          message: `Empresa: ${data.company}\nUso: ${data.usageType}\nDesc: ${data.description}`,
-        }),
-      });
-      if (response.ok) {
-        setSubmitStatus({ type: "success", message: "Solicitud enviada" });
-        licenseForm.reset();
-      } else {
-        throw new Error();
-      }
-    } catch {
-      setSubmitStatus({ type: "error", message: "Error al enviar" });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const status = submitStatus && (
+    <div
+      ref={statusRef}
+      role="status"
+      aria-live="polite"
+      className={`border px-4 py-3 text-sm ${
+        submitStatus.type === "success"
+          ? "border-[var(--color-success)] text-[var(--color-success)]"
+          : "border-[var(--color-error)] text-[var(--color-error)]"
+      }`}
+    >
+      {submitStatus.message}
+    </div>
+  );
 
   return (
-    <section
-      id="contact"
-      className="py-24 md:py-32 lg:py-40 px-6 sm:px-8 bg-black relative overflow-hidden"
-    >
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16 contact-reveal">
-          <h2 className="font-serif text-5xl md:text-7xl font-medium tracking-tight mb-6">
-            {dictionary.title}
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            {dictionary.description}
-          </p>
-
-          <div className="flex justify-center gap-6 mt-12">
-            <button
-              type="button"
-              onClick={() => setFormType("general")}
-              aria-pressed={formType === "general"}
-              className={`min-h-11 px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "general" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
-            >
-              {dictionary.general}
-            </button>
-            <button
-              type="button"
-              onClick={() => setFormType("license")}
-              aria-pressed={formType === "license"}
-              className={`min-h-11 px-8 py-3 text-xs font-bold uppercase tracking-widest transition-all ${formType === "license" ? "bg-accent text-black scale-105" : "bg-white/5 text-white/40 hover:text-white"}`}
-            >
-              {dictionary.license}
-            </button>
-          </div>
+    <Section id="contact" className="overflow-hidden bg-background">
+      <Container>
+        <div className="contact-reveal mb-12 max-w-3xl md:mb-16">
+          <p className="rv-kicker mb-5">raw.vives / Contact</p>
+          <h2 className="rv-section-title mb-6">{dictionary.title}</h2>
+          <p className="rv-intro">{dictionary.description}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 contact-reveal">
-            <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10">
-              {formType === "general" ? (
-                <form
-                  onSubmit={contactForm.handleSubmit(onContactSubmit)}
-                  className="space-y-6"
-                >
-                  <input
-                    type="checkbox"
-                    className="hidden"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    {...contactForm.register("botcheck")}
-                  />
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <input
-                        {...contactForm.register("name")}
-                        placeholder={dictionary.form.name}
-                        aria-label={dictionary.form.name}
-                        aria-invalid={!!contactForm.formState.errors.name}
-                        className={fieldClass}
-                      />
-                      {contactForm.formState.errors.name && (
-                        <p className={errorClass} role="alert">
-                          {contactForm.formState.errors.name.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <input
-                        {...contactForm.register("email")}
-                        type="email"
-                        placeholder={dictionary.form.email}
-                        aria-label={dictionary.form.email}
-                        aria-invalid={!!contactForm.formState.errors.email}
-                        className={fieldClass}
-                      />
-                      {contactForm.formState.errors.email && (
-                        <p className={errorClass} role="alert">
-                          {contactForm.formState.errors.email.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="contact-reveal lg:col-span-8">
+            <fieldset className="mb-8 flex flex-wrap gap-2 border-0 p-0">
+              <legend className="sr-only">{dictionary.title}</legend>
+              <Button
+                type="button"
+                variant={formType === "general" ? "default" : "outline"}
+                aria-pressed={formType === "general"}
+                onClick={() => {
+                  setFormType("general");
+                  setSubmitStatus(null);
+                }}
+              >
+                {dictionary.general}
+              </Button>
+              <Button
+                type="button"
+                variant={formType === "license" ? "default" : "outline"}
+                aria-pressed={formType === "license"}
+                onClick={() => {
+                  setFormType("license");
+                  setSubmitStatus(null);
+                }}
+              >
+                {dictionary.license}
+              </Button>
+            </fieldset>
+
+            {formType === "general" ? (
+              <form
+                onSubmit={contactForm.handleSubmit((data) => submit(data, "general"))}
+                className="space-y-6"
+                noValidate
+              >
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  {...contactForm.register("botcheck")}
+                />
+                <div className="grid gap-6 md:grid-cols-2">
                   <div>
-                    <textarea
-                      {...contactForm.register("message")}
-                      placeholder={dictionary.form.message}
-                      aria-label={dictionary.form.message}
-                      aria-invalid={!!contactForm.formState.errors.message}
-                      rows={6}
-                      className={fieldClass}
-                    />
-                    {contactForm.formState.errors.message && (
-                      <p className={errorClass} role="alert">
-                        {contactForm.formState.errors.message.message}
-                      </p>
-                    )}
-                  </div>
-                  {submitStatus && (
-                    <div
-                      ref={statusRef}
-                      role="status"
-                      aria-live="polite"
-                      className={`border px-4 py-3 text-sm ${
-                        submitStatus.type === "success"
-                          ? "border-white/20 text-white"
-                          : "border-white/30 text-white/80"
-                      }`}
-                    >
-                      {submitStatus.message}
-                    </div>
-                  )}
-                  <button
-                    type="submit"
-                    className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all flex items-center justify-center gap-4"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting
-                      ? dictionary.form.sending
-                      : dictionary.form.send}
-                  </button>
-                </form>
-              ) : (
-                <form
-                  onSubmit={licenseForm.handleSubmit(onLicenseSubmit)}
-                  className="space-y-6"
-                >
-                  <input
-                    type="checkbox"
-                    className="hidden"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    {...licenseForm.register("botcheck")}
-                  />
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <input
-                        {...licenseForm.register("name")}
-                        placeholder="Nombre completo"
-                        aria-label="Nombre completo"
-                        aria-invalid={!!licenseForm.formState.errors.name}
-                        className={fieldClass}
-                      />
-                      {licenseForm.formState.errors.name && (
-                        <p className={errorClass} role="alert">
-                          {licenseForm.formState.errors.name.message}
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <input
-                        {...licenseForm.register("email")}
-                        type="email"
-                        placeholder="Email"
-                        aria-label="Email"
-                        aria-invalid={!!licenseForm.formState.errors.email}
-                        className={fieldClass}
-                      />
-                      {licenseForm.formState.errors.email && (
-                        <p className={errorClass} role="alert">
-                          {licenseForm.formState.errors.email.message}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div>
+                    <label className={labelClass} htmlFor="contact-name">
+                      {dictionary.form.name}
+                    </label>
                     <input
-                      {...licenseForm.register("photoId")}
-                      placeholder="ID de la foto / Título"
-                      aria-label="ID de la foto o título"
-                      aria-invalid={!!licenseForm.formState.errors.photoId}
-                      className={fieldClass}
+                      id="contact-name"
+                      autoComplete="name"
+                      {...contactForm.register("name")}
+                      aria-invalid={!!contactForm.formState.errors.name}
+                      aria-describedby={contactForm.formState.errors.name ? "contact-name-error" : undefined}
+                      className="rv-field"
                     />
-                    {licenseForm.formState.errors.photoId && (
-                      <p className={errorClass} role="alert">
-                        {licenseForm.formState.errors.photoId.message}
+                    {contactForm.formState.errors.name && (
+                      <p id="contact-name-error" className={errorClass} role="alert">
+                        {contactForm.formState.errors.name.message}
                       </p>
                     )}
                   </div>
                   <div>
-                    <div className="relative">
-                      <select
-                        {...licenseForm.register("usageType")}
-                        aria-label="Tipo de uso"
-                        aria-invalid={!!licenseForm.formState.errors.usageType}
-                        className={`${fieldClass} appearance-none pr-10 text-white/60`}
-                      >
-                        <option value="">Tipo de uso</option>
-                        <option value="comercial">Comercial</option>
-                        <option value="editorial">Editorial</option>
-                        <option value="personal">Personal</option>
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
-                    </div>
-                    {licenseForm.formState.errors.usageType && (
-                      <p className={errorClass} role="alert">
-                        {licenseForm.formState.errors.usageType.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <textarea
-                      {...licenseForm.register("description")}
-                      placeholder="Uso previsto..."
-                      aria-label="Uso previsto"
-                      aria-invalid={!!licenseForm.formState.errors.description}
-                      rows={4}
-                      className={fieldClass}
+                    <label className={labelClass} htmlFor="contact-email">
+                      {dictionary.form.email}
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      autoComplete="email"
+                      {...contactForm.register("email")}
+                      aria-invalid={!!contactForm.formState.errors.email}
+                      aria-describedby={contactForm.formState.errors.email ? "contact-email-error" : undefined}
+                      className="rv-field"
                     />
-                    {licenseForm.formState.errors.description && (
-                      <p className={errorClass} role="alert">
-                        {licenseForm.formState.errors.description.message}
+                    {contactForm.formState.errors.email && (
+                      <p id="contact-email-error" className={errorClass} role="alert">
+                        {contactForm.formState.errors.email.message}
                       </p>
                     )}
                   </div>
-                  {submitStatus && (
-                    <div
-                      ref={statusRef}
-                      role="status"
-                      aria-live="polite"
-                      className={`border px-4 py-3 text-sm ${
-                        submitStatus.type === "success"
-                          ? "border-white/20 text-white"
-                          : "border-white/30 text-white/80"
-                      }`}
-                    >
-                      {submitStatus.message}
-                    </div>
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="contact-message">
+                    {dictionary.form.message}
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    rows={6}
+                    {...contactForm.register("message")}
+                    aria-invalid={!!contactForm.formState.errors.message}
+                    aria-describedby={contactForm.formState.errors.message ? "contact-message-error" : undefined}
+                    className="rv-field resize-y"
+                  />
+                  {contactForm.formState.errors.message && (
+                    <p id="contact-message-error" className={errorClass} role="alert">
+                      {contactForm.formState.errors.message.message}
+                    </p>
                   )}
-                  <button
-                    type="submit"
-                    className="w-full py-5 bg-accent text-black font-black uppercase tracking-[0.3em] hover:brightness-110 transition-all"
-                    disabled={isSubmitting}
-                  >
-                    Solicitar Licencia
-                  </button>
-                </form>
-              )}
-            </div>
+                </div>
+                {status}
+                <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
+                  {isSubmitting ? dictionary.form.sending : dictionary.form.send}
+                </Button>
+              </form>
+            ) : (
+              <form
+                onSubmit={licenseForm.handleSubmit((data) => submit(data, "license"))}
+                className="space-y-6"
+                noValidate
+              >
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  {...licenseForm.register("botcheck")}
+                />
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <label className={labelClass} htmlFor="license-name">{dictionary.form.name}</label>
+                    <input id="license-name" autoComplete="name" {...licenseForm.register("name")} aria-invalid={!!licenseForm.formState.errors.name} className="rv-field" />
+                    {licenseForm.formState.errors.name && <p className={errorClass} role="alert">{licenseForm.formState.errors.name.message}</p>}
+                  </div>
+                  <div>
+                    <label className={labelClass} htmlFor="license-email">{dictionary.form.email}</label>
+                    <input id="license-email" type="email" autoComplete="email" {...licenseForm.register("email")} aria-invalid={!!licenseForm.formState.errors.email} className="rv-field" />
+                    {licenseForm.formState.errors.email && <p className={errorClass} role="alert">{licenseForm.formState.errors.email.message}</p>}
+                  </div>
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="license-company">{dictionary.form.company}</label>
+                  <input id="license-company" autoComplete="organization" {...licenseForm.register("company")} className="rv-field" />
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="license-photo">{dictionary.form.photo_id}</label>
+                  <input id="license-photo" {...licenseForm.register("photoId")} aria-invalid={!!licenseForm.formState.errors.photoId} className="rv-field" />
+                  {licenseForm.formState.errors.photoId && <p className={errorClass} role="alert">{licenseForm.formState.errors.photoId.message}</p>}
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="license-usage">{dictionary.form.usage_type}</label>
+                  <div className="relative">
+                    <select id="license-usage" {...licenseForm.register("usageType")} aria-invalid={!!licenseForm.formState.errors.usageType} className="rv-field appearance-none pr-10">
+                      <option value="">{dictionary.form.usage_type}</option>
+                      <option value="commercial">{dictionary.form.usage_commercial}</option>
+                      <option value="editorial">{dictionary.form.usage_editorial}</option>
+                      <option value="personal">{dictionary.form.usage_personal}</option>
+                    </select>
+                    <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-text-muted)]" />
+                  </div>
+                  {licenseForm.formState.errors.usageType && <p className={errorClass} role="alert">{licenseForm.formState.errors.usageType.message}</p>}
+                </div>
+                <div>
+                  <label className={labelClass} htmlFor="license-description">{dictionary.form.usage_description}</label>
+                  <textarea id="license-description" rows={5} {...licenseForm.register("description")} aria-invalid={!!licenseForm.formState.errors.description} className="rv-field resize-y" />
+                  {licenseForm.formState.errors.description && <p className={errorClass} role="alert">{licenseForm.formState.errors.description.message}</p>}
+                </div>
+                {status}
+                <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
+                  {isSubmitting ? dictionary.form.sending : dictionary.form.request}
+                </Button>
+              </form>
+            )}
           </div>
 
-          <div className="space-y-8 contact-reveal">
-            <div className="p-8 bg-white/5 backdrop-blur-xl border border-white/10">
-              <h3 className="text-xl font-black uppercase tracking-tighter mb-8">
-                {dictionary.social}
-              </h3>
-              <div className="space-y-6">
-                <a
-                  href="mailto:alexviclop@gmail.com"
-                  className="flex items-center gap-4 group"
-                >
-                  <div className="w-12 h-12 bg-white/5 flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">
-                    alexviclop@gmail.com
-                  </span>
-                </a>
-                <a
-                  href="https://instagram.com/aleexx_005/"
-                  className="flex items-center gap-4 group"
-                >
-                  <div className="w-12 h-12 bg-white/5 flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-all">
-                    <InstagramIcon />
-                  </div>
-                  <span className="text-sm font-mono text-white/40 group-hover:text-white transition-colors">
-                    @aleexx_005
-                  </span>
-                </a>
-              </div>
+          <aside className="contact-reveal border-t border-border pt-8 lg:col-span-4 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+            <p className="rv-kicker mb-6">{dictionary.social}</p>
+            <div className="space-y-2">
+              <a href="mailto:alexviclop@gmail.com" className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
+                <span className="flex min-w-0 items-center gap-3"><Mail aria-hidden="true" className="size-4 shrink-0" /><span className="break-all">alexviclop@gmail.com</span></span>
+                <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+              <a href="https://instagram.com/aleexx_005/" target="_blank" rel="noreferrer" className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
+                <span className="flex items-center gap-3"><span aria-hidden="true" className="font-mono text-[10px]">IG</span>@aleexx_005</span>
+                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
             </div>
-
-            <div className="p-8 border border-white/5 space-y-4">
-              <p className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
-                © {new Date().getFullYear()} Alex Vicente López
-              </p>
-              <p className="text-[11px] text-white/20 leading-relaxed font-light">
-                Todas las imágenes están protegidas por derechos de autor. Contacta para solicitar una licencia de uso comercial o editorial.
-              </p>
-            </div>
-          </div>
+            <p className="rv-body-sm mt-8 text-[var(--color-text-muted)]">
+              {dictionary.location}<br />{dictionary.independent}
+            </p>
+          </aside>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 }

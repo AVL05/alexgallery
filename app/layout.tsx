@@ -1,23 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Manrope, Prata } from "next/font/google";
 import type React from "react";
 import { Suspense } from "react";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const prata = Prata({
   subsets: ["latin"],
-  variable: "--font-serif",
+  weight: "400",
+  variable: "--font-prata",
   display: "swap",
 });
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-manrope",
+  weight: ["400", "600"],
   display: "swap",
 });
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#080808",
   width: "device-width",
   initialScale: 1,
 };
@@ -29,8 +31,8 @@ const baseUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Alex Vicente | Archivo visual",
-    template: "%s | Alex Vicente Visual Archive",
+    default: "raw.vives | Visual Archive",
+    template: "%s | raw.vives",
   },
   description:
     "Archivo visual de Alex Vicente: fotografía, viajes, naturaleza, ciudad, coches, escenas cotidianas y capturas digitales.",
@@ -64,10 +66,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     url: "/",
-    title: "Alex Vicente | Archivo visual",
+    title: "raw.vives | Visual Archive by Alex Vicente",
     description:
       "Archivo global de fotografía, viajes, escenas urbanas, naturaleza y capturas digitales.",
-    siteName: "Alex Vicente Visual Archive",
+    siteName: "raw.vives — Visual Archive",
     images: [
       {
         url: "/opengraph-image.png",
@@ -79,7 +81,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alex Vicente | Archivo visual",
+    title: "raw.vives | Visual Archive by Alex Vicente",
     description:
       "Explora un archivo visual global de fotos y capturas digitales.",
     images: ["/opengraph-image.png"],
@@ -108,12 +110,12 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${playfair.variable} ${inter.variable}`}
+      className={`${prata.variable} ${manrope.variable}`}
       style={{ scrollBehavior: "smooth" }}
       data-scroll-behavior="smooth"
     >
-      <body className="font-sans antialiased relative bg-background text-foreground selection:bg-accent/30">
-        <div className="noise-texture" />
+      <body className="relative bg-background font-sans text-foreground">
+        <div className="noise-texture" aria-hidden="true" />
 
         <script
           type="application/ld+json"

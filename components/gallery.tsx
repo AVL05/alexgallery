@@ -13,6 +13,8 @@ import Link from "next/link";
 import Masonry from "react-masonry-css";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Container, Section } from "@/components/ui/layout";
+import { PhotoIndex } from "@/components/ui/metadata";
 
 const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
   ssr: false,
@@ -70,41 +72,47 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
   }, [filteredPhotos]);
 
   return (
-    <section
+    <Section
       id="gallery"
-      className="bg-black py-24 md:py-32 relative overflow-hidden"
+      className="overflow-hidden bg-[var(--color-background-secondary)]"
     >
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="mb-16 flex flex-col gap-8 border-b border-white/10 pb-8 md:flex-row md:items-end md:justify-between">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-sm font-black uppercase tracking-[0.4em] text-accent">
+      <Container className="relative z-10">
+        <div className="mb-12 flex flex-col gap-8 border-b border-border pb-8 md:mb-16 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col gap-4">
+            <p className="rv-kicker">Visual Archive</p>
+            <h2 className="rv-section-title">
               {dictionary.archive_label}
             </h2>
-            <span className="text-white/40 text-[10px] font-mono uppercase tracking-widest">
+            <span className="rv-meta">
               {dictionary.selected_works} // {filteredPhotos.length}{" "}
               {dictionary.items}
             </span>
           </div>
 
           <div>
-            <nav className="flex flex-wrap gap-x-5 gap-y-3 max-w-2xl">
+            <nav
+              aria-label={dictionary.view_grid}
+              className="flex max-w-2xl flex-wrap gap-x-5 gap-y-2"
+            >
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
                   aria-pressed={selectedCategory === cat}
                   aria-label={`${dictionary.categories[cat] || cat}: ${dictionary.view_grid}`}
-                  className={`relative inline-flex min-h-11 items-center py-2 text-[10px] font-black uppercase tracking-[0.14em] transition-all sm:text-[11px] sm:tracking-[0.22em] ${
+                  type="button"
+                  className={`relative inline-flex min-h-11 min-w-11 items-center justify-center py-2 text-[10px] font-semibold uppercase tracking-[0.14em] transition-colors sm:text-[11px] sm:tracking-[0.18em] ${
                     selectedCategory === cat
-                      ? "text-white"
-                      : "text-white/45 hover:text-white/70"
+                      ? "text-accent"
+                      : "text-[var(--color-text-muted)] hover:text-foreground"
                   }`}
                 >
                   {dictionary.categories[cat] || cat}
                   {selectedCategory === cat && (
-                    <motion.div
+                    <motion.span
+                      aria-hidden="true"
                       layoutId="activeTab"
-                      className="absolute -bottom-1 left-0 w-full h-px bg-accent"
+                      className="absolute bottom-0 left-0 h-px w-full bg-accent"
                     />
                   )}
                 </button>
@@ -134,7 +142,7 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
             >
               <Link
                 href={`/${dictionary.locale || "es"}/photo/${photo.id}`}
-                className="gallery-item group cursor-pointer space-y-4 relative block"
+                className="gallery-item group relative block space-y-4"
                 onClick={(e: React.MouseEvent) => {
                   if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
                     e.preventDefault();
@@ -143,30 +151,30 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
                 }}
               >
                 <div
-                  className="relative overflow-hidden bg-white/5 border border-white/10 group-hover:border-accent/50 transition-all duration-500"
+                  className="relative overflow-hidden border border-border bg-[var(--color-surface)] transition-colors duration-300 group-hover:border-[var(--color-border-strong)] group-focus-visible:border-accent"
                   style={{ aspectRatio: `${photo.width}/${photo.height}` }}
                 >
                   <Image
                     src={(photo.src || photo.image) as string}
                     alt={photo.alt || photo.title}
                     fill
-                    className="object-cover transition-all duration-700 group-hover:scale-[1.045] brightness-95 group-hover:brightness-105"
+                    className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.018] group-hover:brightness-[0.88]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    priority={i < 4}
                     placeholder={photo.blurDataURL ? "blur" : undefined}
                     blurDataURL={photo.blurDataURL}
                   />
 
-                  <div className="absolute top-4 left-4 text-[10px] font-mono text-white/50 bg-black/35 backdrop-blur-md px-2 py-1 rounded-sm group-hover:text-accent transition-colors">
-                    {String(i + 1).padStart(3, "0")}
-                  </div>
+                  <PhotoIndex
+                    value={i + 1}
+                    className="absolute left-3 top-3 bg-black/65 px-2 py-1 text-white/70 transition-colors group-hover:text-accent sm:left-4 sm:top-4"
+                  />
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-[11px] font-black uppercase tracking-widest text-white/70 group-hover:text-white transition-colors">
+                <div className="space-y-2">
+                  <h3 className="font-serif text-xl leading-tight tracking-[-0.015em] text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground sm:text-2xl">
                     {photo.title}
                   </h3>
-                  <div className="flex justify-between items-center text-[9px] font-mono text-white/45 group-hover:text-accent/80 transition-colors uppercase tracking-wider">
+                  <div className="rv-meta flex items-center justify-between transition-colors group-hover:text-accent">
                     <span>{photo.category}</span>
                     <span>{photo.year}</span>
                   </div>
@@ -175,7 +183,7 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
             </motion.div>
           ))}
         </Masonry>
-      </div>
+      </Container>
 
       <Lightbox
         index={index}
@@ -190,32 +198,32 @@ export function Gallery({ dictionary, imagesData }: GalleryProps) {
           buttonPrev: () => (
             <button
               type="button"
-              aria-label="Previous image"
+              aria-label={dictionary.locale === "es" ? "Imagen anterior" : "Previous image"}
               onClick={() =>
                 setIndex((prev) => (prev > 0 ? prev - 1 : slides.length - 1))
               }
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-black/40 hover:bg-black/60 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-center transition-all group z-50 pointer-events-auto"
+              className="group pointer-events-auto absolute left-3 top-1/2 z-50 flex size-11 -translate-y-1/2 items-center justify-center border border-white/20 bg-black/70 transition-colors hover:border-white/40 hover:bg-black sm:left-6 sm:size-12"
             >
-              <ChevronLeft className="w-6 h-6 text-white/30 group-hover:text-white transition-all transform group-hover:-translate-x-0.5" />
+              <ChevronLeft aria-hidden="true" className="size-5 text-white/70 transition-colors group-hover:text-white" />
             </button>
           ),
           buttonNext: () => (
             <button
               type="button"
-              aria-label="Next image"
+              aria-label={dictionary.locale === "es" ? "Imagen siguiente" : "Next image"}
               onClick={() =>
                 setIndex((prev) => (prev < slides.length - 1 ? prev + 1 : 0))
               }
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-black/40 hover:bg-black/60 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-center transition-all group z-50 pointer-events-auto"
+              className="group pointer-events-auto absolute right-3 top-1/2 z-50 flex size-11 -translate-y-1/2 items-center justify-center border border-white/20 bg-black/70 transition-colors hover:border-white/40 hover:bg-black sm:right-6 sm:size-12"
             >
-              <ChevronRight className="w-6 h-6 text-white/30 group-hover:text-white transition-all transform group-hover:translate-x-0.5" />
+              <ChevronRight aria-hidden="true" className="size-5 text-white/70 transition-colors group-hover:text-white" />
             </button>
           ),
         }}
         styles={{
-          container: { backgroundColor: "rgba(0, 0, 0, .98)" },
+          container: { backgroundColor: "rgba(8, 8, 8, .98)" },
         }}
       />
-    </section>
+    </Section>
   );
 }

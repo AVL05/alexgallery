@@ -1,7 +1,7 @@
 {
   "hero": {
-    "title": "VISUAL ARCHIVE",
-    "eyebrow": "Photography, captures and visual worlds",
+    "title": "raw.vives",
+    "eyebrow": "Visual Archive by Alex Vicente",
     "description": "A personal archive in progress: trips, everyday scenes, cars, architecture, nature, and digital captures when they belong to the visual record.",
     "cta": "Enter archive",
     "explore": "Explore",
@@ -45,18 +45,37 @@
     "license": "Licenses",
     "general": "Message",
     "social": "Contact",
+    "location": "Valencia, Spain",
+    "independent": "Independent photography and visual stories.",
     "form": {
       "name": "Name",
       "email": "Email",
+      "company": "Company (optional)",
+      "photo_id": "Photograph ID or title",
+      "usage_type": "Usage type",
+      "usage_commercial": "Commercial",
+      "usage_editorial": "Editorial",
+      "usage_personal": "Personal",
+      "usage_description": "Describe the intended use",
       "message": "Message",
       "send": "Send message",
+      "request": "Request license",
       "sending": "Sending...",
       "success": "Message sent.",
-      "error": "Something went wrong."
+      "license_success": "License request sent.",
+      "error": "Something went wrong.",
+      "validation": {
+        "name": "Enter a valid name.",
+        "email": "Enter a valid email address.",
+        "message": "The message must be at least 10 characters.",
+        "photo_id": "Identify the photograph.",
+        "usage_type": "Select a usage type.",
+        "usage_description": "Describe the intended use in at least 10 characters."
+      }
     }
   },
   "seo": {
-    "title": "Alex Vicente | Visual archive",
+    "title": "raw.vives | Visual Archive",
     "description": "Alex Vicente's visual archive: photography, travel, nature, city scenes, cars, everyday images, and digital captures in a global collection."
   }
 }

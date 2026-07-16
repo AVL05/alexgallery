@@ -1,7 +1,8 @@
 "use client";
 
 import type { HeroDictionary } from "@/types/dictionary";
-import { Archive, ArrowDown } from "lucide-react";
+import { Container } from "@/components/ui/layout";
+import { ArrowDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
@@ -65,10 +66,10 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-[92vh] flex items-center justify-center bg-black overflow-hidden"
+      className="relative flex min-h-[100svh] items-end overflow-hidden bg-background pb-14 pt-32 sm:items-center sm:pb-0"
     >
       {/* Background Image - Clean & Subtle */}
-      <div ref={imageRef} className="absolute inset-0 z-0 opacity-70">
+      <div ref={imageRef} className="absolute inset-0 z-0 opacity-75">
         <Image
           src="/photos/optimized/original/14.webp"
           alt=""
@@ -77,23 +78,23 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
           priority
           aria-hidden="true"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/45 to-background" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 pt-24">
-        <div className="max-w-6xl space-y-6 text-left">
-          <p className="hero-text-reveal inline-flex items-center gap-3 border border-white/15 bg-black/35 px-3 py-2 text-accent text-[10px] sm:text-xs font-bold tracking-[0.24em] uppercase leading-relaxed backdrop-blur-md">
-            <Archive className="h-3.5 w-3.5" />
+      <Container className="relative z-10">
+        <div className="max-w-[76rem] space-y-6 text-left sm:space-y-8">
+          <p className="hero-text-reveal rv-kicker flex items-center gap-3">
+            <span aria-hidden="true" className="h-px w-8 bg-accent" />
             {dictionary.eyebrow}
           </p>
-          <h1 className="hero-text-reveal font-serif text-6xl sm:text-7xl md:text-[8rem] lg:text-[9.5rem] font-medium tracking-tight leading-[0.95] text-white max-w-6xl">
+          <h1 className="hero-text-reveal rv-display-xl max-w-6xl">
             {dictionary.title}
           </h1>
-          <p className="hero-text-reveal text-white/65 text-sm md:text-lg max-w-2xl font-medium leading-relaxed">
+          <p className="hero-text-reveal rv-intro">
             {dictionary.description}
           </p>
 
-          <div className="hero-text-reveal pt-6">
+          <div className="hero-text-reveal pt-2 sm:pt-4">
             <button
               type="button"
               aria-label={dictionary.cta}
@@ -104,21 +105,20 @@ export function Hero({ dictionary }: { dictionary: HeroDictionary }) {
                     behavior: prefersReducedMotion ? "auto" : "smooth",
                   })
               }
-              className="group flex min-h-11 items-center gap-4 text-white/55 hover:text-white transition-colors"
+              className="rv-editorial-link group border-0 bg-transparent p-0"
             >
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">
-                {dictionary.cta}
-              </span>
+              <span>{dictionary.cta}</span>
               <ArrowDown
-                className={`h-4 w-4 ${prefersReducedMotion ? "" : "animate-bounce"}`}
+                aria-hidden="true"
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5"
               />
             </button>
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* Modern Framing */}
-      <div className="absolute inset-x-12 bottom-12 h-px bg-white/10 pointer-events-none hidden lg:block" />
+      <div className="absolute inset-x-[var(--layout-gutter)] bottom-10 hidden h-px bg-[var(--color-border)] lg:block" />
     </section>
   );
 }

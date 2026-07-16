@@ -1,4 +1,6 @@
 import { PoliticaClient } from "./politica-client"
+import { getDictionary } from "@/lib/dictionary"
+import type { Locale } from "@/types/dictionary"
 
 export async function generateStaticParams() {
   return [
@@ -18,7 +20,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 }
 
-export default async function PoliticaUso({ params }: { params: Promise<{ locale: string }> }) {
+export default async function PoliticaUso({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
-  return <PoliticaClient locale={locale} />
+  const dictionary = await getDictionary(locale)
+  return <PoliticaClient locale={locale} navigation={dictionary.nav} />
 }

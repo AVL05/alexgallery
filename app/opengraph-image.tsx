@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
 
-export const alt = "Alex Vicente | Visual Archive";
+export const alt = "raw.vives — Visual Archive by Alex Vicente";
 export const size = {
   width: 1200,
   height: 630,
@@ -13,14 +13,14 @@ export default async function Image() {
   return new ImageResponse(
     <div
       style={{
-        background: "#0a0a0a",
+        background: "#080808",
         width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        color: "white",
+        color: "#f1f0eb",
         padding: "60px",
       }}
     >
@@ -33,34 +33,32 @@ export default async function Image() {
       >
         <h1
           style={{
-            fontSize: "80px",
-            fontWeight: "900",
+            fontSize: "104px",
+            fontWeight: "400",
             margin: 0,
-            textTransform: "uppercase",
-            letterSpacing: "-2px",
+            letterSpacing: "-5px",
           }}
         >
-          Alex Archive
+          raw.vives
         </h1>
         <div
           style={{
             width: "80px",
-            height: "4px",
-            background: "white",
-            marginTop: "20px",
-            opacity: 0.5,
+            height: "1px",
+            background: "#cfc6b5",
+            marginTop: "28px",
           }}
         />
         <p
           style={{
-            fontSize: "24px",
+            fontSize: "20px",
             marginTop: "30px",
             textTransform: "uppercase",
-            letterSpacing: "8px",
-            opacity: 0.7,
+            letterSpacing: "7px",
+            color: "#b7b5ae",
           }}
         >
-          Visual Archive
+          Visual Archive by Alex Vicente
         </p>
       </div>
     </div>,

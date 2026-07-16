@@ -1,144 +1,122 @@
-'use client'
+"use client";
 
-import { useRef } from 'react'
-import Link from 'next/link'
-import {
-  ArrowLeft,
-  Copyright,
-  Download,
-  Share2,
-  Award,
-} from 'lucide-react'
-import { SmoothScroll } from '@/components/smooth-scroll'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import { Container, PageShell } from "@/components/ui/layout";
+import type { Locale, NavDictionary } from "@/types/dictionary";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ArrowLeft, Award, Download, Share2 } from "lucide-react";
+import Link from "next/link";
+import { useRef } from "react";
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(useGSAP)
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(useGSAP);
 }
 
-export function PoliticaClient({ locale }: { locale: string }) {
-  const containerRef = useRef<HTMLDivElement>(null)
+export function PoliticaClient({
+  locale,
+  navigation,
+}: {
+  locale: Locale;
+  navigation: NavDictionary;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const spanish = locale === "es";
 
-  useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power2.out', duration: 0.6 } })
-
-    tl.from('.back-button', { opacity: 0, x: -20 })
-      .from('.policy-header', { opacity: 0, y: 30 }, '-=0.4')
-      .from('.copyright-notice', { opacity: 0, y: 20 }, '-=0.4')
-      .from('.restrictions', { opacity: 0, y: 20 }, '-=0.4')
-      .from('.licensing', { opacity: 0, y: 20 }, '-=0.4')
-      .from('.policy-footer', { opacity: 0 }, '-=0.2')
-  }, { scope: containerRef })
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set(".policy-reveal", { opacity: 1, y: 0, x: 0 });
+        return;
+      }
+      gsap
+        .timeline({ defaults: { ease: "power2.out", duration: 0.55 } })
+        .from(".policy-back", { opacity: 0, x: -16 })
+        .from(".policy-reveal", { opacity: 0, y: 24, stagger: 0.1 }, "-=0.3");
+    },
+    { scope: containerRef },
+  );
 
   return (
     <SmoothScroll>
-    <main ref={containerRef} className="min-h-screen py-20 px-6 lg:px-12 relative z-10">
-      <div className="container mx-auto max-w-4xl relative z-10 bg-background/95 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
-        {/* Back button */}
-        <div className="back-button">
-          <Link
-            href={`/${locale}`}
-            className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors mb-12"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {locale === 'es' ? 'Volver al inicio' : 'Back to home'}
-          </Link>
-        </div>
+      <PageShell as="div">
+        <div ref={containerRef}>
+          <Navigation dictionary={navigation} currentLocale={locale} isHome={false} currentPath={`/${locale}/politica-uso`} />
+          <main>
+          <Container className="pb-20 pt-32 sm:pt-36 lg:pb-28">
+            <Link href={`/${locale}`} className="policy-back rv-editorial-link mb-12">
+              <ArrowLeft aria-hidden="true" className="size-4" />
+              {spanish ? "Volver al inicio" : "Back to home"}
+            </Link>
 
-        {/* Header */}
-        <div className="policy-header mb-16">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="p-4 bg-accent/10 rounded-lg">
-              <Copyright className="h-8 w-8 text-accent" />
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter font-serif">
-              {locale === 'es' ? 'Política de Uso' : 'Usage Policy'}
-            </h1>
-          </div>
-          <p className="text-xl text-muted-foreground">
-            {locale === 'es' 
-              ? 'Términos y condiciones de uso de las fotografías de Alex Vicente' 
-              : 'Terms and conditions for the use of Alex Vicente\'s photographs'}
-          </p>
-        </div>
-
-        {/* Copyright Notice */}
-        <div className="copyright-notice bg-white/5 p-8 rounded-xl mb-12 border border-white/10">
-          <div className="flex items-start gap-4">
-            <Award className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
-            <div>
-              <h2 className="text-2xl font-bold mb-4 font-serif">
-                © Copyright
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {locale === 'es'
-                  ? 'Todas las fotografías mostradas en esta galería son propiedad intelectual de Alex Vicente y están protegidas por las leyes de copyright internacionales. Cada imagen contiene metadatos de copyright embebidos con la información del autor.'
-                  : 'All photographs shown in this gallery are the intellectual property of Alex Vicente and are protected by international copyright laws. Each image contains embedded copyright metadata with author information.'}
+            <header className="policy-reveal mb-16 max-w-4xl border-b border-border pb-12 sm:mb-20 sm:pb-16">
+              <p className="rv-kicker mb-5">raw.vives / Legal</p>
+              <h1 className="rv-page-title mb-7">
+                {spanish ? "Política de uso" : "Usage policy"}
+              </h1>
+              <p className="rv-intro">
+                {spanish
+                  ? "Términos y condiciones de uso de las fotografías de Alex Vicente."
+                  : "Terms and conditions for the use of Alex Vicente's photographs."}
               </p>
-            </div>
-          </div>
-        </div>
+            </header>
 
-        {/* Restrictions */}
-        <div className="restrictions space-y-8 mb-12">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-red-500/10 rounded-lg flex-shrink-0">
-              <Download className="h-5 w-5 text-red-500" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2 font-serif">
-                {locale === 'es' ? 'Uso No Autorizado' : 'Unauthorized Use'}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {locale === 'es' ? 'Queda estrictamente prohibido:' : 'Strictly prohibited:'}
-              </p>
-              <ul className="list-disc list-inside mt-3 space-y-2 text-muted-foreground">
-                <li>{locale === 'es' ? 'Descargar, copiar o reproducir las imágenes sin autorización expresa' : 'Downloading, copying, or reproducing images without express authorization'}</li>
-                <li>{locale === 'es' ? 'Uso comercial sin licencia' : 'Commercial use without a license'}</li>
-                <li>{locale === 'es' ? 'Modificación, edición o manipulación de las fotografías' : 'Modification, editing, or manipulation of the photographs'}</li>
-                <li>{locale === 'es' ? 'Redistribución o publicación en otros medios' : 'Redistribution or publication in other media'}</li>
-                <li>{locale === 'es' ? 'Eliminación o alteración de los metadatos de copyright' : 'Removal or alteration of copyright metadata'}</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+            <div className="max-w-4xl space-y-0">
+              <section className="policy-reveal grid gap-5 border-b border-border py-10 sm:grid-cols-[3rem_1fr] sm:py-12">
+                <Award aria-hidden="true" className="size-6 text-accent" />
+                <div>
+                  <h2 className="rv-card-title mb-5">© Copyright</h2>
+                  <p className="rv-body">
+                    {spanish
+                      ? "Todas las fotografías mostradas en esta galería son propiedad intelectual de Alex Vicente y están protegidas por las leyes de copyright internacionales. Cada imagen contiene metadatos de copyright embebidos con la información del autor."
+                      : "All photographs shown in this gallery are the intellectual property of Alex Vicente and are protected by international copyright laws. Each image contains embedded copyright metadata with author information."}
+                  </p>
+                </div>
+              </section>
 
-        {/* Licensing */}
-        <div className="licensing bg-accent/5 p-8 rounded-xl mb-12 border border-accent/10">
-          <div className="flex items-start gap-4">
-            <Share2 className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
-            <div>
-              <h2 className="text-2xl font-bold mb-4 font-serif">
-                {locale === 'es' ? 'Licencias Disponibles' : 'Available Licenses'}
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                {locale === 'es' 
-                  ? 'Si estás interesado en utilizar alguna fotografía para proyectos comerciales, editoriales o publicidad:'
-                  : 'If you are interested in using any photograph for commercial, editorial, or advertising projects:'}
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                {locale === 'es' ? 'Por favor, contacta a través del' : 'Please contact through the'}{' '}
-                <Link
-                  href={`/${locale}#contact`}
-                  className="text-accent hover:underline font-medium"
-                >
-                  {locale === 'es' ? 'formulario de licencias' : 'licensing form'}
-                </Link>{' '}
-                {locale === 'es' ? 'para solicitar permisos.' : 'to request permissions.'}
-              </p>
-            </div>
-          </div>
-        </div>
+              <section className="policy-reveal grid gap-5 border-b border-border py-10 sm:grid-cols-[3rem_1fr] sm:py-12">
+                <Download aria-hidden="true" className="size-6 text-[var(--color-error)]" />
+                <div>
+                  <h2 className="rv-card-title mb-5">
+                    {spanish ? "Uso no autorizado" : "Unauthorized use"}
+                  </h2>
+                  <p className="rv-body mb-4">
+                    {spanish ? "Queda estrictamente prohibido:" : "Strictly prohibited:"}
+                  </p>
+                  <ul className="rv-body list-disc space-y-3 pl-5 marker:text-[var(--color-text-muted)]">
+                    <li>{spanish ? "Descargar, copiar o reproducir las imágenes sin autorización expresa" : "Downloading, copying, or reproducing images without express authorization"}</li>
+                    <li>{spanish ? "Uso comercial sin licencia" : "Commercial use without a license"}</li>
+                    <li>{spanish ? "Modificar, editar o manipular las fotografías" : "Modifying, editing, or manipulating the photographs"}</li>
+                    <li>{spanish ? "Redistribuir o publicar en otros medios" : "Redistributing or publishing in other media"}</li>
+                    <li>{spanish ? "Eliminar o alterar los metadatos de copyright" : "Removing or altering copyright metadata"}</li>
+                  </ul>
+                </div>
+              </section>
 
-        {/* Footer */}
-        <div className="policy-footer mt-16 pt-8 border-t border-border text-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Alex Vicente López.
-          </p>
+              <section className="policy-reveal grid gap-5 py-10 sm:grid-cols-[3rem_1fr] sm:py-12">
+                <Share2 aria-hidden="true" className="size-6 text-accent" />
+                <div>
+                  <h2 className="rv-card-title mb-5">
+                    {spanish ? "Licencias disponibles" : "Available licenses"}
+                  </h2>
+                  <p className="rv-body mb-5">
+                    {spanish
+                      ? "Si quieres utilizar una fotografía en un proyecto comercial, editorial o publicitario, solicita permiso antes de publicarla."
+                      : "If you want to use a photograph in a commercial, editorial, or advertising project, request permission before publishing it."}
+                  </p>
+                  <Link href={`/${locale}#contact`} className="rv-editorial-link">
+                    {spanish ? "Abrir formulario de licencias" : "Open licensing form"}
+                  </Link>
+                </div>
+              </section>
+            </div>
+          </Container>
+          </main>
+          <Footer currentLocale={locale} dictionary={navigation} />
         </div>
-      </div>
-    </main>
+      </PageShell>
     </SmoothScroll>
-  )
+  );
 }
