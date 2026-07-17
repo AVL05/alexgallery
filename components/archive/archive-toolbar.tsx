@@ -1,6 +1,7 @@
 import type { ArchiveSort } from "@/lib/archive/types";
 import type { GalleryDictionary } from "@/types/dictionary";
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function ArchiveToolbar({
   dictionary,
@@ -44,6 +45,7 @@ export function ArchiveToolbar({
             <button
               type="button"
               onClick={() => onQueryChange("")}
+              data-press-feedback
               className="absolute right-0 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-[var(--color-text-muted)] hover:text-foreground"
               aria-label={dictionary.clearSearch}
             >
@@ -58,6 +60,8 @@ export function ArchiveToolbar({
           type="button"
           onClick={onOpenFilters}
           aria-haspopup="dialog"
+          data-press-feedback
+          {...getCursorTargetAttributes({ type: "open" })}
           className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 border border-border px-4 text-xs font-semibold uppercase tracking-[0.14em] transition-colors hover:border-[var(--color-border-strong)] md:hidden"
         >
           <SlidersHorizontal aria-hidden="true" className="size-4" />

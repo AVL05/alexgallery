@@ -9,6 +9,8 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
+import { Magnetic } from "@/components/interactions/magnetic";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function Navigation({
   dictionary,
@@ -191,6 +193,7 @@ export function Navigation({
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
+                  data-press-feedback
                   className={`relative inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${
                     active
                       ? "text-accent"
@@ -211,6 +214,7 @@ export function Navigation({
               href="https://aleviclop.dev/"
               target="_blank"
               rel="noreferrer"
+              data-press-feedback
               className="inline-flex min-h-11 items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-text-secondary)] transition-colors hover:text-foreground"
             >
               aleviclop.dev
@@ -230,6 +234,7 @@ export function Navigation({
                 href={alternateHref}
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
+                data-press-feedback
                 className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
                 aria-label={
                   currentLocale === "es" ? "View in English" : "Ver en español"
@@ -240,17 +245,23 @@ export function Navigation({
             </div>
           </nav>
 
-          <button
-            ref={mobileToggleRef}
-            type="button"
-            className="inline-flex size-11 items-center justify-center text-foreground lg:hidden"
-            onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
-            aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-navigation"
-          >
-            {isMobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
-          </button>
+          <Magnetic>
+            <button
+              ref={mobileToggleRef}
+              type="button"
+              className="inline-flex size-11 items-center justify-center text-foreground lg:hidden"
+              onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
+              aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
+              data-press-feedback
+              {...getCursorTargetAttributes({ type: isMobileMenuOpen ? "close" : "open" })}
+            >
+              <span data-magnetic-content className="grid place-items-center">
+                {isMobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+              </span>
+            </button>
+          </Magnetic>
         </Container>
       </header>
 
@@ -268,15 +279,19 @@ export function Navigation({
             <span className="font-serif text-xl tracking-[-0.025em] text-foreground">
               raw.vives
             </span>
-            <button
-              autoFocus
-              type="button"
-              className="inline-flex size-11 items-center justify-center text-foreground"
-              onClick={closeMobileMenu}
-              aria-label={closeMenuLabel}
-            >
-              <X aria-hidden="true" />
-            </button>
+            <Magnetic>
+              <button
+                autoFocus
+                type="button"
+                className="inline-flex size-11 items-center justify-center text-foreground"
+                onClick={closeMobileMenu}
+                aria-label={closeMenuLabel}
+                data-press-feedback
+                {...getCursorTargetAttributes({ type: "close", contrast: "dark" })}
+              >
+                <span data-magnetic-content className="grid place-items-center"><X aria-hidden="true" /></span>
+              </button>
+            </Magnetic>
           </div>
 
           <nav className="mt-8 flex flex-col" aria-label={navigationLabel}>
@@ -285,6 +300,7 @@ export function Navigation({
                 key={item.href}
                 href={item.href}
                 onClick={closeMobileMenu}
+                data-press-feedback
                 className="group flex min-h-16 items-center justify-between border-b border-border py-4"
               >
                 <span className="font-serif text-[clamp(1.8rem,9vw,3.25rem)] leading-none text-foreground transition-colors group-hover:text-accent">
@@ -311,6 +327,7 @@ export function Navigation({
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
                 onClick={closeMobileMenu}
+                data-press-feedback
                 className="inline-flex size-11 items-center justify-center border border-border font-mono text-xs text-foreground"
               >
                 {alternateLocale.toUpperCase()}

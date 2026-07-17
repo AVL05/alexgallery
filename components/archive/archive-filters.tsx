@@ -31,6 +31,7 @@ export function ArchiveFilters({
               key={category}
               type="button"
               aria-pressed={state.category === category}
+              data-press-feedback
               onClick={() => onCategoryChange(category)}
               className="group flex min-h-12 w-full items-center justify-between gap-4 border-b border-border px-1 text-left text-sm transition-colors hover:bg-[var(--color-hover)] focus-visible:bg-[var(--color-hover)]"
             >
@@ -57,6 +58,7 @@ export function ArchiveFilters({
           <button
             type="button"
             aria-pressed={state.year === "all"}
+            data-press-feedback
             onClick={() => onYearChange("all")}
             className={`min-h-11 border-b px-1 text-xs uppercase tracking-[0.14em] transition-colors ${
               state.year === "all"
@@ -72,6 +74,7 @@ export function ArchiveFilters({
               type="button"
               aria-pressed={state.year === year}
               disabled={!yearCounts[year]}
+              data-press-feedback
               onClick={() => onYearChange(year)}
               className={`min-h-11 border-b px-1 font-mono text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
                 state.year === year

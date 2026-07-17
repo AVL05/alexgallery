@@ -6,6 +6,7 @@ import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { HomeDictionary, Locale } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function FeaturedStory({
   photo,
@@ -28,7 +29,7 @@ export function FeaturedStory({
         </Reveal>
         <div className="mt-12 grid items-end gap-10 md:mt-16 lg:grid-cols-12 lg:gap-8">
           <Reveal className="lg:col-span-7">
-            <Link href={`/${locale}/photo/${photo.id}`} className="group block">
+            <Link href={`/${locale}/photo/${photo.id}`} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
               <NarrativeImage
                 photo={photo}
                 sizes="(max-width: 1023px) 100vw, 58vw"
@@ -49,7 +50,7 @@ export function FeaturedStory({
             <div data-motion-item className="rv-meta mt-7 flex gap-5">
               <span>{photo.category}</span><span>{photo.year}</span>
             </div>
-            <Link data-motion-item href={`/${locale}/photo/${photo.id}`} className="rv-editorial-link mt-8">
+            <Link data-motion-item href={`/${locale}/photo/${photo.id}`} className="rv-editorial-link mt-8" data-press-feedback {...getCursorTargetAttributes({ type: "view" })}>
               {dictionary.featured.cta}<ArrowUpRight aria-hidden="true" className="size-4" />
             </Link>
           </StaggerGroup>

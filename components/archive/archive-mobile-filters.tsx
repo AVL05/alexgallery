@@ -7,6 +7,7 @@ import type { GalleryDictionary } from "@/types/dictionary";
 import type { GalleryFilter } from "@/types/photo";
 import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function ArchiveMobileFilters({
   open,
@@ -102,6 +103,8 @@ export function ArchiveMobileFilters({
           <button
             type="button"
             onClick={onClose}
+            data-press-feedback
+            {...getCursorTargetAttributes({ type: "close", contrast: "dark" })}
             className="flex size-11 items-center justify-center"
             aria-label={dictionary.closeFilters}
           >
@@ -140,10 +143,10 @@ export function ArchiveMobileFilters({
         </div>
 
         <footer className="sticky bottom-0 grid grid-cols-2 gap-3 border-t border-border bg-background/95 py-4 backdrop-blur-md">
-          <button type="button" onClick={onClear} className="min-h-12 border border-border px-4 text-xs font-semibold uppercase tracking-[0.14em]">
+          <button type="button" onClick={onClear} data-press-feedback className="min-h-12 border border-border px-4 text-xs font-semibold uppercase tracking-[0.14em]">
             {dictionary.clearFilters}
           </button>
-          <button type="button" onClick={onClose} className="min-h-12 bg-accent px-4 text-xs font-semibold uppercase tracking-[0.14em] text-accent-foreground">
+          <button type="button" onClick={onClose} data-press-feedback className="min-h-12 bg-accent px-4 text-xs font-semibold uppercase tracking-[0.14em] text-accent-foreground">
             {dictionary.showResults.replace("{count}", String(resultCount))}
           </button>
         </footer>

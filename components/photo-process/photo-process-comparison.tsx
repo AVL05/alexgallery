@@ -22,6 +22,8 @@ import type { PhotoProcessAsset, PhotoProcessPair, ResolvedPhotoProcess } from "
 import { Expand, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
+import { setCursorOverride } from "@/lib/interactions/development";
 
 type LoadState = "loading" | "ready" | "error";
 
@@ -83,7 +85,10 @@ function ComparisonCanvas({ pair, locale, dictionary, initialPosition, eager = f
   const [beforeState, setBeforeState] = useState<LoadState>("loading");
   const [afterState, setAfterState] = useState<LoadState>("loading");
 
-  useEffect(() => () => timersRef.current.forEach(window.clearTimeout), []);
+  useEffect(() => () => {
+    timersRef.current.forEach(window.clearTimeout);
+    setCursorOverride({ active: false });
+  }, []);
 
   const settle = (callback: (value: LoadState) => void, state: LoadState) => {
     if (!debugDelayMs) return callback(state);
@@ -140,6 +145,7 @@ function ComparisonCanvas({ pair, locale, dictionary, initialPosition, eager = f
       disabled={!ready}
       aria-label={dictionary.comparisonLabel}
       aria-valuetext={dictionary.position.replace("{value}", String(initialPosition))}
+      {...getCursorTargetAttributes({ type: "drag", contrast: "dark", disabled: !ready })}
       onInput={(event) => updatePosition(Number(event.currentTarget.value))}
       onKeyDown={(event) => {
         const next = getProcessPositionForKey(event.key, Number(event.currentTarget.value));
@@ -153,9 +159,13 @@ function ComparisonCanvas({ pair, locale, dictionary, initialPosition, eager = f
       onPointerMove={(event) => {
         const pointer = pointerRef.current;
         if (!pointer || pointer.id !== event.pointerId) return;
+        const previousIntent = pointer.intent;
         pointerRef.current = moveProcessPointer(pointer, event.pointerId, event.clientX, event.clientY);
         const nextPointer = pointerRef.current;
         if (nextPointer?.intent !== "horizontal") return;
+        if (previousIntent !== "horizontal") {
+          setCursorOverride({ active: true, state: "drag", contrast: "dark", hideLabel: true });
+        }
         event.preventDefault();
         if (!event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.setPointerCapture(event.pointerId);
         const bounds = rootRef.current?.getBoundingClientRect();
@@ -164,8 +174,9 @@ function ComparisonCanvas({ pair, locale, dictionary, initialPosition, eager = f
       onPointerUp={(event) => {
         if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
         pointerRef.current = finishProcessPointer(pointerRef.current, event.pointerId);
+        setCursorOverride({ active: false });
       }}
-      onPointerCancel={(event) => { pointerRef.current = finishProcessPointer(pointerRef.current, event.pointerId); }}
+      onPointerCancel={(event) => { pointerRef.current = finishProcessPointer(pointerRef.current, event.pointerId); setCursorOverride({ active: false }); }}
     />
     {!ready && <div className="absolute inset-0 z-20 grid place-items-center bg-black/45"><span className="rv-meta">{dictionary.loading}</span></div>}
   </div>;
@@ -188,7 +199,7 @@ export function PhotoProcessComparison({ process, locale, dictionary, debugDelay
 
   return <div className="space-y-5">
     {pairs.length > 1 && <div className="flex flex-wrap border-y border-border" role="tablist" aria-label={dictionary.steps}>
-      {pairs.map((candidate, index) => <button key={candidate.id} type="button" role="tab" aria-selected={pairIndex === index} onClick={() => { setPairIndex(index); setCanvasKey((value) => value + 1); }} className="min-h-11 flex-1 border-r border-border px-4 py-3 text-left text-[10px] uppercase tracking-[0.12em] last:border-r-0 aria-selected:bg-[var(--color-surface-elevated)]">
+      {pairs.map((candidate, index) => <button key={candidate.id} type="button" role="tab" aria-selected={pairIndex === index} onClick={() => { setPairIndex(index); setCanvasKey((value) => value + 1); }} data-press-feedback className="min-h-11 flex-1 border-r border-border px-4 py-3 text-left text-[10px] uppercase tracking-[0.12em] last:border-r-0 aria-selected:bg-[var(--color-surface-elevated)]">
         {candidate.id === "original-corrected" ? dictionary.originalCorrected : dictionary.correctedFinal}
       </button>)}
     </div>}
@@ -196,8 +207,8 @@ export function PhotoProcessComparison({ process, locale, dictionary, debugDelay
     <div className="flex flex-wrap items-center justify-between gap-3">
       <p className="rv-meta">{dictionary.dragHelp} · {dictionary.keyboardHelp}</p>
       <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={reset} className="rv-editorial-link"><RotateCcw aria-hidden="true" className="size-4" />{dictionary.reset}</button>
-        <button ref={triggerRef} type="button" onClick={() => setFullscreen(true)} className="rv-editorial-link" aria-haspopup="dialog"><Expand aria-hidden="true" className="size-4" />{dictionary.openFullscreen}</button>
+        <button type="button" onClick={reset} className="rv-editorial-link" data-press-feedback><RotateCcw aria-hidden="true" className="size-4" />{dictionary.reset}</button>
+        <button ref={triggerRef} type="button" onClick={() => setFullscreen(true)} className="rv-editorial-link" aria-haspopup="dialog" data-press-feedback {...getCursorTargetAttributes({ type: "compare" })}><Expand aria-hidden="true" className="size-4" />{dictionary.openFullscreen}</button>
       </div>
     </div>
     <div className="sr-only">

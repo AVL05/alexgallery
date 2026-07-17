@@ -11,6 +11,7 @@ import type { GalleryDictionary, HomeDictionary } from "@/types/dictionary";
 import { ArrowDownRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function VisualChapters({
   chapters,
@@ -59,11 +60,13 @@ export function VisualChapters({
                   onMouseEnter={() => setActiveCategory(chapter.category)}
                   onFocus={() => setActiveCategory(chapter.category)}
                   onClick={() => requestGalleryFilter(chapter.category)}
+                  data-press-feedback
+                  {...getCursorTargetAttributes({ type: "explore" })}
                   className="group grid min-h-28 grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-border py-6 transition-colors hover:bg-[var(--color-hover)] focus-visible:bg-[var(--color-hover)] sm:min-h-32 sm:gap-6 sm:px-3"
                 >
                   <span className="rv-index">{String(index + 1).padStart(2, "0")}</span>
                   <span>
-                    <span className="block font-serif text-[clamp(1.7rem,3.5vw,3.5rem)] leading-none tracking-[-0.03em] transition-colors group-hover:text-accent">
+                    <span className="block font-serif text-[clamp(1.7rem,3.5vw,3.5rem)] leading-none tracking-[-0.03em] transition-colors group-hover:text-accent group-focus-visible:text-accent">
                       {galleryDictionary.categories[chapter.category]}
                     </span>
                     <span className="mt-2 hidden max-w-lg text-sm text-[var(--color-text-muted)] sm:block">
@@ -71,7 +74,7 @@ export function VisualChapters({
                     </span>
                     <span className="rv-meta mt-3 block">{String(chapter.count).padStart(2, "0")}</span>
                   </span>
-                  <ArrowDownRight aria-hidden="true" className="size-5 text-[var(--color-text-muted)] transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:text-accent" />
+                  <ArrowDownRight aria-hidden="true" className="size-5 text-[var(--color-text-muted)] transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:text-accent group-focus-visible:translate-x-1 group-focus-visible:translate-y-1 group-focus-visible:text-accent" />
                   <NarrativeImage photo={chapter.photo} sizes="(max-width: 1023px) 100vw, 1px" failPrimary={failImages} slow={slowImages} className="col-span-3 mt-2 lg:hidden" />
                 </Link>
               ))}

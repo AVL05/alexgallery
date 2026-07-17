@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/layout";
 import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { GalleryDictionary, HomeDictionary, Locale } from "@/types/dictionary";
 import Link from "next/link";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 const selectedLayout = [
   "md:col-span-7",
@@ -49,18 +50,18 @@ export function SelectedWork({
           <StaggerGroup className="mt-16 grid gap-x-6 gap-y-16 md:grid-cols-12 md:gap-y-24 lg:gap-x-10">
             {photos.map((photo, index) => (
               <article key={photo.id} data-motion-item className={selectedLayout[index % selectedLayout.length]}>
-                <Link href={`/${locale}/photo/${photo.id}`} className="group block">
+                <Link href={`/${locale}/photo/${photo.id}`} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
                   <NarrativeImage
                     photo={photo}
                     sizes="(max-width: 767px) 100vw, 58vw"
                     failPrimary={failImages}
                     slow={slowImages}
                     className="border border-border transition-colors group-hover:border-[var(--color-border-strong)]"
-                    imageClassName="transition-[transform,filter,opacity] duration-700 group-hover:scale-[1.018] group-hover:brightness-[0.88]"
+                    imageClassName="transition-[transform,filter,opacity] duration-700 group-hover:scale-[1.018] group-hover:brightness-[0.88] group-focus-visible:scale-[1.018] group-focus-visible:brightness-[0.88]"
                   />
                   <div className="mt-5 flex items-start justify-between gap-4 border-t border-border pt-4">
                     <div>
-                      <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] transition-colors group-hover:text-accent sm:text-2xl">{photo.title}</h3>
+                      <h3 className="font-serif text-xl leading-tight tracking-[-0.02em] transition-colors group-hover:text-accent group-focus-visible:text-accent sm:text-2xl">{photo.title}</h3>
                       <p className="rv-meta mt-2">{galleryDictionary.categories[photo.category]} / {photo.year}</p>
                     </div>
                     <span className="rv-index">{String(index + 1).padStart(2, "0")}</span>

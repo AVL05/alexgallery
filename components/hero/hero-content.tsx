@@ -2,6 +2,8 @@ import type { HeroArchiveFacts } from "@/lib/hero/config";
 import type { HeroDictionary } from "@/types/dictionary";
 import { ArrowDownRight } from "lucide-react";
 import { SectionMarker } from "@/components/home/section-marker";
+import { Magnetic } from "@/components/interactions/magnetic";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function HeroContent({
   dictionary,
@@ -37,15 +39,24 @@ export function HeroContent({
           <p className="max-w-[32rem] text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-[var(--color-text-secondary)]">
             {dictionary.description}
           </p>
-          <a href="#gallery" className="rv-editorial-link group w-fit shrink-0">
-            <span>{dictionary.cta}</span>
-            <ArrowDownRight aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
-          </a>
+          <Magnetic>
+            <a
+              href="#gallery"
+              className="rv-editorial-link group w-fit shrink-0"
+              data-press-feedback
+              {...getCursorTargetAttributes({ type: "explore", contrast: "light" })}
+            >
+              <span data-magnetic-content className="inline-flex items-center gap-[0.65rem]">
+                <span>{dictionary.cta}</span>
+                <ArrowDownRight aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+              </span>
+            </a>
+          </Magnetic>
         </div>
       </div>
 
       <div data-hero-secondary className="mt-8 grid grid-cols-2 items-end gap-4 border-t border-[var(--color-border)] pt-3 sm:absolute sm:inset-x-0 sm:bottom-[max(2rem,env(safe-area-inset-bottom))] sm:mt-0 sm:grid-cols-[1fr_auto_auto] sm:gap-8 sm:pt-4">
-        <a href="#about" className="group col-span-2 inline-flex min-h-11 w-fit items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-secondary)] transition-colors hover:text-foreground sm:col-span-1">
+        <a href="#about" data-press-feedback {...getCursorTargetAttributes({ type: "explore", contrast: "light" })} className="group col-span-2 inline-flex min-h-11 w-fit items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-secondary)] transition-colors hover:text-foreground focus-visible:text-foreground sm:col-span-1">
           <span aria-hidden="true" className="relative h-8 w-px overflow-hidden bg-[var(--color-border-strong)]">
             <span className="absolute inset-x-0 top-0 h-1/2 bg-accent transition-transform duration-300 group-hover:translate-y-full" />
           </span>

@@ -5,6 +5,7 @@ import type { ArchiveSummary } from "@/lib/home/selectors";
 import type { GalleryDictionary, HomeDictionary } from "@/types/dictionary";
 import { ArrowDown } from "lucide-react";
 import Link from "next/link";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 export function ArchiveIndex({
   archive,
@@ -48,7 +49,7 @@ export function ArchiveIndex({
         </StaggerGroup>
 
         <Reveal className="mt-12">
-          <Link href="#gallery" className="rv-editorial-link text-base">{dictionary.archive.cta}<ArrowDown aria-hidden="true" className="size-4" /></Link>
+          <Link href="#gallery" className="rv-editorial-link text-base" data-press-feedback {...getCursorTargetAttributes({ type: "explore" })}>{dictionary.archive.cta}<ArrowDown aria-hidden="true" className="size-4" /></Link>
         </Reveal>
       </Container>
     </section>

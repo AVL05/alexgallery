@@ -16,7 +16,7 @@ export function ArchiveEmptyState({
       <p className="mx-auto mt-5 max-w-lg text-[var(--color-text-secondary)]">
         {dictionary.emptyDescription}
       </p>
-      <button type="button" onClick={onClear} className="rv-editorial-link mt-8">
+      <button type="button" onClick={onClear} className="rv-editorial-link mt-8" data-press-feedback>
         {dictionary.clearFilters}
       </button>
     </div>

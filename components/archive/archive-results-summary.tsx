@@ -31,7 +31,7 @@ export function ArchiveResultsSummary({
         )}
       </div>
       {hasFilters && (
-        <button type="button" onClick={onClear} className="rv-editorial-link self-start sm:self-auto">
+        <button type="button" onClick={onClear} className="rv-editorial-link self-start sm:self-auto" data-press-feedback>
           {dictionary.clearFilters}
         </button>
       )}

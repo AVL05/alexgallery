@@ -12,6 +12,7 @@ import { serializeArchiveState } from "@/lib/archive/url";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
 const fallbackImage = "/photos/optimized/800/1.webp";
 
@@ -61,6 +62,8 @@ export function ArchiveItem({
         href={href}
         onClick={persistContext}
         className="group block"
+        data-press-feedback
+        {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}
         aria-label={`${photo.title}, ${dictionary.categories[photo.category]}, ${photo.year}`}
       >
         <figure>
@@ -81,7 +84,7 @@ export function ArchiveItem({
                 sizes={sizes}
                 placeholder={photo.blurDataURL && source === photo.src ? "blur" : undefined}
                 blurDataURL={photo.blurDataURL}
-                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.012] group-hover:brightness-[0.9]"
+                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.012] group-hover:brightness-[0.9] group-focus-visible:scale-[1.012] group-focus-visible:brightness-[0.9]"
                 onError={() => {
                   if (source !== fallbackImage) setSource(fallbackImage);
                   else setImageFailed(true);
@@ -97,12 +100,12 @@ export function ArchiveItem({
             </span>
           </div>
           <figcaption className="mt-4 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t border-border pt-4">
-            <h3 className="font-serif text-[clamp(1.25rem,2vw,1.8rem)] leading-tight tracking-[-0.02em] text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground">
+            <h3 className="font-serif text-[clamp(1.25rem,2vw,1.8rem)] leading-tight tracking-[-0.02em] text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground group-focus-visible:text-foreground">
               {photo.title}
             </h3>
             <ArrowUpRight
               aria-hidden="true"
-              className="mt-1 size-4 text-[var(--color-text-muted)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
+              className="mt-1 size-4 text-[var(--color-text-muted)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:text-accent"
             />
             <p className="rv-meta col-span-2 flex flex-wrap items-center gap-x-3">
               <span>{dictionary.categories[photo.category]}</span>

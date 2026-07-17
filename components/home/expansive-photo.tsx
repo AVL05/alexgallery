@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/layout";
 import { motionEase, shouldShowMotionMarkers } from "@/lib/motion/config";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { applyTemporaryWillChange } from "@/lib/motion/will-change";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { HomeDictionary, Locale } from "@/types/dictionary";
 import Link from "next/link";
@@ -73,19 +74,19 @@ export function ExpansivePhoto({
             <p className="rv-meta hidden sm:block">{photo.category} / {photo.year}</p>
           </Reveal>
           <div data-expansive-media className="origin-center">
-            <Link href={`/${locale}/photo/${photo.id}`} className="group block">
+            <Link href={`/${locale}/photo/${photo.id}`} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
               <NarrativeImage
                 photo={photo}
                 sizes="100vw"
                 failPrimary={failImages}
                 slow={slowImages}
                 className="border border-border"
-                imageClassName="transition-[transform,filter,opacity] duration-700 group-hover:scale-[1.01] group-hover:brightness-90"
+                imageClassName="transition-[transform,filter,opacity] duration-700 group-hover:scale-[1.01] group-hover:brightness-90 group-focus-visible:scale-[1.01] group-focus-visible:brightness-90"
               />
             </Link>
             <div className="mt-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-baseline">
               <h2 className="font-serif text-[clamp(1.8rem,4vw,4rem)] leading-none tracking-[-0.03em]">{photo.title}</h2>
-              <Link href={`/${locale}/photo/${photo.id}`} className="rv-editorial-link shrink-0">{dictionary.expansive.cta}</Link>
+              <Link href={`/${locale}/photo/${photo.id}`} className="rv-editorial-link shrink-0" data-press-feedback {...getCursorTargetAttributes({ type: "view" })}>{dictionary.expansive.cta}</Link>
             </div>
           </div>
         </Container>

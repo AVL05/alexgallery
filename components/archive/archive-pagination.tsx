@@ -22,6 +22,7 @@ export function ArchivePagination({
       <button
         type="button"
         onClick={onLoadMore}
+        data-press-feedback
         className="min-h-12 border border-[var(--color-border-strong)] px-7 text-xs font-semibold uppercase tracking-[0.16em] transition-colors hover:border-accent hover:bg-[var(--color-hover)] hover:text-accent"
       >
         {dictionary.loadMore}

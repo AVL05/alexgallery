@@ -3,6 +3,9 @@
 import { useMotion } from "@/components/motion/motion-provider";
 import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { Magnetic } from "@/components/interactions/magnetic";
+import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
+import { resetContextualCursor } from "@/lib/interactions/development";
 
 export function PhotoFullscreenDialog({
   open,
@@ -28,6 +31,7 @@ export function PhotoFullscreenDialog({
     if (open && !dialog.open) dialog.showModal();
     if (!open && dialog.open) dialog.close();
     if (!open) return;
+    resetContextualCursor();
     return lockScroll(lockSource);
   }, [lockScroll, lockSource, open]);
 
@@ -57,9 +61,11 @@ export function PhotoFullscreenDialog({
     >
       <div className="relative grid h-dvh w-screen place-items-center p-[max(1rem,env(safe-area-inset-top))]">
         {open ? children : null}
-        <button autoFocus type="button" onClick={closeAndRestoreFocus} className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-20 inline-flex min-h-11 items-center gap-2 bg-black/80 px-4 text-xs uppercase tracking-[0.12em]">
-          <X aria-hidden="true" className="size-5" /> {closeLabel}
-        </button>
+        <Magnetic>
+          <button autoFocus type="button" onClick={closeAndRestoreFocus} className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-20 inline-flex min-h-11 items-center gap-2 bg-black/80 px-4 text-xs uppercase tracking-[0.12em]" data-press-feedback {...getCursorTargetAttributes({ type: "close", contrast: "dark", priority: 10 })}>
+            <span data-magnetic-content className="inline-flex items-center gap-2"><X aria-hidden="true" className="size-5" /> {closeLabel}</span>
+          </button>
+        </Magnetic>
       </div>
     </dialog>
   );

@@ -213,6 +213,7 @@ function IntroExperience({
       ref={rootRef}
       className="fixed inset-0 z-[var(--z-modal)] h-[100dvh] min-h-[100svh] overflow-hidden text-foreground"
       data-intro-overlay
+      data-native-cursor
       data-phase={phase}
       role="region"
       aria-label={dictionary.accessibleLabel}

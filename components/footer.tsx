@@ -31,7 +31,7 @@ export function Footer({
       <Container>
         <Reveal className="grid gap-12 pb-12 md:grid-cols-12 md:gap-8 md:pb-16">
           <div className="md:col-span-6">
-            <Link href={`/${currentLocale}`} className="inline-flex flex-col">
+            <Link href={`/${currentLocale}`} className="inline-flex flex-col" data-press-feedback>
               <span className="font-serif text-[clamp(2.5rem,6vw,5.5rem)] leading-none tracking-[-0.04em] text-foreground">
                 raw.vives
               </span>
@@ -45,18 +45,19 @@ export function Footer({
             aria-label={navigationLabel}
             className="grid grid-cols-2 gap-x-6 gap-y-2 md:col-span-3"
           >
-            <Link className="rv-editorial-link" href={`/${currentLocale}#gallery`}>
+            <Link className="rv-editorial-link" href={`/${currentLocale}#gallery`} data-press-feedback>
               {dictionary.gallery}
             </Link>
-            <Link className="rv-editorial-link" href={`/${currentLocale}#about`}>
+            <Link className="rv-editorial-link" href={`/${currentLocale}#about`} data-press-feedback>
               {dictionary.about}
             </Link>
-            <Link className="rv-editorial-link" href={`/${currentLocale}#contact`}>
+            <Link className="rv-editorial-link" href={`/${currentLocale}#contact`} data-press-feedback>
               {dictionary.contact}
             </Link>
             <Link
               className="rv-editorial-link"
               href={`/${currentLocale}/politica-uso`}
+              data-press-feedback
             >
               {dictionary.policies}
             </Link>
@@ -68,6 +69,7 @@ export function Footer({
               href="https://instagram.com/aleexx_005/"
               target="_blank"
               rel="noreferrer"
+              data-press-feedback
             >
               Instagram <ArrowUpRight aria-hidden="true" className="size-3.5" />
             </a>
@@ -76,10 +78,11 @@ export function Footer({
               href="https://aleviclop.dev/"
               target="_blank"
               rel="noreferrer"
+              data-press-feedback
             >
               aleviclop.dev <ArrowUpRight aria-hidden="true" className="size-3.5" />
             </a>
-            <a className="rv-editorial-link" href="mailto:alexviclop@gmail.com">
+            <a className="rv-editorial-link" href="mailto:alexviclop@gmail.com" data-press-feedback>
               Email
             </a>
           </div>
@@ -96,6 +99,7 @@ export function Footer({
               lang="es"
               aria-current={currentLocale === "es" ? "page" : undefined}
               className={`inline-flex size-11 items-center justify-center ${currentLocale === "es" ? "text-accent" : "hover:text-foreground"}`}
+              data-press-feedback
             >
               ES
             </Link>
@@ -106,6 +110,7 @@ export function Footer({
               lang="en"
               aria-current={currentLocale === "en" ? "page" : undefined}
               className={`inline-flex size-11 items-center justify-center ${currentLocale === "en" ? "text-accent" : "hover:text-foreground"}`}
+              data-press-feedback
             >
               EN
             </Link>
