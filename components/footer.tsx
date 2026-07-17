@@ -1,9 +1,12 @@
+"use client";
+
 import { Container } from "@/components/ui/layout";
 import { AnimatedDivider } from "@/components/motion/animated-divider";
 import { Reveal } from "@/components/motion/reveal";
 import type { Locale, NavDictionary } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
 
 export function Footer({
   currentLocale,
@@ -19,6 +22,11 @@ export function Footer({
       : "All photographs are protected by copyright.";
   const navigationLabel =
     currentLocale === "es" ? "Navegación secundaria" : "Secondary navigation";
+  const locationSnapshot = useLocationSnapshot();
+  const archiveSuffix =
+    locationSnapshot.pathname === `/${currentLocale}`
+      ? `${locationSnapshot.search}${locationSnapshot.hash}`
+      : "";
 
   return (
     <footer className="bg-[var(--color-background-secondary)] pt-16 sm:pt-20">
@@ -85,7 +93,7 @@ export function Footer({
           <p>{copyright}</p>
           <div className="flex items-center font-mono">
             <Link
-              href="/es"
+              href={`/es${archiveSuffix}`}
               hrefLang="es"
               lang="es"
               aria-current={currentLocale === "es" ? "page" : undefined}
@@ -95,7 +103,7 @@ export function Footer({
             </Link>
             <span aria-hidden="true">/</span>
             <Link
-              href="/en"
+              href={`/en${archiveSuffix}`}
               hrefLang="en"
               lang="en"
               aria-current={currentLocale === "en" ? "page" : undefined}

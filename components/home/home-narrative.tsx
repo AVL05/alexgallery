@@ -52,7 +52,7 @@ export function HomeNarrative({
       <HomeManifesto home={dictionary.home} about={dictionary.about} />
       <FeaturedStory photo={data.featured} dictionary={dictionary.home} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
       <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />
-      <VisualChapters chapters={chapters} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} failImages={preview.failImages} slowImages={preview.slowImages} />
+      <VisualChapters chapters={chapters} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
       <SelectedWork photos={selected} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
       <ArchiveIndex archive={data.archive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} />
     </>

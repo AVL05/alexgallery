@@ -8,6 +8,7 @@ import type { Locale, NavDictionary } from "@/types/dictionary";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
 
 export function Navigation({
   dictionary,
@@ -31,6 +32,11 @@ export function Navigation({
   ];
   const alternateLocale: Locale = currentLocale === "es" ? "en" : "es";
   const alternatePath = pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`);
+  const locationSnapshot = useLocationSnapshot();
+  const alternateHref =
+    isHome && locationSnapshot.pathname === `/${currentLocale}`
+      ? `${alternatePath}${locationSnapshot.search}${locationSnapshot.hash}`
+      : alternatePath || `/${alternateLocale}`;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileMenuMounted, setIsMobileMenuMounted] = useState(false);
@@ -221,7 +227,7 @@ export function Navigation({
                 {currentLocale.toUpperCase()}
               </span>
               <Link
-                href={alternatePath || `/${alternateLocale}`}
+                href={alternateHref}
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
                 className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
@@ -301,7 +307,7 @@ export function Navigation({
                 {currentLocale.toUpperCase()}
               </span>
               <Link
-                href={alternatePath || `/${alternateLocale}`}
+                href={alternateHref}
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
                 onClick={closeMobileMenu}

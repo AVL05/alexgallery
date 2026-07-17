@@ -17,8 +17,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title: dict.seo.title,
     description: dict.seo.description,
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        'es-ES': '/es',
+        'en-US': '/en',
+      },
+    },
     openGraph: {
       locale: locale === 'es' ? 'es_ES' : 'en_US',
+      url: `/${locale}`,
     }
   }
 }

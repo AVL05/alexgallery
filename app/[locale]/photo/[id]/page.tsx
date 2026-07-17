@@ -2,6 +2,7 @@ import { getDictionary, locales } from '@/lib/dictionary'
 import { photos } from '@/lib/gallery-data'
 import imagesData from '@/lib/images-data.json'
 import { PhotoKeyboardNavigation } from '@/components/photo-keyboard-navigation'
+import { ArchiveReturnLink } from '@/components/archive/archive-return-link'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { Container, PageShell } from '@/components/ui/layout'
@@ -90,18 +91,22 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
         previousHref={previousHref}
         nextHref={nextHref}
         galleryHref={galleryHref}
+        locale={locale}
+        photoId={photo.id}
       />
       <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/photo/${id}`} />
 
       <Container className="pb-20 pt-32 sm:pt-36 lg:pb-28">
         <Reveal distance={8}>
-          <Link
-            href={galleryHref}
+          <ArchiveReturnLink
+            locale={locale}
+            photoId={photo.id}
+            fallbackHref={galleryHref}
             className="rv-editorial-link group mb-10 sm:mb-12"
           >
             <ChevronLeft aria-hidden="true" className="size-4 transition-transform group-hover:-translate-x-0.5" />
             <span>{backText}</span>
-          </Link>
+          </ArchiveReturnLink>
         </Reveal>
 
         <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16 xl:gap-24">
@@ -173,13 +178,15 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
                 </Link>
               </div>
 
-              <Link
-                href={galleryHref}
+              <ArchiveReturnLink
+                locale={locale}
+                photoId={photo.id}
+                fallbackHref={galleryHref}
                 className="rv-editorial-link w-full justify-center border-b border-border py-4 no-underline"
               >
                 <Grid3X3 aria-hidden="true" className="size-3.5" />
                 {backText}
-              </Link>
+              </ArchiveReturnLink>
 
               <p className="rv-meta pt-4 text-center">
                 {keyboardText}

@@ -5,6 +5,7 @@ import { SectionMarker } from "@/components/home/section-marker";
 import { Reveal, StaggerGroup } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/layout";
 import { requestGalleryFilter } from "@/lib/gallery-filter-events";
+import { getCategoryArchiveHref } from "@/lib/archive/url";
 import type { HomeChapter } from "@/lib/home/selectors";
 import type { GalleryDictionary, HomeDictionary } from "@/types/dictionary";
 import { ArrowDownRight } from "lucide-react";
@@ -17,12 +18,14 @@ export function VisualChapters({
   galleryDictionary,
   failImages,
   slowImages,
+  locale,
 }: {
   chapters: HomeChapter[];
   dictionary: HomeDictionary;
   galleryDictionary: GalleryDictionary;
   failImages?: boolean;
   slowImages?: boolean;
+  locale: "es" | "en";
 }) {
   const [activeCategory, setActiveCategory] = useState(chapters[0]?.category);
   const activeChapter = chapters.find((chapter) => chapter.category === activeCategory) ?? chapters[0];
@@ -52,7 +55,7 @@ export function VisualChapters({
                 <Link
                   key={chapter.category}
                   data-motion-item
-                  href="#gallery"
+                  href={getCategoryArchiveHref(locale, chapter.category)}
                   onMouseEnter={() => setActiveCategory(chapter.category)}
                   onFocus={() => setActiveCategory(chapter.category)}
                   onClick={() => requestGalleryFilter(chapter.category)}
