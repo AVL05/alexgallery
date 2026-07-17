@@ -33,10 +33,10 @@ export function Navigation({
   const alternateLocale: Locale = currentLocale === "es" ? "en" : "es";
   const alternatePath = pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`);
   const locationSnapshot = useLocationSnapshot();
-  const alternateHref =
-    isHome && locationSnapshot.pathname === `/${currentLocale}`
-      ? `${alternatePath}${locationSnapshot.search}${locationSnapshot.hash}`
-      : alternatePath || `/${alternateLocale}`;
+  const liveAlternatePath = locationSnapshot.pathname
+    ? locationSnapshot.pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`)
+    : alternatePath;
+  const alternateHref = `${liveAlternatePath || `/${alternateLocale}`}${locationSnapshot.search}${locationSnapshot.hash}`;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileMenuMounted, setIsMobileMenuMounted] = useState(false);

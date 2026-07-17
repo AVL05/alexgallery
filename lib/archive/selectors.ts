@@ -5,20 +5,24 @@ import type {
   ArchiveState,
 } from "@/lib/archive/types";
 import type { GalleryFilter, ImagesData } from "@/types/photo";
+import type { Locale } from "@/types/dictionary";
+import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
 
-export function buildArchivePhotos(imagesData: ImagesData): ArchivePhoto[] {
+export function buildArchivePhotos(imagesData: ImagesData, locale: Locale = "es"): ArchivePhoto[] {
   const optimizedById = new Map(imagesData.images.map((image) => [image.id, image]));
 
   return basePhotos.map((photo, curatedIndex) => {
     const optimized = optimizedById.get(String(photo.id));
+    const localized = getLocalizedPhotoContent(photo, locale);
     return {
       ...photo,
+      ...localized,
       ...optimized,
       id: photo.id,
       curatedIndex,
       src: optimized?.src || photo.image,
       image: optimized?.src || photo.image,
-      alt: photo.description || photo.title,
+      alt: localized.alt,
       width: optimized?.width ?? 1200,
       height: optimized?.height ?? 1600,
     };

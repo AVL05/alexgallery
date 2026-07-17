@@ -23,10 +23,8 @@ export function Footer({
   const navigationLabel =
     currentLocale === "es" ? "Navegación secundaria" : "Secondary navigation";
   const locationSnapshot = useLocationSnapshot();
-  const archiveSuffix =
-    locationSnapshot.pathname === `/${currentLocale}`
-      ? `${locationSnapshot.search}${locationSnapshot.hash}`
-      : "";
+  const localizedPath = locationSnapshot.pathname || `/${currentLocale}`;
+  const localeHref = (locale: Locale) => `${localizedPath.replace(/^\/(es|en)(?=\/|$)/, `/${locale}`)}${locationSnapshot.search}${locationSnapshot.hash}`;
 
   return (
     <footer className="bg-[var(--color-background-secondary)] pt-16 sm:pt-20">
@@ -93,7 +91,7 @@ export function Footer({
           <p>{copyright}</p>
           <div className="flex items-center font-mono">
             <Link
-              href={`/es${archiveSuffix}`}
+              href={localeHref("es")}
               hrefLang="es"
               lang="es"
               aria-current={currentLocale === "es" ? "page" : undefined}
@@ -103,7 +101,7 @@ export function Footer({
             </Link>
             <span aria-hidden="true">/</span>
             <Link
-              href={`/en${archiveSuffix}`}
+              href={localeHref("en")}
               hrefLang="en"
               lang="en"
               aria-current={currentLocale === "en" ? "page" : undefined}

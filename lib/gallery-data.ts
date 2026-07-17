@@ -138,7 +138,7 @@ export const photos = [
     image: "/21.webp",
     color: "secondary",
     description:
-      "Un tranvía atraviesa la noche de Oporto, mientras la ciudad respira entre sombras and encuentros.",
+      "Un tranvía atraviesa la noche de Oporto, mientras la ciudad respira entre sombras y encuentros.",
   },
   {
     id: 23,

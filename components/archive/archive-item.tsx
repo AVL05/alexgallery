@@ -8,6 +8,7 @@ import type {
 import { saveArchiveContext } from "@/lib/archive/context";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
+import { serializeArchiveState } from "@/lib/archive/url";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -31,7 +32,7 @@ export function ArchiveItem({
 }) {
   const [source, setSource] = useState(photo.src);
   const [imageFailed, setImageFailed] = useState(false);
-  const href = `/${locale}/photo/${photo.id}`;
+  const href = `/${locale}/photo/${photo.id}${serializeArchiveState(state)}`;
   const sizes =
     variant === "featured" || variant === "panorama"
       ? "(max-width: 767px) 100vw, (max-width: 1023px) 92vw, 62vw"

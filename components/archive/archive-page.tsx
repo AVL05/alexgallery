@@ -37,7 +37,7 @@ export function ArchivePage({
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const restoredRef = useRef(false);
-  const photos = useMemo(() => buildArchivePhotos(imagesData), [imagesData]);
+  const photos = useMemo(() => buildArchivePhotos(imagesData, locale), [imagesData, locale]);
   const years = useMemo(
     () => [...new Set(photos.map((photo) => photo.year))].sort((a, b) => Number(b) - Number(a)),
     [photos],
