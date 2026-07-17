@@ -310,3 +310,10 @@ si existe pointer fine, hover y permiso de accesibilidad antes de importar el
 targets, geometría, listeners y debug. La API por atributos evita contextos o
 listeners por tarjeta; `Magnetic` es local y opcional. Rutas, SSG, SEO, Lenis y
 locks continúan sin cambios. Véase `RAW_VIVES_INTERACTION_SYSTEM.md`.
+
+## Sistema gráfico de la Fase 10
+
+`HeroGraphicsBootstrap` vive dentro de la media existente y decide capacidades
+después de intro e imagen. `HeroWebglEffect` y Three se importan solo en cliente.
+`lib/graphics/` separa capacidades, configuración, cover, shaders, señales,
+telemetría y contextos; ninguna ruta distinta de la home monta el renderer.

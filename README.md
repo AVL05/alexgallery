@@ -7,6 +7,7 @@ Portfolio fotográfico de Alex Vicente Lopez — Next.js + exportación estátic
 - Next.js 16 (App Router, `output: "export"`)
 - React 19 · TypeScript estricto · Tailwind CSS 4
 - GSAP + ScrollTrigger · Lenis smooth scroll adaptativo
+- Three.js · mejora WebGL progresiva y diferida del hero
 - `sharp` · `plaiceholder` · `exifr` para imágenes
 
 ## Comandos
@@ -51,6 +52,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Sistema de detalle fotográfico RAW.VIVES](docs/RAW_VIVES_PHOTO_DETAIL_SYSTEM.md)
 - [Sistema de proceso creativo RAW.VIVES](docs/RAW_VIVES_CREATIVE_PROCESS_SYSTEM.md)
 - [Sistema de interacción RAW.VIVES](docs/RAW_VIVES_INTERACTION_SYSTEM.md)
+- [Sistema gráfico RAW.VIVES](docs/RAW_VIVES_GRAPHICS_SYSTEM.md)
 
 ## Licencia
 

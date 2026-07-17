@@ -291,3 +291,10 @@ La interfaz declarativa, detección y métricas quedan aisladas para evolucionar
 sin tocar rutas ni catálogo. Fase 9 no incluye canvas, WebGL, WebGPU, Three.js,
 shaders, partículas, tilt, distorsión, vídeo, audio ni seguimiento de imagen. Una
 Fase 10 deberá partir de necesidad editorial medida y preservar estos fallbacks.
+
+## 44. Integración completada por la Fase 10
+
+El único `pointermove` global sigue perteneciendo a `CursorLayer`, que publica
+una señal posicional sin render React. El hero WebGL se suscribe sin añadir
+listeners propios y conserva cursor nativo, touch, teclado, overlays y reduced
+motion. La fotografía no adquiere target ni etiqueta contextual nueva.

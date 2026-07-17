@@ -252,3 +252,10 @@ imagen sin metadata optimizada.
 
 Esta fase no implementa la nueva home narrativa, WebGL, vídeo, cursor,
 storytelling, secciones fijadas ni scroll horizontal.
+
+## Integración completada por la Fase 10
+
+La imagen HTML prioritaria sigue siendo LCP y fallback. Tras `entryReady` e
+imagen cargada, un bootstrap cliente puede importar Three con la misma fuente.
+El canvas aparece tras el primer frame, queda bajo el overlay y se oculta ante
+error o pérdida de contexto. Véase `RAW_VIVES_GRAPHICS_SYSTEM.md`.

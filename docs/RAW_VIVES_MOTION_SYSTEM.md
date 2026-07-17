@@ -342,3 +342,10 @@ RAF al desplazar la página para resolver el target estacionario. `Magnetic` mid
 al entrar, transforma una capa interior y limpia tweens/`will-change` al salir.
 Reduced motion mantiene cursor nativo; teclado neutraliza magnetismo. Los locks
 de overlay y Lenis continúan bajo `MotionProvider`.
+
+## Aplicación al sistema gráfico de la Fase 10
+
+WebGL consume el puntero ya delegado por el cursor y el progreso del único
+ScrollTrigger del hero. Su RAF es bajo demanda y se detiene al asentarse, fuera
+de viewport, con pestaña oculta o scroll lock. Reduced motion no crea canvas ni
+prueba de contexto.

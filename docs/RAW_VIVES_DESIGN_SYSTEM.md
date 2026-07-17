@@ -322,3 +322,9 @@ sistema. El vocabulario queda reducido a subrayado/color, flecha 2–4 px, escal
 fotográfica 1.01–1.018 y press 0.985. Las variantes clara y oscura se declaran por
 target; no se analiza la fotografía ni se añaden gradientes, blur o sombras
 pesadas. Hover y `focus-visible` comunican el mismo cambio esencial.
+
+## Aplicación al sistema gráfico de la Fase 10
+
+La única capa avanzada es una distorsión UV de baja amplitud en el hero. No añade
+paleta, textura decorativa, bloom, partículas o nuevo lenguaje de superficies.
+El gradiente editorial y el contenido conservan su jerarquía sobre el canvas.
