@@ -197,6 +197,19 @@
     "originalCorrected": "Original and correction",
     "correctedFinal": "Correction and final result"
   },
+  "cursor": {
+    "view": "View",
+    "open": "Open",
+    "drag": "Drag",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "compare": "Compare",
+    "explore": "Explore",
+    "copied": "Copied",
+    "unavailable": "Unavailable"
+  },
   "contact": {
     "title": "Contact",
     "description": "If you want to ask about an image, request a license, or propose a visual collaboration, send me a message.",

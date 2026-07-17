@@ -197,6 +197,19 @@
     "originalCorrected": "Original y corrección",
     "correctedFinal": "Corrección y resultado final"
   },
+  "cursor": {
+    "view": "Ver",
+    "open": "Abrir",
+    "drag": "Arrastrar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar",
+    "fullscreen": "Ampliar",
+    "compare": "Comparar",
+    "explore": "Explorar",
+    "copied": "Copiado",
+    "unavailable": "No disponible"
+  },
   "contact": {
     "title": "Contacto",
     "description": "Si quieres comentar una imagen, pedir una licencia o proponer una colaboración visual, escríbeme.",

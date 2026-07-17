@@ -9,5 +9,6 @@ export type AboutDictionary = Dictionary["about"];
 export type GalleryDictionary = Dictionary["gallery"];
 export type PhotoDetailDictionary = Dictionary["photoDetail"];
 export type PhotoProcessDictionary = Dictionary["photoProcess"];
+export type CursorDictionary = Dictionary["cursor"];
 export type ContactDictionary = Dictionary["contact"];
 export type IntroDictionary = Dictionary["intro"];

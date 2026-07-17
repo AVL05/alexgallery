@@ -85,6 +85,7 @@
   --z-nav: 100;
   --z-overlay: 200;
   --z-modal: 300;
+  --z-cursor: 400;
 
   /* Basic motion only */
   --duration-fast: 140ms;
@@ -363,6 +364,32 @@
     text-decoration-color: var(--color-accent);
   }
 
+  .rv-editorial-link:focus-visible {
+    color: var(--color-accent-strong);
+    text-decoration-color: var(--color-accent);
+  }
+
+  [data-press-feedback] {
+    transition:
+      color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      transform 90ms var(--ease-standard);
+  }
+
+  [data-press-feedback]:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: scale(0.985);
+  }
+
+  .rv-interactive-icon {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .group:hover .rv-interactive-icon,
+  .group:focus-visible .rv-interactive-icon {
+    transform: translate3d(0.2rem, -0.2rem, 0);
+  }
+
   .rv-field {
     width: 100%;
     min-height: 3rem;
@@ -452,6 +479,135 @@
   }
 }
 
+/* Phase 9 — contextual cursor and shared microinteractions */
+.rv-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.rv-cursor__surface,
+.rv-cursor__dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.rv-cursor__surface {
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid rgb(241 240 235 / 76%);
+  background: rgb(8 8 8 / 22%);
+  box-shadow: 0 0 0 1px rgb(8 8 8 / 52%);
+  color: white;
+  transition:
+    width var(--duration-fast) var(--ease-standard),
+    height var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.rv-cursor__dot {
+  width: 0.3rem;
+  height: 0.3rem;
+  border: 1px solid rgb(8 8 8 / 72%);
+  background: var(--color-focus);
+}
+
+.rv-cursor__label {
+  max-width: 5.5rem;
+  padding-inline: 0.35rem;
+  overflow: hidden;
+  font-family: var(--font-technical);
+  font-size: 0.58rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.11em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.rv-cursor:not([data-state="default"]) .rv-cursor__surface {
+  width: 4.75rem;
+  height: 4.75rem;
+  border-color: rgb(241 240 235 / 42%);
+  background: rgb(8 8 8 / 88%);
+}
+
+.rv-cursor:is([data-state="close"], [data-state="next"], [data-state="previous"]) .rv-cursor__surface {
+  width: 3.625rem;
+  height: 3.625rem;
+}
+
+.rv-cursor:not([data-state="default"]) .rv-cursor__label { opacity: 1; }
+
+.rv-cursor[data-contrast="light"] .rv-cursor__surface {
+  border-color: rgb(8 8 8 / 48%);
+  background: rgb(241 240 235 / 92%);
+  color: var(--color-background);
+}
+
+.rv-cursor[data-contrast="dark"] .rv-cursor__surface {
+  border-color: rgb(241 240 235 / 48%);
+  background: rgb(8 8 8 / 92%);
+  color: var(--color-text);
+}
+
+html[data-input-modality="keyboard"] [data-magnetic-content] {
+  transform: none !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-custom-cursor="ready"],
+  html[data-custom-cursor="ready"] body,
+  html[data-custom-cursor="ready"] body * {
+    cursor: none;
+  }
+
+  html[data-custom-cursor="ready"] body :where(
+    textarea,
+    select,
+    iframe,
+    [contenteditable="true"],
+    [data-native-cursor],
+    [data-native-cursor] *,
+    [aria-busy="true"],
+    [data-cursor-loading="true"],
+    input:not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"])
+  ) {
+    cursor: auto;
+  }
+
+  html[data-custom-cursor="ready"] body :is(
+    textarea,
+    [contenteditable="true"],
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="password"]
+  ) {
+    cursor: text;
+  }
+
+  html[data-custom-cursor="ready"] body :is(:disabled, [aria-disabled="true"]) {
+    cursor: not-allowed;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -465,6 +621,12 @@
   ::view-transition-group(*) {
     animation-duration: 0.01ms !important;
   }
+
+  [data-press-feedback]:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: none;
+  }
+
+  .rv-cursor { display: none !important; }
 }
 
 /* Phase 7 — editorial photography detail */

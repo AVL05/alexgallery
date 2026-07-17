@@ -26,6 +26,11 @@ import {
   type HomeStateDetail,
 } from "@/lib/home/development";
 import { useEffect, useState } from "react";
+import {
+  INTERACTION_STATE_EVENT,
+  requestInteractionControl,
+} from "@/lib/interactions/development";
+import type { CursorDebugSnapshot } from "@/types/cursor";
 
 export function MotionDebugPanel() {
   const motion = useMotion();
@@ -36,6 +41,7 @@ export function MotionDebugPanel() {
   const [introSeen, setIntroSeen] = useState(false);
   const [heroState, setHeroState] = useState<HeroStateDetail | null>(null);
   const [homeState, setHomeState] = useState<HomeStateDetail | null>(null);
+  const [interactionState, setInteractionState] = useState<CursorDebugSnapshot | null>(null);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -62,6 +68,15 @@ export function MotionDebugPanel() {
     syncSession();
     window.addEventListener(INTRO_STATE_EVENT, handleIntroState);
     return () => window.removeEventListener(INTRO_STATE_EVENT, handleIntroState);
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+    const handleInteractionState = (event: Event) => {
+      setInteractionState((event as CustomEvent<CursorDebugSnapshot>).detail);
+    };
+    window.addEventListener(INTERACTION_STATE_EVENT, handleInteractionState);
+    return () => window.removeEventListener(INTERACTION_STATE_EVENT, handleInteractionState);
   }, [visible]);
 
   useEffect(() => {
@@ -148,6 +163,52 @@ export function MotionDebugPanel() {
             </div>
             <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
               scroll {motion.isScrollLocked ? "locked" : "open"} / triggers {triggerCount}
+            </p>
+          </section>
+          <section className="border border-border p-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="rv-meta">Interaction system</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+                  {interactionState?.state ?? "default"} / {interactionState?.label || "no label"}
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-accent">
+                {interactionState?.modality?.toUpperCase() ?? "UNKNOWN"}
+              </span>
+            </div>
+            <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[9px] text-[var(--color-text-muted)]">
+              <div><dt>pointer fine</dt><dd>{String(motion.hasFinePointer)}</dd></div>
+              <div><dt>hover</dt><dd>{String(motion.hasHover)}</dd></div>
+              <div><dt>touch</dt><dd>{String(motion.isTouchDevice)}</dd></div>
+              <div><dt>reduced</dt><dd>{String(motion.prefersReducedMotion)}</dd></div>
+              <div><dt>eligible</dt><dd>{String(interactionState?.eligible ?? false)}</dd></div>
+              <div><dt>enabled</dt><dd>{String(interactionState?.enabled ?? false)}</dd></div>
+              <div><dt>contrast</dt><dd>{interactionState?.contrast ?? "default"}</dd></div>
+              <div><dt>preview</dt><dd>{interactionState?.preview ?? "off"}</dd></div>
+              <div><dt>listeners</dt><dd>{interactionState?.globalPointerListeners ?? 0}</dd></div>
+              <div><dt>magnetic</dt><dd>{String(interactionState?.magneticEnabled ?? false)}</dd></div>
+              <div><dt>sim touch</dt><dd>{String(interactionState?.simulatedTouch ?? false)}</dd></div>
+              <div><dt>sim reduced</dt><dd>{String(interactionState?.simulatedReducedMotion ?? false)}</dd></div>
+              <div><dt>position</dt><dd>{Math.round(interactionState?.position.x ?? 0)},{Math.round(interactionState?.position.y ?? 0)}</dd></div>
+              <div><dt>overlay</dt><dd>{String(interactionState?.overlayOpen ?? false)}</dd></div>
+            </dl>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              {(["view", "drag", "next"] as const).map((state) => (
+                <button key={state} type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ state })}>{state.toUpperCase()}</button>
+              ))}
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ state: "default" })}>DEFAULT</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ state: interactionState?.state || "view", contrast: interactionState?.contrast === "light" ? "dark" : "light" })}>Contrast</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ disabled: interactionState?.enabled ?? true })}>{interactionState?.enabled ? "Disable" : "Enable"}</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ simulateTouch: !(interactionState?.simulatedTouch ?? false) })}>Touch</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ simulateReducedMotion: !(interactionState?.simulatedReducedMotion ?? false) })}>Reduced</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ state: "view", edge: "top-left" })}>Top left</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestInteractionControl({ state: "view", edge: "bottom-right" })}>Bottom right</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => previewLocale("es")}>Cursor ES</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => previewLocale("en")}>Cursor EN</button>
+            </div>
+            <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
+              route {interactionState?.route ?? "--"} / layer {interactionState?.mounted ? "mounted" : "idle"}
             </p>
           </section>
           <section className="border border-border p-3">
