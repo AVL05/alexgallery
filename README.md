@@ -53,6 +53,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Sistema de proceso creativo RAW.VIVES](docs/RAW_VIVES_CREATIVE_PROCESS_SYSTEM.md)
 - [Sistema de interacción RAW.VIVES](docs/RAW_VIVES_INTERACTION_SYSTEM.md)
 - [Sistema gráfico RAW.VIVES](docs/RAW_VIVES_GRAPHICS_SYSTEM.md)
+- [Auditoría de producción RAW.VIVES](docs/RAW_VIVES_PRODUCTION_AUDIT.md)
 
 ## Licencia
 

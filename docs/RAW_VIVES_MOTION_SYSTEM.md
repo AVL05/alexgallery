@@ -349,3 +349,10 @@ WebGL consume el puntero ya delegado por el cursor y el progreso del único
 ScrollTrigger del hero. Su RAF es bajo demanda y se detiene al asentarse, fuera
 de viewport, con pestaña oculta o scroll lock. Reduced motion no crea canvas ni
 prueba de contexto.
+
+## Aplicación de la Fase 11
+
+Los reveals de viewport animan `opacity` y transform, pero nunca `visibility`:
+todo el contenido permanece en el árbol accesible antes de entrar en pantalla.
+Forced Colors desactiva Lenis mediante la capacidad compartida, igual que reduced
+motion conserva scroll nativo. La espera de fuentes ya no refresca tras unmount.

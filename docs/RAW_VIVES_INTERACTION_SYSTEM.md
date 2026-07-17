@@ -298,3 +298,10 @@ El único `pointermove` global sigue perteneciendo a `CursorLayer`, que publica
 una señal posicional sin render React. El hero WebGL se suscribe sin añadir
 listeners propios y conserva cursor nativo, touch, teclado, overlays y reduced
 motion. La fotografía no adquiere target ni etiqueta contextual nueva.
+
+## 45. Integración completada por la Fase 11
+
+`forced-colors: active` impide montar el cursor y restaura el cursor nativo por
+CSS incluso ante un atributo residual. El skip link localizado precede a la
+navegación y los `main` de home, ficha y política son objetivos enfocables. El
+listener de scroll de la cabecera agrupa lecturas en un único RAF pendiente.

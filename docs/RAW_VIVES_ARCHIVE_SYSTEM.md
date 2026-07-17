@@ -221,9 +221,9 @@ cliente; las fichas y el sitemap no cambian.
 
 ## 18. Rendimiento
 
-Se eliminan del archivo los imports cliente de `react-masonry-css`,
-`yet-another-react-lightbox`, captions y sus CSS. Las dependencias permanecen en
-`package.json` por prudencia, pero ya no entran en este componente. El estado usa
+Se eliminaron del archivo los imports cliente de `react-masonry-css`,
+`yet-another-react-lightbox`, captions y sus CSS. La Fase 11 retiró también ambas
+dependencias tras confirmar uso cero en todo el repositorio. El estado usa
 selectores memoizados a nivel de página y mapas para cruzar datos.
 
 Presupuesto actual: 12 tarjetas iniciales, 0 ScrollTriggers propios, 0 observers

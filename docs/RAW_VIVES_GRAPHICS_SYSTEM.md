@@ -197,3 +197,10 @@ No se mide GPU time de forma portable, WebGPU solo se informa, no hay transició
 ## 49. Preparación para Fase 11
 
 Capacidades, señales, calidad y cleanup quedan aislados para una decisión futura, pero esta entrega no implementa, activa ni define alcance de Fase 11.
+
+## 50. Integración completada por la Fase 11
+
+Forced Colors forma parte de la decisión previa al runtime: no se sondea ni monta
+el canvas. Three continúa diferido y fuera del JS inicial; el chunk final mide
+531.315 B raw. Reduced motion y Forced Colors se verificaron con 0 canvas y la
+imagen HTML intacta.
