@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const dict = await getDictionary(locale);
 
   return {
-    title: dict.seo.title,
+    title: { absolute: dict.seo.title },
     description: dict.seo.description,
     alternates: {
       canonical: `/${locale}`,

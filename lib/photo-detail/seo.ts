@@ -1,7 +1,6 @@
 import type { ArchivePhoto } from "@/lib/archive/types";
 import type { Locale } from "@/types/dictionary";
-
-const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gallery.aleviclop.dev";
+import { siteUrl } from "@/lib/site-config";
 
 export function getCleanPhotoPath(locale: Locale, id: number) {
   return `/${locale}/photo/${id}`;

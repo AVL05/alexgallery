@@ -47,3 +47,22 @@ public/photos/process/**/*.jpeg
 public/photos/process/**/*.png
 public/photos/process/**/*.tif
 public/photos/process/**/*.tiff
+
+# Camera masters, sidecars and Lightroom catalogs stay outside the repository.
+public/photos/**/*.dng
+public/photos/**/*.cr2
+public/photos/**/*.cr3
+public/photos/**/*.nef
+public/photos/**/*.arw
+public/photos/**/*.raf
+public/photos/**/*.orf
+public/photos/**/*.rw2
+public/photos/**/*.xmp
+*.lrcat
+*.lrcat-data/
+*.lrdata/
+
+# Local browser and Cloudflare development state.
+.playwright-mcp/
+.wrangler/
+.codex-preview/

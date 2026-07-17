@@ -6,6 +6,7 @@ import { MotionProvider } from "@/components/motion/motion-provider";
 import { MotionDevelopmentTools } from "@/components/motion/development-tools";
 import { IntroBootstrapScript } from "@/components/intro/intro-bootstrap-script";
 import { DocumentLanguageBootstrap } from "@/components/document-language-bootstrap";
+import { siteUrl } from "@/lib/site-config";
 import "./globals.css";
 
 const prata = Prata({
@@ -28,12 +29,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL ||
-  "https://gallery.aleviclop.dev";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "raw.vives | Visual Archive",
     template: "%s | raw.vives",
@@ -103,8 +100,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/icons/favicon-16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({
@@ -134,10 +137,10 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "Person",
-                  "@id": `${baseUrl}/#person`,
+                  "@id": `${siteUrl}/#person`,
                   name: "Alex Vicente",
-                  url: baseUrl,
-                  image: `${baseUrl}/photos/optimized/original/14.webp`,
+                  url: siteUrl,
+                  image: `${siteUrl}/photos/optimized/original/14.webp`,
                   description:
                     "Personal visual archive by Alex Vicente, including photography, travel images, daily scenes, and digital captures.",
                   jobTitle: "Visual archivist",
@@ -149,19 +152,19 @@ export default function RootLayout({
                 },
                 {
                   "@type": "WebSite",
-                  "@id": `${baseUrl}/#website`,
-                  url: baseUrl,
+                  "@id": `${siteUrl}/#website`,
+                  url: siteUrl,
                   name: "Alex Vicente Visual Archive",
-                  publisher: { "@id": `${baseUrl}/#person` },
+                  publisher: { "@id": `${siteUrl}/#person` },
                   inLanguage: ["es", "en"],
                 },
                 {
                   "@type": "ImageGallery",
-                  "@id": `${baseUrl}/#gallery`,
+                  "@id": `${siteUrl}/#gallery`,
                   name: "Alex Vicente Visual Archive",
                   description:
                     "Global visual archive of photography, travel scenes, nature, city images, and digital captures.",
-                  creator: { "@id": `${baseUrl}/#person` },
+                  creator: { "@id": `${siteUrl}/#person` },
                 },
               ],
             }),
