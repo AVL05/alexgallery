@@ -2,9 +2,11 @@ import { getDictionary, locales } from '@/lib/dictionary'
 import type { Locale } from '@/types/dictionary'
 import type { ImagesData } from '@/types/photo'
 import imagesDataJson from '@/lib/images-data.json'
+import { getClientImagesData } from '@/lib/images/client-data'
 import HomeClient from './home-client'
 
 const imagesData = imagesDataJson as ImagesData
+const clientImagesData = getClientImagesData(imagesData)
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -22,6 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
       languages: {
         'es-ES': '/es',
         'en-US': '/en',
+        'x-default': '/',
       },
     },
     openGraph: {
@@ -34,5 +37,5 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 export default async function Page({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const dictionary = await getDictionary(locale);
-  return <HomeClient dictionary={dictionary} locale={locale} imagesData={imagesData} />
+  return <HomeClient dictionary={dictionary} locale={locale} imagesData={clientImagesData} />
 }

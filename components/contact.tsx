@@ -4,30 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/layout";
 import { useMotion } from "@/components/motion/motion-provider";
 import { motionDistance, motionDuration, motionEase, motionStagger } from "@/lib/motion/config";
+import {
+  type ContactFieldErrors,
+  type ContactFormValues,
+  type LicenseFormValues,
+  validateContactForm,
+  validateLicenseForm,
+} from "@/lib/contact/validation";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { ContactDictionary } from "@/types/dictionary";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-type ContactFormValues = {
-  name: string;
-  email: string;
-  message: string;
-  botcheck?: string;
-};
-
-type LicenseFormValues = {
-  name: string;
-  email: string;
-  company?: string;
-  photoId: string;
-  usageType: string;
-  description: string;
-  botcheck?: string;
-};
+import { type FormEvent, useRef, useState } from "react";
 
 const labelClass = "rv-label mb-2 block text-[var(--color-text-secondary)]";
 const errorClass = "mt-2 text-xs leading-relaxed text-[var(--color-error)]";
@@ -39,67 +26,10 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [formErrors, setFormErrors] = useState<ContactFieldErrors>({});
   const statusRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const { prefersReducedMotion, isTouchDevice } = useMotion();
-
-  const contactSchema = useMemo(
-    () =>
-      z.object({
-        name: z.string().trim().min(2, dictionary.form.validation.name).max(80),
-        email: z.string().trim().email(dictionary.form.validation.email).max(120),
-        message: z
-          .string()
-          .trim()
-          .min(10, dictionary.form.validation.message)
-          .max(2000),
-        botcheck: z.string().optional(),
-      }),
-    [dictionary],
-  );
-
-  const licenseSchema = useMemo(
-    () =>
-      z.object({
-        name: z.string().trim().min(2, dictionary.form.validation.name).max(80),
-        email: z.string().trim().email(dictionary.form.validation.email).max(120),
-        company: z.string().trim().max(120).optional(),
-        photoId: z
-          .string()
-          .trim()
-          .min(1, dictionary.form.validation.photo_id)
-          .max(120),
-        usageType: z
-          .string()
-          .trim()
-          .min(1, dictionary.form.validation.usage_type)
-          .max(40),
-        description: z
-          .string()
-          .trim()
-          .min(10, dictionary.form.validation.usage_description)
-          .max(2000),
-        botcheck: z.string().optional(),
-      }),
-    [dictionary],
-  );
-
-  const contactForm = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", message: "", botcheck: "" },
-  });
-  const licenseForm = useForm<LicenseFormValues>({
-    resolver: zodResolver(licenseSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      company: "",
-      photoId: "",
-      usageType: "",
-      description: "",
-      botcheck: "",
-    },
-  });
 
   useGSAP(() => {
     if (submitStatus && statusRef.current) {
@@ -131,9 +61,34 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
   }, { dependencies: [isTouchDevice, prefersReducedMotion], scope: containerRef, revertOnUpdate: true });
 
   const submit = async (
-    data: ContactFormValues | LicenseFormValues,
+    event: FormEvent<HTMLFormElement>,
     kind: "general" | "license",
   ) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const entries = new FormData(form);
+    const value = (name: string) => String(entries.get(name) ?? "").trim();
+    const data: ContactFormValues | LicenseFormValues = kind === "general"
+      ? {
+          name: value("name"),
+          email: value("email"),
+          message: value("message"),
+          botcheck: value("botcheck"),
+        }
+      : {
+          name: value("name"),
+          email: value("email"),
+          company: value("company"),
+          photoId: value("photoId"),
+          usageType: value("usageType"),
+          description: value("description"),
+          botcheck: value("botcheck"),
+        };
+    const errors = kind === "general"
+      ? validateContactForm(data as ContactFormValues, dictionary.form.validation)
+      : validateLicenseForm(data as LicenseFormValues, dictionary.form.validation);
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     if (data.botcheck) return;
     setIsSubmitting(true);
     setSubmitStatus(null);
@@ -158,12 +113,21 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
             ? dictionary.form.success
             : dictionary.form.license_success,
       });
-      kind === "general" ? contactForm.reset() : licenseForm.reset();
+      form.reset();
     } catch {
       setSubmitStatus({ type: "error", message: dictionary.form.error });
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const clearFieldError = (field: keyof ContactFieldErrors) => {
+    if (!formErrors[field]) return;
+    setFormErrors((current) => {
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
   };
 
   const status = submitStatus && (
@@ -201,6 +165,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                 onClick={() => {
                   setFormType("general");
                   setSubmitStatus(null);
+                  setFormErrors({});
                 }}
               >
                 {dictionary.general}
@@ -212,6 +177,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                 onClick={() => {
                   setFormType("license");
                   setSubmitStatus(null);
+                  setFormErrors({});
                 }}
               >
                 {dictionary.license}
@@ -220,16 +186,20 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
 
             {formType === "general" ? (
               <form
-                onSubmit={contactForm.handleSubmit((data) => submit(data, "general"))}
+                onSubmit={(event) => submit(event, "general")}
+                action="https://api.web3forms.com/submit"
+                method="POST"
                 className="space-y-6"
-                noValidate
               >
+                <input type="hidden" name="access_key" value="d72eeacd-28fc-442b-83bd-b8c383c5997e" />
+                <input type="hidden" name="subject" value="Nuevo contacto - raw.vives" />
                 <input
                   type="checkbox"
+                  name="botcheck"
                   className="sr-only"
                   tabIndex={-1}
                   autoComplete="off"
-                  {...contactForm.register("botcheck")}
+                  aria-hidden="true"
                 />
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
@@ -238,15 +208,19 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                     </label>
                     <input
                       id="contact-name"
+                      name="name"
                       autoComplete="name"
-                      {...contactForm.register("name")}
-                      aria-invalid={!!contactForm.formState.errors.name}
-                      aria-describedby={contactForm.formState.errors.name ? "contact-name-error" : undefined}
+                      minLength={2}
+                      maxLength={80}
+                      required
+                      onInput={() => clearFieldError("name")}
+                      aria-invalid={!!formErrors.name}
+                      aria-describedby={formErrors.name ? "contact-name-error" : undefined}
                       className="rv-field"
                     />
-                    {contactForm.formState.errors.name && (
+                    {formErrors.name && (
                       <p id="contact-name-error" className={errorClass} role="alert">
-                        {contactForm.formState.errors.name.message}
+                        {formErrors.name}
                       </p>
                     )}
                   </div>
@@ -256,16 +230,19 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                     </label>
                     <input
                       id="contact-email"
+                      name="email"
                       type="email"
                       autoComplete="email"
-                      {...contactForm.register("email")}
-                      aria-invalid={!!contactForm.formState.errors.email}
-                      aria-describedby={contactForm.formState.errors.email ? "contact-email-error" : undefined}
+                      maxLength={120}
+                      required
+                      onInput={() => clearFieldError("email")}
+                      aria-invalid={!!formErrors.email}
+                      aria-describedby={formErrors.email ? "contact-email-error" : undefined}
                       className="rv-field"
                     />
-                    {contactForm.formState.errors.email && (
+                    {formErrors.email && (
                       <p id="contact-email-error" className={errorClass} role="alert">
-                        {contactForm.formState.errors.email.message}
+                        {formErrors.email}
                       </p>
                     )}
                   </div>
@@ -276,15 +253,19 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   </label>
                   <textarea
                     id="contact-message"
+                    name="message"
                     rows={6}
-                    {...contactForm.register("message")}
-                    aria-invalid={!!contactForm.formState.errors.message}
-                    aria-describedby={contactForm.formState.errors.message ? "contact-message-error" : undefined}
+                    minLength={10}
+                    maxLength={2000}
+                    required
+                    onInput={() => clearFieldError("message")}
+                    aria-invalid={!!formErrors.message}
+                    aria-describedby={formErrors.message ? "contact-message-error" : undefined}
                     className="rv-field resize-y"
                   />
-                  {contactForm.formState.errors.message && (
+                  {formErrors.message && (
                     <p id="contact-message-error" className={errorClass} role="alert">
-                      {contactForm.formState.errors.message.message}
+                      {formErrors.message}
                     </p>
                   )}
                 </div>
@@ -295,42 +276,46 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
               </form>
             ) : (
               <form
-                onSubmit={licenseForm.handleSubmit((data) => submit(data, "license"))}
+                onSubmit={(event) => submit(event, "license")}
+                action="https://api.web3forms.com/submit"
+                method="POST"
                 className="space-y-6"
-                noValidate
               >
+                <input type="hidden" name="access_key" value="d72eeacd-28fc-442b-83bd-b8c383c5997e" />
+                <input type="hidden" name="subject" value="Solicitud de licencia - raw.vives" />
                 <input
                   type="checkbox"
+                  name="botcheck"
                   className="sr-only"
                   tabIndex={-1}
                   autoComplete="off"
-                  {...licenseForm.register("botcheck")}
+                  aria-hidden="true"
                 />
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
                     <label className={labelClass} htmlFor="license-name">{dictionary.form.name}</label>
-                    <input id="license-name" autoComplete="name" {...licenseForm.register("name")} aria-invalid={!!licenseForm.formState.errors.name} className="rv-field" />
-                    {licenseForm.formState.errors.name && <p className={errorClass} role="alert">{licenseForm.formState.errors.name.message}</p>}
+                    <input id="license-name" name="name" autoComplete="name" minLength={2} maxLength={80} required onInput={() => clearFieldError("name")} aria-invalid={!!formErrors.name} aria-describedby={formErrors.name ? "license-name-error" : undefined} className="rv-field" />
+                    {formErrors.name && <p id="license-name-error" className={errorClass} role="alert">{formErrors.name}</p>}
                   </div>
                   <div>
                     <label className={labelClass} htmlFor="license-email">{dictionary.form.email}</label>
-                    <input id="license-email" type="email" autoComplete="email" {...licenseForm.register("email")} aria-invalid={!!licenseForm.formState.errors.email} className="rv-field" />
-                    {licenseForm.formState.errors.email && <p className={errorClass} role="alert">{licenseForm.formState.errors.email.message}</p>}
+                    <input id="license-email" name="email" type="email" autoComplete="email" maxLength={120} required onInput={() => clearFieldError("email")} aria-invalid={!!formErrors.email} aria-describedby={formErrors.email ? "license-email-error" : undefined} className="rv-field" />
+                    {formErrors.email && <p id="license-email-error" className={errorClass} role="alert">{formErrors.email}</p>}
                   </div>
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="license-company">{dictionary.form.company}</label>
-                  <input id="license-company" autoComplete="organization" {...licenseForm.register("company")} className="rv-field" />
+                  <input id="license-company" name="company" autoComplete="organization" maxLength={120} className="rv-field" />
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="license-photo">{dictionary.form.photo_id}</label>
-                  <input id="license-photo" {...licenseForm.register("photoId")} aria-invalid={!!licenseForm.formState.errors.photoId} className="rv-field" />
-                  {licenseForm.formState.errors.photoId && <p className={errorClass} role="alert">{licenseForm.formState.errors.photoId.message}</p>}
+                  <input id="license-photo" name="photoId" maxLength={120} required onInput={() => clearFieldError("photoId")} aria-invalid={!!formErrors.photoId} aria-describedby={formErrors.photoId ? "license-photo-error" : undefined} className="rv-field" />
+                  {formErrors.photoId && <p id="license-photo-error" className={errorClass} role="alert">{formErrors.photoId}</p>}
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="license-usage">{dictionary.form.usage_type}</label>
                   <div className="relative">
-                    <select id="license-usage" {...licenseForm.register("usageType")} aria-invalid={!!licenseForm.formState.errors.usageType} className="rv-field appearance-none pr-10">
+                    <select id="license-usage" name="usageType" required onChange={() => clearFieldError("usageType")} aria-invalid={!!formErrors.usageType} aria-describedby={formErrors.usageType ? "license-usage-error" : undefined} className="rv-field appearance-none pr-10">
                       <option value="">{dictionary.form.usage_type}</option>
                       <option value="commercial">{dictionary.form.usage_commercial}</option>
                       <option value="editorial">{dictionary.form.usage_editorial}</option>
@@ -338,12 +323,12 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                     </select>
                     <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-[var(--color-text-muted)]" />
                   </div>
-                  {licenseForm.formState.errors.usageType && <p className={errorClass} role="alert">{licenseForm.formState.errors.usageType.message}</p>}
+                  {formErrors.usageType && <p id="license-usage-error" className={errorClass} role="alert">{formErrors.usageType}</p>}
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="license-description">{dictionary.form.usage_description}</label>
-                  <textarea id="license-description" rows={5} {...licenseForm.register("description")} aria-invalid={!!licenseForm.formState.errors.description} className="rv-field resize-y" />
-                  {licenseForm.formState.errors.description && <p className={errorClass} role="alert">{licenseForm.formState.errors.description.message}</p>}
+                  <textarea id="license-description" name="description" rows={5} minLength={10} maxLength={2000} required onInput={() => clearFieldError("description")} aria-invalid={!!formErrors.description} aria-describedby={formErrors.description ? "license-description-error" : undefined} className="rv-field resize-y" />
+                  {formErrors.description && <p id="license-description-error" className={errorClass} role="alert">{formErrors.description}</p>}
                 </div>
                 {status}
                 <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
