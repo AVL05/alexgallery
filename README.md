@@ -44,6 +44,8 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Sistema motion RAW.VIVES](docs/RAW_VIVES_MOTION_SYSTEM.md)
 - [Sistema de intro RAW.VIVES](docs/RAW_VIVES_INTRO_SYSTEM.md)
 - [Sistema de hero RAW.VIVES](docs/RAW_VIVES_HERO_SYSTEM.md)
+- [Home narrativa RAW.VIVES](docs/RAW_VIVES_HOME_NARRATIVE.md)
+- [Sistema de archivo RAW.VIVES](docs/RAW_VIVES_ARCHIVE_SYSTEM.md)
 
 ## Licencia
 

@@ -162,3 +162,11 @@ El orden de capítulos se controla en `homeChapterOrder`. El orden global de sec
 ## 31. Preparación para la Fase 6
 
 La Fase 6 puede evolucionar `#gallery` por separado: el índice, los capítulos y el evento de filtro ya ofrecen puntos de entrada estables. No debe duplicar la curación de home ni convertir `SelectedWork` en un segundo archivo completo.
+
+## 32. Integración completada por la Fase 6
+
+Los capítulos enlazan ahora a URLs compartibles como
+`/{locale}?category=fauna#gallery` y conservan el evento cliente para respuesta
+inmediata. El índice, hero, cierre y navegación mantienen `#gallery`. El selector
+de idioma conserva parámetros y hash. La curación de home no se duplica dentro
+del nuevo archivo; sus reglas viven en `RAW_VIVES_ARCHIVE_SYSTEM.md`.

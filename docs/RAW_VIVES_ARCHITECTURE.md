@@ -266,3 +266,16 @@ La navegación de capítulos al archivo conserva `#gallery` y utiliza
 `lib/gallery-filter-events.ts` para solicitar el filtro al componente existente.
 Este evento no sustituye el estado de la galería ni crea una segunda fuente de
 verdad. La guía detallada vive en `RAW_VIVES_HOME_NARRATIVE.md`.
+
+## Archivo editorial de la Fase 6
+
+`components/gallery.tsx` es ahora un punto de compatibilidad que delega en
+`components/archive/archive-page.tsx`. El archivo conserva `/{locale}#gallery`,
+pero categoría, año, búsqueda, orden y bloque visible se serializan en query
+params mediante `lib/archive/url.ts`. Los selectores puros cruzan el catálogo y
+la metadata una vez; el grid, filtros, estados y panel móvil se separan en
+componentes pequeños.
+
+La ficha sigue en su ruta pública. `sessionStorage` guarda solo un contexto de
+retorno temporal para recuperar URL, scroll y foco; una entrada directa no
+depende de él. La referencia completa vive en `RAW_VIVES_ARCHIVE_SYSTEM.md`.

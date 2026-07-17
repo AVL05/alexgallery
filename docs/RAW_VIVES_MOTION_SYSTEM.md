@@ -306,3 +306,14 @@ reduced motion no crean este trigger.
 Las demás secciones reutilizan `Reveal` y `StaggerGroup`; no se añaden loops,
 instancias Lenis ni listeners de scroll. La configuración y los límites están
 documentados en `RAW_VIVES_HOME_NARRATIVE.md`.
+
+## Aplicación al archivo de la Fase 6
+
+El archivo no crea ScrollTriggers ni observers propios. Cambios de filtro y carga
+progresiva solicitan un refresh agrupado al `MotionProvider`; el panel móvil usa
+el lock compartido `archive-mobile-filters`. La restauración vuelve a una posición
+numérica mediante el `scrollTo` central, que elige Lenis o scroll nativo.
+
+No hay batch reveal al filtrar, pinning, scrub, parallax ni animación de layout.
+Reduced motion desactiva transiciones visibles y View Transitions sin alterar la
+estructura. Véase `RAW_VIVES_ARCHIVE_SYSTEM.md`.

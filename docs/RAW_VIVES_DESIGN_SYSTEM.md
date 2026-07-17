@@ -291,3 +291,14 @@ cuando la composición lo requiere.
 `SectionMarker` formaliza la numeración `01 / 08` a `08 / 08`; `NarrativeImage` conserva
 ratios reales y evita superficies de tarjeta. No se añaden colores, radios,
 sombras ni fuentes fuera del sistema definido en esta guía.
+
+## Aplicación al archivo de la Fase 6
+
+El archivo usa una cabecera de índice, cartelas fuera de la imagen, filtros de
+línea y una retícula CSS de 12 columnas. No añade chips redondeados, superficies
+de dashboard, sombras, gradientes ni otra paleta. En móvil mantiene una columna
+y traslada filtros secundarios a un diálogo de pantalla completa con safe areas.
+
+La fotografía conserva su ratio, el hover máximo baja a 1.012 y los metadatos
+esenciales permanecen visibles sin hover. El contrato detallado está en
+`RAW_VIVES_ARCHIVE_SYSTEM.md`.
