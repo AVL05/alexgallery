@@ -13,13 +13,16 @@ import {
 } from "@/lib/contact/validation";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { ContactDictionary } from "@/types/dictionary";
+import type { Locale } from "@/types/dictionary";
 import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
 import { type FormEvent, useRef, useState } from "react";
+import Link from "next/link";
+import { web3FormsAccessKey } from "@/lib/site-config";
 
 const labelClass = "rv-label mb-2 block text-[var(--color-text-secondary)]";
 const errorClass = "mt-2 text-xs leading-relaxed text-[var(--color-error)]";
 
-export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
+export function Contact({ dictionary, locale }: { dictionary: ContactDictionary; locale: Locale }) {
   const [formType, setFormType] = useState<"general" | "license">("general");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -90,6 +93,10 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
     setFormErrors(errors);
     if (Object.keys(errors).length > 0) return;
     if (data.botcheck) return;
+    if (!web3FormsAccessKey) {
+      setSubmitStatus({ type: "error", message: dictionary.form.error });
+      return;
+    }
     setIsSubmitting(true);
     setSubmitStatus(null);
     try {
@@ -97,7 +104,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: "d72eeacd-28fc-442b-83bd-b8c383c5997e",
+          access_key: web3FormsAccessKey,
           ...data,
           subject:
             kind === "general"
@@ -191,7 +198,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                 method="POST"
                 className="space-y-6"
               >
-                <input type="hidden" name="access_key" value="d72eeacd-28fc-442b-83bd-b8c383c5997e" />
+                <input type="hidden" name="access_key" value={web3FormsAccessKey} />
                 <input type="hidden" name="subject" value="Nuevo contacto - raw.vives" />
                 <input
                   type="checkbox"
@@ -270,6 +277,12 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   )}
                 </div>
                 {status}
+                <p className="rv-body-sm text-[var(--color-text-muted)]">
+                  {dictionary.privacyNotice}{" "}
+                  <Link className="rv-editorial-link" href={`/${locale}/privacidad`}>
+                    {dictionary.form.privacy_link}
+                  </Link>
+                </p>
                 <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
                   {isSubmitting ? dictionary.form.sending : dictionary.form.send}
                 </Button>
@@ -281,7 +294,7 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                 method="POST"
                 className="space-y-6"
               >
-                <input type="hidden" name="access_key" value="d72eeacd-28fc-442b-83bd-b8c383c5997e" />
+                <input type="hidden" name="access_key" value={web3FormsAccessKey} />
                 <input type="hidden" name="subject" value="Solicitud de licencia - raw.vives" />
                 <input
                   type="checkbox"
@@ -331,6 +344,12 @@ export function Contact({ dictionary }: { dictionary: ContactDictionary }) {
                   {formErrors.description && <p id="license-description-error" className={errorClass} role="alert">{formErrors.description}</p>}
                 </div>
                 {status}
+                <p className="rv-body-sm text-[var(--color-text-muted)]">
+                  {dictionary.privacyNotice}{" "}
+                  <Link className="rv-editorial-link" href={`/${locale}/privacidad`}>
+                    {dictionary.form.privacy_link}
+                  </Link>
+                </p>
                 <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
                   {isSubmitting ? dictionary.form.sending : dictionary.form.request}
                 </Button>

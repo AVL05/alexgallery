@@ -73,7 +73,7 @@ export default function HomeClient({
         />
         <HomeNarrative dictionary={dictionary} locale={locale} imagesData={imagesData} />
         <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
-        <Contact dictionary={dictionary.contact} />
+        <Contact dictionary={dictionary.contact} locale={locale} />
         <ClosingStatement dictionary={dictionary.home} />
         <Footer currentLocale={locale} dictionary={dictionary.nav} />
       </div>

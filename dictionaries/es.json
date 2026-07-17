@@ -79,7 +79,8 @@
     "about": "Sobre mí",
     "gallery": "Archivo",
     "contact": "Contacto",
-    "policies": "Políticas"
+    "policies": "Políticas",
+    "privacy": "Privacidad"
   },
   "about": {
     "label": "Sobre mí",
@@ -219,6 +220,7 @@
     "social": "Contacto",
     "location": "Valencia, España",
     "independent": "Fotografía independiente e historias visuales.",
+    "privacyNotice": "Al enviar el formulario, tus datos se transmiten a Web3Forms para gestionar tu solicitud.",
     "form": {
       "name": "Nombre",
       "email": "Correo electrónico",
@@ -236,6 +238,7 @@
       "success": "Mensaje enviado.",
       "license_success": "Solicitud de licencia enviada.",
       "error": "Algo salió mal.",
+      "privacy_link": "Consulta la política de privacidad.",
       "validation": {
         "name": "Introduce un nombre válido.",
         "email": "Introduce un correo válido.",

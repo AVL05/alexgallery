@@ -61,6 +61,13 @@ export function Footer({
             >
               {dictionary.policies}
             </Link>
+            <Link
+              className="rv-editorial-link"
+              href={`/${currentLocale}/privacidad`}
+              data-press-feedback
+            >
+              {dictionary.privacy}
+            </Link>
           </nav>
 
           <div className="flex flex-col items-start md:col-span-3 md:items-end">

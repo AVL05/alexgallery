@@ -79,7 +79,8 @@
     "about": "About",
     "gallery": "Archive",
     "contact": "Contact",
-    "policies": "Policies"
+    "policies": "Policies",
+    "privacy": "Privacy"
   },
   "about": {
     "label": "About",
@@ -219,6 +220,7 @@
     "social": "Contact",
     "location": "Valencia, Spain",
     "independent": "Independent photography and visual stories.",
+    "privacyNotice": "When you submit the form, your data is sent to Web3Forms to handle your request.",
     "form": {
       "name": "Name",
       "email": "Email",
@@ -236,6 +238,7 @@
       "success": "Message sent.",
       "license_success": "License request sent.",
       "error": "Something went wrong.",
+      "privacy_link": "Read the privacy policy.",
       "validation": {
         "name": "Enter a valid name.",
         "email": "Enter a valid email address.",
