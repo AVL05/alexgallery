@@ -317,3 +317,23 @@ locks continúan sin cambios. Véase `RAW_VIVES_INTERACTION_SYSTEM.md`.
 después de intro e imagen. `HeroWebglEffect` y Three se importan solo en cliente.
 `lib/graphics/` separa capacidades, configuración, cover, shaders, señales,
 telemetría y contextos; ninguna ruta distinta de la home monta el renderer.
+
+## Sistema de producción de la Fase 12
+
+El contrato final conserva el export estático y unifica desarrollo operativo y
+producción en Wrangler. `lib/site-config.ts` normaliza la URL pública usada por
+metadata, robots, sitemap y JSON-LD. `app/manifest.ts`, los iconos y `_headers`
+forman parte del artefacto. `scripts/prune-private-assets.ts` actúa después del
+export y elimina exclusivamente `out/photos/raw`, de modo que las fuentes web
+siguen disponibles para el pipeline local sin llegar al CDN.
+
+GitHub Actions separa validación de publicación: `ci.yml` ejecuta el contrato de
+calidad en push/PR y `deploy.yml` solo responde a `workflow_dispatch` dentro del
+environment `production`. El runtime se fija en `.nvmrc`, `package.json` y el
+lockfile; Wrangler es dependencia local. La arquitectura no incorpora backend,
+base de datos, analítica ni observabilidad externa en esta release.
+
+La página de privacidad y el formulario comparten una variable pública de build
+para Web3Forms. La clave no es una credencial de servidor, pero se mantiene como
+secret operativo de GitHub para evitar valores de producción en el repositorio.
+Véanse `RAW_VIVES_DEPLOYMENT.md` y `RAW_VIVES_RELEASE_SYSTEM.md`.

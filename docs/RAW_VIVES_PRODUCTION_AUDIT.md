@@ -379,3 +379,41 @@ Estas acciones son cierre operativo de Fase 11; no definen ni inician Fase 12.
 - [x] Consola sin errores en las rutas revisadas.
 - [x] Sin push, deploy ni Pull Request.
 - [ ] Lighthouse y lectores de pantalla reales, pendientes documentados.
+
+## 49. Addendum de Fase 12 — sistema de producción
+
+La Fase 12 revalidó la línea base y cerró el sistema reproducible de release. El
+workflow anterior mezclaba npm, Cloudflare Pages y Node 20 con un repositorio
+pnpm orientado a Workers; las ejecuciones remotas fallaban en `setup-node`. La
+configuración final usa Node 22.22.2, pnpm 10.34.1, Wrangler 4.112.0 y Workers
+Static Assets, con CI automática y producción manual.
+
+La auditoría externa del dominio confirmó TLS y CDN activos, pero también dos
+hechos que impiden declarar esta candidata publicada: la web visible pertenece a
+una build antigua (robots apunta al dominio workers.dev) y HTTP responde `200`
+sin redirección a HTTPS. Ambas comprobaciones deberán repetirse después de un
+despliegue autorizado; “Always Use HTTPS” queda como acción manual de Cloudflare.
+
+## 50. Evidencia de Fase 12
+
+- Typecheck y lint correctos.
+- 67/67 tests.
+- 73 rutas estáticas, 70 HTML y 63 URLs en sitemap.
+- `out/` de 40.983.236 bytes; `out/photos/raw` ausente.
+- Wrangler dry-run correcto y 14 reglas `_headers` aceptadas.
+- Preview local: ES/EN 200, 404 real, raw 404 y metadata correcta.
+- Navegador: filtro con una coincidencia, fullscreen y foco restaurado, menú
+  mobile, reduced motion y forced colors sin overflow ni imágenes rotas.
+- Seis capturas WebP reales entregadas.
+- Sin push, deploy, tag ni Pull Request.
+
+## 51. Riesgos y pendientes operativos
+
+- Configurar environment/secrets y validar una preview remota.
+- Activar y comprobar HTTP → HTTPS.
+- Revisar controles anti-spam/restricción de dominio en Web3Forms.
+- Medir Web Vitals de campo y decidir monitorización tras publicar.
+- Ejecutar smoke tests sobre el dominio y confirmar robots/sitemap nuevos.
+
+El detalle y la separación entre checks completados y acciones externas están en
+`RAW_VIVES_RELEASE_CHECKLIST.md` y `RAW_VIVES_RELEASE_SYSTEM.md`.
