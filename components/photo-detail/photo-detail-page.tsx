@@ -7,13 +7,19 @@ import { PhotoDetailMedia } from "@/components/photo-detail/photo-detail-media";
 import { PhotoDetailNavigation } from "@/components/photo-detail/photo-detail-navigation";
 import { PhotoDetailRelated } from "@/components/photo-detail/photo-detail-related";
 import { PhotoDetailStory } from "@/components/photo-detail/photo-detail-story";
+import { PhotoProcessDevelopmentTools } from "@/components/photo-process/photo-process-development-tools";
+import { PhotoProcessSection } from "@/components/photo-process/photo-process-section";
 import { Container } from "@/components/ui/layout";
+import { buildArchivePhotos } from "@/lib/archive/selectors";
 import { getPhotoOrientation } from "@/lib/photo-detail/selectors";
+import { resolvePhotoProcess } from "@/lib/photo-process/selectors";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 
 export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { locale: Locale; photoId: number; imagesData: ImagesData; dictionary: Dictionary }) {
   const optimized = imagesData.images.find((image) => image.id === String(photoId));
+  const photo = buildArchivePhotos(imagesData, locale).find((entry) => entry.id === photoId);
+  const photoProcess = photo ? resolvePhotoProcess(photo) : null;
   const orientation = optimized ? getPhotoOrientation({ width: optimized.width, height: optimized.height }) : "vertical";
   return <PhotoDetailContextProvider locale={locale} currentId={photoId} imagesData={imagesData}>
     <PhotoDetailKeyboard />
@@ -31,11 +37,14 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
             <div className="md:col-span-8 md:col-start-5"><PhotoDetailStory /></div>
           </section>
 
+          {photoProcess ? <PhotoProcessSection process={photoProcess} locale={locale} dictionary={dictionary.photoProcess} /> : null}
+
           <section className="mt-20 lg:mt-28"><p className="rv-kicker mb-6">06 / 08</p><PhotoDetailNavigation dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></section>
           <div className="mt-24 lg:mt-36"><PhotoDetailRelated dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></div>
           <div className="flex flex-col items-start gap-6 border-t border-border py-16 sm:flex-row sm:items-center sm:justify-between lg:py-24"><PhotoDetailBackLink label={dictionary.photoDetail.back} /><p className="rv-meta">{dictionary.photoDetail.keyboardHelp}</p></div>
         </article>
       </Container>
+      {process.env.NODE_ENV === "development" ? <PhotoProcessDevelopmentTools locale={locale} dictionary={dictionary.photoProcess} /> : null}
     </main>
   </PhotoDetailContextProvider>;
 }

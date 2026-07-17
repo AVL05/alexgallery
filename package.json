@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm validate-photo-process && next build",
     "optimize-images": "tsx scripts/optimize-images.ts",
+    "prepare-photo-process": "tsx scripts/prepare-photo-process.ts",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "pnpm typecheck",
     "test": "tsx --test tests/**/*.test.ts",
+    "validate-photo-process": "tsx scripts/validate-photo-process.ts",
     "export": "next build",
     "deploy:wrangler": "pnpm run build && npx wrangler deploy --assets=./out"
   },

@@ -1,45 +1,21 @@
 "use client";
 
 import { usePhotoDetailContext } from "@/components/photo-detail/photo-detail-context";
-import { useMotion } from "@/components/motion/motion-provider";
+import { PhotoFullscreenDialog } from "@/components/photo-detail/photo-fullscreen-dialog";
 import type { PhotoDetailDictionary } from "@/types/dictionary";
-import { Expand, X } from "lucide-react";
+import { Expand } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export function PhotoDetailMedia({ dictionary }: { dictionary: PhotoDetailDictionary }) {
   const { current } = usePhotoDetailContext();
   const [open, setOpen] = useState(false);
   const [failed, setFailed] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const { lockScroll } = useMotion();
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-    if (!open) return;
-    const release = lockScroll("photo-detail-fullscreen");
-    return release;
-  }, [lockScroll, open]);
 
   const close = useCallback(() => {
     setOpen(false);
-    window.requestAnimationFrame(() => triggerRef.current?.focus());
   }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      event.preventDefault();
-      close();
-    };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [close, open]);
 
   return (
     <>
@@ -53,14 +29,9 @@ export function PhotoDetailMedia({ dictionary }: { dictionary: PhotoDetailDictio
         <figcaption className="mt-3 flex justify-between gap-4 rv-meta"><span>{current.width} × {current.height}</span><span>{dictionary.creator}</span></figcaption>
       </figure>
 
-      <dialog ref={dialogRef} className="photo-detail-dialog m-0 h-dvh max-h-none w-screen max-w-none bg-black p-0 text-white backdrop:bg-black" onCancel={(event) => { event.preventDefault(); close(); }} onClose={() => setOpen(false)}>
-        <div className="relative grid h-dvh w-screen place-items-center p-[max(1rem,env(safe-area-inset-top))]">
-          {open ? <Image src={current.src} alt={current.alt || current.description} fill loading="eager" sizes="100vw" className="object-contain p-4 sm:p-8" /> : null}
-          <button autoFocus type="button" onClick={close} className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] inline-flex min-h-11 items-center gap-2 bg-black/80 px-4 text-xs uppercase tracking-[0.12em]">
-            <X aria-hidden="true" className="size-5" /> {dictionary.closeFullscreen}
-          </button>
-        </div>
-      </dialog>
+      <PhotoFullscreenDialog open={open} onClose={close} triggerRef={triggerRef} closeLabel={dictionary.closeFullscreen} lockSource="photo-detail-fullscreen">
+        <Image src={current.src} alt={current.alt || current.description} fill loading="eager" sizes="100vw" className="object-contain p-4 sm:p-8" />
+      </PhotoFullscreenDialog>
     </>
   );
 }

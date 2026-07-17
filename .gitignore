@@ -32,3 +32,18 @@ skills-lock.json
 
 # scratch
 /scratch
+# Camera masters and sidecars must never enter the public process directory.
+public/photos/process/**/*.dng
+public/photos/process/**/*.cr2
+public/photos/process/**/*.cr3
+public/photos/process/**/*.nef
+public/photos/process/**/*.arw
+public/photos/process/**/*.raf
+public/photos/process/**/*.orf
+public/photos/process/**/*.rw2
+public/photos/process/**/*.xmp
+public/photos/process/**/*.jpg
+public/photos/process/**/*.jpeg
+public/photos/process/**/*.png
+public/photos/process/**/*.tif
+public/photos/process/**/*.tiff
