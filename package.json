@@ -35,6 +35,7 @@
     "react-masonry-css": "^1.0.16",
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.5.0",
+    "three": "^0.185.1",
     "yet-another-react-lightbox": "^3.30.1",
     "zod": "^3.25.76"
   },
@@ -45,6 +46,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/sharp": "^0.31.1",
+    "@types/three": "^0.185.1",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.21.0",

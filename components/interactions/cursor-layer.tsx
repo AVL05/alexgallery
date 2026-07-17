@@ -20,6 +20,7 @@ import {
   InteractionListenerRegistry,
 } from "@/lib/interactions/listener-registry";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
+import { publishPointerSample } from "@/lib/graphics/signals";
 import type { CursorDictionary } from "@/types/dictionary";
 import type {
   CursorContrast,
@@ -210,6 +211,7 @@ export function CursorLayer({
     const handlePointerMove = (rawEvent: Event) => {
       const event = rawEvent as PointerEvent;
       lastPositionRef.current = { x: event.clientX, y: event.clientY };
+      publishPointerSample({ x: event.clientX, y: event.clientY, pointerType: event.pointerType });
       if (
         !initialized
         || debugRef.current.disabled

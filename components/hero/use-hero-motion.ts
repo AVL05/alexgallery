@@ -4,6 +4,7 @@ import { getHeroMotionProfile } from "@/lib/hero/config";
 import { motionEase, motionStagger } from "@/lib/motion/config";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { applyTemporaryWillChange } from "@/lib/motion/will-change";
+import { publishHeroScrollProgress } from "@/lib/graphics/signals";
 import type { RefObject } from "react";
 
 export function useHeroMotion({
@@ -87,6 +88,7 @@ export function useHeroMotion({
               start: "top top",
               end: "bottom top",
               scrub: 0.65,
+              onUpdate: (self) => publishHeroScrollProgress(self.progress),
             },
           })
             .to(scrollMedia, { scale: 1.025, yPercent: 1.8, ease: "none" }, 0)
@@ -95,6 +97,7 @@ export function useHeroMotion({
         : null;
 
       return () => {
+        publishHeroScrollProgress(0);
         entryTimeline.kill();
         scrollTimeline?.kill();
         restoreWillChange.forEach((restore) => restore());

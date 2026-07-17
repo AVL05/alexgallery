@@ -99,6 +99,7 @@ export function HeroSection({
         alt={dictionary.imageAlt}
         slowImage={preview.slowImage === true}
         failImage={preview.failImage === true}
+        entryReady={entryReady}
         onStateChange={handleImageState}
       />
       <Container className="relative z-10 h-full">
