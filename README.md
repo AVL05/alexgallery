@@ -46,6 +46,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Sistema de hero RAW.VIVES](docs/RAW_VIVES_HERO_SYSTEM.md)
 - [Home narrativa RAW.VIVES](docs/RAW_VIVES_HOME_NARRATIVE.md)
 - [Sistema de archivo RAW.VIVES](docs/RAW_VIVES_ARCHIVE_SYSTEM.md)
+- [Sistema de detalle fotográfico RAW.VIVES](docs/RAW_VIVES_PHOTO_DETAIL_SYSTEM.md)
 
 ## Licencia
 

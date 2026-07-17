@@ -179,8 +179,8 @@ restaura el scroll mediante Lenis o scroll nativo, enfoca el enlace de la obra c
 `preventScroll` y elimina el contexto. No hay timeout fijo. `view-transition-name`
 queda preparado por ID como mejora progresiva; sin API la navegación es normal.
 
-La navegación anterior/siguiente contextual se reserva para Fase 7: una URL
-directa continúa usando el orden global y no se serializan listas de IDs.
+La Fase 7 consume estos parámetros para reconstruir anterior/siguiente sin
+serializar listas de IDs. Una URL directa continúa usando el orden global.
 
 ## 14. Mobile y responsive
 
@@ -266,13 +266,13 @@ Modificar `ARCHIVE_DEFAULT_PAGE_SIZE`, `ARCHIVE_PAGE_SIZE` y
 `getVisibleArchiveCount()` de forma conjunta, actualizar el cálculo de máximo y
 los tests. Mantener botón real y `page` compartible.
 
-## 21. Riesgos y preparación para Fase 7
+## 21. Integración con el detalle de Fase 7
 
-- El contenido editorial fotográfico sigue solo en español.
+- El contenido fotográfico se localiza en ficha y archivo mediante
+  `lib/photo-detail/content.ts`; español conserva el catálogo como fuente base.
 - El archivo comparte documento y bundle con una home larga.
 - El fallback de imagen 1 también podría fallar ante un problema global de assets.
 - View Transitions queda preparado, no forzado por configuración experimental.
-- Fase 7 puede leer el contexto para anterior/siguiente filtrado, pero debe
-  reconstruirlo desde parámetros y no depender de una lista serializada.
-- El rediseño definitivo de la ficha, comparador RAW/final, cursor y WebGL siguen
-  fuera del alcance.
+- La ficha reconstruye anterior/siguiente desde parámetros y conserva el contexto
+  en retorno, cambio de idioma y navegación visual.
+- Comparador RAW/final, cursor y WebGL siguen fuera del alcance.

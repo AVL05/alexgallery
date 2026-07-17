@@ -38,12 +38,13 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | `app/not-found.tsx` | Página 404 estática con recuperación bilingüe |
 | `app/[locale]/page.tsx` | Carga del diccionario y datos de home |
 | `app/[locale]/home-client.tsx` | Composición cliente e intro de sesión |
-| `app/[locale]/photo/[id]/page.tsx` | Ficha SSG, metadata y navegación circular |
+| `app/[locale]/photo/[id]/page.tsx` | Ficha SSG, metadata localizada y JSON-LD |
 | `app/[locale]/politica-uso/` | Política bilingüe |
 | `app/globals.css` | Tokens RAW.VIVES, tipos, layout, foco y reduced motion |
 | `components/` | Secciones, navegación, footer y comportamientos reutilizables |
 | `components/intro/` | Gate, piezas visuales y timeline de `RAW.VIVES SYSTEM` |
 | `components/hero/` | Media LCP, contenido editorial y motion scoped del hero |
+| `components/photo-detail/` | Ficha editorial, contexto, fullscreen y navegación |
 | `components/ui/` | Botones, layout y metadatos conectados a páginas |
 | `PRODUCT.md` | Contexto estratégico y límites duraderos de producto |
 | `DESIGN.md` | Tokens machine-readable y reglas visuales resumidas |
@@ -51,6 +52,7 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | `dictionaries/` | Copia localizada de la interfaz |
 | `lib/intro/` | Persistencia, decisión, bootstrap, tiempos y desarrollo de la intro |
 | `lib/hero/` | Selección de imagen, facts, perfiles motion y preview de desarrollo |
+| `lib/photo-detail/` | Contenido localizado, selectores, interacción y SEO de ficha |
 | `lib/gallery-data.ts` | Fuente de verdad del catálogo y su orden |
 | `lib/images-data.json` | Metadatos generados; no editar a mano |
 | `lib/image-loader.ts` | Mapeo de anchos de Next a variantes locales |
@@ -68,10 +70,9 @@ filtros, lightbox, motion y formularios funcionan en cliente.
    internas, cambio de idioma y reduced motion la omiten.
 3. La navegación usa anchors `#hero`, `#about`, `#gallery` y `#contact`.
 4. Los filtros actualizan la colección local sin cambiar URL.
-5. Un clic normal en una tarjeta abre el lightbox; la URL de la tarjeta sigue
-   siendo la ficha individual para teclado, nueva pestaña y navegación directa.
-6. La ficha individual ofrece anterior, siguiente y vuelta a `#gallery`.
-7. Flechas izquierda/derecha y Escape replican esa navegación.
+5. Un clic en una tarjeta abre la ficha y transporta el estado del archivo.
+6. La ficha reconstruye anterior/siguiente contextual y vuelve al mismo `#gallery`.
+7. Flechas navegan cuando el foco no ocupa un control; Escape cierra fullscreen.
 8. Política abre `/{locale}/politica-uso`.
 
 El orden de `photos` determina tanto la galería como el ciclo anterior/siguiente.
@@ -128,9 +129,8 @@ Para modificar la interfaz:
 4. Consumir la clave a través de props, no mediante texto condicional nuevo.
 5. Ejecutar TypeScript y revisar `/es` y `/en`.
 
-Actualmente no existe un modelo traducido para fotografías. No se debe duplicar
-el array ni cambiar IDs. La evolución recomendada es separar campos estables
-(`id`, `year`, `image`, flags) de `title` y `description` por locale.
+El contenido inglés de las 30 fotografías vive en `lib/photo-detail/content.ts`;
+español usa el catálogo base. No se duplica el array estable ni se cambian IDs.
 
 ## Cómo ejecutar el proyecto
 
@@ -159,8 +159,8 @@ pnpm lint
 pnpm build
 ```
 
-`lint` es actualmente otro nombre para `typecheck`. No hay suite de tests ni
-formatter configurado. `pnpm build` genera `out/` y valida TypeScript de nuevo.
+`lint` es actualmente otro nombre para `typecheck`. La suite usa Node Test Runner
+mediante `pnpm test`; no hay formatter. `pnpm build` genera `out/` y valida tipos.
 El script `pnpm export` es un alias redundante de build.
 
 Tras cambiar fuentes fotográficas:
@@ -279,3 +279,11 @@ componentes pequeños.
 La ficha sigue en su ruta pública. `sessionStorage` guarda solo un contexto de
 retorno temporal para recuperar URL, scroll y foco; una entrada directa no
 depende de él. La referencia completa vive en `RAW_VIVES_ARCHIVE_SYSTEM.md`.
+
+## Detalle fotográfico de la Fase 7
+
+La ruta conserva 60 páginas SSG. `components/photo-detail/` separa media, cartela,
+relato, acciones, navegación y relacionadas; `lib/photo-detail/` mantiene las 30
+traducciones inglesas, reconstrucción contextual y SEO. Canonical, alternates,
+Open Graph, Twitter e `ImageObject` usan datos reales. El fullscreen es progresivo
+y carga el recurso ampliado al abrir. Véase `RAW_VIVES_PHOTO_DETAIL_SYSTEM.md`.

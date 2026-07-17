@@ -17,6 +17,10 @@ La marca se escribe en minúsculas y con punto. No se sustituye por `ALEX ARCHIV
 `AVL` o `RAW.VIVES` de forma permanente. Las mayúsculas se reservan para labels y
 metadatos pequeños.
 
+La ficha de Fase 7 aplica la misma dirección como cartela de sala: imagen sin
+recorte, título Prata, metadata mono, bordes finos y acciones tipográficas. No
+introduce una paleta, sombra, radio o lenguaje de producto paralelo.
+
 ## 2. Personalidad visual
 
 La dirección se resume como **The Projected Archive**: un archivo fotográfico

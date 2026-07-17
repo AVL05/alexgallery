@@ -12,7 +12,7 @@ pnpm optimize-images  # regenerar WebP/AVIF, blur placeholders y EXIF desde publ
 pnpm deploy:wrangler  # build + deploy a Cloudflare via Wrangler assets
 ```
 
-No hay tests automatizados en este proyecto.
+Las pruebas automatizadas usan Node Test Runner mediante `pnpm test`.
 
 ## Arquitectura
 
@@ -29,7 +29,7 @@ El custom image loader (`lib/image-loader.ts`) mapea los anchos que pide Next.js
 
 **Datos de galería** centralizados en `lib/gallery-data.ts`: array `photos` tipado con `BasePhoto`, y array `categories`. Para añadir una foto: agregar entrada al array y colocar el raw en `public/photos/raw/`, luego ejecutar `pnpm optimize-images`.
 
-**Página de foto individual**: `app/[locale]/photo/[id]/page.tsx` es RSC puro. Lee `lib/images-data.json` en build time, genera `generateStaticParams` para todos los locales × fotos, y muestra EXIF + histograma si existen. La navegación teclado (flechas + Escape) la maneja el componente cliente `components/photo-keyboard-navigation.tsx`.
+**Página de foto individual**: `app/[locale]/photo/[id]/page.tsx` genera locales × fotos, metadata y JSON-LD en build time. La experiencia modular vive en `components/photo-detail/`; `lib/photo-detail/` centraliza contenido localizado, contexto, relacionadas y SEO.
 
 **Animaciones**: GSAP + ScrollTrigger para el parallax del texto de fondo y la entrada de contenido. Lenis para smooth scroll (`components/smooth-scroll.tsx`). Framer Motion disponible pero GSAP es el principal. Siempre respetar `prefers-reduced-motion`.
 

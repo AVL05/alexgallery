@@ -317,3 +317,11 @@ numérica mediante el `scrollTo` central, que elige Lenis o scroll nativo.
 No hay batch reveal al filtrar, pinning, scrub, parallax ni animación de layout.
 Reduced motion desactiva transiciones visibles y View Transitions sin alterar la
 estructura. Véase `RAW_VIVES_ARCHIVE_SYSTEM.md`.
+
+## Aplicación al detalle de la Fase 7
+
+La ficha no crea Lenis, ScrollTriggers, timelines ni observers. Imagen de archivo
+y ficha comparten un `view-transition-name` por ID como mejora progresiva; sin API
+la navegación es normal y reduced motion la desactiva. Fullscreen reutiliza el
+lock central y restaura foco al cerrar. Véase
+`RAW_VIVES_PHOTO_DETAIL_SYSTEM.md`.
