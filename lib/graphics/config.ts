@@ -11,4 +11,3 @@ export const graphicsConfig = {
   fadeDurationMs: 320,
   intersectionMargin: "120px 0px",
 } as const;
-

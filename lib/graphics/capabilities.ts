@@ -35,7 +35,6 @@ export function chooseGraphicsQuality(capabilities: GraphicsCapabilities): Graph
     capabilities,
   };
 }
-
 export function detectGraphicsCapabilities(input: CapabilityInput): GraphicsDecision {
   const base: GraphicsCapabilities = {
     ...input,
@@ -110,4 +109,3 @@ export function inspectBrowserGraphicsCapabilities({
     contextCreated,
   });
 }
-

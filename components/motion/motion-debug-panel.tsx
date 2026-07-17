@@ -31,6 +31,12 @@ import {
   requestInteractionControl,
 } from "@/lib/interactions/development";
 import type { CursorDebugSnapshot } from "@/types/cursor";
+import {
+  GRAPHICS_STATE_EVENT,
+  getLatestGraphicsState,
+  requestGraphicsControl,
+} from "@/lib/graphics/development";
+import type { GraphicsDebugSnapshot } from "@/types/graphics";
 
 export function MotionDebugPanel() {
   const motion = useMotion();
@@ -42,6 +48,7 @@ export function MotionDebugPanel() {
   const [heroState, setHeroState] = useState<HeroStateDetail | null>(null);
   const [homeState, setHomeState] = useState<HomeStateDetail | null>(null);
   const [interactionState, setInteractionState] = useState<CursorDebugSnapshot | null>(null);
+  const [graphicsState, setGraphicsState] = useState<GraphicsDebugSnapshot | null>(null);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -64,6 +71,7 @@ export function MotionDebugPanel() {
       setIntroState((event as CustomEvent<IntroStateDetail>).detail);
       syncSession();
     };
+    setGraphicsState(getLatestGraphicsState());
 
     syncSession();
     window.addEventListener(INTRO_STATE_EVENT, handleIntroState);
@@ -77,6 +85,15 @@ export function MotionDebugPanel() {
     };
     window.addEventListener(INTERACTION_STATE_EVENT, handleInteractionState);
     return () => window.removeEventListener(INTERACTION_STATE_EVENT, handleInteractionState);
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+    const handleGraphicsState = (event: Event) => {
+      setGraphicsState((event as CustomEvent<GraphicsDebugSnapshot>).detail);
+    };
+    window.addEventListener(GRAPHICS_STATE_EVENT, handleGraphicsState);
+    return () => window.removeEventListener(GRAPHICS_STATE_EVENT, handleGraphicsState);
   }, [visible]);
 
   useEffect(() => {
@@ -163,6 +180,49 @@ export function MotionDebugPanel() {
             </div>
             <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
               scroll {motion.isScrollLocked ? "locked" : "open"} / triggers {triggerCount}
+            </p>
+          </section>
+          <section className="border border-border p-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="rv-meta">Graphics system</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+                  {graphicsState?.status ?? "idle"} / {graphicsState?.renderer ?? "none"} / {graphicsState?.quality ?? "disabled"}
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-accent">
+                {graphicsState?.webgl2 ? "WEBGL2" : graphicsState?.webgl ? "WEBGL1" : "HTML"}
+              </span>
+            </div>
+            <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[9px] text-[var(--color-text-muted)]">
+              <div><dt>reason</dt><dd>{graphicsState?.reason ?? "not mounted"}</dd></div>
+              <div><dt>WebGPU</dt><dd>{String(graphicsState?.webgpu ?? false)}</dd></div>
+              <div><dt>DPR</dt><dd>{graphicsState?.dpr.toFixed(2) ?? "0.00"}</dd></div>
+              <div><dt>FPS demand</dt><dd>{graphicsState?.fps ?? 0}</dd></div>
+              <div><dt>frames</dt><dd>{graphicsState?.frames ?? 0}</dd></div>
+              <div><dt>draw calls</dt><dd>{graphicsState?.drawCalls ?? 0}</dd></div>
+              <div><dt>triangles</dt><dd>{graphicsState?.triangles ?? 0}</dd></div>
+              <div><dt>texture</dt><dd>{graphicsState?.textureLoaded ? "ready" : "fallback"}</dd></div>
+              <div><dt>visible</dt><dd>{String(graphicsState?.visible ?? false)}</dd></div>
+              <div><dt>overlay</dt><dd>{String(graphicsState?.overlayOpen ?? false)}</dd></div>
+              <div><dt>context lost</dt><dd>{String(graphicsState?.contextLost ?? false)}</dd></div>
+              <div><dt>contexts</dt><dd>{graphicsState?.activeContexts ?? 0}</dd></div>
+              <div><dt>fine / hover</dt><dd>{String(graphicsState?.hasFinePointer ?? false)} / {String(graphicsState?.hasHover ?? false)}</dd></div>
+              <div><dt>touch / reduced</dt><dd>{String(graphicsState?.hasTouch ?? false)} / {String(graphicsState?.prefersReducedMotion ?? false)}</dd></div>
+              <div><dt>save data</dt><dd>{String(graphicsState?.saveData ?? false)}</dd></div>
+              <div><dt>memory / cores</dt><dd>{graphicsState?.deviceMemory ?? "?"} / {graphicsState?.hardwareConcurrency ?? 0}</dd></div>
+              <div><dt>viewport</dt><dd>{graphicsState?.viewport ?? "--"}</dd></div>
+            </dl>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestGraphicsControl({ enabled: graphicsState?.status === "fallback" })}>Toggle</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestGraphicsControl({ forceQuality: "full" })}>Full</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestGraphicsControl({ forceQuality: "reduced" })}>Reduced</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestGraphicsControl({ intensity: 0 })}>Zero effect</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestGraphicsControl({ intensity: 1 })}>Normal effect</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => requestGraphicsControl({ simulateContextLoss: true })}>Lose context</button>
+            </div>
+            <p className="mt-3 break-all font-mono text-[9px] text-[var(--color-text-muted)]">
+              source {graphicsState?.imageSource ?? "HTML hero fallback"}
             </p>
           </section>
           <section className="border border-border p-3">

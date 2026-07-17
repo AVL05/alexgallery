@@ -20,4 +20,3 @@ export function getCoverTransform(
     offsetY: (1 - scaleY) / 2,
   };
 }
-

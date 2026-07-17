@@ -65,6 +65,7 @@ export function HeroWebglEffect({
     let fps = 0;
     let fpsFrames = 0;
     let fpsStartedAt = performance.now();
+    let lastReportAt = 0;
     let status: RuntimeStatus = "loading";
     const pointer = { currentX: 0.5, currentY: 0.5, targetX: 0.5, targetY: 0.5 };
     const scroll = { current: 0, target: 0 };
@@ -99,7 +100,13 @@ export function HeroWebglEffect({
       viewport: `${decision.capabilities.viewportWidth}x${decision.capabilities.viewportHeight}`,
     });
 
-    const report = () => publishGraphicsState(snapshot());
+    const report = (force = false) => {
+      if (process.env.NODE_ENV !== "development") return;
+      const now = performance.now();
+      if (!force && now - lastReportAt < 250) return;
+      lastReportAt = now;
+      publishGraphicsState(snapshot());
+    };
     const canRender = () => !destroyed
       && runtimeEnabled
       && visible
@@ -147,7 +154,7 @@ export function HeroWebglEffect({
         setReady(true);
       }
       status = "ready";
-      report();
+      report(!firstFrameRendered);
       const unsettled = Math.abs(pointer.targetX - pointer.currentX) > graphicsConfig.pointer.settleEpsilon
         || Math.abs(pointer.targetY - pointer.currentY) > graphicsConfig.pointer.settleEpsilon
         || Math.abs(scroll.target - scroll.current) > graphicsConfig.scroll.settleEpsilon;
@@ -204,7 +211,7 @@ export function HeroWebglEffect({
       } catch {
         status = "fallback";
         setReady(false);
-        report();
+        report(true);
       }
     };
 
@@ -225,14 +232,14 @@ export function HeroWebglEffect({
       visible = entry.isIntersecting;
       if (visible) schedule();
       else if (frame !== null) { window.cancelAnimationFrame(frame); frame = null; }
-      report();
+      report(true);
     }, { rootMargin: graphicsConfig.intersectionMargin });
     intersectionObserver.observe(host);
 
     const handleVisibility = () => {
       if (document.hidden && frame !== null) { window.cancelAnimationFrame(frame); frame = null; }
       else schedule();
-      report();
+      report(true);
     };
     const handleContextLost = (event: Event) => {
       event.preventDefault();
@@ -241,7 +248,7 @@ export function HeroWebglEffect({
       status = "lost";
       setReady(false);
       if (frame !== null) { window.cancelAnimationFrame(frame); frame = null; }
-      report();
+      report(true);
     };
     const handleContextRestored = () => {
       contextLost = false;
@@ -261,7 +268,7 @@ export function HeroWebglEffect({
       }
       if (!runtimeEnabled) { setReady(false); status = "fallback"; }
       else schedule();
-      report();
+      report(true);
     };
 
     document.addEventListener("visibilitychange", handleVisibility);

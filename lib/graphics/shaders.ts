@@ -5,7 +5,6 @@ export const heroVertexShader = /* glsl */ `
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
-
 export const heroFragmentShader = /* glsl */ `
   uniform sampler2D uTexture;
   uniform vec2 uPointer;
@@ -27,4 +26,3 @@ export const heroFragmentShader = /* glsl */ `
     gl_FragColor = texture2D(uTexture, clamp(coveredUv, 0.001, 0.999));
   }
 `;
-

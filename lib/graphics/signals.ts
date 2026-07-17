@@ -10,7 +10,6 @@ export function publishPointerSample(sample: PointerSample) {
   pointerSample = sample;
   pointerListeners.forEach((listener) => listener(sample));
 }
-
 export function subscribePointerSample(listener: Listener<PointerSample>) {
   pointerListeners.add(listener);
   listener(pointerSample);
@@ -31,4 +30,3 @@ export function subscribeHeroScrollProgress(listener: Listener<number>) {
 export function getGraphicsSignalSubscriberCounts() {
   return { pointer: pointerListeners.size, scroll: scrollListeners.size };
 }
-
