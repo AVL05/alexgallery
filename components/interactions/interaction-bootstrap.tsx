@@ -48,4 +48,3 @@ export function InteractionBootstrap({ dictionary }: { dictionary: CursorDiction
     />
   );
 }
-

@@ -314,3 +314,11 @@ acciones editoriales. El divisor y handle son instrumentales, sin gradientes,
 sombras, radios o color nuevo. Las etiquetas permanecen legibles y el handle
 conserva 44 px. Con cero recursos auténticos no deja huecos ni decoración de
 proceso en producción.
+
+## Aplicación al sistema de interacción de la Fase 9
+
+Cursor, hover y press reutilizan paleta, bordes, tipografía técnica y timings del
+sistema. El vocabulario queda reducido a subrayado/color, flecha 2–4 px, escala
+fotográfica 1.01–1.018 y press 0.985. Las variantes clara y oscura se declaran por
+target; no se analiza la fotografía ni se añaden gradientes, blur o sombras
+pesadas. Hover y `focus-visible` comunican el mismo cambio esencial.

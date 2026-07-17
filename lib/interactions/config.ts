@@ -31,4 +31,3 @@ export function getCursorSize(state: CursorState) {
   if (compactStates.has(state)) return cursorConfig.sizes.compact;
   return cursorConfig.sizes.label;
 }
-

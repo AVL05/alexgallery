@@ -333,3 +333,12 @@ propiedad CSS. No hay autoplay, scrub, pinning, parallax ni loop. Pointer captur
 solo ocurre tras gesto horizontal; `touch-action: pan-y` conserva scroll. Reduced
 motion elimina cualquier transición sin desactivar range, tabs, teclado, reset o
 fullscreen. El overlay reutiliza el lock central y limpia listeners al desmontar.
+
+## Aplicación al sistema de interacción de la Fase 9
+
+El cursor usa un único `pointermove`, `quickSetter` para el punto y `quickTo` para
+la superficie. No actualiza posición en React, no usa ScrollTrigger y solo crea un
+RAF al desplazar la página para resolver el target estacionario. `Magnetic` mide
+al entrar, transforma una capa interior y limpia tweens/`will-change` al salir.
+Reduced motion mantiene cursor nativo; teclado neutraliza magnetismo. Los locks
+de overlay y Lenis continúan bajo `MotionProvider`.

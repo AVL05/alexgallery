@@ -283,3 +283,11 @@ El inventario contiene cero procesos auténticos. Por ello el archivo no añade
 filtro `Con proceso`, etiqueta ni icono: cualquier indicador sería vacío o
 engañoso. La futura elegibilidad se deriva de `photoProcessEntries`; con pocos
 casos se priorizará una etiqueta discreta antes que una faceta sin utilidad.
+
+## 23. Interacción del archivo en la Fase 9
+
+Las tarjetas declaran `VIEW` y conservan escala 1.012, cartela visible y foco
+equivalente. Filtros, limpiar y carga progresiva comparten press 0.985; el panel
+móvil declara OPEN/CLOSE solo en controles reales. El grid mantiene cero
+listeners y cero ScrollTriggers propios; no existe magnetismo ni preview por
+tarjeta.

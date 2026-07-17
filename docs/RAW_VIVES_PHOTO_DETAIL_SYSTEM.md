@@ -227,3 +227,11 @@ de navegación. Con cero entradas válidas el condicional servidor devuelve cero
 HTML y conserva íntegramente la Fase 7. El fullscreen principal y el futuro
 comparador comparten `PhotoFullscreenDialog`, Escape, scroll lock, safe areas y
 retorno de foco. Canonical, metadata e `ImageObject` no cambian sin datos reales.
+
+## 41. Interacción del detalle en la Fase 9
+
+Volver, compartir/copiar, fullscreen y cerrar usan magnetismo moderado con capa
+interior. La media interactiva declara FULLSCREEN; navegación declara
+PREVIOUS/NEXT y relacionadas VIEW. Copiar/compartir mantiene feedback visible,
+`aria-live`, un único timer de 1.8 s y cleanup. El cursor se resetea al abrir/cerrar
+dialog y nunca sustituye controles, Escape, foco o navegación contextual.

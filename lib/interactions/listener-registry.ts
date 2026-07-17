@@ -23,4 +23,3 @@ export class InteractionListenerRegistry {
     return this.cleanups.length;
   }
 }
-

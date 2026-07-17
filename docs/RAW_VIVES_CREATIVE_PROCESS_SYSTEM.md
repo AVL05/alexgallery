@@ -281,8 +281,11 @@ proveniencia manual; WebP es la variante servida por el loader actual; dos imág
 aumentan decodificación cuando haya casos; el harness emplea fotos finales distintas
 solo como fixture técnica claramente marcada y nunca entra en producción.
 
-## 39. Preparación para Fase 9
+## 39. Integración con la Fase 9
 
-Quedan fronteras de datos, media, interacción y fullscreen listas. La Fase 9 debe
-empezar únicamente tras aportar originales auténticos y cerrar esta activación;
-no se ha creado cursor, seguimiento, canvas, shader, WebGL, WebGPU, vídeo ni IA.
+La infraestructura sigue inactiva en producción mientras no existan recursos
+auténticos. En el harness, el range declara DRAG solo estando listo; pointer
+capture comienza tras intención horizontal y el label se oculta durante arrastre.
+COMPARE identifica apertura, reset conserva press y fullscreen comparte CLOSE,
+lock y retorno de foco. No se añade magnetismo al slider, listener global propio,
+canvas, shader, WebGL, WebGPU, vídeo ni IA.

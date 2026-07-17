@@ -301,3 +301,12 @@ formatos, dimensiones, ratios y traducciones. El inventario actual tiene cero
 elegibles, así que producción no monta comparador, preview de home ni marcas de
 archivo. El harness `?process-debug=1` existe solo en desarrollo. Véase
 `RAW_VIVES_CREATIVE_PROCESS_SYSTEM.md`.
+
+## Sistema de interacción de la Fase 9
+
+`InteractionBootstrap`, montado una vez en el layout localizado, decide en cliente
+si existe pointer fine, hover y permiso de accesibilidad antes de importar el
+único `CursorLayer`. `lib/interactions/` centraliza configuración, capacidades,
+targets, geometría, listeners y debug. La API por atributos evita contextos o
+listeners por tarjeta; `Magnetic` es local y opcional. Rutas, SSG, SEO, Lenis y
+locks continúan sin cambios. Véase `RAW_VIVES_INTERACTION_SYSTEM.md`.

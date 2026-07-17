@@ -177,3 +177,10 @@ La auditoría no encontró comparativas auténticas: `featuredPhotoId` permanece
 `null` y la home no añade `THE PROCESS`, imágenes ni JavaScript de interacción.
 Cuando exista al menos un caso validado podrá insertarse una única pieza diferida
 entre narrativa y archivo, sin tutorial, nuevo storytelling ni varios sliders.
+
+## 34. Interacción selectiva de la Fase 9
+
+Capítulos e índice anuncian `EXPLORE`; Selected Work, historia y fotografía
+expansiva anuncian `VIEW`. El CTA del hero es el único control narrativo magnético.
+Hover y foco comparten escala/brillo/título, y el cierre distingue archivo de
+contacto. No se añaden previews, listeners por pieza ni seguimiento de imagen.

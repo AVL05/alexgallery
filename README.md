@@ -15,7 +15,7 @@ Portfolio fotográfico de Alex Vicente Lopez — Next.js + exportación estátic
 pnpm dev               # desarrollo local
 pnpm build             # build estática → out/
 pnpm typecheck         # validación TypeScript
-pnpm test              # pruebas de infraestructura motion, intro y hero
+pnpm test              # pruebas de sistemas, contenido e interacciones
 pnpm optimize-images   # genera WebP/AVIF, blur placeholders y EXIF desde public/photos/raw
 pnpm validate-photo-process # valida comparativas auténticas configuradas
 pnpm prepare-photo-process -- --id 21 --stage original --input "C:\ruta\export.tif"
@@ -50,6 +50,7 @@ Genera variantes optimizadas en `public/photos/optimized/` y actualiza `lib/imag
 - [Sistema de archivo RAW.VIVES](docs/RAW_VIVES_ARCHIVE_SYSTEM.md)
 - [Sistema de detalle fotográfico RAW.VIVES](docs/RAW_VIVES_PHOTO_DETAIL_SYSTEM.md)
 - [Sistema de proceso creativo RAW.VIVES](docs/RAW_VIVES_CREATIVE_PROCESS_SYSTEM.md)
+- [Sistema de interacción RAW.VIVES](docs/RAW_VIVES_INTERACTION_SYSTEM.md)
 
 ## Licencia
 

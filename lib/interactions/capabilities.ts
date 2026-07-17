@@ -31,4 +31,3 @@ export function isKeyboardNavigationKey(key: string) {
 export function isFinePointerType(pointerType: string) {
   return pointerType === "mouse" || pointerType === "pen";
 }
-
