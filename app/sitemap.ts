@@ -6,7 +6,7 @@ export const dynamic = 'force-static'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://gallery.aleviclop.dev'
   const locales = ['es', 'en']
-  const routes = ['', '/politica-uso']
+  const routes = ['', '/politica-uso'] as const
 
   const sitemapEntries: MetadataRoute.Sitemap = []
 
@@ -15,9 +15,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const route of routes) {
       sitemapEntries.push({
         url: `${baseUrl}/${locale}${route}`,
-        lastModified: new Date(),
         changeFrequency: 'monthly',
         priority: route === '' ? 1.0 : 0.7,
+        alternates: {
+          languages: {
+            es: `${baseUrl}/es${route}`,
+            en: `${baseUrl}/en${route}`,
+            'x-default': route === '' ? `${baseUrl}/` : `${baseUrl}/es${route}`,
+          },
+        },
       })
     }
 
@@ -25,9 +31,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const photo of photos) {
       sitemapEntries.push({
         url: `${baseUrl}/${locale}/photo/${photo.id}`,
-        lastModified: new Date(),
         changeFrequency: 'monthly',
         priority: 0.6,
+        alternates: {
+          languages: {
+            es: `${baseUrl}/es/photo/${photo.id}`,
+            en: `${baseUrl}/en/photo/${photo.id}`,
+            'x-default': `${baseUrl}/es/photo/${photo.id}`,
+          },
+        },
       })
     }
   }
@@ -35,9 +47,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Root redirect entry
   sitemapEntries.push({
     url: `${baseUrl}/`,
-    lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: 1.0,
+    alternates: {
+      languages: {
+        es: `${baseUrl}/es`,
+        en: `${baseUrl}/en`,
+        'x-default': `${baseUrl}/`,
+      },
+    },
   })
 
   return sitemapEntries
