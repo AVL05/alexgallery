@@ -170,3 +170,10 @@ Los capítulos enlazan ahora a URLs compartibles como
 inmediata. El índice, hero, cierre y navegación mantienen `#gallery`. El selector
 de idioma conserva parámetros y hash. La curación de home no se duplica dentro
 del nuevo archivo; sus reglas viven en `RAW_VIVES_ARCHIVE_SYSTEM.md`.
+
+## 33. Decisión de integración de la Fase 8
+
+La auditoría no encontró comparativas auténticas: `featuredPhotoId` permanece
+`null` y la home no añade `THE PROCESS`, imágenes ni JavaScript de interacción.
+Cuando exista al menos un caso validado podrá insertarse una única pieza diferida
+entre narrativa y archivo, sin tutorial, nuevo storytelling ni varios sliders.

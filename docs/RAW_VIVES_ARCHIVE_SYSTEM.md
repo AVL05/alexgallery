@@ -276,3 +276,10 @@ los tests. Mantener botón real y `page` compartible.
 - La ficha reconstruye anterior/siguiente desde parámetros y conserva el contexto
   en retorno, cambio de idioma y navegación visual.
 - Comparador RAW/final, cursor y WebGL siguen fuera del alcance.
+
+## 22. Decisión de integración de la Fase 8
+
+El inventario contiene cero procesos auténticos. Por ello el archivo no añade
+filtro `Con proceso`, etiqueta ni icono: cualquier indicador sería vacío o
+engañoso. La futura elegibilidad se deriva de `photoProcessEntries`; con pocos
+casos se priorizará una etiqueta discreta antes que una faceta sin utilidad.

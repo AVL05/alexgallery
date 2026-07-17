@@ -325,3 +325,11 @@ y ficha comparten un `view-transition-name` por ID como mejora progresiva; sin A
 la navegación es normal y reduced motion la desactiva. Fullscreen reutiliza el
 lock central y restaura foco al cerrar. Véase
 `RAW_VIVES_PHOTO_DETAIL_SYSTEM.md`.
+
+## Aplicación al proceso creativo de la Fase 8
+
+El slider no usa GSAP, ScrollTrigger, Lenis ni RAF: un range nativo escribe una
+propiedad CSS. No hay autoplay, scrub, pinning, parallax ni loop. Pointer capture
+solo ocurre tras gesto horizontal; `touch-action: pan-y` conserva scroll. Reduced
+motion elimina cualquier transición sin desactivar range, tabs, teclado, reset o
+fullscreen. El overlay reutiliza el lock central y limpia listeners al desmontar.

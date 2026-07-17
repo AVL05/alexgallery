@@ -306,3 +306,11 @@ y traslada filtros secundarios a un diálogo de pantalla completa con safe areas
 La fotografía conserva su ratio, el hover máximo baja a 1.012 y los metadatos
 esenciales permanecen visibles sin hover. El contrato detallado está en
 `RAW_VIVES_ARCHIVE_SYSTEM.md`.
+
+## Aplicación al proceso creativo de la Fase 8
+
+El comparador usa la misma cartela oscura, borde de un píxel, metadata mono y
+acciones editoriales. El divisor y handle son instrumentales, sin gradientes,
+sombras, radios o color nuevo. Las etiquetas permanecen legibles y el handle
+conserva 44 px. Con cero recursos auténticos no deja huecos ni decoración de
+proceso en producción.

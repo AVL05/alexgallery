@@ -219,3 +219,11 @@ la 404 dev está limitada por export estático y View Transitions depende del na
 Las fronteras de media, contenido y acciones permiten evaluar en el futuro un
 enhancement aislado con fallback a `PhotoDetailMedia`. Esta fase no carga RAW,
 shaders, canvas, cursor personalizado, WebGL ni WebGPU.
+
+## 40. Integración resuelta por la Fase 8
+
+La ficha resuelve opcionalmente `PhotoProcessSection` después de la nota y antes
+de navegación. Con cero entradas válidas el condicional servidor devuelve cero
+HTML y conserva íntegramente la Fase 7. El fullscreen principal y el futuro
+comparador comparten `PhotoFullscreenDialog`, Escape, scroll lock, safe areas y
+retorno de foco. Canonical, metadata e `ImageObject` no cambian sin datos reales.

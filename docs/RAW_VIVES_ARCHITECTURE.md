@@ -45,6 +45,7 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | `components/intro/` | Gate, piezas visuales y timeline de `RAW.VIVES SYSTEM` |
 | `components/hero/` | Media LCP, contenido editorial y motion scoped del hero |
 | `components/photo-detail/` | Ficha editorial, contexto, fullscreen y navegación |
+| `components/photo-process/` | Comparador opcional, sección y harness solo de desarrollo |
 | `components/ui/` | Botones, layout y metadatos conectados a páginas |
 | `PRODUCT.md` | Contexto estratégico y límites duraderos de producto |
 | `DESIGN.md` | Tokens machine-readable y reglas visuales resumidas |
@@ -53,11 +54,14 @@ filtros, lightbox, motion y formularios funcionan en cliente.
 | `lib/intro/` | Persistencia, decisión, bootstrap, tiempos y desarrollo de la intro |
 | `lib/hero/` | Selección de imagen, facts, perfiles motion y preview de desarrollo |
 | `lib/photo-detail/` | Contenido localizado, selectores, interacción y SEO de ficha |
+| `lib/photo-process/` | Curación, elegibilidad, interacción y validación de procesos |
 | `lib/gallery-data.ts` | Fuente de verdad del catálogo y su orden |
 | `lib/images-data.json` | Metadatos generados; no editar a mano |
 | `lib/image-loader.ts` | Mapeo de anchos de Next a variantes locales |
 | `lib/dictionary.ts` | Locales, validación y carga de diccionarios |
 | `scripts/optimize-images.ts` | Generación de derivados y metadata |
+| `scripts/prepare-photo-process.ts` | Derivados web autorizados de etapas auténticas |
+| `scripts/validate-photo-process.ts` | Validación previa a cada build |
 | `public/photos/raw/` | Fuentes fotográficas versionadas |
 | `public/photos/optimized/` | Derivados versionados y servidos |
 | `public/_headers` | Caché, CSP y cabeceras de seguridad de Cloudflare |
@@ -287,3 +291,13 @@ relato, acciones, navegación y relacionadas; `lib/photo-detail/` mantiene las 3
 traducciones inglesas, reconstrucción contextual y SEO. Canonical, alternates,
 Open Graph, Twitter e `ImageObject` usan datos reales. El fullscreen es progresivo
 y carga el recurso ampliado al abrir. Véase `RAW_VIVES_PHOTO_DETAIL_SYSTEM.md`.
+
+## Proceso creativo de la Fase 8
+
+`types/photo-process.ts` modela original, corrección, final, notas y pasos sin
+duplicar la fotografía. El final se resuelve desde el archivo por ID;
+`lib/photo-process/config.ts` activa solo casos auténticos y la build valida rutas,
+formatos, dimensiones, ratios y traducciones. El inventario actual tiene cero
+elegibles, así que producción no monta comparador, preview de home ni marcas de
+archivo. El harness `?process-debug=1` existe solo en desarrollo. Véase
+`RAW_VIVES_CREATIVE_PROCESS_SYSTEM.md`.
