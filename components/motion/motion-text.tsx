@@ -31,14 +31,14 @@ export function MotionText({
 
       gsap.fromTo(
         items,
-        { autoAlpha: 0, y: isTouchDevice ? 6 : motionDistance.label },
+        { opacity: 0, y: isTouchDevice ? 6 : motionDistance.label },
         {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: motionDuration.normal,
           stagger: isTouchDevice ? 0.015 : 0.035,
           ease: motionEase.enter,
-          clearProps: "opacity,transform,visibility",
+          clearProps: "opacity,transform",
         },
       );
     },

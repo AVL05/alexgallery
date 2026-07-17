@@ -629,6 +629,25 @@ html[data-input-modality="keyboard"] [data-magnetic-content] {
   .rv-cursor { display: none !important; }
 }
 
+@media (forced-colors: active) {
+  .noise-texture,
+  .rv-intro-grain,
+  .rv-cursor,
+  [data-hero-graphics] {
+    display: none !important;
+  }
+
+  html[data-custom-cursor="ready"],
+  html[data-custom-cursor="ready"] body,
+  html[data-custom-cursor="ready"] body * {
+    cursor: auto !important;
+  }
+
+  :focus-visible {
+    outline: 2px solid Highlight;
+  }
+}
+
 /* Phase 7 — editorial photography detail */
 .photo-detail-media > div {
   max-height: min(78svh, 70rem);

@@ -7,6 +7,7 @@ export function useDeviceCapabilities() {
   const hasCoarsePointer = useMediaQuery(motionMedia.touch);
   const hasFinePointer = useMediaQuery(motionMedia.finePointer);
   const hasHover = useMediaQuery(motionMedia.hover);
+  const forcedColors = useMediaQuery(motionMedia.forcedColors);
 
   const hasTouchPoints =
     typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
@@ -15,6 +16,7 @@ export function useDeviceCapabilities() {
     hasCoarsePointer,
     hasFinePointer,
     hasHover,
+    forcedColors,
     isTouchDevice: hasCoarsePointer || hasTouchPoints,
   };
 }

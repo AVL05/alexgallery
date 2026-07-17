@@ -13,7 +13,7 @@ const CursorLayer = dynamic(
 );
 
 export function InteractionBootstrap({ dictionary }: { dictionary: CursorDictionary }) {
-  const { hasFinePointer, hasHover, prefersReducedMotion, isScrollLocked } = useMotion();
+  const { hasFinePointer, hasHover, prefersReducedMotion, forcedColors, isScrollLocked } = useMotion();
   const [clientDecision, setClientDecision] = useState<{
     checked: boolean;
     debug: boolean;
@@ -35,6 +35,7 @@ export function InteractionBootstrap({ dictionary }: { dictionary: CursorDiction
     hasHover,
     prefersReducedMotion,
     userPrefersNative: clientDecision.userPrefersNative,
+    forcedColors,
   });
 
   if (!clientDecision.checked || (!eligible && !clientDecision.debug)) return null;

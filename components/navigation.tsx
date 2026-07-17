@@ -45,6 +45,8 @@ export function Navigation({
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const scrollFrameRef = useRef<number | null>(null);
+  const scrolledRef = useRef(false);
   const { prefersReducedMotion, lockScroll } = useMotion();
   const openMenuLabel = currentLocale === "es" ? "Abrir menú" : "Open menu";
   const closeMenuLabel = currentLocale === "es" ? "Cerrar menú" : "Close menu";
@@ -64,7 +66,7 @@ export function Navigation({
     }
 
     gsap.to(mobileMenuRef.current, {
-      autoAlpha: 0,
+      opacity: 0,
       y: -motionDistance.compact,
       duration: motionDuration.fast,
       ease: motionEase.exit,
@@ -82,13 +84,13 @@ export function Navigation({
       if (!headerRef.current || prefersReducedMotion) return;
       gsap.fromTo(
         headerRef.current,
-        { autoAlpha: 0, y: -motionDistance.compact },
+        { opacity: 0, y: -motionDistance.compact },
         {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: motionDuration.normal,
           ease: motionEase.enter,
-          clearProps: "opacity,transform,visibility",
+          clearProps: "opacity,transform",
         },
       );
     },
@@ -100,9 +102,9 @@ export function Navigation({
       if (!isMobileMenuOpen || !mobileMenuRef.current || prefersReducedMotion) return;
       gsap.fromTo(
         mobileMenuRef.current,
-        { autoAlpha: 0, y: -motionDistance.compact },
+        { opacity: 0, y: -motionDistance.compact },
         {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: motionDuration.normal,
           ease: motionEase.enter,
@@ -113,10 +115,24 @@ export function Navigation({
   );
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 32);
+    const updateScrollState = () => {
+      scrollFrameRef.current = null;
+      const next = window.scrollY > 32;
+      if (next === scrolledRef.current) return;
+      scrolledRef.current = next;
+      setIsScrolled(next);
+    };
+    const handleScroll = () => {
+      if (scrollFrameRef.current === null) {
+        scrollFrameRef.current = window.requestAnimationFrame(updateScrollState);
+      }
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -162,6 +178,12 @@ export function Navigation({
 
   return (
     <>
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[var(--z-modal)] -translate-y-24 bg-accent px-4 py-3 text-sm font-semibold text-accent-foreground transition-transform focus:translate-y-0"
+      >
+        {dictionary.skipToContent}
+      </a>
       <header
         ref={headerRef}
         inert={isMobileMenuMounted}

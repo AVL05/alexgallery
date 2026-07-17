@@ -40,7 +40,7 @@ export function PoliticaClient({
       <PageShell as="div">
         <div ref={containerRef}>
           <Navigation dictionary={navigation} currentLocale={locale} isHome={false} currentPath={`/${locale}/politica-uso`} />
-          <main>
+          <main id="main-content" tabIndex={-1}>
           <Container className="pb-20 pt-32 sm:pt-36 lg:pb-28">
             <Link href={`/${locale}`} className="policy-back rv-editorial-link mb-12">
               <ArrowLeft aria-hidden="true" className="size-4" />

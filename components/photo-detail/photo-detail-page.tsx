@@ -23,7 +23,7 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
   const orientation = optimized ? getPhotoOrientation({ width: optimized.width, height: optimized.height }) : "vertical";
   return <PhotoDetailContextProvider locale={locale} currentId={photoId} imagesData={imagesData}>
     <PhotoDetailKeyboard />
-    <main id="photo-detail" className={`photo-detail photo-detail--${orientation} overflow-hidden pt-28 sm:pt-32`}>
+    <main id="main-content" tabIndex={-1} className={`photo-detail photo-detail--${orientation} overflow-hidden pt-28 sm:pt-32`}>
       <Container>
         <PhotoDetailBackLink label={dictionary.photoDetail.back} className="mb-10" />
         <article>

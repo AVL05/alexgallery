@@ -4,6 +4,7 @@ export type CursorCapabilityInput = {
   hasHover: boolean;
   prefersReducedMotion: boolean;
   userPrefersNative: boolean;
+  forcedColors?: boolean;
   initializationFailed?: boolean;
 };
 
@@ -13,6 +14,7 @@ export function shouldEnableCursor(input: CursorCapabilityInput) {
     && input.hasHover
     && !input.prefersReducedMotion
     && !input.userPrefersNative
+    && !input.forcedColors
     && !input.initializationFailed;
 }
 

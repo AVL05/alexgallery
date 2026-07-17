@@ -74,6 +74,7 @@
     }
   },
   "nav": {
+    "skipToContent": "Skip to content",
     "home": "Home",
     "about": "About",
     "gallery": "Archive",

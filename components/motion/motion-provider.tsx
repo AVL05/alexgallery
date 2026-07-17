@@ -22,6 +22,7 @@ type MotionContextValue = {
   isTouchDevice: boolean;
   hasFinePointer: boolean;
   hasHover: boolean;
+  forcedColors: boolean;
   isSmoothScrollEnabled: boolean;
   isScrollLocked: boolean;
   lockScroll: (source: string) => () => void;
@@ -37,7 +38,7 @@ const MotionContext = createContext<MotionContextValue | null>(null);
 export function MotionProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
-  const { isTouchDevice, hasFinePointer, hasHover } = useDeviceCapabilities();
+  const { isTouchDevice, hasFinePointer, hasHover, forcedColors } = useDeviceCapabilities();
   const [isSmoothScrollEnabled, setIsSmoothScrollEnabled] = useState(false);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
   const lenisRef = useRef<Lenis | null>(null);
@@ -117,7 +118,7 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const shouldEnable =
-      !prefersReducedMotion && !isTouchDevice && hasFinePointer && hasHover;
+      !prefersReducedMotion && !forcedColors && !isTouchDevice && hasFinePointer && hasHover;
 
     if (!shouldEnable) {
       setIsSmoothScrollEnabled(false);
@@ -144,18 +145,24 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       lenisRef.current = null;
       setIsSmoothScrollEnabled(false);
     };
-  }, [hasFinePointer, hasHover, isTouchDevice, prefersReducedMotion]);
+  }, [forcedColors, hasFinePointer, hasHover, isTouchDevice, prefersReducedMotion]);
 
   useEffect(() => {
     refreshScrollTriggers();
   }, [pathname, prefersReducedMotion, refreshScrollTriggers]);
 
   useEffect(() => {
+    let active = true;
     const handleLayoutChange = () => refreshScrollTriggers();
     window.addEventListener("orientationchange", handleLayoutChange);
-    document.fonts?.ready.then(handleLayoutChange).catch(() => undefined);
+    document.fonts?.ready
+      .then(() => {
+        if (active) handleLayoutChange();
+      })
+      .catch(() => undefined);
 
     return () => {
+      active = false;
       window.removeEventListener("orientationchange", handleLayoutChange);
       if (refreshFrameRef.current !== null) {
         window.cancelAnimationFrame(refreshFrameRef.current);
@@ -177,6 +184,7 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       isTouchDevice,
       hasFinePointer,
       hasHover,
+      forcedColors,
       isSmoothScrollEnabled,
       isScrollLocked,
       lockScroll,
@@ -189,6 +197,7 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     [
       hasFinePointer,
       hasHover,
+      forcedColors,
       isScrollLocked,
       isSmoothScrollEnabled,
       isTouchDevice,

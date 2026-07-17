@@ -55,6 +55,7 @@ test("cursor eligibility requires pointer fine, hover and every accessibility gu
   assert.equal(capability({ userPrefersNative: true }), false);
   assert.equal(capability({ enabled: false }), false);
   assert.equal(capability({ initializationFailed: true }), false);
+  assert.equal(capability({ forcedColors: true }), false);
 });
 
 test("pointer and keyboard modality helpers reject touch and typing keys", () => {

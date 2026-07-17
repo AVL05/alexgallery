@@ -28,12 +28,12 @@ export function HeroGraphicsBootstrap({
   imageReady: boolean;
   entryReady: boolean;
 }) {
-  const { prefersReducedMotion, hasFinePointer, hasHover, isTouchDevice, isScrollLocked } = useMotion();
+  const { prefersReducedMotion, forcedColors, hasFinePointer, hasHover, isTouchDevice, isScrollLocked } = useMotion();
   const [decision, setDecision] = useState<GraphicsDecision | null>(null);
   const [enabled, setEnabled] = useState<boolean>(graphicsConfig.enabled);
 
   useEffect(() => {
-    if (!imageReady || !entryReady || !enabled) return;
+    if (!imageReady || !entryReady || !enabled || forcedColors) return;
     const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
     setDecision(inspectBrowserGraphicsCapabilities({
       prefersReducedMotion,
@@ -42,7 +42,7 @@ export function HeroGraphicsBootstrap({
       hasCoarsePointer,
       hasTouch: isTouchDevice,
     }));
-  }, [enabled, entryReady, hasFinePointer, hasHover, imageReady, isTouchDevice, prefersReducedMotion]);
+  }, [enabled, entryReady, forcedColors, hasFinePointer, hasHover, imageReady, isTouchDevice, prefersReducedMotion]);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;

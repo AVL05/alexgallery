@@ -27,13 +27,13 @@ export function MotionImage({
       const clearWillChange = applyTemporaryWillChange(image);
       const tween = gsap.fromTo(
         image,
-        { autoAlpha: 0, scale: isTouchDevice ? 1 : 1.025 },
+        { opacity: 0, scale: isTouchDevice ? 1 : 1.025 },
         {
-          autoAlpha: 1,
+          opacity: 1,
           scale: 1,
           duration: isTouchDevice ? motionDuration.normal : motionDuration.slow,
           ease: motionEase.enter,
-          clearProps: "opacity,transform,visibility",
+          clearProps: "opacity,transform",
           onComplete: clearWillChange,
           scrollTrigger: {
             trigger: frameRef.current,

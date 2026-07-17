@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { MotionDevelopmentTools } from "@/components/motion/development-tools";
 import { IntroBootstrapScript } from "@/components/intro/intro-bootstrap-script";
+import { DocumentLanguageBootstrap } from "@/components/document-language-bootstrap";
 import "./globals.css";
 
 const prata = Prata({
@@ -63,6 +64,7 @@ export const metadata: Metadata = {
     languages: {
       "es-ES": "/es",
       "en-US": "/en",
+      "x-default": "/",
     },
   },
   openGraph: {
@@ -118,6 +120,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <DocumentLanguageBootstrap />
         <IntroBootstrapScript />
       </head>
       <body className="relative bg-background font-sans text-foreground">
@@ -140,8 +143,9 @@ export default function RootLayout({
                   jobTitle: "Visual archivist",
                   sameAs: [
                     "https://instagram.com/aleexx_005/",
-                    "mailto:alexviclop@gmail.com",
+                    "https://aleviclop.dev/",
                   ],
+                  email: "mailto:alexviclop@gmail.com",
                 },
                 {
                   "@type": "WebSite",

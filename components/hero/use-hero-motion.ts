@@ -63,9 +63,9 @@ export function useHeroMotion({
         ...titleLines.map((line) => applyTemporaryWillChange(line, "transform")),
       ];
 
-      gsap.set(entryMedia, { autoAlpha: 0.84, scale: profile.mediaScale });
+      gsap.set(entryMedia, { opacity: 0.84, scale: profile.mediaScale });
       gsap.set(titleLines, { yPercent: 112 });
-      gsap.set(secondary, { autoAlpha: 0, y: profile.entryDistance });
+      gsap.set(secondary, { opacity: 0, y: profile.entryDistance });
       onPhaseChange("playing", profile.entryDuration);
 
       const entryTimeline = gsap.timeline({
@@ -77,9 +77,9 @@ export function useHeroMotion({
       });
 
       entryTimeline
-        .to(entryMedia, { autoAlpha: 1, scale: 1, duration: profile.entryDuration }, 0)
+        .to(entryMedia, { opacity: 1, scale: 1, duration: profile.entryDuration }, 0)
         .to(titleLines, { yPercent: 0, duration: profile.entryDuration * 0.66, stagger: motionStagger.normal }, 0.12)
-        .to(secondary, { autoAlpha: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, 0.32);
+        .to(secondary, { opacity: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, 0.32);
 
       const scrollTimeline = profile.scrollMotionEnabled
         ? gsap.timeline({

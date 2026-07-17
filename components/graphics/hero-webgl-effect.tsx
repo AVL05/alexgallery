@@ -303,7 +303,7 @@ export function HeroWebglEffect({
   }, [decision, image.height, image.src, image.width]);
 
   return (
-    <div ref={hostRef} className="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true">
+    <div ref={hostRef} data-hero-graphics className="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true">
       <canvas
         ref={canvasRef}
         className="h-full w-full transition-opacity"

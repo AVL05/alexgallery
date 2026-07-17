@@ -40,21 +40,21 @@ export function Reveal({
       if (!element) return;
 
       if (prefersReducedMotion) {
-        gsap.set(element, { clearProps: "opacity,transform,visibility" });
+        gsap.set(element, { clearProps: "opacity,transform" });
         return;
       }
 
       const clearWillChange = applyTemporaryWillChange(element);
       const tween = gsap.fromTo(
         element,
-        { autoAlpha: 0, y: isTouchDevice ? Math.min(distance, 14) : distance },
+        { opacity: 0, y: isTouchDevice ? Math.min(distance, 14) : distance },
         {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           delay: isTouchDevice ? 0 : delay,
           duration: isTouchDevice ? motionDuration.normal : motionDuration.slow,
           ease: motionEase.enter,
-          clearProps: "opacity,transform,visibility",
+          clearProps: "opacity,transform",
           onComplete: clearWillChange,
           scrollTrigger: {
             trigger: element,
@@ -99,21 +99,21 @@ export function StaggerGroup({
       if (!root) return;
       const items = gsap.utils.toArray<HTMLElement>(selector, root);
       if (!items.length || prefersReducedMotion) {
-        gsap.set(items, { clearProps: "opacity,transform,visibility" });
+        gsap.set(items, { clearProps: "opacity,transform" });
         return;
       }
 
       const cleanups = items.map((item) => applyTemporaryWillChange(item));
       const tween = gsap.fromTo(
         items,
-        { autoAlpha: 0, y: isTouchDevice ? 8 : motionDistance.compact },
+        { opacity: 0, y: isTouchDevice ? 8 : motionDistance.compact },
         {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: motionDuration.normal,
           stagger: isTouchDevice ? 0.025 : 0.06,
           ease: motionEase.enter,
-          clearProps: "opacity,transform,visibility",
+          clearProps: "opacity,transform",
           onComplete: () => cleanups.forEach((cleanup) => cleanup()),
           scrollTrigger: {
             trigger: root,
@@ -159,13 +159,13 @@ export function MaskReveal({
       if (!item || prefersReducedMotion) return;
       gsap.fromTo(
         item,
-        { autoAlpha: 0, yPercent: isTouchDevice ? 20 : 55 },
+        { opacity: 0, yPercent: isTouchDevice ? 20 : 55 },
         {
-          autoAlpha: 1,
+          opacity: 1,
           yPercent: 0,
           duration: isTouchDevice ? motionDuration.normal : motionDuration.slow,
           ease: motionEase.enter,
-          clearProps: "opacity,transform,visibility",
+          clearProps: "opacity,transform",
           scrollTrigger: {
             trigger: ref.current,
             start: "top 90%",

@@ -32,6 +32,7 @@ export const motionMedia = {
   touch: "(pointer: coarse)",
   finePointer: "(pointer: fine)",
   hover: "(hover: hover)",
+  forcedColors: "(forced-colors: active)",
   desktop: "(min-width: 1024px)",
 } as const;
 

@@ -24,12 +24,12 @@ export function useBatchReveal(
       const targets = gsap.utils.toArray<HTMLElement>(selector, root);
 
       if (!targets.length || prefersReducedMotion) {
-        gsap.set(targets, { clearProps: "opacity,transform,visibility" });
+        gsap.set(targets, { clearProps: "opacity,transform" });
         return;
       }
 
       gsap.set(targets, {
-        autoAlpha: 0,
+        opacity: 0,
         y: isTouchDevice ? 10 : motionDistance.section,
       });
 
@@ -43,13 +43,13 @@ export function useBatchReveal(
             applyTemporaryWillChange(target as HTMLElement),
           );
           gsap.to(batch, {
-            autoAlpha: 1,
+            opacity: 1,
             y: 0,
             duration: isTouchDevice ? motionDuration.normal : motionDuration.slow,
             stagger: isTouchDevice ? motionStagger.tight : motionStagger.normal,
             ease: motionEase.enter,
             overwrite: true,
-            clearProps: "opacity,transform,visibility",
+            clearProps: "opacity,transform",
             onComplete: () => cleanups.forEach((cleanup) => cleanup()),
           });
         },
