@@ -58,7 +58,7 @@ test("archive URL parsing validates values and serialization removes defaults", 
 
 test("category links remain localized and shareable without JavaScript", () => {
   assert.equal(getCategoryArchiveHref("es", "Meteorología"), "/es?category=meteorologia#gallery");
-  assert.equal(getCategoryArchiveHref("en", "Retrato"), "/en?category=retrato#gallery");
+  assert.equal(getCategoryArchiveHref("en", "Personas"), "/en?category=retrato#gallery");
 });
 
 test("search is accent and case insensitive across real searchable fields", () => {
