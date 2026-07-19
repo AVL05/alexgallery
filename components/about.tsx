@@ -13,7 +13,7 @@ export function About({ dictionary }: { dictionary: AboutDictionary }) {
     >
       <Container className="relative z-10">
         <div className="grid items-center gap-12 md:grid-cols-12 md:gap-16 lg:gap-24">
-          {/* Retrato */}
+          {/* Personas */}
           <Reveal className="md:col-span-5 lg:col-span-4">
             <div className="relative aspect-[4/5] w-full overflow-hidden border border-border bg-[var(--color-surface)]">
               <MotionImage

@@ -11,7 +11,7 @@ const categorySlugs: Record<GalleryFilter, string> = {
   Fauna: "fauna",
   Arquitectura: "arquitectura",
   Paisaje: "paisaje",
-  Retrato: "retrato",
+  Personas: "retrato",
   Meteorología: "meteorologia",
   Virtual: "virtual",
 };

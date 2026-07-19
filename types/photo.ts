@@ -11,7 +11,7 @@ export type PhotoCategory =
   | "Fauna"
   | "Arquitectura"
   | "Paisaje"
-  | "Retrato"
+  | "Personas"
   | "Meteorología"
   | "Virtual";
 

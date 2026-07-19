@@ -5,7 +5,7 @@ export const categories = [
   "Fauna",
   "Arquitectura",
   "Paisaje",
-  "Retrato",
+  "Personas",
   "Meteorología",
 ] as const satisfies readonly GalleryFilter[];
 
@@ -255,7 +255,7 @@ export const photos = [
   {
     id: 44,
     title: "Rojo sobre asfalto",
-    category: "Retrato",
+    category: "Personas",
     year: "2025",
     image: "/44.webp",
     color: "accent",
@@ -265,7 +265,7 @@ export const photos = [
   {
     id: 46,
     title: "El acordeón y el abismo",
-    category: "Retrato",
+    category: "Personas",
     year: "2025",
     image: "/46.webp",
     color: "chart-3",

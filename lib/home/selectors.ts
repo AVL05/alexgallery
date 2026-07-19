@@ -2,13 +2,16 @@ import { photos } from "@/lib/gallery-data";
 import {
   homeChapterOrder,
   homeCuration,
+  type HomeChapterCategory,
   type HomeCuration,
 } from "@/lib/home/curation";
+import { assertValidHomeCuration } from "@/lib/home/validation";
+import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
+import type { Locale } from "@/types/dictionary";
 import type {
   BasePhoto,
   ImagesData,
   OptimizedImageData,
-  PhotoCategory,
 } from "@/types/photo";
 
 export type NarrativePhoto = BasePhoto &
@@ -18,14 +21,14 @@ export type NarrativePhoto = BasePhoto &
   };
 
 export type HomeChapter = {
-  category: Exclude<PhotoCategory, "Virtual">;
+  category: HomeChapterCategory;
   count: number;
   photo: NarrativePhoto;
 };
 
 export type ArchiveSummary = {
   total: number;
-  categories: Array<{ category: Exclude<PhotoCategory, "Virtual">; count: number }>;
+  categories: Array<{ category: HomeChapterCategory; count: number }>;
   years: Array<{ year: string; count: number }>;
   startYear: string;
   endYear: string;
@@ -36,52 +39,54 @@ export type HomeNarrativeData = {
   expansive: NarrativePhoto;
   chapters: HomeChapter[];
   selected: NarrativePhoto[];
+  archiveIndex: NarrativePhoto[];
   archive: ArchiveSummary;
 };
 
 function mergePhoto(
   photo: BasePhoto,
   optimized: OptimizedImageData | undefined,
+  locale: Locale,
 ): NarrativePhoto {
+  const localized = getLocalizedPhotoContent(photo, locale);
   return {
     ...photo,
+    ...localized,
     src: optimized?.src ?? photo.image,
     srcAvif: optimized?.srcAvif,
     width: optimized?.width ?? 1200,
     height: optimized?.height ?? 1600,
     blurDataURL: optimized?.blurDataURL,
-    alt: photo.description || photo.title,
     exif: optimized?.exif,
     histogram: optimized?.histogram,
     variants: optimized?.variants,
   };
 }
 
-export function getNarrativePhotos(imagesData: ImagesData): NarrativePhoto[] {
+export function getNarrativePhotos(
+  imagesData: ImagesData,
+  locale: Locale = "es",
+): NarrativePhoto[] {
   const optimizedById = new Map(
     imagesData.images.map((image) => [Number(image.id), image]),
   );
 
-  return photos.map((photo) => mergePhoto(photo, optimizedById.get(photo.id)));
+  return photos.map((photo) =>
+    mergePhoto(photo, optimizedById.get(photo.id), locale),
+  );
 }
 
 function resolvePhoto(
-  allPhotos: NarrativePhoto[],
+  allPhotos: readonly NarrativePhoto[],
   requestedId: number,
-  excludedIds: ReadonlySet<number> = new Set(),
-  category?: Exclude<PhotoCategory, "Virtual">,
+  category?: HomeChapterCategory,
 ): NarrativePhoto {
   const requested = allPhotos.find(
     (photo) =>
-      photo.id === requestedId &&
-      !excludedIds.has(photo.id) &&
-      (!category || photo.category === category),
+      photo.id === requestedId && (!category || photo.category === category),
   );
-
   const fallback = allPhotos.find(
-    (photo) =>
-      !excludedIds.has(photo.id) &&
-      (!category || photo.category === category),
+    (photo) => !category || photo.category === category,
   );
 
   if (!requested && !fallback) {
@@ -114,50 +119,24 @@ export function getArchiveSummary(): ArchiveSummary {
 
 export function getHomeNarrativeData(
   imagesData: ImagesData,
+  locale: Locale = "es",
   curation: HomeCuration = homeCuration,
 ): HomeNarrativeData {
-  const allPhotos = getNarrativePhotos(imagesData);
-  const featured = resolvePhoto(allPhotos, curation.featuredPhotoId);
-  const expansive = resolvePhoto(
-    allPhotos,
-    curation.expansivePhotoId,
-    new Set([featured.id]),
-  );
-
-  const chapters = homeChapterOrder.map((category) => ({
-    category,
-    count: photos.filter((photo) => photo.category === category).length,
-    photo: resolvePhoto(
-      allPhotos,
-      curation.chapterPhotoIds[category],
-      new Set(),
-      category,
-    ),
-  }));
-
-  const selected: NarrativePhoto[] = [];
-  const reservedIds = new Set([featured.id, expansive.id]);
-  for (const id of curation.selectedPhotoIds) {
-    const photo = allPhotos.find(
-      (candidate) => candidate.id === id && !reservedIds.has(candidate.id),
-    );
-    if (photo && !selected.some((candidate) => candidate.id === photo.id)) {
-      selected.push(photo);
-    }
-  }
-
-  for (const photo of allPhotos) {
-    if (selected.length >= curation.selectedPhotoIds.length) break;
-    if (!reservedIds.has(photo.id) && !selected.some((item) => item.id === photo.id)) {
-      selected.push(photo);
-    }
-  }
+  assertValidHomeCuration(curation, imagesData);
+  const allPhotos = getNarrativePhotos(imagesData, locale);
 
   return {
-    featured,
-    expansive,
-    chapters,
-    selected,
+    featured: resolvePhoto(allPhotos, curation.featuredPhotoId),
+    expansive: resolvePhoto(allPhotos, curation.expansivePhotoId),
+    chapters: homeChapterOrder.map((category) => ({
+      category,
+      count: photos.filter((photo) => photo.category === category).length,
+      photo: resolvePhoto(allPhotos, curation.chapterPhotoIds[category], category),
+    })),
+    selected: curation.selectedPhotoIds.map((id) => resolvePhoto(allPhotos, id)),
+    archiveIndex: curation.archiveIndexPhotoIds.map((id) =>
+      resolvePhoto(allPhotos, id),
+    ),
     archive: getArchiveSummary(),
   };
 }

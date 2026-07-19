@@ -28,8 +28,12 @@ export function HomeNarrative({
 }) {
   const [preview, setPreview] = useState<HomePreviewOptions>({});
   const data = useMemo(
-    () => getHomeNarrativeData(imagesData, preview.alternate ? alternateHomeCuration : homeCuration),
-    [imagesData, preview.alternate],
+    () => getHomeNarrativeData(
+      imagesData,
+      locale,
+      preview.alternate ? alternateHomeCuration : homeCuration,
+    ),
+    [imagesData, locale, preview.alternate],
   );
   const chapters = preview.emptyCategories ? [] : data.chapters;
   const selected = preview.fewPhotos ? data.selected.slice(0, 2) : data.selected;
@@ -50,11 +54,11 @@ export function HomeNarrative({
   return (
     <>
       <HomeManifesto home={dictionary.home} about={dictionary.about} />
-      <FeaturedStory photo={data.featured} dictionary={dictionary.home} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
-      <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />
+      <FeaturedStory photo={data.featured} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
+      <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />
       <VisualChapters chapters={chapters} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
       <SelectedWork photos={selected} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
-      <ArchiveIndex archive={data.archive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} />
+      <ArchiveIndex archive={data.archive} photos={data.archiveIndex} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
     </>
   );
 }

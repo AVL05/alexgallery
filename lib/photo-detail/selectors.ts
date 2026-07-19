@@ -1,6 +1,9 @@
 import { defaultArchiveState, type ArchivePhoto, type ArchiveState } from "@/lib/archive/types";
 import { selectArchivePhotos } from "@/lib/archive/selectors";
 import { serializeArchiveState } from "@/lib/archive/url";
+import { getHomeNarrativePhotoIds } from "@/lib/home/curation";
+
+const homeNarrativePhotoIds = new Set(getHomeNarrativePhotoIds());
 
 export type PhotoOrientation = "horizontal" | "vertical" | "square";
 
@@ -41,7 +44,8 @@ export function selectRelatedPhotos(photos: readonly ArchivePhoto[], currentId: 
       score:
         Number(photo.category === current.category) * 100 +
         Number(photo.year === current.year) * 20 -
-        Math.abs(photo.curatedIndex - current.curatedIndex),
+        Math.abs(photo.curatedIndex - current.curatedIndex) -
+        Number(homeNarrativePhotoIds.has(photo.id)) * 0.25,
     }))
     .sort((left, right) => right.score - left.score || left.photo.curatedIndex - right.photo.curatedIndex)
     .slice(0, Math.max(0, limit))

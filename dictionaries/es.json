@@ -48,7 +48,7 @@
         "Fauna": "Encuentros breves con formas de vida que no posan.",
         "Arquitectura": "Estructuras, tránsito y huellas del espacio habitado.",
         "Paisaje": "Territorios donde la escala obliga a mirar más despacio.",
-        "Retrato": "Presencias humanas dentro de una escena mayor.",
+        "Personas": "Presencias humanas dentro de una escena mayor.",
         "Meteorología": "La atmósfera como materia, tensión y acontecimiento."
       }
     },
@@ -136,7 +136,7 @@
       "Fauna": "Fauna",
       "Arquitectura": "Arquitectura",
       "Paisaje": "Paisaje",
-      "Retrato": "Personas",
+      "Personas": "Personas",
       "Meteorología": "Meteorología",
       "Virtual": "Virtual"
     }

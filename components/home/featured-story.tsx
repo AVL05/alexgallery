@@ -3,7 +3,7 @@ import { SectionMarker } from "@/components/home/section-marker";
 import { Reveal, StaggerGroup } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/layout";
 import type { NarrativePhoto } from "@/lib/home/selectors";
-import type { HomeDictionary, Locale } from "@/types/dictionary";
+import type { GalleryDictionary, HomeDictionary, Locale } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
@@ -11,12 +11,14 @@ import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 export function FeaturedStory({
   photo,
   dictionary,
+  galleryDictionary,
   locale,
   failImages,
   slowImages,
 }: {
   photo: NarrativePhoto;
   dictionary: HomeDictionary;
+  galleryDictionary: GalleryDictionary;
   locale: Locale;
   failImages?: boolean;
   slowImages?: boolean;
@@ -48,7 +50,7 @@ export function FeaturedStory({
               {photo.description}
             </p>
             <div data-motion-item className="rv-meta mt-7 flex gap-5">
-              <span>{photo.category}</span><span>{photo.year}</span>
+              <span>{galleryDictionary.categories[photo.category]}</span><span>{photo.year}</span>
             </div>
             <Link data-motion-item href={`/${locale}/photo/${photo.id}`} className="rv-editorial-link mt-8" data-press-feedback {...getCursorTargetAttributes({ type: "view" })}>
               {dictionary.featured.cta}<ArrowUpRight aria-hidden="true" className="size-4" />

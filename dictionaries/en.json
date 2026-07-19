@@ -48,7 +48,7 @@
         "Fauna": "Brief encounters with living forms that do not pose.",
         "Arquitectura": "Structures, movement and traces of inhabited space.",
         "Paisaje": "Territories whose scale asks us to look more slowly.",
-        "Retrato": "Human presences within a larger scene.",
+        "Personas": "Human presences within a larger scene.",
         "Meteorología": "Atmosphere as matter, tension and event."
       }
     },
@@ -136,7 +136,7 @@
       "Fauna": "Wildlife",
       "Arquitectura": "Architecture",
       "Paisaje": "Landscape",
-      "Retrato": "People",
+      "Personas": "People",
       "Meteorología": "Weather",
       "Virtual": "Virtual"
     }

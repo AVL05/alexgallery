@@ -10,13 +10,14 @@ import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { applyTemporaryWillChange } from "@/lib/motion/will-change";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import type { NarrativePhoto } from "@/lib/home/selectors";
-import type { HomeDictionary, Locale } from "@/types/dictionary";
+import type { GalleryDictionary, HomeDictionary, Locale } from "@/types/dictionary";
 import Link from "next/link";
 import { useRef } from "react";
 
 export function ExpansivePhoto({
   photo,
   dictionary,
+  galleryDictionary,
   locale,
   failImages,
   forceReducedMotion,
@@ -24,6 +25,7 @@ export function ExpansivePhoto({
 }: {
   photo: NarrativePhoto;
   dictionary: HomeDictionary;
+  galleryDictionary: GalleryDictionary;
   locale: Locale;
   failImages?: boolean;
   forceReducedMotion?: boolean;
@@ -71,7 +73,7 @@ export function ExpansivePhoto({
               <SectionMarker current={4} label={dictionary.chapterLabel} />
               <p className="rv-kicker mt-5">{dictionary.expansive.label}</p>
             </div>
-            <p className="rv-meta hidden sm:block">{photo.category} / {photo.year}</p>
+            <p className="rv-meta hidden sm:block">{galleryDictionary.categories[photo.category]} / {photo.year}</p>
           </Reveal>
           <div data-expansive-media className="origin-center">
             <Link href={`/${locale}/photo/${photo.id}`} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>

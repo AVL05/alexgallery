@@ -1,8 +1,9 @@
 import { photos } from "@/lib/gallery-data";
+import { homeCuration } from "@/lib/home/curation";
 import type { ImagesData, OptimizedImageData } from "@/types/photo";
 
 export const heroImageConfig = {
-  primaryId: "14",
+  primaryId: String(homeCuration.heroPhotoId),
   fallbackId: "46",
   objectPosition: "50% 50%",
 } as const;
