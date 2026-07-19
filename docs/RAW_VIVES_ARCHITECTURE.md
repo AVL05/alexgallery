@@ -261,15 +261,19 @@ La composición localizada continúa en `app/[locale]/home-client.tsx`. Entre el
 hero y la galería se monta `components/home/home-narrative.tsx`, que compone
 módulos pequeños sin cambiar las rutas ni el origen de datos.
 
-`lib/home/curation.ts` contiene exclusivamente decisiones editoriales por ID.
-`lib/home/selectors.ts` cruza esas decisiones con `gallery-data.ts` e
-`images-data.json`, deriva recuentos y proporciona fallbacks. Los componentes no
-buscan fotografías por su cuenta.
+`lib/home/curation.ts` contiene exclusivamente decisiones editoriales por ID,
+incluido el hero. `lib/home/validation.ts` rechaza IDs inexistentes, duplicados,
+conflictos, capítulos de categoría incorrecta y Selected Work fuera del rango
+5–6. `lib/home/selectors.ts` cruza esas decisiones con `gallery-data.ts`,
+`images-data.json` y contenido localizado, deriva recuentos y proporciona
+fallbacks de recurso. Los componentes no buscan fotografías ni duplican títulos.
 
 La navegación de capítulos al archivo conserva `#gallery` y utiliza
 `lib/gallery-filter-events.ts` para solicitar el filtro al componente existente.
 Este evento no sustituye el estado de la galería ni crea una segunda fuente de
-verdad. La guía detallada vive en `RAW_VIVES_HOME_NARRATIVE.md`.
+verdad. La auditoría y reglas de Fase 13.1 viven en
+`RAW_VIVES_CURATION_SYSTEM.md`; la composición permanece en
+`RAW_VIVES_HOME_NARRATIVE.md`.
 
 ## Archivo editorial de la Fase 6
 

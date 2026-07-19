@@ -15,7 +15,7 @@ reduce el movimiento y prioriza búsqueda, orientación y navegación real.
 - Ruta: `/{locale}#gallery`, dentro de la home localizada.
 - Componente: `components/gallery.tsx`, antes monolítico.
 - Datos: 30 fotografías de `lib/gallery-data.ts`; la imagen 14 queda reservada al hero.
-- Categorías: Fauna 6, Arquitectura 14, Paisaje 6, Retrato 2 y Meteorología 2.
+- Categorías: Fauna 6, Arquitectura 14, Paisaje 6, Personas 2 y Meteorología 2.
 - Años: 2022 (1), 2023 (1), 2024 (11) y 2025 (17).
 - Ratios: 14 horizontales, 9 verticales y 7 cuadrados.
 - Idiomas: interfaz ES/EN; títulos y descripciones fotográficas siguen en español.
@@ -94,7 +94,9 @@ El estado usa query params sobre la home y conserva `#gallery`:
 
 Parámetros soportados:
 
-- `category`: `fauna`, `arquitectura`, `paisaje`, `retrato`, `meteorologia`.
+- `category`: `fauna`, `arquitectura`, `paisaje`, `retrato`, `meteorologia`. El
+  slug histórico `retrato` representa la categoría oficial `Personas` y se
+  mantiene para no romper URLs públicas.
 - `year`: uno de los cuatro años reales.
 - `q`: búsqueda de hasta 120 caracteres.
 - `sort`: `curated`, `newest`, `oldest`, `title-asc`, `title-desc`.

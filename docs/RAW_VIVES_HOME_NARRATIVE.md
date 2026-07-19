@@ -34,8 +34,8 @@ El recorrido parte de la identidad presentada por la intro y el hero, explica la
 - `FeaturedStory`: fotografía, texto real y enlace a la ficha.
 - `ExpansivePhoto`: única escena con scrub de esta fase.
 - `VisualChapters`: categorías, recuentos y acceso al filtro existente.
-- `SelectedWork`: selección fija de seis obras en una retícula editorial.
-- `ArchiveIndex`: recuentos derivados del catálogo.
+- `SelectedWork`: selección fija de cinco obras en una retícula editorial.
+- `ArchiveIndex`: una miniatura funcional y recuentos derivados del catálogo.
 - `ClosingStatement`: cierre y enlaces al archivo y contacto.
 - `NarrativeImage`: ratio conocido, placeholder, fallback y refresh de layout.
 - `SectionMarker`: numeración accesible y consistente de `01 / 08` a `08 / 08`.
@@ -46,12 +46,18 @@ La fuente de verdad sigue siendo `lib/gallery-data.ts`. Las dimensiones, variant
 
 ## 7. Configuración curada
 
-`lib/home/curation.ts` contiene `homeCuration`: ID de historia destacada, ID de fotografía expansiva, portada por categoría y seis IDs de trabajo seleccionado. `alternateHomeCuration` solo sirve para revisión interna en desarrollo.
+`lib/home/curation.ts` contiene la única `homeCuration`: hero, historia destacada,
+fotografía expansiva, portada por categoría, cinco IDs de trabajo seleccionado e
+índice. `lib/home/validation.ts` bloquea IDs inexistentes, duplicados, conflictos,
+categorías incorrectas y longitudes inválidas. `alternateHomeCuration` solo sirve
+para revisión interna en desarrollo y cumple el mismo contrato.
 
+- Hero: 14, imagen editorial reservada de Moher.
 - Historia destacada: 46, `El acordeón y el abismo`.
 - Fotografía expansiva: 3, `El ruido del cielo`.
-- Capítulos: 1, 6, 17, 44 y 41.
-- Selected work: 5, 13, 21, 35, 49 y 51.
+- Capítulos: 7, 48, 30, 44 y 41.
+- Selected Work: 1, 35, 21, 37 y 49.
+- Índice: 11.
 
 ## 8. Manifiesto
 
@@ -67,15 +73,26 @@ La fotografía 3 ocupa una escena de 145 svh en escritorio. Un contenedor sticky
 
 ## 11. Capítulos
 
-Los capítulos corresponden a las cinco categorías reales: Fauna, Arquitectura, Paisaje, Retrato y Meteorología. Cada recuento se deriva del catálogo. En escritorio se actualiza una imagen contextual al pasar el puntero o enfocar; en móvil cada capítulo incluye su imagen. El enlace mantiene `#gallery` y emite una petición interna al filtro ya existente.
+Los capítulos corresponden a las cinco categorías reales: Fauna, Arquitectura,
+Paisaje, Personas y Meteorología. Cada recuento se deriva del catálogo. En
+escritorio se actualiza una imagen contextual al pasar el puntero o enfocar; en
+móvil cada capítulo incluye su imagen. El enlace mantiene `#gallery` y emite una
+petición interna al filtro ya existente. El slug histórico `retrato` permanece
+estable para URLs de Personas.
 
 ## 12. Selected work
 
-Se muestran seis fotografías sin repetir la historia destacada ni la imagen expansiva. La retícula de 12 columnas alterna anchos y desplazamientos en escritorio; en móvil pasa a una sola columna. Cada marco usa las dimensiones reales, por lo que no depende de Masonry ni cambia de tamaño al cargar.
+Se muestran cinco fotografías sin repetir hero, historia, expansiva ni capítulos.
+La secuencia `1, 35, 21, 37, 49` alterna H/V/H/C/H y cubre 2022–2025. La
+retícula de 12 columnas alterna anchos y desplazamientos en escritorio; en móvil
+pasa a una sola columna. Cada marco usa dimensiones reales.
 
 ## 13. Índice
 
-El índice calcula total, categorías, años activos y rango temporal mediante `getArchiveSummary()`. El CTA conduce a `#gallery`; la galería completa continúa siendo la experiencia de archivo de esta fase.
+El índice usa la fotografía 11 como miniatura pequeña e inédita en la narrativa,
+calcula total, categorías, años activos y rango temporal mediante
+`getArchiveSummary()`. El CTA conduce a `#gallery`; la galería completa conserva
+las 30 fotografías.
 
 ## 14. Cierre
 
@@ -111,7 +128,10 @@ El hero conserva el único `h1`; cada módulo narrativo usa `h2` y las obras `h3
 
 ## 22. Internacionalización
 
-Todos los textos nuevos están bajo `home` en `dictionaries/es.json` y `dictionaries/en.json`. Los nombres de categoría reutilizan `gallery.categories`. Los títulos y descripciones fotográficas siguen el idioma único del catálogo, una limitación previa que no se duplica dentro del sistema narrativo.
+Todos los textos de interfaz están bajo `home` en ambos diccionarios. Los nombres
+de categoría reutilizan `gallery.categories`. Títulos, descripciones y alt se
+resuelven por locale mediante `getLocalizedPhotoContent()`; la home inglesa no
+consume campos editoriales españoles hardcodeados.
 
 ## 23. Imágenes
 
@@ -119,15 +139,23 @@ Todos los textos nuevos están bajo `home` en `dictionaries/es.json` y `dictiona
 
 ## 24. Rendimiento
 
-No se han añadido dependencias, fuentes ni assets. Solo la imagen del hero mantiene prioridad; la narrativa carga de forma diferida. La animación nueva se limita a transform y a un trigger scrub. La selección de seis obras reduce el número de imágenes iniciales frente a una segunda galería completa.
+No se han añadido dependencias, fuentes, assets, preloads ni motion. Solo el hero
+mantiene prioridad; narrativa e índice cargan de forma diferida. Selected Work
+baja de seis a cinco y el índice añade una miniatura: el total de imágenes antes
+del archivo no aumenta.
 
 ## 25. Pruebas
 
-`tests/home/home-narrative.test.ts` comprueba IDs reales, ausencia de duplicados, categorías, fallbacks, recuentos derivados y paridad de traducciones. La validación en navegador cubre filtros, reduced motion, menú, rutas, consola y overflow. No se añade una suite E2E nueva.
+`tests/home/home-narrative.test.ts` comprueba IDs, hero exclusivo, capítulos,
+Selected Work, máximo de apariciones, 14 obras únicas, categorías, orden,
+fallback, ES/EN, alt y taxonomía. La aserción se ejecuta también al resolver la
+home durante desarrollo/build. No se añade una suite E2E nueva.
 
 ## 26. Cómo cambiar la selección
 
-Editar exclusivamente `homeCuration` en `lib/home/curation.ts`. Usar IDs existentes en `lib/gallery-data.ts`, evitar repetir `featuredPhotoId` y `expansivePhotoId` dentro de `selectedPhotoIds`, y ejecutar `pnpm test`.
+Editar exclusivamente `homeCuration` en `lib/home/curation.ts`. Usar IDs
+existentes, respetar categoría de capítulos y no repetir ningún rol. Ejecutar
+`pnpm test`; el mensaje de validación identifica ID y secciones en conflicto.
 
 ## 27. Cómo añadir un capítulo
 
@@ -145,18 +173,18 @@ El orden de capítulos se controla en `homeChapterOrder`. El orden global de sec
 
 ## 29. Fallbacks
 
-- ID curado ausente: primera fotografía válida, o primera de su categoría.
+- ID curado ausente o categoría incorrecta: error explícito de validación.
 - Variante optimizada ausente: ruta original declarada en el catálogo.
 - Imagen que falla en red: `/photos/optimized/800/1.webp`.
-- Selección parcial: se completa con fotografías reales no reservadas.
+- Recurso fallido: fallback local existente sin cambiar la selección editorial.
 - Categorías o selección vacías en preview: estado textual visible.
 
 ## 30. Riesgos
 
-- El contenido editorial de las fotografías solo existe en español.
 - La home completa es larga porque convive con las 30 imágenes del archivo.
 - La galería sigue cargando su lightbox y Masonry en la ruta principal.
 - Una categoría nueva exige actualizar el contrato curado de forma explícita.
+- Personas y Meteorología solo disponen de dos obras cada una.
 - El watermark forma parte de algunas fotografías originales y no se modifica.
 
 ## 31. Preparación para la Fase 6

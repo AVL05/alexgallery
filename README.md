@@ -12,10 +12,10 @@ Transformar una galería personal en una pieza de portfolio con criterio editori
 
 ## Características
 
-- Home narrativa con intro de sesión, hero, manifiesto, historias y capítulos visuales.
+- Home narrativa curada con 14 fotografías únicas antes del archivo, roles exclusivos y cinco categorías equilibradas.
 - Archivo de 30 fotografías con búsqueda, categorías, años, orden y carga progresiva.
 - Detalles individuales con navegación contextual, fullscreen, compartir y obras relacionadas.
-- Español e inglés generados de forma estática, con selector de idioma y SEO localizado.
+- Español e inglés generados de forma estática, incluido contenido editorial, categorías y alt fotográfico localizado.
 - Cursor contextual, microinteracciones GSAP y WebGL progresivo solo cuando el dispositivo lo permite.
 - Reduced motion, forced colors, teclado, foco visible, 404, fallbacks de imagen y sin JavaScript crítico para leer el contenido.
 - Sitemap, robots, JSON-LD, Open Graph, manifest, iconos y headers de producción.
@@ -28,7 +28,7 @@ Next.js 16 App Router, React 19, TypeScript estricto, Tailwind CSS 4, GSAP, Thre
 
 El proyecto usa `output: "export"`: no depende de un servidor Next.js en ejecución. `app/` define rutas y metadata; `components/` contiene sistemas de interfaz; `lib/` concentra datos, SEO y reglas puras; `dictionaries/` resuelve la i18n manual; `scripts/` construye y valida la tubería fotográfica. Wrangler sirve el directorio `out/`.
 
-Más detalle en [arquitectura](docs/RAW_VIVES_ARCHITECTURE.md), [sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md) y [sistema de release](docs/RAW_VIVES_RELEASE_SYSTEM.md).
+Más detalle en [arquitectura](docs/RAW_VIVES_ARCHITECTURE.md), [curación de la home](docs/RAW_VIVES_CURATION_SYSTEM.md), [sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md) y [sistema de release](docs/RAW_VIVES_RELEASE_SYSTEM.md).
 
 ## Sistema visual
 

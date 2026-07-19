@@ -114,7 +114,8 @@ Clipboard API y fallback de selección temporal. `aria-live` anuncia el resultad
 ## 20. Related photos
 
 Se eligen cuatro obras distintas priorizando misma categoría, mismo año y cercanía
-editorial. ID y orden resuelven empates; no hay aleatoriedad.
+editorial. Ante relevancia equivalente se posponen las grandes protagonistas de
+la home; ID y orden resuelven el resto de empates. No hay aleatoriedad.
 
 ## 21. Transición desde archivo
 
