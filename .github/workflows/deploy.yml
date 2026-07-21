@@ -54,16 +54,15 @@ jobs:
       - name: Smoke test canonical routes
         shell: bash
         run: |
-          root_headers=""
+          root_result=""
           for attempt in {1..40}; do
-            root_headers="$(curl --fail --silent --show-error --dump-header - --output /dev/null 'https://gallery.aleviclop.dev/?ref=workflow')"
-            if grep -qE '^HTTP/[^ ]+ 307' <<<"$root_headers" && grep -qiE '^location: https://gallery\.aleviclop\.dev/en\?ref=workflow\r?$' <<<"$root_headers"; then
+            root_result="$(curl --silent --show-error --output /dev/null --write-out '%{http_code} %{redirect_url}' 'https://gallery.aleviclop.dev/?ref=workflow')"
+            if [[ "$root_result" == "307 https://gallery.aleviclop.dev/en?ref=workflow" ]]; then
               break
             fi
             sleep 3
           done
-          grep -qE '^HTTP/[^ ]+ 307' <<<"$root_headers"
-          grep -qiE '^location: https://gallery\.aleviclop\.dev/en\?ref=workflow\r?$' <<<"$root_headers"
+          test "$root_result" = "307 https://gallery.aleviclop.dev/en?ref=workflow"
           curl --fail --silent --show-error https://gallery.aleviclop.dev/es >/dev/null
           curl --fail --silent --show-error https://gallery.aleviclop.dev/en >/dev/null
           curl --fail --silent --show-error https://gallery.aleviclop.dev/robots.txt >/dev/null
