@@ -48,22 +48,24 @@ Marca solo con evidencia del artefacto que se va a publicar.
 - [x] Wrangler dry-run correcto.
 - [x] Preview local: 200 ES/EN, 404 real y headers aplicados.
 - [x] Pipeline de CI y deployment manual definidos.
-- [ ] GitHub environment y secretos confirmados.
+- [x] GitHub environment y secretos confirmados.
 - [ ] Preview remota creada y validada.
-- [ ] “Always Use HTTPS” activado y HTTP → HTTPS comprobado.
+- [x] HTTP → HTTPS forzado mediante Single Redirect específica y comprobado.
 - [ ] Restricción de dominio/anti-spam de Web3Forms revisada.
-- [ ] Version ID estable anterior registrado.
+- [x] Version ID estable anterior registrado.
 
 ## Publicación
 
-- [ ] Autorización explícita recibida.
-- [ ] Workflow manual ejecutado.
-- [ ] Smoke tests de producción completados.
-- [ ] Consola y red sin errores propios.
-- [ ] Robots/sitemap públicos corresponden a esta release.
+- [x] Autorización explícita recibida.
+- [x] Workflow manual ejecutado.
+- [x] Smoke tests de producción completados.
+- [x] Consola y red sin errores propios.
+- [x] Robots/sitemap públicos corresponden a esta release.
 - [ ] Disponibilidad y formulario monitorizados.
 - [ ] Tag y GitHub Release creados solo si se autorizan.
 
-## Resultado de Fase 12
+## Estado posterior al despliegue
 
-El repositorio queda **release-ready**, pero no se declara publicado. Los checks pendientes exigen credenciales, configuración externa o autorización del usuario.
+La release está publicada y validada. Permanecen como tareas operativas
+independientes la preview remota, la revisión anti-spam de Web3Forms, la medición
+de Web Vitals de campo y una auditoría manual con lector de pantalla real.

@@ -16,12 +16,32 @@ Git, Node 22.22.2, Corepack, pnpm 10.34.1, acceso a Cloudflare y permisos sobre 
 
 | Nombre | Lugar | Carácter |
 | --- | --- | --- |
-| `NEXT_PUBLIC_BASE_URL` | GitHub environment variable | URL pública de build |
+| `NEXT_PUBLIC_BASE_URL` | Constante del workflow | URL pública de build |
 | `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | GitHub environment secret | Identificador público inyectado en build |
 | `CLOUDFLARE_API_TOKEN` | GitHub environment secret | Credencial de despliegue |
 | `CLOUDFLARE_ACCOUNT_ID` | GitHub environment secret | Cuenta de destino |
 
 No registrar valores en el repositorio ni en logs. Las variables `NEXT_PUBLIC_*` terminan visibles en el cliente.
+
+### Auditoría de credenciales (2026-07-21)
+
+GitHub no contiene secretos de repositorio ni variables duplicadas. El environment
+`production` contiene exactamente `CLOUDFLARE_API_TOKEN`,
+`CLOUDFLARE_ACCOUNT_ID` y `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`; solo el job de
+despliegue asociado a ese environment puede resolverlos.
+
+| Token Cloudflare | Último uso visible | Alcance observado | Clasificación |
+| --- | --- | --- | --- |
+| `raw-vives production deploy` | 2026-07-21 | Workers Scripts: Edit en la cuenta requerida; Workers Routes: Edit solo en `aleviclop.dev` | Mantener |
+| `photography-app build token` | 2026-06-17 | 23 permisos, una cuenta y todas las zonas | Revisión manual; permisos excesivos |
+| `alexgallery build token` (uso 2026-07-21) | 2026-07-21 | 21 permisos, una cuenta y todas las zonas | Revisión manual; probable credencial heredada y permisos excesivos |
+| `alex-gallery build token` | Sin uso registrado | 21 permisos, una cuenta y todas las zonas | Candidato a revocación; permisos excesivos |
+| `alexgallery build token` (uso 2026-01-19) | 2026-01-19 | 21 permisos, una cuenta y todas las zonas | Candidato a revocación tras confirmar consumidores; permisos excesivos |
+
+Cloudflare no mostró la fecha de creación en el inventario disponible. No se
+revocó ni modificó ninguna credencial durante la auditoría. Antes de retirar un
+token heredado hay que identificar su consumidor y verificar un ciclo completo
+con su sustituto de mínimo privilegio.
 
 ## 5. Instalación
 
@@ -54,7 +74,12 @@ El subdominio está proxied por Cloudflare. La route `custom_domain` vincula el 
 
 ## 10. HTTPS
 
-El certificado observado cubre `aleviclop.dev`. Activar manualmente **Always Use HTTPS** o una regla equivalente: la auditoría previa comprobó que HTTP aún respondía `200`. HSTS solo protege después de una visita HTTPS y no sustituye la redirección.
+El certificado observado cubre `aleviclop.dev`. Cloudflare aplica la Single
+Redirect Rule `raw.vives HTTP to HTTPS`, limitada al patrón
+`http://gallery.aleviclop.dev/*`, con destino
+`https://gallery.aleviclop.dev/${1}`, estado `301` y conservación de query. La
+regla preserva ruta y parámetros sin afectar a otros hosts de la zona. HSTS solo
+protege después de una visita HTTPS y no sustituye la redirección.
 
 ## 11. Headers
 
@@ -82,7 +107,9 @@ Debe apuntar a `https://gallery.aleviclop.dev/sitemap.xml`, permitir `/` y decla
 
 ## 16. Sitemap
 
-La build esperada genera 63 URLs: raíz, dos homes y 60 detalles. Privacidad y política de uso se excluyen por decisión editorial.
+La build esperada genera 71 URLs: raíz, dos homes, 60 detalles, dos índices de
+series y seis páginas de serie. Privacidad y política de uso se excluyen por
+decisión editorial.
 
 ## 17. Analytics
 
@@ -98,7 +125,12 @@ Local: `pnpm preview`. Remoto recomendado: `pnpm exec wrangler versions upload -
 
 ## 20. Producción
 
-Abrir Actions → `Deploy production` → `Run workflow`. El job repite validaciones, construye, despliega y hace smoke de ES, EN, robots, sitemap y 404. No usar push como disparador de producción.
+Abrir Actions → `Deploy production` → `Run workflow` desde `main`. El job rechaza
+otras ramas, serializa despliegues sin cancelar uno activo, repite validaciones,
+construye, despliega y hace smoke de ES, EN, robots, sitemap y 404. CI cancela
+validaciones obsoletas del mismo ref. Checkout y setup de Node usan sus majors
+estables compatibles y la caché pnpm sigue siendo explícita. No usar push como
+disparador de producción.
 
 ## 21. Logs
 
@@ -159,3 +191,5 @@ Probar Home ES/EN, idioma, archivo, filtro, búsqueda, load more, detalle, naveg
 - [Cloudflare Preview URLs](https://developers.cloudflare.com/workers/versions-and-deployments/preview-urls/)
 - [Cloudflare Workers rollbacks](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/)
 - [Cloudflare Workers logs](https://developers.cloudflare.com/workers/observability/logs/)
+- [Cloudflare Single Redirects](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/)
+- [Cloudflare wildcard redirects](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/#wildcard-url-redirect)
