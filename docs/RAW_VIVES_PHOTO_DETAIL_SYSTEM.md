@@ -236,3 +236,11 @@ interior. La media interactiva declara FULLSCREEN; navegación declara
 PREVIOUS/NEXT y relacionadas VIEW. Copiar/compartir mantiene feedback visible,
 `aria-live`, un único timer de 1.8 s y cleanup. El cursor se resetea al abrir/cerrar
 dialog y nunca sustituye controles, Escape, foco o navegación contextual.
+
+## 42. Motion fotográfica de la Fase 13.2
+
+La ficha entra en menos de un segundo mediante un grupo editorial. Una transición
+compartida pendiente evita reanimar la fotografía. Anterior, siguiente y
+relacionadas reutilizan `PhotoTransitionLink`; fullscreen abre y cierra en 280 ms
+con escala mínima, restaura foco y respeta reduced motion. No se crean triggers de
+detalle ni una intro nueva. Véase `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.

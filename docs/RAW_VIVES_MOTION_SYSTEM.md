@@ -356,3 +356,13 @@ Los reveals de viewport animan `opacity` y transform, pero nunca `visibility`:
 todo el contenido permanece en el árbol accesible antes de entrar en pantalla.
 Forced Colors desactiva Lenis mediante la capacidad compartida, igual que reduced
 motion conserva scroll nativo. La espera de fuentes ya no refresca tras unmount.
+
+## Aplicación de la Fase 13.2
+
+La motion fotográfica usa tres reveals deterministas (`mask-up`, `mask-side` y
+`soft-scale`), un trigger por grupo y cero triggers propios en el archivo. Hero y
+expansiva conservan los únicos scrubs fotográficos justificados. La carga inicial
+de home baja de 23 a 21 ScrollTriggers; reduced motion crea cero.
+
+Tokens, configuración, fallbacks, navegación compartida y auditoría completa se
+documentan en `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.

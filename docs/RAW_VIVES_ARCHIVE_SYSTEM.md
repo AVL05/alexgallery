@@ -293,3 +293,11 @@ equivalente. Filtros, limpiar y carga progresiva comparten press 0.985; el panel
 móvil declara OPEN/CLOSE solo en controles reales. El grid mantiene cero
 listeners y cero ScrollTriggers propios; no existe magnetismo ni preview por
 tarjeta.
+
+## 24. Motion fotográfica de la Fase 13.2
+
+El grid mantiene cero ScrollTriggers. Un solo IntersectionObserver agrupa seis
+tarjetas, registra IDs ya vistos y anima únicamente el bloque nuevo al cargar más.
+Filtrar usa opacidad breve sin pantalla vacía. `PhotoTransitionLink` aplica un
+nombre estable solo al enlace activado; modificadores y fallback conservan la
+navegación nativa. Véase `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.

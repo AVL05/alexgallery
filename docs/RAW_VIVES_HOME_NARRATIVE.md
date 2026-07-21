@@ -212,3 +212,11 @@ Capítulos e índice anuncian `EXPLORE`; Selected Work, historia y fotografía
 expansiva anuncian `VIEW`. El CTA del hero es el único control narrativo magnético.
 Hover y foco comparten escala/brillo/título, y el cierre distingue archivo de
 contacto. No se añaden previews, listeners por pieza ni seguimiento de imagen.
+
+## 35. Motion fotográfica de la Fase 13.2
+
+Hero mantiene su lenguaje propio; Featured Story usa una timeline `mask-side`;
+la expansiva amplía su único scrub; capítulos usan un escenario cancelable de dos
+capas; Selected Work elige variante por ratio y el índice reutiliza `soft-scale`.
+Las fotografías son visibles antes de GSAP y reduced motion muestra el estado
+final. Véase `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.
