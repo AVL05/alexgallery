@@ -4,6 +4,7 @@ import { PhotoDetailContextProvider } from "@/components/photo-detail/photo-deta
 import { PhotoDetailHeader } from "@/components/photo-detail/photo-detail-header";
 import { PhotoDetailKeyboard } from "@/components/photo-detail/photo-detail-keyboard";
 import { PhotoDetailMedia } from "@/components/photo-detail/photo-detail-media";
+import { PhotoDetailMotion } from "@/components/photo-detail/photo-detail-motion";
 import { PhotoDetailNavigation } from "@/components/photo-detail/photo-detail-navigation";
 import { PhotoDetailRelated } from "@/components/photo-detail/photo-detail-related";
 import { PhotoDetailStory } from "@/components/photo-detail/photo-detail-story";
@@ -26,7 +27,7 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
     <main id="main-content" tabIndex={-1} className={`photo-detail photo-detail--${orientation} overflow-hidden pt-28 sm:pt-32`}>
       <Container>
         <PhotoDetailBackLink label={dictionary.photoDetail.back} className="mb-10" />
-        <article>
+        <PhotoDetailMotion photoId={photoId}>
           <div className="photo-detail-layout grid items-start gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-20">
             <div className="lg:col-span-8"><PhotoDetailMedia dictionary={dictionary.photoDetail} /></div>
             <aside className="space-y-8 lg:sticky lg:top-28 lg:col-span-4"><PhotoDetailHeader dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /><PhotoDetailActions dictionary={dictionary.photoDetail} imageHref={optimized?.src || `/photos/optimized/original/${photoId}.webp`} /></aside>
@@ -42,7 +43,7 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
           <section className="mt-20 lg:mt-28"><p className="rv-kicker mb-6">06 / 08</p><PhotoDetailNavigation dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></section>
           <div className="mt-24 lg:mt-36"><PhotoDetailRelated dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></div>
           <div className="flex flex-col items-start gap-6 border-t border-border py-16 sm:flex-row sm:items-center sm:justify-between lg:py-24"><PhotoDetailBackLink label={dictionary.photoDetail.back} /><p className="rv-meta">{dictionary.photoDetail.keyboardHelp}</p></div>
-        </article>
+        </PhotoDetailMotion>
       </Container>
       {process.env.NODE_ENV === "development" ? <PhotoProcessDevelopmentTools locale={locale} dictionary={dictionary.photoProcess} /> : null}
     </main>

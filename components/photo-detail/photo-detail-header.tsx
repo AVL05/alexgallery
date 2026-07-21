@@ -7,7 +7,7 @@ export function PhotoDetailHeader({ dictionary, galleryDictionary }: { dictionar
   const { current, index, total, isContextual } = usePhotoDetailContext();
   const indexText = dictionary.photoIndex.replace("{current}", String(index + 1).padStart(2, "0")).replace("{total}", String(total).padStart(2, "0"));
   return (
-    <header className="photo-detail-header border-b border-border pb-8">
+    <header data-photo-motion-copy className="photo-detail-header border-b border-border pb-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="rv-kicker text-accent">{galleryDictionary.categories[current.category]} / {current.year}</p>
         <p className="rv-index" aria-label={indexText}>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</p>

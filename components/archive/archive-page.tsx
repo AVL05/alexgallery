@@ -209,6 +209,7 @@ export function ArchivePage({
                     locale={locale}
                     state={state}
                     dictionary={dictionary}
+                    collectionKey={`${state.category}|${state.year}|${state.query}|${state.sort}`}
                   />
                   <ArchivePagination
                     dictionary={dictionary}

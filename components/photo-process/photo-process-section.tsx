@@ -1,4 +1,5 @@
 import { PhotoProcessComparison } from "@/components/photo-process/photo-process-comparison";
+import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
 import type { Locale, PhotoProcessDictionary } from "@/types/dictionary";
 import type { ResolvedPhotoProcess } from "@/types/photo-process";
 
@@ -11,14 +12,14 @@ export function PhotoProcessSection({ process, locale, dictionary }: {
   const notes = process.notes?.[locale] || process.notes?.es;
   const steps = [...(process.steps || [])].sort((a, b) => a.order - b.order);
   return <section aria-labelledby="photo-process-title" className="mt-20 border-y border-border py-12 lg:mt-28 lg:py-20">
-    <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-      <header className="lg:col-span-3">
+    <PhotoMotionGroup groupKey={`photo-process-${process.photoId}`} className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+      <header data-photo-motion-copy className="lg:col-span-3">
         <p className="rv-kicker">05 / 08</p>
         <h2 id="photo-process-title" className="rv-section-title mt-5">{dictionary.title}</h2>
         <p className="rv-body-sm mt-5">{dictionary.intro}</p>
       </header>
-      <div className="lg:col-span-9"><PhotoProcessComparison process={process} locale={locale} dictionary={dictionary} /></div>
-    </div>
+      <div data-photo-reveal="soft-scale" className="overflow-hidden lg:col-span-9"><PhotoProcessComparison process={process} locale={locale} dictionary={dictionary} /></div>
+    </PhotoMotionGroup>
     {(notes || steps.length > 0) && <div className="mt-12 grid gap-8 border-t border-border pt-10 lg:grid-cols-12">
       {notes && <p className="rv-body lg:col-span-5">{notes}</p>}
       {steps.length > 0 && <ol className="space-y-6 lg:col-span-6 lg:col-start-7">

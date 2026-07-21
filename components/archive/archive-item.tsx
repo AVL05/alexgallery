@@ -10,7 +10,7 @@ import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import { serializeArchiveState } from "@/lib/archive/url";
 import Image from "next/image";
-import Link from "next/link";
+import { PhotoTransitionLink } from "@/components/motion/photo-transition-link";
 import { useState } from "react";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 
@@ -58,9 +58,10 @@ export function ArchiveItem({
       data-archive-item
       data-photo-id={photo.id}
     >
-      <Link
+      <PhotoTransitionLink
+        photoId={photo.id}
         href={href}
-        onClick={persistContext}
+        onBeforeNavigate={persistContext}
         className="group block"
         data-press-feedback
         {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}
@@ -71,7 +72,6 @@ export function ArchiveItem({
             className="archive-item__media relative overflow-hidden border border-border bg-[var(--color-surface)] transition-colors duration-300 group-hover:border-[var(--color-border-strong)] group-focus-visible:border-accent"
             style={{
               aspectRatio: `${photo.width}/${photo.height}`,
-              viewTransitionName: `archive-photo-${photo.id}`,
             }}
           >
             {!imageFailed ? (
@@ -84,7 +84,7 @@ export function ArchiveItem({
                 sizes={sizes}
                 placeholder={photo.blurDataURL && source === photo.src ? "blur" : undefined}
                 blurDataURL={photo.blurDataURL}
-                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.012] group-hover:brightness-[0.9] group-focus-visible:scale-[1.012] group-focus-visible:brightness-[0.9]"
+                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.015] group-hover:brightness-[0.9] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.9]"
                 onError={() => {
                   if (source !== fallbackImage) setSource(fallbackImage);
                   else setImageFailed(true);
@@ -114,7 +114,7 @@ export function ArchiveItem({
             </p>
           </figcaption>
         </figure>
-      </Link>
+      </PhotoTransitionLink>
     </article>
   );
 }
