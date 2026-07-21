@@ -301,3 +301,11 @@ tarjetas, registra IDs ya vistos y anima únicamente el bloque nuevo al cargar m
 Filtrar usa opacidad breve sin pantalla vacía. `PhotoTransitionLink` aplica un
 nombre estable solo al enlace activado; modificadores y fallback conservan la
 navegación nativa. Véase `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.
+
+## 25. Series fotográficas de la Fase 13.3
+
+Las tarjetas muestran una etiqueta localizada de serie cuando existe pertenencia
+publicada. No se añade un filtro: tres opciones no justifican complejidad adicional
+y la fotografía sigue siendo la unidad principal. Las relaciones se resuelven desde
+`lib/series/config.ts`; no hay estado, listeners, observers ni imágenes adicionales
+por tarjeta. Las fichas abiertas desde el archivo conservan su contexto de archivo.

@@ -220,3 +220,12 @@ la expansiva amplía su único scrub; capítulos usan un escenario cancelable de
 capas; Selected Work elige variante por ratio y el índice reutiliza `soft-scale`.
 Las fotografías son visibles antes de GSAP y reduced motion muestra el estado
 final. Véase `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.
+
+## 36. Continuidad mediante series en la Fase 13.3
+
+El antiguo índice visual de una sola fotografía se sustituye por tres portadas
+compactas de series. No se alarga la home con una sección adicional: cambia la
+función del mismo tramo final. Las portadas son 21, 17 y 5; nunca reutilizan el
+hero 14. La 21 mantiene una segunda aparición pequeña y funcional tras Selected
+Work. El recorrido queda en 15 fotografías únicas y enlaza a rutas reales ES/EN.
+Véase `RAW_VIVES_PHOTO_SERIES_SYSTEM.md`.

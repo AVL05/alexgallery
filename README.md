@@ -117,7 +117,7 @@ El workflow CI valida cada push y pull request a `main`. Producción solo se des
 
 ```text
 app/                 rutas, metadata, sitemap, robots y manifest
-components/          UI, archivo, motion, intro y detalle
+components/          UI, archivo, series, motion, intro y detalle
 dictionaries/        contenido ES/EN
 lib/                 configuración, datos, SEO y utilidades
 public/photos/        fuentes web y variantes optimizadas
@@ -144,7 +144,7 @@ docs/                decisiones, auditorías y materiales de entrega
 
 ## Documentación
 
-Consulta el [sistema de motion fotográfico](docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md), el [caso de estudio](docs/RAW_VIVES_CASE_STUDY.md), la [auditoría de producción](docs/RAW_VIVES_PRODUCTION_AUDIT.md), el [checklist de release](docs/RAW_VIVES_RELEASE_CHECKLIST.md) y las [release notes](docs/RAW_VIVES_RELEASE_NOTES.md).
+Consulta el [sistema de series fotográficas](docs/RAW_VIVES_PHOTO_SERIES_SYSTEM.md), el [sistema de motion fotográfico](docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md), el [caso de estudio](docs/RAW_VIVES_CASE_STUDY.md), la [auditoría de producción](docs/RAW_VIVES_PRODUCTION_AUDIT.md), el [checklist de release](docs/RAW_VIVES_RELEASE_CHECKLIST.md) y las [release notes](docs/RAW_VIVES_RELEASE_NOTES.md).
 
 ## Autor y derechos
 

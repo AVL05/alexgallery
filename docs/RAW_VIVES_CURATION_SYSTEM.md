@@ -279,3 +279,13 @@ La siguiente fase puede evaluar transiciones entre orientaciones y luminancias,
 pero no debe reabrir curación, duplicar configuración ni convertir el índice en
 otra galería. Esta entrega no añade motion, shaders, parallax, carruseles ni
 scroll horizontal.
+
+## 20. Evolución de la home en la Fase 13.3
+
+La selección original de Fase 13.1 permanece como fuente de hero, historia,
+expansiva, capítulos y Selected Work. La presentación visible del antiguo índice
+fotográfico se retira y su espacio pasa a tres portadas de series: 21, 17 y 5.
+La home no usa secuencias completas, no repite el hero y mantiene el límite general
+con un máximo de dos apariciones para la portada 21. La curación de series vive
+separada en `lib/series/config.ts` y se documenta en
+`RAW_VIVES_PHOTO_SERIES_SYSTEM.md`.

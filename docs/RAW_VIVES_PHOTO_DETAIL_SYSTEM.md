@@ -244,3 +244,12 @@ compartida pendiente evita reanimar la fotografía. Anterior, siguiente y
 relacionadas reutilizan `PhotoTransitionLink`; fullscreen abre y cierra en 280 ms
 con escala mínima, restaura foco y respeta reduced motion. No se crean triggers de
 detalle ni una intro nueva. Véase `RAW_VIVES_PHOTO_MOTION_SYSTEM.md`.
+
+## 43. Contexto de series de la Fase 13.3
+
+Una ficha abierta con `?series=<slug>` valida que la serie esté publicada y que
+contenga la fotografía. Ese contexto tiene prioridad sobre archivo y orden global:
+anterior/siguiente siguen la secuencia manual, el retorno usa el ancla de la obra y
+la cabecera muestra posición. El acceso directo conserva el fallback de Fase 7.
+Toda obra asignada muestra además un bloque localizado “Parte de la serie”. Related
+Photos reserva una plaza de la serie y fuerza diversidad externa en las restantes.
