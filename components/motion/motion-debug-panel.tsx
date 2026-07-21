@@ -40,6 +40,7 @@ import {
   requestGraphicsControl,
 } from "@/lib/graphics/development";
 import type { GraphicsDebugSnapshot } from "@/types/graphics";
+import { homeExperienceConfig } from "@/lib/home/experience";
 
 export function MotionDebugPanel() {
   const motion = useMotion();
@@ -313,7 +314,7 @@ export function MotionDebugPanel() {
               <div>
                 <p className="rv-meta">Home narrative</p>
                 <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
-                  chapters {homeState?.chapterCount ?? 5} / selected {homeState?.selectedCount ?? 6}
+                  chapters {homeState?.chapterCount ?? (homeExperienceConfig.sectionOrder.includes("visualChapters") ? 5 : 0)} / selected {homeState?.selectedCount ?? homeExperienceConfig.selectedWorkLimit}
                 </p>
               </div>
               <span className="font-mono text-[10px] text-accent">

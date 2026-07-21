@@ -15,6 +15,7 @@ import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { GalleryDictionary, HomeDictionary, Locale } from "@/types/dictionary";
 import Link from "next/link";
 import { useRef } from "react";
+import { getHomeSectionPosition } from "@/lib/home/experience";
 
 export function ExpansivePhoto({
   photo,
@@ -33,6 +34,7 @@ export function ExpansivePhoto({
   forceReducedMotion?: boolean;
   slowImages?: boolean;
 }) {
+  const marker = getHomeSectionPosition("expansivePhoto") ?? { current: 5, total: 8 };
   const rootRef = useRef<HTMLElement>(null);
   const { isTouchDevice, prefersReducedMotion } = useMotion();
   const runtime = usePhotoMotionRuntime();
@@ -87,7 +89,7 @@ export function ExpansivePhoto({
         <Container className="w-full">
           <Reveal className="mb-10 flex items-end justify-between border-t border-border pt-8 md:mb-12">
             <div>
-              <SectionMarker current={4} label={dictionary.chapterLabel} />
+              <SectionMarker {...marker} label={dictionary.chapterLabel} />
               <p className="rv-kicker mt-5">{dictionary.expansive.label}</p>
             </div>
             <p className="rv-meta hidden sm:block">{galleryDictionary.categories[photo.category]} / {photo.year}</p>

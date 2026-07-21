@@ -6,6 +6,7 @@ import {
   type HomeCuration,
 } from "@/lib/home/curation";
 import { assertValidHomeCuration } from "@/lib/home/validation";
+import { assertValidHomeExperience } from "@/lib/home/experience";
 import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
 import type { Locale } from "@/types/dictionary";
 import type {
@@ -122,6 +123,7 @@ export function getHomeNarrativeData(
   curation: HomeCuration = homeCuration,
 ): HomeNarrativeData {
   assertValidHomeCuration(curation, imagesData);
+  assertValidHomeExperience(curation);
   const allPhotos = getNarrativePhotos(imagesData, locale);
 
   return {

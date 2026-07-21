@@ -4,7 +4,6 @@ import { Contact } from "@/components/contact";
 import { Gallery } from "@/components/gallery";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
-import { ClosingStatement } from "@/components/home/closing-statement";
 import { HomeNarrative } from "@/components/home/home-narrative";
 import { IntroOverlay } from "@/components/intro/intro-overlay";
 import { Navigation } from "@/components/navigation";
@@ -71,10 +70,13 @@ export default function HomeClient({
           imagesData={imagesData}
           entryReady={heroEntryReady}
         />
-        <HomeNarrative dictionary={dictionary} locale={locale} imagesData={imagesData} />
-        <Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />
-        <Contact dictionary={dictionary.contact} locale={locale} />
-        <ClosingStatement dictionary={dictionary.home} />
+        <HomeNarrative
+          dictionary={dictionary}
+          locale={locale}
+          imagesData={imagesData}
+          archiveSection={<Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />}
+          contactSection={<Contact dictionary={dictionary.contact} locale={locale} />}
+        />
         <Footer currentLocale={locale} dictionary={dictionary.nav} />
       </div>
     </div>

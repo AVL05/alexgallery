@@ -5,6 +5,7 @@ import {
   type HomeChapterCategory,
 } from "@/lib/home/curation";
 import type { ImagesData } from "@/types/photo";
+import { homeExperienceConfig } from "@/lib/home/experience";
 
 type HomeCurationSection = {
   name: string;
@@ -91,11 +92,11 @@ export function validateHomeCuration(
     }
   }
 
-  if (curation.selectedPhotoIds.length < 5) {
-    errors.push("Selected Work debe contener al menos cinco fotografías.");
+  if (curation.selectedPhotoIds.length < 3) {
+    errors.push("Selected Work debe contener al menos tres fotografías.");
   }
-  if (curation.selectedPhotoIds.length > 6) {
-    errors.push("Selected Work no puede contener más de seis fotografías.");
+  if (curation.selectedPhotoIds.length > homeExperienceConfig.selectedWorkLimit) {
+    errors.push(`Selected Work no puede contener más de ${homeExperienceConfig.selectedWorkLimit} fotografías.`);
   }
 
   return errors;

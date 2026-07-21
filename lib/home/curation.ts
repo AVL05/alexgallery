@@ -29,7 +29,7 @@ export const homeCuration = {
     Personas: 44,
     Meteorología: 41,
   },
-  selectedPhotoIds: [1, 35, 21, 37, 49],
+  selectedPhotoIds: [1, 35, 37, 49],
 } as const satisfies HomeCuration;
 
 export const homeImageFallbackSrc = "/photos/optimized/800/1.webp";
@@ -45,7 +45,7 @@ export const alternateHomeCuration = {
     Personas: 46,
     Meteorología: 3,
   },
-  selectedPhotoIds: [7, 11, 13, 21, 44],
+  selectedPhotoIds: [7, 13, 44, 49],
 } as const satisfies HomeCuration;
 
 export function getHomeNarrativePhotoIds(curation: HomeCuration = homeCuration) {

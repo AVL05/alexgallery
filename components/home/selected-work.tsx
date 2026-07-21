@@ -8,6 +8,7 @@ import type { GalleryDictionary, HomeDictionary, Locale } from "@/types/dictiona
 import Link from "next/link";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { getPhotoRevealVariant } from "@/lib/motion/photo-motion";
+import { getHomeSectionPosition, homeExperienceConfig } from "@/lib/home/experience";
 
 const selectedLayout = [
   "md:col-span-7",
@@ -35,11 +36,12 @@ export function SelectedWork({
   failImages?: boolean;
   slowImages?: boolean;
 }) {
+  const marker = getHomeSectionPosition("selectedWork") ?? { current: 6, total: 8 };
   return (
     <section id="selected-work" className="rv-section bg-[var(--color-background)]">
       <Container>
         <Reveal className="border-t border-border pt-8">
-          <SectionMarker current={6} label={dictionary.chapterLabel} />
+          <SectionMarker {...marker} label={dictionary.chapterLabel} />
           <div className="mt-10 grid gap-6 md:grid-cols-12">
             <h2 className="font-serif text-[clamp(2.7rem,6vw,6.5rem)] leading-none tracking-[-0.045em] md:col-span-8">{dictionary.selected.title}</h2>
             <p className="max-w-md self-end text-base leading-7 text-[var(--color-text-secondary)] md:col-span-4">{dictionary.selected.description}</p>
@@ -52,7 +54,7 @@ export function SelectedWork({
           <PhotoMotionGroup groupKey={`selected-${photos.map((photo) => photo.id).join("-")}`} className="mt-16 grid gap-x-6 gap-y-16 md:grid-cols-12 md:gap-y-24 lg:gap-x-10">
             {photos.map((photo, index) => (
               <article key={photo.id} className={selectedLayout[index % selectedLayout.length]}>
-                <Link href={`/${locale}/photo/${photo.id}`} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
+                <Link href={`/${locale}/photo/${photo.id}`} prefetch={homeExperienceConfig.prefetch.selectedWork} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
                   <NarrativeImage
                     photo={photo}
                     sizes="(max-width: 767px) 100vw, 58vw"
