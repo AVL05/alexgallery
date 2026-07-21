@@ -36,7 +36,6 @@ test("home curation is valid and every configured ID exists", () => {
       homeCuration.expansivePhotoId,
       ...Object.values(homeCuration.chapterPhotoIds),
       ...homeCuration.selectedPhotoIds,
-      ...homeCuration.archiveIndexPhotoIds,
     ].every((id) => catalogIds.has(id)),
   );
 });
@@ -46,7 +45,6 @@ test("hero, story, expansive image, chapters and Selected Work are exclusive", (
   const allCuratedIds = [
     homeCuration.heroPhotoId,
     ...narrativeIds,
-    ...homeCuration.archiveIndexPhotoIds,
   ];
   assert.equal(new Set(allCuratedIds).size, allCuratedIds.length);
   assert.ok(!narrativeIds.includes(homeCuration.heroPhotoId));
@@ -74,23 +72,6 @@ test("Selected Work has stable order and no earlier narrative photograph", () =>
   assert.ok(data.selected.every((photo) => !reserved.has(photo.id)));
 });
 
-test("archive index uses a new photograph without increasing the previous home total", () => {
-  const data = getHomeNarrativeData(imagesData);
-  const narrativeIds = new Set([
-    homeCuration.heroPhotoId,
-    data.featured.id,
-    data.expansive.id,
-    ...data.chapters.map((chapter) => chapter.photo.id),
-    ...data.selected.map((photo) => photo.id),
-  ]);
-  assert.deepEqual(data.archiveIndex.map((photo) => photo.id), homeCuration.archiveIndexPhotoIds);
-  assert.ok(data.archiveIndex.every((photo) => !narrativeIds.has(photo.id)));
-  assert.equal(
-    new Set([...narrativeIds, ...data.archiveIndex.map((photo) => photo.id)]).size,
-    14,
-  );
-});
-
 test("all categories are represented without architecture dominating", () => {
   const data = getHomeNarrativeData(imagesData);
   const selectedPhotos = [
@@ -98,7 +79,6 @@ test("all categories are represented without architecture dominating", () => {
     data.expansive,
     ...data.chapters.map((chapter) => chapter.photo),
     ...data.selected,
-    ...data.archiveIndex,
   ];
   const counts = Object.fromEntries(
     homeChapterOrder.map((category) => [
@@ -107,7 +87,7 @@ test("all categories are represented without architecture dominating", () => {
     ]),
   );
   assert.deepEqual(counts, {
-    Fauna: 3,
+    Fauna: 2,
     Arquitectura: 3,
     Paisaje: 3,
     Personas: 2,

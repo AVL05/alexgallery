@@ -1,6 +1,6 @@
 "use client";
 
-import { ArchiveIndex } from "@/components/home/archive-index";
+import { HomeSeries, type HomeSeriesEntry } from "@/components/home/home-series";
 import { ExpansivePhoto } from "@/components/home/expansive-photo";
 import { FeaturedStory } from "@/components/home/featured-story";
 import { HomeManifesto } from "@/components/home/home-manifesto";
@@ -12,7 +12,8 @@ import {
   type HomePreviewOptions,
 } from "@/lib/home/development";
 import { alternateHomeCuration, homeCuration } from "@/lib/home/curation";
-import { getHomeNarrativeData } from "@/lib/home/selectors";
+import { getHomeNarrativeData, getNarrativePhotos } from "@/lib/home/selectors";
+import { getLocalizedSeries, getPublishedSeries, resolveSeriesCover } from "@/lib/series/selectors";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { useEffect, useMemo, useState } from "react";
@@ -37,6 +38,13 @@ export function HomeNarrative({
   );
   const chapters = preview.emptyCategories ? [] : data.chapters;
   const selected = preview.fewPhotos ? data.selected.slice(0, 2) : data.selected;
+  const seriesEntries = useMemo(() => {
+    const narrativePhotos = getNarrativePhotos(imagesData, locale);
+    return getPublishedSeries().flatMap((rawSeries) => {
+      const cover = resolveSeriesCover(rawSeries, narrativePhotos);
+      return cover ? [{ series: getLocalizedSeries(rawSeries, locale), cover }] : [];
+    }) as HomeSeriesEntry[];
+  }, [imagesData, locale]);
 
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
@@ -58,7 +66,7 @@ export function HomeNarrative({
       <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />
       <VisualChapters chapters={chapters} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
       <SelectedWork photos={selected} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
-      <ArchiveIndex archive={data.archive} photos={data.archiveIndex} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />
+      <HomeSeries entries={seriesEntries} dictionary={dictionary.home} locale={locale} />
     </>
   );
 }

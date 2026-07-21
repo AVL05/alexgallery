@@ -13,6 +13,7 @@ import Image from "next/image";
 import { PhotoTransitionLink } from "@/components/motion/photo-transition-link";
 import { useState } from "react";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
+import { getLocalizedSeries, getSeriesForPhoto } from "@/lib/series/selectors";
 
 const fallbackImage = "/photos/optimized/800/1.webp";
 
@@ -34,6 +35,8 @@ export function ArchiveItem({
   const [source, setSource] = useState(photo.src);
   const [imageFailed, setImageFailed] = useState(false);
   const href = `/${locale}/photo/${photo.id}${serializeArchiveState(state)}`;
+  const rawSeries = getSeriesForPhoto(photo.id);
+  const series = rawSeries ? getLocalizedSeries(rawSeries, locale) : null;
   const sizes =
     variant === "featured" || variant === "panorama"
       ? "(max-width: 767px) 100vw, (max-width: 1023px) 92vw, 62vw"
@@ -111,6 +114,7 @@ export function ArchiveItem({
               <span>{dictionary.categories[photo.category]}</span>
               <span aria-hidden="true">/</span>
               <span>{photo.year}</span>
+              {series ? <><span aria-hidden="true">/</span><span>{dictionary.seriesLabel}: {series.title}</span></> : null}
             </p>
           </figcaption>
         </figure>

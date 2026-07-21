@@ -29,6 +29,7 @@ export function Navigation({
   const items = [
     { name: dictionary.about, href: sectionHref("#about") },
     { name: dictionary.gallery, href: sectionHref("#gallery") },
+    { name: dictionary.series, href: `/${currentLocale}/series` },
     { name: dictionary.contact, href: sectionHref("#contact") },
     { name: dictionary.policies, href: `/${currentLocale}/politica-uso` },
   ];

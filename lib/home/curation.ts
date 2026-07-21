@@ -8,7 +8,6 @@ export type HomeCuration = {
   expansivePhotoId: number;
   chapterPhotoIds: Record<HomeChapterCategory, number>;
   selectedPhotoIds: readonly number[];
-  archiveIndexPhotoIds: readonly number[];
 };
 
 export const homeChapterOrder = [
@@ -31,7 +30,6 @@ export const homeCuration = {
     Meteorología: 41,
   },
   selectedPhotoIds: [1, 35, 21, 37, 49],
-  archiveIndexPhotoIds: [11],
 } as const satisfies HomeCuration;
 
 export const homeImageFallbackSrc = "/photos/optimized/800/1.webp";
@@ -48,7 +46,6 @@ export const alternateHomeCuration = {
     Meteorología: 3,
   },
   selectedPhotoIds: [7, 11, 13, 21, 44],
-  archiveIndexPhotoIds: [12],
 } as const satisfies HomeCuration;
 
 export function getHomeNarrativePhotoIds(curation: HomeCuration = homeCuration) {

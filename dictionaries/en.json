@@ -58,6 +58,13 @@
       "cta": "View photograph",
       "empty": "The selection is temporarily empty. The full archive remains available."
     },
+    "series": {
+      "title": "Stories in sequence.",
+      "description": "Three concise journeys built from real connections and documented editorial affinities.",
+      "photographs": "photographs",
+      "cta": "Explore series",
+      "archiveCta": "Open archive"
+    },
     "archive": {
       "title": "The archive continues.",
       "description": "Photographs made between {startYear} and {endYear}, organised by year and category.",
@@ -78,6 +85,7 @@
     "home": "Home",
     "about": "About",
     "gallery": "Archive",
+    "series": "Series",
     "contact": "Contact",
     "policies": "Policies",
     "privacy": "Privacy"
@@ -127,6 +135,7 @@
     "showResults": "View {count} results",
     "skipToResults": "Skip to results",
     "imageError": "Image unavailable",
+    "seriesLabel": "Series",
     "endLabel": "End of visible index",
     "endTitle": "The archive keeps growing.",
     "endDescription": "{total} photographs, {years} years and a collection open to new scenes.",
@@ -154,9 +163,10 @@
     "storyLabel": "Archive note",
     "technicalData": "Technical data",
     "related": "Related works",
-    "relatedDescription": "A selection based on category, year and editorial proximity.",
+    "relatedDescription": "A selection that reserves series continuity while keeping variety through category, year and editorial proximity.",
     "archiveContext": "Archive context",
     "globalContext": "Global editorial order",
+    "seriesContext": "Series context",
     "photoIndex": "Photograph {current} of {total}",
     "navigationLabel": "Photograph navigation",
     "noPrevious": "Start of sequence",
@@ -170,6 +180,24 @@
     "aperture": "Aperture",
     "shutter": "Shutter",
     "iso": "ISO"
+  },
+  "series": {
+    "eyebrow": "Photographic series",
+    "indexTitle": "Stories in sequence.",
+    "indexIntroduction": "Concise groups from the archive connected by a confirmed place or an explicit visual affinity.",
+    "photographs": "photographs",
+    "period": "Period",
+    "location": "Location",
+    "openSeries": "Open series",
+    "backToIndex": "Back to series",
+    "backToSeries": "Back to series",
+    "exploreArchive": "Explore archive",
+    "partOfSeries": "Part of the series",
+    "viewComplete": "View complete series",
+    "nextSeries": "Next series",
+    "closingLabel": "End of series",
+    "closingTitle": "The sequence ends; the archive continues.",
+    "progressLabel": "The series {title} contains {total} photographs."
   },
   "photoProcess": {
     "title": "Creative process",

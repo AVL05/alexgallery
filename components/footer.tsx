@@ -51,6 +51,9 @@ export function Footer({
             <Link className="rv-editorial-link" href={`/${currentLocale}#about`} data-press-feedback>
               {dictionary.about}
             </Link>
+            <Link className="rv-editorial-link" href={`/${currentLocale}/series`} data-press-feedback>
+              {dictionary.series}
+            </Link>
             <Link className="rv-editorial-link" href={`/${currentLocale}#contact`} data-press-feedback>
               {dictionary.contact}
             </Link>

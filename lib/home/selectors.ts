@@ -39,7 +39,6 @@ export type HomeNarrativeData = {
   expansive: NarrativePhoto;
   chapters: HomeChapter[];
   selected: NarrativePhoto[];
-  archiveIndex: NarrativePhoto[];
   archive: ArchiveSummary;
 };
 
@@ -134,9 +133,6 @@ export function getHomeNarrativeData(
       photo: resolvePhoto(allPhotos, curation.chapterPhotoIds[category], category),
     })),
     selected: curation.selectedPhotoIds.map((id) => resolvePhoto(allPhotos, id)),
-    archiveIndex: curation.archiveIndexPhotoIds.map((id) =>
-      resolvePhoto(allPhotos, id),
-    ),
     archive: getArchiveSummary(),
   };
 }

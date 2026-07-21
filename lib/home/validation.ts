@@ -21,7 +21,6 @@ function getCurationSections(curation: HomeCuration): HomeCurationSection[] {
       ids: [curation.chapterPhotoIds[category]],
     })),
     { name: "selectedWork", ids: curation.selectedPhotoIds },
-    { name: "archiveIndex", ids: curation.archiveIndexPhotoIds },
   ];
 }
 
