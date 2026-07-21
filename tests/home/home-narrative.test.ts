@@ -48,7 +48,7 @@ test("hero, story, expansive image, chapters and Selected Work are exclusive", (
   ];
   assert.equal(new Set(allCuratedIds).size, allCuratedIds.length);
   assert.ok(!narrativeIds.includes(homeCuration.heroPhotoId));
-  assert.equal(homeCuration.selectedPhotoIds.length, 5);
+  assert.equal(homeCuration.selectedPhotoIds.length, 4);
 });
 
 test("chapters cover every category once and use matching photographs", () => {
@@ -88,7 +88,7 @@ test("all categories are represented without architecture dominating", () => {
   );
   assert.deepEqual(counts, {
     Fauna: 2,
-    Arquitectura: 3,
+    Arquitectura: 2,
     Paisaje: 3,
     Personas: 2,
     Meteorología: 2,
@@ -136,19 +136,19 @@ test("validation reports missing IDs, conflicts, wrong categories and invalid co
       ...homeCuration.chapterPhotoIds,
       Fauna: 48,
     },
-    selectedPhotoIds: [21, 21, 35, 49],
+    selectedPhotoIds: [21, 21],
   });
   const message = validateHomeCuration(invalid, imagesData).join("\n");
   assert.match(message, /featuredStory usa photo-999/);
   assert.match(message, /photo-14 aparece en:/);
   assert.match(message, /photo-21 está duplicada dentro de selectedWork/);
   assert.match(message, /chapters\.Fauna usa photo-48, cuya categoría es Arquitectura/);
-  assert.match(message, /Selected Work debe contener al menos cinco fotografías/);
+  assert.match(message, /Selected Work debe contener al menos tres fotografías/);
 
   const tooMany = withCuration({ selectedPhotoIds: [4, 12, 13, 16, 19, 23, 24] });
   assert.match(
     validateHomeCuration(tooMany, imagesData).join("\n"),
-    /Selected Work no puede contener más de seis fotografías/,
+    /Selected Work no puede contener más de 4 fotografías/,
   );
 });
 
