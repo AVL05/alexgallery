@@ -17,7 +17,7 @@
     "titleLineTwo": "light and silence.",
     "eyebrow": "Personal visual archive",
     "description": "Visual archive by Alex Vicente.",
-    "cta": "Explore archive",
+    "cta": "Explore the archive",
     "scroll": "Scroll to explore",
     "photographs": "photographs",
     "location": "Valencia, Spain",
@@ -37,7 +37,7 @@
     },
     "expansive": {
       "label": "Atmospheric memory",
-      "cta": "Open image"
+      "cta": "Open photograph"
     },
     "chapters": {
       "title": "Five ways of looking.",
@@ -54,7 +54,7 @@
     },
     "selected": {
       "title": "Selected work",
-      "description": "A concise sequence through the rhythm and range of the archive.",
+      "description": "Four individual works outside the series, selected for their range of rhythm and orientation.",
       "cta": "View photograph",
       "empty": "The selection is temporarily empty. The full archive remains available."
     },
@@ -62,7 +62,7 @@
       "title": "Stories in sequence.",
       "description": "Three concise journeys built from real connections and documented editorial affinities.",
       "photographs": "photographs",
-      "cta": "Explore series",
+      "cta": "View all series",
       "archiveCta": "Open archive"
     },
     "archive": {

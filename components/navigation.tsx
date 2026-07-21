@@ -27,11 +27,10 @@ export function Navigation({
   const sectionHref = (hash: string) =>
     isHome ? hash : `/${currentLocale}${hash}`;
   const items = [
-    { name: dictionary.about, href: sectionHref("#about") },
     { name: dictionary.gallery, href: sectionHref("#gallery") },
     { name: dictionary.series, href: `/${currentLocale}/series` },
+    { name: dictionary.about, href: sectionHref("#about") },
     { name: dictionary.contact, href: sectionHref("#contact") },
-    { name: dictionary.policies, href: `/${currentLocale}/politica-uso` },
   ];
   const alternateLocale: Locale = currentLocale === "es" ? "en" : "es";
   const alternatePath = pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`);

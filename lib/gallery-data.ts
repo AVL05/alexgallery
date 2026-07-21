@@ -187,7 +187,7 @@ export const photos = [
     image: "/29.webp",
     color: "chart-3",
     description:
-      "Un mojón del Camino de Santiago mark el rumbo entre adoquines y miradas al horizonte.",
+      "Un mojón del Camino de Santiago marca el rumbo entre adoquines y miradas al horizonte.",
   },
   {
     id: 30,

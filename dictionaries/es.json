@@ -17,7 +17,7 @@
     "titleLineTwo": "la luz y el silencio.",
     "eyebrow": "Archivo visual personal",
     "description": "Archivo visual de Alex Vicente.",
-    "cta": "Explorar archivo",
+    "cta": "Explorar el archivo",
     "scroll": "Desliza para explorar",
     "photographs": "fotografías",
     "location": "Valencia, España",
@@ -37,7 +37,7 @@
     },
     "expansive": {
       "label": "Memoria atmosférica",
-      "cta": "Abrir imagen"
+      "cta": "Abrir fotografía"
     },
     "chapters": {
       "title": "Cinco formas de mirar.",
@@ -54,7 +54,7 @@
     },
     "selected": {
       "title": "Trabajo seleccionado",
-      "description": "Una secuencia breve para recorrer el ritmo y la diversidad del archivo.",
+      "description": "Cuatro piezas individuales fuera de las series, elegidas por su variedad de ritmo y orientación.",
       "cta": "Ver fotografía",
       "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible."
     },
@@ -62,7 +62,7 @@
       "title": "Historias en secuencia.",
       "description": "Tres recorridos breves construidos con relaciones reales y afinidades editoriales documentadas.",
       "photographs": "fotografías",
-      "cta": "Explorar series",
+      "cta": "Ver todas las series",
       "archiveCta": "Abrir archivo"
     },
     "archive": {
