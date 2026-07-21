@@ -55,7 +55,7 @@ jobs:
         shell: bash
         run: |
           root_headers=""
-          for attempt in {1..10}; do
+          for attempt in {1..40}; do
             root_headers="$(curl --fail --silent --show-error --dump-header - --output /dev/null 'https://gallery.aleviclop.dev/?ref=workflow')"
             if grep -qE '^HTTP/[^ ]+ 307' <<<"$root_headers" && grep -qiE '^location: https://gallery\.aleviclop\.dev/en\?ref=workflow\r?$' <<<"$root_headers"; then
               break
