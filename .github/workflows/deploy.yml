@@ -49,12 +49,19 @@ jobs:
         run: pnpm deploy:wrangler
 
       - name: Record deployment identifiers
-        run: pnpm exec wrangler deployments list
+        run: pnpm exec wrangler deployments list --json
 
       - name: Smoke test canonical routes
         shell: bash
         run: |
-          root_headers="$(curl --fail --silent --show-error --dump-header - --output /dev/null 'https://gallery.aleviclop.dev/?ref=workflow')"
+          root_headers=""
+          for attempt in {1..10}; do
+            root_headers="$(curl --fail --silent --show-error --dump-header - --output /dev/null 'https://gallery.aleviclop.dev/?ref=workflow')"
+            if grep -qE '^HTTP/[^ ]+ 307' <<<"$root_headers" && grep -qiE '^location: https://gallery\.aleviclop\.dev/en\?ref=workflow\r?$' <<<"$root_headers"; then
+              break
+            fi
+            sleep 3
+          done
           grep -qE '^HTTP/[^ ]+ 307' <<<"$root_headers"
           grep -qiE '^location: https://gallery\.aleviclop\.dev/en\?ref=workflow\r?$' <<<"$root_headers"
           curl --fail --silent --show-error https://gallery.aleviclop.dev/es >/dev/null
