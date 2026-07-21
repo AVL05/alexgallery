@@ -12,7 +12,7 @@ Transformar una galería personal en una pieza de portfolio con criterio editori
 
 ## Características
 
-- Home narrativa curada con 14 fotografías únicas antes del archivo, roles exclusivos y cinco categorías equilibradas.
+- Home narrativa editada con 10 fotografías únicas antes del archivo, tres series y cuatro piezas individuales sin serie.
 - Archivo de 30 fotografías con búsqueda, categorías, años, orden y carga progresiva.
 - Detalles individuales con navegación contextual, fullscreen, compartir y obras relacionadas.
 - Español e inglés generados de forma estática, incluido contenido editorial, categorías y alt fotográfico localizado.
@@ -28,7 +28,7 @@ Next.js 16 App Router, React 19, TypeScript estricto, Tailwind CSS 4, GSAP, Thre
 
 El proyecto usa `output: "export"`: no depende de un servidor Next.js en ejecución. `app/` define rutas y metadata; `components/` contiene sistemas de interfaz; `lib/` concentra datos, SEO y reglas puras; `dictionaries/` resuelve la i18n manual; `scripts/` construye y valida la tubería fotográfica. Wrangler sirve el directorio `out/`.
 
-Más detalle en [arquitectura](docs/RAW_VIVES_ARCHITECTURE.md), [curación de la home](docs/RAW_VIVES_CURATION_SYSTEM.md), [sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md) y [sistema de release](docs/RAW_VIVES_RELEASE_SYSTEM.md).
+Más detalle en [arquitectura](docs/RAW_VIVES_ARCHITECTURE.md), [recorrido editorial](docs/RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md), [curación de la home](docs/RAW_VIVES_CURATION_SYSTEM.md), [sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md) y [sistema de release](docs/RAW_VIVES_RELEASE_SYSTEM.md).
 
 ## Sistema visual
 
@@ -144,7 +144,7 @@ docs/                decisiones, auditorías y materiales de entrega
 
 ## Documentación
 
-Consulta el [sistema de series fotográficas](docs/RAW_VIVES_PHOTO_SERIES_SYSTEM.md), el [sistema de motion fotográfico](docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md), el [caso de estudio](docs/RAW_VIVES_CASE_STUDY.md), la [auditoría de producción](docs/RAW_VIVES_PRODUCTION_AUDIT.md), el [checklist de release](docs/RAW_VIVES_RELEASE_CHECKLIST.md) y las [release notes](docs/RAW_VIVES_RELEASE_NOTES.md).
+Consulta el [sistema de recorrido editorial](docs/RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md), el [sistema de series fotográficas](docs/RAW_VIVES_PHOTO_SERIES_SYSTEM.md), el [sistema de motion fotográfico](docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md), el [caso de estudio](docs/RAW_VIVES_CASE_STUDY.md), la [auditoría de producción](docs/RAW_VIVES_PRODUCTION_AUDIT.md), el [checklist de release](docs/RAW_VIVES_RELEASE_CHECKLIST.md) y las [release notes](docs/RAW_VIVES_RELEASE_NOTES.md).
 
 ## Autor y derechos
 

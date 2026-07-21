@@ -6,26 +6,22 @@ La Fase 5 convierte la home en un recorrido editorial por el archivo sin reempla
 
 ## 2. Narrativa
 
-El recorrido parte de la identidad presentada por la intro y el hero, explica la intención del archivo, se detiene en una historia humana, abre la escala con una escena atmosférica, organiza el contenido en capítulos y termina ofreciendo el archivo completo y un cierre autoral.
+El recorrido parte de la identidad presentada por intro/hero, explica la intención del archivo, propone una historia humana, adelanta las series, abre la escala con una escena atmosférica y ofrece piezas individuales antes del archivo y el contacto.
 
 ## 3. Orden de secciones
 
-1. Intro de sesión.
-2. Hero cinematográfico existente.
-3. Manifiesto (`#about`).
-4. Historia destacada (`#featured-story`).
+1. Intro de sesión y hero cinematográfico.
+2. Manifiesto (`#about`).
+3. Historia destacada (`#featured-story`).
+4. Series (`#series`).
 5. Fotografía expansiva (`#expansive-image`).
-6. Capítulos visuales (`#visual-chapters`).
-7. Trabajo seleccionado (`#selected-work`).
-8. Índice del archivo (`#archive-index`).
-9. Galería completa existente (`#gallery`).
-10. Contacto existente (`#contact`).
-11. Cierre narrativo (`#closing-statement`).
-12. Footer existente.
+6. Trabajo seleccionado (`#selected-work`).
+7. Archivo (`#gallery`).
+8. Contacto (`#contact`) y footer.
 
 ## 4. Arquitectura
 
-`HomeClient` continúa coordinando la página. `HomeNarrative` resuelve una vez los datos curados y compone módulos de sección sin asumir detalles de la galería. Los selectores viven en `lib/home/` y cruzan el catálogo editorial con `images-data.json` mediante el ID estable de cada fotografía.
+`HomeClient` coordina intro, navegación, hero y footer. `HomeNarrative` resuelve una vez los datos curados y compone el orden de `homeExperienceConfig`, incluidos los slots de archivo/contacto. Los selectores viven en `lib/home/` y cruzan catálogo e `images-data.json` por ID estable.
 
 ## 5. Componentes
 
@@ -33,10 +29,10 @@ El recorrido parte de la identidad presentada por la intro y el hero, explica la
 - `HomeManifesto`: intención del archivo y autoría.
 - `FeaturedStory`: fotografía, texto real y enlace a la ficha.
 - `ExpansivePhoto`: única escena con scrub de esta fase.
-- `VisualChapters`: categorías, recuentos y acceso al filtro existente.
-- `SelectedWork`: selección fija de cinco obras en una retícula editorial.
-- `ArchiveIndex`: una miniatura funcional y recuentos derivados del catálogo.
-- `ClosingStatement`: cierre y enlaces al archivo y contacto.
+- `VisualChapters`: referencia disponible, oculta del recorrido público por redundancia con filtros.
+- `SelectedWork`: cuatro obras sin serie en una retícula editorial.
+- `HomeSeries`: tres portadas; una destacada y dos compactas en móvil.
+- `ClosingStatement`: referencia disponible, retirada del render por duplicar contacto/footer.
 - `NarrativeImage`: ratio conocido, placeholder, fallback y refresh de layout.
 - `SectionMarker`: numeración accesible y consistente de `01 / 08` a `08 / 08`.
 
@@ -47,8 +43,8 @@ La fuente de verdad sigue siendo `lib/gallery-data.ts`. Las dimensiones, variant
 ## 7. Configuración curada
 
 `lib/home/curation.ts` contiene la única `homeCuration`: hero, historia destacada,
-fotografía expansiva, portada por categoría, cinco IDs de trabajo seleccionado e
-índice. `lib/home/validation.ts` bloquea IDs inexistentes, duplicados, conflictos,
+fotografía expansiva, portada por categoría y cuatro IDs de trabajo seleccionado.
+`lib/home/validation.ts` bloquea IDs inexistentes, duplicados, conflictos,
 categorías incorrectas y longitudes inválidas. `alternateHomeCuration` solo sirve
 para revisión interna en desarrollo y cumple el mismo contrato.
 
@@ -56,8 +52,8 @@ para revisión interna en desarrollo y cumple el mismo contrato.
 - Historia destacada: 46, `El acordeón y el abismo`.
 - Fotografía expansiva: 3, `El ruido del cielo`.
 - Capítulos: 7, 48, 30, 44 y 41.
-- Selected Work: 1, 35, 21, 37 y 49.
-- Índice: 11.
+- Selected Work: 1, 35, 37 y 49.
+- Series: portadas 21, 17 y 5, configuradas por el sistema de series.
 
 ## 8. Manifiesto
 
@@ -73,30 +69,27 @@ La fotografía 3 ocupa una escena de 145 svh en escritorio. Un contenedor sticky
 
 ## 11. Capítulos
 
-Los capítulos corresponden a las cinco categorías reales: Fauna, Arquitectura,
+El componente de capítulos corresponde a las cinco categorías reales: Fauna, Arquitectura,
 Paisaje, Personas y Meteorología. Cada recuento se deriva del catálogo. En
 escritorio se actualiza una imagen contextual al pasar el puntero o enfocar; en
 móvil cada capítulo incluye su imagen. El enlace mantiene `#gallery` y emite una
 petición interna al filtro ya existente. El slug histórico `retrato` permanece
-estable para URLs de Personas.
+estable para URLs de Personas. Desde Fase 13.4 no forma parte de `sectionOrder`: el archivo ya ofrece esas cinco entradas con filtros completos.
 
 ## 12. Selected work
 
-Se muestran cinco fotografías sin repetir hero, historia, expansiva ni capítulos.
-La secuencia `1, 35, 21, 37, 49` alterna H/V/H/C/H y cubre 2022–2025. La
+Se muestran cuatro fotografías sin repetir hero, historia, expansiva ni portadas de serie.
+La secuencia `1, 35, 37, 49` alterna H/V/C/H y cubre 2022–2025. La
 retícula de 12 columnas alterna anchos y desplazamientos en escritorio; en móvil
 pasa a una sola columna. Cada marco usa dimensiones reales.
 
-## 13. Índice
+## 13. Series y archivo
 
-El índice usa la fotografía 11 como miniatura pequeña e inédita en la narrativa,
-calcula total, categorías, años activos y rango temporal mediante
-`getArchiveSummary()`. El CTA conduce a `#gallery`; la galería completa conserva
-las 30 fotografías.
+Tres portadas enlazan al índice/rutas de serie. Después de la expansiva y Selected Work, `#gallery` cambia de narrativa a exploración libre con las 30 fotografías. No se añade una preview ni una ruta nueva de archivo.
 
 ## 14. Cierre
 
-El cierre aparece después de contacto y antes del footer. Resume el carácter abierto del archivo y ofrece enlaces semánticos al archivo y al contacto.
+Contacto funciona como cierre. `ClosingStatement` deja de renderizarse porque archivo y contacto ya han aparecido y el footer conserva todas sus salidas útiles.
 
 ## 15. Animaciones
 
@@ -228,4 +221,8 @@ compactas de series. No se alarga la home con una sección adicional: cambia la
 función del mismo tramo final. Las portadas son 21, 17 y 5; nunca reutilizan el
 hero 14. La 21 mantiene una segunda aparición pequeña y funcional tras Selected
 Work. El recorrido queda en 15 fotografías únicas y enlaza a rutas reales ES/EN.
+
+## 37. Edición del recorrido en la Fase 13.4
+
+`lib/home/experience.ts` centraliza orden, secciones obligatorias/ocultas, límite de Selected Work, serie destacada, preview y prefetch. Series se adelanta, capítulos y cierre salen del render, y Selected Work queda en cuatro obras sin serie. Antes del archivo pasan a existir 10 fotografías únicas; la home baja a ocho secciones públicas y 17 ScrollTriggers. La auditoría y métricas completas viven en `RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md`.
 Véase `RAW_VIVES_PHOTO_SERIES_SYSTEM.md`.

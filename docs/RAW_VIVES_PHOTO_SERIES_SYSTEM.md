@@ -164,3 +164,7 @@ Cambiar a `draft` para retirarla de índice, rutas generadas, sitemap y asociaci
 ## 36. Preparación para Fase 13.4
 
 La siguiente fase puede consumir helpers y contexto sin modificar este modelo. No se han adelantado funciones de Fase 13.4. Antes de ampliar, conviene observar navegación real, uso de series y estabilidad del retorno en producción.
+
+## 37. Integración del recorrido en la Fase 13.4
+
+Las tres series pasan a la cuarta posición de la home. `porto-river-night` es la entrada destacada; las otras dos se compactan en móvil y desactivan prefetch. La portada 21 sale de Selected Work, por lo que series y piezas individuales ya no compiten ni duplican protagonistas. El CTA único de la sección es `Ver todas las series` / `View all series`.

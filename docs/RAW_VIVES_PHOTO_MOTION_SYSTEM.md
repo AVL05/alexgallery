@@ -228,3 +228,7 @@ de campo; las comprobaciones locales solo descartan regresiones evidentes.
 La siguiente fase puede consumir tokens, roles y métricas ya centralizados. No
 debe ampliar el vocabulario sin eliminar una variante, añadir scrubs al archivo,
 reactivar animaciones vistas ni alterar curación, shaders o taxonomía.
+
+## 35. Ajuste de recorrido en la Fase 13.4
+
+No se añaden variantes ni scrubs. Al retirar capítulos y cierre del orden público, la home baja de 20 a 17 ScrollTriggers medidos; archivo conserva cero triggers propios y el listener global delegado permanece en uno. Series y Selected Work reutilizan `PhotoMotionGroup`, reduced motion muestra estado final y el sistema de debug refleja el límite de cuatro obras.

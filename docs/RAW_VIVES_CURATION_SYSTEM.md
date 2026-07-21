@@ -289,3 +289,7 @@ La home no usa secuencias completas, no repite el hero y mantiene el límite gen
 con un máximo de dos apariciones para la portada 21. La curación de series vive
 separada en `lib/series/config.ts` y se documenta en
 `RAW_VIVES_PHOTO_SERIES_SYSTEM.md`.
+
+## 21. Edición de experiencia en la Fase 13.4
+
+La curación base de capítulos se conserva para validación/referencia, pero `visualChapters` deja de renderizarse. Selected Work pasa a `1, 35, 37, 49`: cuatro obras no asignadas a series, sin la portada 21. El límite automático es ahora de tres a cuatro obras y `validateHomeExperience` rechaza cualquier ID seleccionado que pertenezca a una serie publicada. La narrativa visible queda en 10 fotografías únicas antes del archivo.
