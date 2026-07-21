@@ -14,6 +14,7 @@ import { PhotoTransitionLink } from "@/components/motion/photo-transition-link";
 import { useState } from "react";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { getLocalizedSeries, getSeriesForPhoto } from "@/lib/series/selectors";
+import { homeExperienceConfig } from "@/lib/home/experience";
 
 const fallbackImage = "/photos/optimized/800/1.webp";
 
@@ -64,6 +65,7 @@ export function ArchiveItem({
       <PhotoTransitionLink
         photoId={photo.id}
         href={href}
+        prefetch={homeExperienceConfig.prefetch.archiveItems}
         onBeforeNavigate={persistContext}
         className="group block"
         data-press-feedback

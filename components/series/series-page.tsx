@@ -30,7 +30,7 @@ function SeriesPhoto({ photo, position, total, locale, slug, priority = false }:
 }) {
   return (
     <article id={`series-photo-${photo.id}`} tabIndex={-1} data-series-photo data-series-index={position} className="outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)] focus-visible:ring-offset-4 focus-visible:ring-offset-background">
-      <PhotoTransitionLink photoId={photo.id} href={getSeriesPhotoHref(locale, photo.id, slug)} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
+      <PhotoTransitionLink photoId={photo.id} href={getSeriesPhotoHref(locale, photo.id, slug)} prefetch={false} className="group block" data-press-feedback {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}>
         <figure>
           <div data-photo-reveal={getPhotoRevealVariant({ ...photo, role: priority ? "featured" : undefined })} className="relative overflow-hidden bg-[var(--color-surface)]" style={{ aspectRatio: `${photo.width}/${photo.height}` }}>
             <Image data-photo-motion-media src={photo.src} alt={photo.alt || photo.description} fill priority={priority} loading={priority ? undefined : "lazy"} sizes="(max-width: 767px) 100vw, (max-width: 1439px) 84vw, 76rem" className="object-cover transition-[transform,filter] duration-500 group-hover:scale-[1.025] group-hover:brightness-[0.92] group-focus-visible:scale-[1.025] group-focus-visible:brightness-[0.92]" />

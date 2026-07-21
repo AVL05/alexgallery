@@ -39,7 +39,7 @@ export function SeriesIndexPage({
             if (!cover) return null;
             return (
               <article key={series.id} className={index === 0 ? "md:col-span-7" : "md:col-span-5"}>
-                <Link href={getSeriesHref(locale, series.slug)} className="group block" data-press-feedback>
+                <Link href={getSeriesHref(locale, series.slug)} prefetch={index === 0} className="group block" data-press-feedback>
                   <div data-photo-reveal={cover.width > cover.height ? "mask-side" : cover.width < cover.height ? "mask-up" : "soft-scale"} className="relative overflow-hidden border border-border bg-[var(--color-surface)]" style={{ aspectRatio: `${cover.width}/${cover.height}` }}>
                     <Image data-photo-motion-media src={cover.src} alt={cover.alt || cover.description} fill sizes="(max-width: 767px) 100vw, 58vw" className="object-cover transition-[transform,filter] duration-500 group-hover:scale-[1.025] group-hover:brightness-[0.9] group-focus-visible:scale-[1.025] group-focus-visible:brightness-[0.9]" />
                   </div>
