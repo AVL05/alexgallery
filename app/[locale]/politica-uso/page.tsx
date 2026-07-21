@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       languages: {
         'es-ES': '/es/politica-uso',
         'en-US': '/en/politica-uso',
-        'x-default': '/es/politica-uso',
+        'x-default': '/en/politica-uso',
       },
     },
     openGraph: { locale: locale === 'es' ? 'es_ES' : 'en_US', url: canonical },

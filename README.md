@@ -60,7 +60,7 @@ Las imágenes usan variantes responsivas y carga diferida salvo contenido priori
 
 ## Internacionalización y SEO
 
-`es` y `en` son las únicas locales admitidas. Canonicals, `hreflang`, sitemap, robots, Open Graph e `ImageObject` se generan con `NEXT_PUBLIC_BASE_URL`. La página de privacidad se marca `noindex, follow`; las 30 fotografías sí aparecen en ambos idiomas.
+`es` y `en` son las únicas locales admitidas. El Worker resuelve `/` con un `307`: primero respeta la cookie funcional `raw-vives-locale`, después el idioma principal de `Accept-Language` y usa inglés como fallback. Canonicals, `hreflang`, sitemap, robots, Open Graph e `ImageObject` se generan con `NEXT_PUBLIC_BASE_URL`; `x-default` apunta a inglés y la raíz de resolución queda fuera del sitemap.
 
 ## Instalación
 
@@ -129,7 +129,7 @@ docs/                decisiones, auditorías y materiales de entrega
 ## Decisiones y limitaciones
 
 - Export estático para reducir superficie operativa y servir desde CDN.
-- Sin analítica ni cookies en esta release: no se recoge telemetría sin una finalidad acordada.
+- Sin analítica: la única cookie propia es `raw-vives-locale`, funcional y limitada a recordar ES/EN durante un año.
 - Web3Forms es un tercero; su disponibilidad, tratamiento y controles anti-spam quedan fuera del runtime propio.
 - CSP está definida en `_headers`; cualquier nuevo origen debe revisarse explícitamente.
 - No hay comparator before/after ni vídeo generado: no se fabrican activos que el producto no ofrece.

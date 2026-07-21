@@ -29,7 +29,7 @@ export async function generateMetadata({
       languages: {
         "es-ES": "/es/privacidad",
         "en-US": "/en/privacidad",
-        "x-default": "/es/privacidad",
+        "x-default": "/en/privacidad",
       },
     },
     openGraph: { locale: locale === "es" ? "es_ES" : "en_US", url: canonical },
@@ -66,7 +66,7 @@ export default async function PrivacyPage({
         },
         {
           title: "Almacenamiento local y cookies",
-          body: "El sitio no instala cookies ni usa analítica. sessionStorage recuerda durante la sesión si la intro ya se mostró y conserva temporalmente el contexto de retorno del archivo; no identifica al visitante y se elimina al cerrar la sesión del navegador o al expirar el contexto.",
+          body: "El sitio usa una cookie funcional raw-vives-locale, con duración máxima de un año, para recordar exclusivamente la elección ES o EN. No contiene datos personales ni requiere un banner. sessionStorage recuerda durante la sesión si la intro ya se mostró y conserva temporalmente el contexto de retorno del archivo; no identifica al visitante.",
         },
         {
           title: "Derechos y contacto",
@@ -92,7 +92,7 @@ export default async function PrivacyPage({
         },
         {
           title: "Local storage and cookies",
-          body: "The site sets no cookies and uses no analytics. sessionStorage remembers whether the intro has played in the current session and temporarily stores archive return context; it does not identify the visitor and disappears when the browser session closes or the context expires.",
+          body: "The site uses the functional raw-vives-locale cookie for up to one year to remember only the ES or EN choice. It contains no personal data and requires no banner. sessionStorage remembers whether the intro has played and temporarily stores archive return context; it does not identify the visitor.",
         },
         {
           title: "Rights and contact",

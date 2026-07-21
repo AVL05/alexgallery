@@ -11,6 +11,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
 import { Magnetic } from "@/components/interactions/magnetic";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
+import { buildLocaleHref } from "@/lib/i18n/locale-routing";
+import { saveLocalePreference } from "@/lib/i18n/locale-cookie.client";
 
 export function Navigation({
   dictionary,
@@ -33,12 +35,14 @@ export function Navigation({
     { name: dictionary.contact, href: sectionHref("#contact") },
   ];
   const alternateLocale: Locale = currentLocale === "es" ? "en" : "es";
-  const alternatePath = pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`);
   const locationSnapshot = useLocationSnapshot();
-  const liveAlternatePath = locationSnapshot.pathname
-    ? locationSnapshot.pathname.replace(/^\/(es|en)(?=\/|$)/, `/${alternateLocale}`)
-    : alternatePath;
-  const alternateHref = `${liveAlternatePath || `/${alternateLocale}`}${locationSnapshot.search}${locationSnapshot.hash}`;
+  const alternateHref = buildLocaleHref(
+    locationSnapshot.pathname,
+    locationSnapshot.search,
+    locationSnapshot.hash,
+    alternateLocale,
+    pathname,
+  );
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileMenuMounted, setIsMobileMenuMounted] = useState(false);
@@ -254,6 +258,7 @@ export function Navigation({
               </span>
               <Link
                 href={alternateHref}
+                onClick={() => saveLocalePreference(alternateLocale)}
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
                 data-press-feedback
@@ -346,9 +351,12 @@ export function Navigation({
               </span>
               <Link
                 href={alternateHref}
+                onClick={() => {
+                  saveLocalePreference(alternateLocale);
+                  closeMobileMenu();
+                }}
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
-                onClick={closeMobileMenu}
                 data-press-feedback
                 className="inline-flex size-11 items-center justify-center border border-border font-mono text-xs text-foreground"
               >

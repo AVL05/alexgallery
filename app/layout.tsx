@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | raw.vives",
   },
   description:
-    "Archivo visual de Alex Vicente: fotografía, viajes, naturaleza, ciudad, coches, escenas cotidianas y capturas digitales.",
+    "Alex Vicente's visual archive: photography, travel, nature, cities, cars, everyday scenes and digital captures.",
   keywords: [
     "archivo visual",
     "fotografía",
@@ -57,20 +57,20 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: "/",
+    canonical: "/en",
     languages: {
       "es-ES": "/es",
       "en-US": "/en",
-      "x-default": "/",
+      "x-default": "/en",
     },
   },
   openGraph: {
     type: "website",
-    locale: "es_ES",
-    url: "/",
+    locale: "en_US",
+    url: "/en",
     title: "raw.vives | Visual Archive by Alex Vicente",
     description:
-      "Archivo global de fotografía, viajes, escenas urbanas, naturaleza y capturas digitales.",
+      "A global archive of photography, travel, urban scenes, nature and digital captures.",
     siteName: "raw.vives — Visual Archive",
     images: [
       {

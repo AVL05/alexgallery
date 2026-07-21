@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           es: `${siteUrl}/es`,
           en: `${siteUrl}/en`,
-          'x-default': `${siteUrl}/`,
+          'x-default': `${siteUrl}/en`,
         },
       },
     })
@@ -36,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: {
           es: `${siteUrl}/es/series`,
           en: `${siteUrl}/en/series`,
-          'x-default': `${siteUrl}/es/series`,
+          'x-default': `${siteUrl}/en/series`,
         },
       },
     })
@@ -50,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
           languages: {
             es: `${siteUrl}/es/series/${series.slug}`,
             en: `${siteUrl}/en/series/${series.slug}`,
-            'x-default': `${siteUrl}/es/series/${series.slug}`,
+            'x-default': `${siteUrl}/en/series/${series.slug}`,
           },
         },
       })
@@ -66,26 +66,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
           languages: {
             es: `${siteUrl}/es/photo/${photo.id}`,
             en: `${siteUrl}/en/photo/${photo.id}`,
-            'x-default': `${siteUrl}/es/photo/${photo.id}`,
+            'x-default': `${siteUrl}/en/photo/${photo.id}`,
           },
         },
       })
     }
   }
-
-  // Root redirect entry
-  sitemapEntries.push({
-    url: `${siteUrl}/`,
-    changeFrequency: 'monthly',
-    priority: 1.0,
-    alternates: {
-      languages: {
-        es: `${siteUrl}/es`,
-        en: `${siteUrl}/en`,
-        'x-default': `${siteUrl}/`,
-      },
-    },
-  })
 
   return sitemapEntries
 }

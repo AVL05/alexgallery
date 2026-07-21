@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title,
     description: dictionary.series.indexIntroduction,
-    alternates: { canonical: `/${locale}/series`, languages: { "es-ES": "/es/series", "en-US": "/en/series", "x-default": "/es/series" } },
+    alternates: { canonical: `/${locale}/series`, languages: { "es-ES": "/es/series", "en-US": "/en/series", "x-default": "/en/series" } },
     openGraph: { type: "website", url: `/${locale}/series`, title, description: dictionary.series.indexIntroduction, siteName: "raw.vives — Visual Archive" },
     twitter: { card: "summary_large_image", title, description: dictionary.series.indexIntroduction },
   };

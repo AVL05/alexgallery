@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return {
     title,
     description: photo.description,
-    alternates: { canonical: cleanPath, languages: { "es-ES": `/es/photo/${photo.id}`, "en-US": `/en/photo/${photo.id}`, "x-default": `/es/photo/${photo.id}` } },
+    alternates: { canonical: cleanPath, languages: { "es-ES": `/es/photo/${photo.id}`, "en-US": `/en/photo/${photo.id}`, "x-default": `/en/photo/${photo.id}` } },
     openGraph: { type: "article", locale: locale === "es" ? "es_ES" : "en_US", alternateLocale: alternateLocale === "es" ? ["es_ES"] : ["en_US"], url: cleanPath, title, description: photo.description, siteName: "raw.vives — Visual Archive", images: [{ url: photo.src, width: photo.width, height: photo.height, alt: photo.alt || photo.title }] },
     twitter: { card: "summary_large_image", title, description: photo.description, images: [photo.src] },
   };

@@ -107,9 +107,9 @@ Debe apuntar a `https://gallery.aleviclop.dev/sitemap.xml`, permitir `/` y decla
 
 ## 16. Sitemap
 
-La build esperada genera 71 URLs: raíz, dos homes, 60 detalles, dos índices de
-series y seis páginas de serie. Privacidad y política de uso se excluyen por
-decisión editorial.
+La build genera 70 URLs indexables: dos homes, 60 detalles, dos índices de
+series y seis páginas de serie. La raíz resuelve idioma y queda fuera del sitemap;
+privacidad y política de uso se excluyen por decisión editorial.
 
 ## 17. Analytics
 
@@ -117,7 +117,13 @@ No hay analítica de aplicación ni eventos de producto. No añadir scripts hast
 
 ## 18. Privacidad
 
-El sitio no establece cookies propias ni persiste analítica. El formulario envía nombre, email, mensaje o solicitud de licencia a Web3Forms; la página `/[locale]/privacidad` explica el encargado y derechos.
+El sitio no persiste analítica. La cookie funcional `raw-vives-locale` conserva únicamente `es` o `en` durante un año para respetar la elección manual. El formulario envía nombre, email, mensaje o solicitud de licencia a Web3Forms; la página `/[locale]/privacidad` explica el almacenamiento, el encargado y los derechos.
+
+## 18.1 Resolución de idioma
+
+El Worker intercepta exclusivamente `/` antes de servir los assets estáticos. Responde con `307`, conserva la query y aplica esta prioridad: cookie válida, idioma principal de `Accept-Language` y fallback inglés. Solo `es` y variantes `es-*` resuelven a `/es`; el resto resuelve a `/en`. Las rutas localizadas nunca se redirigen. Un script mínimo en la página raíz conserva además el fragmento cuando el Worker no está disponible, sin renderizar una pantalla intermedia.
+
+El selector ES/EN guarda la cookie con `Path=/`, `Max-Age=31536000`, `SameSite=Lax` y `Secure`, y sustituye únicamente el prefijo de idioma, conservando ruta, query y hash.
 
 ## 19. Preview
 

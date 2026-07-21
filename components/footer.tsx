@@ -7,6 +7,8 @@ import type { Locale, NavDictionary } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
+import { buildLocaleHref } from "@/lib/i18n/locale-routing";
+import { saveLocalePreference } from "@/lib/i18n/locale-cookie.client";
 
 export function Footer({
   currentLocale,
@@ -23,8 +25,14 @@ export function Footer({
   const navigationLabel =
     currentLocale === "es" ? "Navegación secundaria" : "Secondary navigation";
   const locationSnapshot = useLocationSnapshot();
-  const localizedPath = locationSnapshot.pathname || `/${currentLocale}`;
-  const localeHref = (locale: Locale) => `${localizedPath.replace(/^\/(es|en)(?=\/|$)/, `/${locale}`)}${locationSnapshot.search}${locationSnapshot.hash}`;
+  const localeHref = (locale: Locale) =>
+    buildLocaleHref(
+      locationSnapshot.pathname,
+      locationSnapshot.search,
+      locationSnapshot.hash,
+      locale,
+      `/${currentLocale}`,
+    );
 
   return (
     <footer className="bg-[var(--color-background-secondary)] pt-16 sm:pt-20">
@@ -105,6 +113,7 @@ export function Footer({
           <div className="flex items-center font-mono">
             <Link
               href={localeHref("es")}
+              onClick={() => saveLocalePreference("es")}
               hrefLang="es"
               lang="es"
               aria-current={currentLocale === "es" ? "page" : undefined}
@@ -116,6 +125,7 @@ export function Footer({
             <span aria-hidden="true">/</span>
             <Link
               href={localeHref("en")}
+              onClick={() => saveLocalePreference("en")}
               hrefLang="en"
               lang="en"
               aria-current={currentLocale === "en" ? "page" : undefined}
