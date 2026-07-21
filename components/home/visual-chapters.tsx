@@ -1,8 +1,10 @@
 "use client";
 
 import { NarrativeImage } from "@/components/home/narrative-image";
+import { ChapterPhotoStage } from "@/components/home/chapter-photo-stage";
 import { SectionMarker } from "@/components/home/section-marker";
-import { Reveal, StaggerGroup } from "@/components/motion/reveal";
+import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/layout";
 import { requestGalleryFilter } from "@/lib/gallery-filter-events";
 import { getCategoryArchiveHref } from "@/lib/archive/url";
@@ -12,6 +14,7 @@ import { ArrowDownRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
+import { getPhotoRevealVariant } from "@/lib/motion/photo-motion";
 
 export function VisualChapters({
   chapters,
@@ -47,15 +50,14 @@ export function VisualChapters({
         ) : (
           <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:items-start">
             {activeChapter && (
-              <Reveal className="hidden lg:sticky lg:top-28 lg:col-span-5 lg:block">
-                <NarrativeImage photo={activeChapter.photo} sizes="42vw" failPrimary={failImages} slow={slowImages} className="border border-border" />
-              </Reveal>
+              <PhotoMotionGroup groupKey="chapters-desktop-stage" className="hidden lg:sticky lg:top-28 lg:col-span-5 lg:block">
+                <ChapterPhotoStage active={activeChapter} failImages={failImages} slowImages={slowImages} />
+              </PhotoMotionGroup>
             )}
-            <StaggerGroup className="border-t border-border lg:col-span-7 lg:col-start-7">
+            <PhotoMotionGroup groupKey="chapters-mobile-images" copySelector="[data-no-photo-copy]" className="border-t border-border lg:col-span-7 lg:col-start-7">
               {chapters.map((chapter, index) => (
                 <Link
                   key={chapter.category}
-                  data-motion-item
                   href={getCategoryArchiveHref(locale, chapter.category)}
                   onMouseEnter={() => setActiveCategory(chapter.category)}
                   onFocus={() => setActiveCategory(chapter.category)}
@@ -75,10 +77,17 @@ export function VisualChapters({
                     <span className="rv-meta mt-3 block">{String(chapter.count).padStart(2, "0")}</span>
                   </span>
                   <ArrowDownRight aria-hidden="true" className="size-5 text-[var(--color-text-muted)] transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:text-accent group-focus-visible:translate-x-1 group-focus-visible:translate-y-1 group-focus-visible:text-accent" />
-                  <NarrativeImage photo={chapter.photo} sizes="(max-width: 1023px) 100vw, 1px" failPrimary={failImages} slow={slowImages} className="col-span-3 mt-2 lg:hidden" />
+                  <NarrativeImage
+                    photo={chapter.photo}
+                    sizes="(max-width: 1023px) 100vw, 1px"
+                    failPrimary={failImages}
+                    slow={slowImages}
+                    motionVariant={getPhotoRevealVariant({ ...chapter.photo, role: "chapter" })}
+                    className="col-span-3 mt-2 lg:hidden"
+                  />
                 </Link>
               ))}
-            </StaggerGroup>
+            </PhotoMotionGroup>
           </div>
         )}
       </Container>

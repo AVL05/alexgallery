@@ -5,6 +5,9 @@ import { MotionImage } from "@/components/motion/motion-image";
 import { useMotion } from "@/components/motion/motion-provider";
 import { MaskReveal, Reveal, StaggerGroup } from "@/components/motion/reveal";
 import { MotionText } from "@/components/motion/motion-text";
+import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
+import { usePhotoMotionRuntime } from "@/hooks/use-photo-motion-runtime";
+import { photoMotionConfig } from "@/lib/motion/photo-motion";
 import {
   INTRO_STATE_EVENT,
   requestIntroReplay,
@@ -40,6 +43,7 @@ import type { GraphicsDebugSnapshot } from "@/types/graphics";
 
 export function MotionDebugPanel() {
   const motion = useMotion();
+  const photoRuntime = usePhotoMotionRuntime();
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [triggerCount, setTriggerCount] = useState(0);
@@ -117,6 +121,13 @@ export function MotionDebugPanel() {
   const previewLocale = (locale: "en" | "es") => {
     resetIntroSession(getBrowserSessionStorage());
     window.location.assign(`/${locale}?motion-debug=1&intro-preview=1`);
+  };
+
+  const setPhotoDebugParam = (key: string, value: string | null) => {
+    const url = new URL(window.location.href);
+    if (value === null) url.searchParams.delete(key);
+    else url.searchParams.set(key, value);
+    window.location.assign(url.toString());
   };
 
   if (process.env.NODE_ENV !== "development" || !visible) return null;
@@ -322,6 +333,36 @@ export function MotionDebugPanel() {
             <p className="mt-3 font-mono text-[9px] text-[var(--color-text-muted)]">
               images {homeState?.failImages ? "fallback" : "primary"} / motion {homeState?.reducedMotion ? "reduced" : "system"}
             </p>
+          </section>
+          <section className="border border-border p-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="rv-meta">Photo motion 13.2</p>
+                <p className="mt-1 font-mono text-[10px] text-[var(--color-text-muted)]">
+                  {photoRuntime.enabled ? "on" : "off"} / GSAP {photoRuntime.gsap ? "on" : "off"} / ST {photoRuntime.scrollTrigger ? "on" : "off"}
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-accent">VT {photoRuntime.viewTransitions ? "ON" : "OFF"}</span>
+            </div>
+            <dl className="mt-3 grid grid-cols-2 gap-2 font-mono text-[9px] text-[var(--color-text-muted)]">
+              <div><dt>mobile intensity</dt><dd>{photoRuntime.mobileIntensity.toFixed(2)}</dd></div>
+              <div><dt>reveal once</dt><dd>{String(photoRuntime.revealOnce)}</dd></div>
+              <div><dt>archive batch</dt><dd>{photoMotionConfig.archiveBatchSize}</dd></div>
+              <div><dt>API</dt><dd>{String(typeof document.startViewTransition === "function")}</dd></div>
+            </dl>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => setPhotoDebugParam("photo-motion", photoRuntime.enabled ? "off" : null)}>Motion</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => setPhotoDebugParam("photo-gsap", photoRuntime.gsap ? "off" : null)}>GSAP</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => setPhotoDebugParam("photo-scrolltrigger", photoRuntime.scrollTrigger ? "off" : null)}>ScrollTrigger</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => setPhotoDebugParam("photo-vt", photoRuntime.viewTransitions ? "off" : null)}>View transitions</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => setPhotoDebugParam("photo-reveal-once", photoRuntime.revealOnce ? "0" : null)}>Reveal once</button>
+              <button type="button" className="min-h-11 border border-border px-2 text-[10px]" onClick={() => setPhotoDebugParam("photo-mobile-intensity", photoRuntime.mobileIntensity === 0.35 ? null : "0.35")}>Mobile intensity</button>
+            </div>
+            <PhotoMotionGroup mode="mount" groupKey="debug-photo-variants" className="mt-3 grid grid-cols-3 gap-2">
+              <div data-photo-reveal="mask-up" className="aspect-[3/4] overflow-hidden bg-[var(--color-surface)] p-2"><span className="rv-meta">mask-up</span></div>
+              <div data-photo-reveal="mask-side" className="aspect-[3/4] overflow-hidden bg-[var(--color-surface)] p-2"><span className="rv-meta">mask-side</span></div>
+              <div data-photo-reveal="soft-scale" className="aspect-[3/4] overflow-hidden bg-[var(--color-surface)] p-2"><span className="rv-meta">soft-scale</span></div>
+            </PhotoMotionGroup>
           </section>
           <Reveal><p className="rv-card-title">Reveal simple</p></Reveal>
           <MotionText text="Reveal by word" className="rv-body" />

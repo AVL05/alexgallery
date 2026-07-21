@@ -6,6 +6,7 @@ import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { applyTemporaryWillChange } from "@/lib/motion/will-change";
 import { publishHeroScrollProgress } from "@/lib/graphics/signals";
 import type { RefObject } from "react";
+import { photoMotionTokens } from "@/lib/motion/photo-motion";
 
 export function useHeroMotion({
   scope,
@@ -78,8 +79,8 @@ export function useHeroMotion({
 
       entryTimeline
         .to(entryMedia, { opacity: 1, scale: 1, duration: profile.entryDuration }, 0)
-        .to(titleLines, { yPercent: 0, duration: profile.entryDuration * 0.66, stagger: motionStagger.normal }, 0.12)
-        .to(secondary, { opacity: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, 0.32);
+        .to(titleLines, { yPercent: 0, duration: profile.entryDuration * 0.66, stagger: motionStagger.normal }, photoMotionTokens.hero.titleDelay)
+        .to(secondary, { opacity: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, photoMotionTokens.hero.copyDelay);
 
       const scrollTimeline = profile.scrollMotionEnabled
         ? gsap.timeline({
@@ -91,8 +92,8 @@ export function useHeroMotion({
               onUpdate: (self) => publishHeroScrollProgress(self.progress),
             },
           })
-            .to(scrollMedia, { scale: 1.025, yPercent: 1.8, ease: "none" }, 0)
-            .to(content, { y: -22, ease: "none" }, 0)
+            .to(scrollMedia, { scale: photoMotionTokens.hero.scrollScale, yPercent: 1.8, ease: "none" }, 0)
+            .to(content, { y: -photoMotionTokens.hero.scrollDistance, ease: "none" }, 0)
             .to(overlay, { opacity: 1, ease: "none" }, 0)
         : null;
 

@@ -1,6 +1,7 @@
 import { photos } from "@/lib/gallery-data";
 import { homeCuration } from "@/lib/home/curation";
 import type { ImagesData, OptimizedImageData } from "@/types/photo";
+import { photoMotionTokens } from "@/lib/motion/photo-motion";
 
 export const heroImageConfig = {
   primaryId: String(homeCuration.heroPhotoId),
@@ -46,9 +47,9 @@ export function getHeroMotionProfile({
   isTouchDevice: boolean;
 }) {
   return {
-    entryDuration: reducedMotion ? 0 : isTouchDevice ? 0.82 : 1.28,
-    entryDistance: reducedMotion ? 0 : isTouchDevice ? 14 : 24,
-    mediaScale: reducedMotion ? 1 : isTouchDevice ? 1.015 : 1.035,
+    entryDuration: reducedMotion ? 0 : isTouchDevice ? photoMotionTokens.hero.touchDuration : photoMotionTokens.hero.duration,
+    entryDistance: reducedMotion ? 0 : isTouchDevice ? photoMotionTokens.hero.touchDistance : photoMotionTokens.hero.distance,
+    mediaScale: reducedMotion ? 1 : isTouchDevice ? photoMotionTokens.hero.touchScale : photoMotionTokens.hero.scale,
     scrollMotionEnabled: !reducedMotion && !isTouchDevice,
   } as const;
 }
