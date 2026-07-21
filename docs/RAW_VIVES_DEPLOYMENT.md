@@ -184,6 +184,20 @@ Seleccionar un deployment estable conocido, hacer rollback desde Wrangler o Dash
 
 Probar Home ES/EN, idioma, archivo, filtro, búsqueda, load more, detalle, navegación, fullscreen, compartir/copiar, 404, mobile, reduced motion, fallback WebGL, headers, red y consola. Confirmar además que HTTP redirige a HTTPS, robots/sitemap usan el dominio y `/photos/raw/*` responde 404.
 
+## Auditoría de tokens heredados (21-07-2026)
+
+No se registran valores de credenciales. La revisión cubrió secrets y environments de los repositorios accesibles de `AVL05`, workflows, Wrangler, configuraciones locales y proyectos relacionados disponibles.
+
+| Token | Evidencia | Decisión |
+| --- | --- | --- |
+| `raw-vives production deploy` | Consumidor confirmado: environment `production` de `AVL05/alexgallery`; permisos limitados a editar el Worker y su ruta. Despliegue validado. | Mantener sin cambios. |
+| `alexgallery build token` (último uso 21-07-2026) | Token amplio ya sustituido por el anterior; el environment no conserva duplicados y el despliegue con el reemplazo fue correcto. | Revocado tras validar el reemplazo. |
+| `alex-gallery build token` (nunca usado) | Sin uso, secrets, workflow ni configuración consumidora. | Revocado. |
+| `photography-app build token` (último uso 17-06-2026) | La nota local apunta a un checkout `photography-app` que ya no existe; no aparece un repositorio o secret accesible que permita reemplazarlo con seguridad. | Pendiente de identificación; no revocar. |
+| `alexgallery build token` (último uso 19-01-2026) | No existe consumidor actual verificable y el nombre duplicado no permite atribuir el uso histórico. | Pendiente de identificación; no revocar. |
+
+El environment `production` mantiene únicamente `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` y `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`. No hay secrets Cloudflare en otros repositorios accesibles. Cualquier limpieza futura de los dos tokens pendientes debe partir de un consumidor identificado o de registros de auditoría concluyentes.
+
 ## Referencias operativas
 
 - [Cloudflare Static Assets headers](https://developers.cloudflare.com/workers/static-assets/headers/)
