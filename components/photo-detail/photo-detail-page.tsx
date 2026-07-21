@@ -8,6 +8,7 @@ import { PhotoDetailMotion } from "@/components/photo-detail/photo-detail-motion
 import { PhotoDetailNavigation } from "@/components/photo-detail/photo-detail-navigation";
 import { PhotoDetailRelated } from "@/components/photo-detail/photo-detail-related";
 import { PhotoDetailStory } from "@/components/photo-detail/photo-detail-story";
+import { PhotoDetailSeries } from "@/components/photo-detail/photo-detail-series";
 import { PhotoProcessDevelopmentTools } from "@/components/photo-process/photo-process-development-tools";
 import { PhotoProcessSection } from "@/components/photo-process/photo-process-section";
 import { Container } from "@/components/ui/layout";
@@ -26,7 +27,7 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
     <PhotoDetailKeyboard />
     <main id="main-content" tabIndex={-1} className={`photo-detail photo-detail--${orientation} overflow-hidden pt-28 sm:pt-32`}>
       <Container>
-        <PhotoDetailBackLink label={dictionary.photoDetail.back} className="mb-10" />
+        <PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} className="mb-10" />
         <PhotoDetailMotion photoId={photoId}>
           <div className="photo-detail-layout grid items-start gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-20">
             <div className="lg:col-span-8"><PhotoDetailMedia dictionary={dictionary.photoDetail} /></div>
@@ -38,11 +39,13 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
             <div className="md:col-span-8 md:col-start-5"><PhotoDetailStory /></div>
           </section>
 
+          <PhotoDetailSeries locale={locale} dictionary={dictionary.series} />
+
           {photoProcess ? <PhotoProcessSection process={photoProcess} locale={locale} dictionary={dictionary.photoProcess} /> : null}
 
           <section className="mt-20 lg:mt-28"><p className="rv-kicker mb-6">06 / 08</p><PhotoDetailNavigation dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></section>
           <div className="mt-24 lg:mt-36"><PhotoDetailRelated dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></div>
-          <div className="flex flex-col items-start gap-6 border-t border-border py-16 sm:flex-row sm:items-center sm:justify-between lg:py-24"><PhotoDetailBackLink label={dictionary.photoDetail.back} /><p className="rv-meta">{dictionary.photoDetail.keyboardHelp}</p></div>
+          <div className="flex flex-col items-start gap-6 border-t border-border py-16 sm:flex-row sm:items-center sm:justify-between lg:py-24"><PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} /><p className="rv-meta">{dictionary.photoDetail.keyboardHelp}</p></div>
         </PhotoDetailMotion>
       </Container>
       {process.env.NODE_ENV === "development" ? <PhotoProcessDevelopmentTools locale={locale} dictionary={dictionary.photoProcess} /> : null}

@@ -6,6 +6,8 @@ import { getArchiveHref, parseArchiveSearch, serializeArchiveState } from "@/lib
 import { readArchiveContext, saveArchiveContext } from "@/lib/archive/context";
 import { categories } from "@/lib/gallery-data";
 import { getPhotoDetailHref, resolvePhotoNavigation, selectRelatedPhotos } from "@/lib/photo-detail/selectors";
+import { getLocalizedSeries, getSeriesForPhoto, getSeriesReturnHref, getValidSeriesContext } from "@/lib/series/selectors";
+import type { LocalizedPhotoSeries } from "@/lib/series/types";
 import type { Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -19,6 +21,9 @@ type PhotoDetailContextValue = {
   index: number;
   total: number;
   isContextual: boolean;
+  contextType: "series" | "archive" | "global";
+  series: LocalizedPhotoSeries | null;
+  seriesMembership: LocalizedPhotoSeries | null;
   returnHref: string;
   related: ArchivePhoto[];
   hrefFor: (id: number) => string;
@@ -37,28 +42,44 @@ export function PhotoDetailContextProvider({ children, locale, currentId, images
   const years = useMemo(() => [...new Set(photos.map((photo) => photo.year))], [photos]);
   const [state, setState] = useState<ArchiveState>(defaultArchiveState);
   const [returnHref, setReturnHref] = useState(`/${locale}#gallery`);
+  const [seriesSlug, setSeriesSlug] = useState<string | null>(null);
 
   useEffect(() => {
-    const parsed = parseArchiveSearch(window.location.search, categories, years);
-    const normalized = serializeArchiveState(parsed, window.location.search);
+    const validSeries = getValidSeriesContext(window.location.search, currentId);
+    const searchParams = new URLSearchParams(window.location.search);
+    if (validSeries) {
+      [...searchParams.keys()].forEach((key) => { if (key !== "series") searchParams.delete(key); });
+    } else {
+      searchParams.delete("series");
+    }
+    const cleanedSearch = searchParams.size ? `?${searchParams.toString()}` : "";
+    const parsed = parseArchiveSearch(validSeries ? "" : cleanedSearch, categories, years);
+    const normalized = validSeries ? `?series=${encodeURIComponent(validSeries.slug)}` : serializeArchiveState(parsed, cleanedSearch);
     if (normalized !== window.location.search) {
       window.history.replaceState(window.history.state, "", `${window.location.pathname}${normalized}${window.location.hash}`);
     }
     setState(parsed);
+    setSeriesSlug(validSeries?.slug ?? null);
+    if (validSeries) {
+      setReturnHref(getSeriesReturnHref(locale, validSeries.slug, currentId));
+      return;
+    }
     const saved = readArchiveContext(locale, currentId);
     setReturnHref(saved?.archiveHref || getArchiveHref(locale, parsed));
   }, [currentId, locale, years]);
 
-  const navigation = useMemo(() => resolvePhotoNavigation(photos, currentId, state), [currentId, photos, state]);
+  const navigation = useMemo(() => resolvePhotoNavigation(photos, currentId, state, seriesSlug), [currentId, photos, seriesSlug, state]);
   const current = photos.find((photo) => photo.id === currentId) || photos[0];
-  const hrefFor = useCallback((id: number) => getPhotoDetailHref(locale, id, state), [locale, state]);
+  const hrefFor = useCallback((id: number) => getPhotoDetailHref(locale, id, state, seriesSlug), [locale, seriesSlug, state]);
   const preserveContext = useCallback((id: number) => {
+    if (seriesSlug) return;
     const saved = readArchiveContext(locale);
     if (!saved) return;
     saveArchiveContext({ ...saved, photoId: id, state, savedAt: Date.now() });
-  }, [locale, state]);
+  }, [locale, seriesSlug, state]);
 
   if (!current) return null;
+  const membership = getSeriesForPhoto(currentId);
   const value = {
     photos,
     state,
@@ -68,6 +89,9 @@ export function PhotoDetailContextProvider({ children, locale, currentId, images
     index: navigation.index,
     total: navigation.collection.length,
     isContextual: navigation.isContextual,
+    contextType: navigation.contextType,
+    series: navigation.series ? getLocalizedSeries(navigation.series, locale) : null,
+    seriesMembership: membership ? getLocalizedSeries(membership, locale) : null,
     returnHref,
     related: selectRelatedPhotos(photos, currentId, 4),
     hrefFor,
