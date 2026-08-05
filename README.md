@@ -111,7 +111,7 @@ No existe una suite E2E automatizada; los recorridos críticos se validan ademá
 
 ## Despliegue
 
-El workflow CI valida cada push y pull request a `main`. Producción se despliega en Cloudflare Pages mediante `workflow_dispatch`, usando el environment `production` y sus variables. El procedimiento, dominio, rollback y smoke tests están en [RAW_VIVES_DEPLOYMENT.md](docs/RAW_VIVES_DEPLOYMENT.md).
+El workflow CI valida cada push y pull request a `main`. La integración Git de Cloudflare Pages construye y publica `main`; las variables de build se gestionan en el proyecto Pages. El procedimiento, dominio, rollback y smoke tests están en [RAW_VIVES_DEPLOYMENT.md](docs/RAW_VIVES_DEPLOYMENT.md).
 
 ## Estructura
 

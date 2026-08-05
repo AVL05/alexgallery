@@ -331,10 +331,10 @@ forman parte del artefacto. `scripts/prune-private-assets.ts` actúa después de
 export y elimina exclusivamente `out/photos/raw`, de modo que las fuentes web
 siguen disponibles para el pipeline local sin llegar al CDN.
 
-GitHub Actions separa validación de publicación: `ci.yml` ejecuta el contrato de
-calidad en push/PR y `deploy.yml` solo responde a `workflow_dispatch` dentro del
-environment `production`. El runtime se fija en `.nvmrc`, `package.json` y el
-lockfile; Wrangler es dependencia local. La arquitectura no incorpora backend,
+GitHub Actions ejecuta el contrato de calidad en push/PR mediante `ci.yml`; la
+integración Git de Cloudflare Pages construye y publica la rama `main`. El runtime
+se fija en `.nvmrc`, `package.json` y el lockfile; Wrangler es dependencia local.
+La arquitectura no incorpora backend,
 base de datos, analítica ni observabilidad externa en esta release.
 
 La página de privacidad y el formulario comparten una variable pública de build

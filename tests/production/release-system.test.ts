@@ -12,7 +12,6 @@ test("production release configuration is explicit and privacy-safe", () => {
   const headers = read("public/_headers");
   const contact = read("components/contact.tsx");
   const ci = read(".github/workflows/ci.yml");
-  const deploy = read(".github/workflows/deploy.yml");
   const pagesFunction = read("functions/index.ts");
   const wrangler = JSON.parse(read("wrangler.json"));
   const webManifest = manifest();
@@ -31,9 +30,7 @@ test("production release configuration is explicit and privacy-safe", () => {
   assert.equal(webManifest.name, "raw.vives — Visual Archive");
   assert.equal(webManifest.icons?.length, 3);
   assert.match(ci, /pnpm install --frozen-lockfile/);
-  assert.match(deploy, /workflow_dispatch/);
-  assert.doesNotMatch(deploy, /push:/);
-  assert.match(deploy, /pnpm deploy:pages/);
+  assert.match(packageJson.scripts["deploy:pages"], /wrangler pages deploy/);
   assert.equal(wrangler.pages_build_output_dir, "./out");
   assert.equal(wrangler.main, undefined);
   assert.match(pagesFunction, /getRootLocaleRedirect/);

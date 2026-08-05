@@ -16,10 +16,10 @@ Git, Node 24.18.0, Corepack, pnpm 11.20.0, acceso a Cloudflare Pages y permisos 
 
 | Nombre | Lugar | Carácter |
 | --- | --- | --- |
-| `NEXT_PUBLIC_BASE_URL` | Constante del workflow | URL pública de build |
-| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | GitHub environment secret | Identificador público inyectado en build |
-| `CLOUDFLARE_API_TOKEN` | GitHub environment secret | Credencial de despliegue |
-| `CLOUDFLARE_ACCOUNT_ID` | GitHub environment secret | Cuenta de destino |
+| `NEXT_PUBLIC_BASE_URL` | Pages, producción y preview | URL pública de build |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Pages secret, producción y preview | Identificador público inyectado en build |
+| `NODE_VERSION` | Pages, producción y preview | Node exacto de build |
+| `PNPM_VERSION` | Pages, producción y preview | pnpm exacto de instalación |
 
 No registrar valores en el repositorio ni en logs. Las variables `NEXT_PUBLIC_*` terminan visibles en el cliente.
 
@@ -70,7 +70,7 @@ El canonical es `https://gallery.aleviclop.dev`. No cambiarlo sin actualizar var
 
 ## 9. DNS
 
-El subdominio está proxied por Cloudflare y asociado como dominio personalizado del proyecto Pages. Verificar desde una red externa tras cada cambio DNS.
+El subdominio usa un CNAME DNS-only hacia `alexgallery-83x.pages.dev` y está asociado como dominio personalizado del proyecto Pages. Activar el proxy sobre ese CNAME produjo 522 durante la validación; mantener DNS-only y verificar desde una red externa tras cada cambio.
 
 ## 10. HTTPS
 
@@ -131,10 +131,10 @@ Local: `pnpm preview`. Remoto: `pnpm exec wrangler pages deploy --branch release
 
 ## 20. Producción
 
-Abrir Actions → `Deploy to Cloudflare Pages` → `Run workflow` desde `main`. El job
-rechaza otras ramas, serializa despliegues, repite validaciones, construye, publica
-`out/` y hace smoke de ES, EN, robots, sitemap y 404. No usar push como disparador
-del workflow manual de producción.
+La integración Git de Pages construye y publica cada commit de `main`. Cloudflare
+usa `pnpm build`, sirve `out/` y compila `functions/`. Revisar CI antes de promover
+cambios y completar smoke de ES, EN, robots, sitemap, formulario, 404 y fuentes
+privadas. `pnpm deploy:pages` queda como fallback manual con autenticación Wrangler.
 
 ## 21. Logs
 
@@ -173,11 +173,11 @@ Completar también [RAW_VIVES_RELEASE_CHECKLIST.md](RAW_VIVES_RELEASE_CHECKLIST.
 ## 26. Cómo publicar
 
 1. Confirmar CI verde y árbol de trabajo esperado.
-2. Configurar variables/secrets del environment.
+2. Configurar variables/secrets del proyecto Pages.
 3. Validar una preview remota.
-4. Registrar deployment estable actual.
-5. Ejecutar el workflow manual.
-6. Completar smoke tests y monitorizar.
+4. Registrar el deployment estable actual.
+5. Promover el commit validado a `main`.
+6. Esperar el deployment Pages y completar smoke tests.
 7. Crear tag/release solo si el usuario lo autoriza.
 
 ## 27. Cómo revertir

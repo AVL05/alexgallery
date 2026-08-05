@@ -10,7 +10,7 @@ Fase 11 dejó rendimiento, accesibilidad y fallbacks validados en cuatro commits
 
 ## 3. Hosting
 
-Cloudflare Pages con `out/` como directorio servido y `functions/index.ts` limitada a la resolución de idioma de `/`. La instalación usa pnpm de forma consistente en local, CI y Pages.
+Cloudflare Pages con `out/` como directorio servido y `functions/index.ts` limitada a la resolución de idioma de `/`. La integración Git publica `main` y la instalación usa pnpm de forma consistente en local, CI y Pages.
 
 ## 4. Entornos
 

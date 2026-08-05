@@ -7,6 +7,7 @@ Todos los cambios relevantes de raw.vives se documentan aquí. El proyecto sigue
 ### Added
 
 - Cloudflare Pages Function para resolver el idioma de la ruta raíz.
+- Integración Git de Pages para construir y publicar `main`.
 - Configuración `pnpm-workspace.yaml` con builds de dependencias permitidos de forma explícita.
 - CI reproducible para push y pull request.
 - Pipeline manual de producción con smoke tests.
