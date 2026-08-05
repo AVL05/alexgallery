@@ -8,6 +8,7 @@ import {
   resolveAcceptLanguage,
   resolveVisitorLocale,
 } from "@/lib/i18n/locale-routing";
+import { onRequest as onMiddlewareRequest } from "@/functions/_middleware";
 import { onRequest } from "@/functions/index";
 
 const spanishHeaders = ["es", "es-ES", "es-MX", "es-AR"];
@@ -60,7 +61,7 @@ test("non-root paths are delegated unchanged to static assets", async () => {
 });
 
 test("the legacy gallery hostname redirects permanently to the canonical domain", async () => {
-  const response = await onRequest({
+  const response = await onMiddlewareRequest({
     request: new Request("http://gallery.aleviclop.dev/es/photo/21?ref=legacy"),
     next: () => Promise.resolve(new Response("asset")),
   });
