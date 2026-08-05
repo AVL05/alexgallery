@@ -17,7 +17,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_BASE_URL: https://gallery.aleviclop.dev
+      NEXT_PUBLIC_BASE_URL: https://rawvives.aleviclop.dev
       NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY: ci-placeholder-public-key
     steps:
       - name: Checkout repository

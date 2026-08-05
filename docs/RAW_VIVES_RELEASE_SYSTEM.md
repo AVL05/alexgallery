@@ -22,7 +22,7 @@ Local (`next dev`), preview de artefacto (`wrangler pages dev`) y producción (P
 
 ## 6. Dominio
 
-Canonical único: `gallery.aleviclop.dev`.
+Canonical único: `rawvives.aleviclop.dev`.
 
 ## 7. DNS
 

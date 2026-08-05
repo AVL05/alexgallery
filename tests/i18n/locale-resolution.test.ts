@@ -29,17 +29,17 @@ test("a valid manual cookie has priority and invalid values use the browser", ()
 });
 
 test("root redirect is temporary, preserves query and never loops localized routes", async () => {
-  const root = new Request("https://gallery.aleviclop.dev/?ref=portfolio", { headers: { "accept-language": "es-MX" } });
-  assert.equal(getRootLocaleRedirect(root)?.toString(), "https://gallery.aleviclop.dev/es?ref=portfolio");
-  assert.equal(getRootLocaleRedirect(new Request("https://gallery.aleviclop.dev/es")), null);
-  assert.equal(getRootLocaleRedirect(new Request("https://gallery.aleviclop.dev/en")), null);
+  const root = new Request("https://rawvives.aleviclop.dev/?ref=portfolio", { headers: { "accept-language": "es-MX" } });
+  assert.equal(getRootLocaleRedirect(root)?.toString(), "https://rawvives.aleviclop.dev/es?ref=portfolio");
+  assert.equal(getRootLocaleRedirect(new Request("https://rawvives.aleviclop.dev/es")), null);
+  assert.equal(getRootLocaleRedirect(new Request("https://rawvives.aleviclop.dev/en")), null);
 
   const response = await onRequest({
     request: root,
     next: () => Promise.resolve(new Response("asset")),
   });
   assert.equal(response.status, 307);
-  assert.equal(response.headers.get("location"), "https://gallery.aleviclop.dev/es?ref=portfolio");
+  assert.equal(response.headers.get("location"), "https://rawvives.aleviclop.dev/es?ref=portfolio");
   assert.equal(response.headers.get("cache-control"), "private, no-store");
   assert.match(response.headers.get("vary") ?? "", /Accept-Language/);
   assert.match(response.headers.get("vary") ?? "", /Cookie/);
@@ -47,7 +47,7 @@ test("root redirect is temporary, preserves query and never loops localized rout
 
 test("non-root paths are delegated unchanged to static assets", async () => {
   let delegated = "";
-  const request = new Request("https://gallery.aleviclop.dev/en?ref=x");
+  const request = new Request("https://rawvives.aleviclop.dev/en?ref=x");
   const response = await onRequest({
     request,
     next() {
@@ -56,7 +56,17 @@ test("non-root paths are delegated unchanged to static assets", async () => {
     },
   });
   assert.equal(response.status, 200);
-  assert.equal(delegated, "https://gallery.aleviclop.dev/en?ref=x");
+  assert.equal(delegated, "https://rawvives.aleviclop.dev/en?ref=x");
+});
+
+test("the legacy gallery hostname redirects permanently to the canonical domain", async () => {
+  const response = await onRequest({
+    request: new Request("http://gallery.aleviclop.dev/es/photo/21?ref=legacy"),
+    next: () => Promise.resolve(new Response("asset")),
+  });
+
+  assert.equal(response.status, 308);
+  assert.equal(response.headers.get("location"), "https://rawvives.aleviclop.dev/es/photo/21?ref=legacy");
 });
 
 test("manual locale links preserve route, query, hash and series context", () => {

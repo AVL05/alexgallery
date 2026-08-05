@@ -19,7 +19,7 @@ Resultado local: 73 rutas estáticas, 67 tests y un artefacto de 39,1 MiB sin pu
 
 Diseño, desarrollo y fotografía por Alex Vicente.
 
-🔗 https://gallery.aleviclop.dev
+🔗 https://rawvives.aleviclop.dev
 
 #nextjs #react #typescript #webdesign #photography #accessibility #webperformance
 

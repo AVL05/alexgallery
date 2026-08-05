@@ -37,4 +37,4 @@ El custom image loader (`lib/image-loader.ts`) mapea los anchos que pide Next.js
 
 **Animaciones**: GSAP + ScrollTrigger para el parallax del texto de fondo y la entrada de contenido. Lenis para smooth scroll (`components/smooth-scroll.tsx`). Framer Motion disponible pero GSAP es el principal. Siempre respetar `prefers-reduced-motion`.
 
-**Despliegue**: Cloudflare Pages mediante `wrangler pages deploy`. La variable `NEXT_PUBLIC_BASE_URL` debe apuntar al dominio de producción (`https://gallery.aleviclop.dev`).
+**Despliegue**: Cloudflare Pages mediante `wrangler pages deploy`. La variable `NEXT_PUBLIC_BASE_URL` debe apuntar al dominio de producción (`https://rawvives.aleviclop.dev`).

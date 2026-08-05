@@ -16,7 +16,7 @@ Presentar en 60–75 segundos la identidad, el recorrido y la profundidad técni
 | 46–52 | Fullscreen | Abrir y cerrar con Escape | `Built for focus` |
 | 52–59 | Interacción | Cursor y WebGL, captura real | `Progressive motion` |
 | 59–67 | Mobile | Hero, menú y filtros | `Bilingual and responsive` |
-| 67–75 | Cierre | Marca y dominio | `gallery.aleviclop.dev` |
+| 67–75 | Cierre | Marca y dominio | `rawvives.aleviclop.dev` |
 
 ## Guion de voz
 

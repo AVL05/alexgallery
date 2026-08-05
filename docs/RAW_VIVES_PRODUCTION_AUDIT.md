@@ -228,7 +228,7 @@ cada build porque no existía una fecha editorial real que lo justificara.
 ## 30. Robots
 
 `robots.txt` permite rastreo global y referencia
-`https://gallery.aleviclop.dev/sitemap.xml`. Las políticas controlan indexación
+`https://rawvives.aleviclop.dev/sitemap.xml`. Las políticas controlan indexación
 mediante metadata, no mediante bloqueo de crawling.
 
 ## 31. Canonicals

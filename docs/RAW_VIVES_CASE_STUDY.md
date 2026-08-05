@@ -122,7 +122,7 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, GSAP, Three.js, Vitest, Sharp,
 
 ## 26. Enlaces
 
-- Producción actual: [gallery.aleviclop.dev](https://gallery.aleviclop.dev)
+- Producción actual: [rawvives.aleviclop.dev](https://rawvives.aleviclop.dev)
 - Guía de despliegue: [RAW_VIVES_DEPLOYMENT.md](RAW_VIVES_DEPLOYMENT.md)
 - Arquitectura: [RAW_VIVES_ARCHITECTURE.md](RAW_VIVES_ARCHITECTURE.md)
 - Auditoría: [RAW_VIVES_PRODUCTION_AUDIT.md](RAW_VIVES_PRODUCTION_AUDIT.md)

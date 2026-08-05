@@ -61,7 +61,7 @@ test("orientation, clean share URLs and keyboard guards are explicit", () => {
   assert.equal(getPhotoOrientation(esPhotos.find((photo) => photo.id === 3)!), "horizontal");
   assert.equal(getPhotoOrientation(esPhotos.find((photo) => photo.id === 13)!), "vertical");
   assert.equal(getPhotoOrientation(esPhotos.find((photo) => photo.id === 11)!), "square");
-  assert.equal(getCleanShareUrl("https://gallery.aleviclop.dev", "/es/photo/21"), "https://gallery.aleviclop.dev/es/photo/21");
+  assert.equal(getCleanShareUrl("https://rawvives.aleviclop.dev", "/es/photo/21"), "https://rawvives.aleviclop.dev/es/photo/21");
   assert.equal(shouldIgnorePhotoArrowKey({ tagName: "INPUT" }), true);
   assert.equal(shouldIgnorePhotoArrowKey({ tagName: "DIV" }), false);
   assert.equal(shouldIgnorePhotoArrowKey({ overlayOpen: true }), true);

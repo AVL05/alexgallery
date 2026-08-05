@@ -4,7 +4,7 @@ Archivo visual bilingüe de Alex Vicente: una experiencia editorial para recorre
 
 ![Hero de raw.vives](docs/assets/screenshots/home-hero-desktop.webp)
 
-**Producción:** [gallery.aleviclop.dev](https://gallery.aleviclop.dev) · **Estado de este checkout:** preparado y validado localmente; el despliegue de esta versión es una acción manual pendiente.
+**Producción:** [rawvives.aleviclop.dev](https://rawvives.aleviclop.dev) · **Estado de este checkout:** preparado y validado localmente; el despliegue de esta versión es una acción manual pendiente.
 
 ## Objetivo
 
@@ -76,7 +76,7 @@ pnpm dev
 ## Variables de entorno
 
 ```dotenv
-NEXT_PUBLIC_BASE_URL=https://gallery.aleviclop.dev
+NEXT_PUBLIC_BASE_URL=https://rawvives.aleviclop.dev
 NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=replace-with-your-public-access-key
 ```
 

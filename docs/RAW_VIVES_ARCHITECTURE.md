@@ -1,7 +1,7 @@
 # Arquitectura de RAW.VIVES
 
 Este documento describe la aplicación existente `alexgallery`, publicada en
-`https://gallery.aleviclop.dev/`. La Fase 0 confirmó la base técnica y la Fase 1
+`https://rawvives.aleviclop.dev/`. La Fase 0 confirmó la base técnica y la Fase 1
 añadió el sistema visual sin cambiar rutas, catálogo, idiomas ni despliegue.
 
 ## Arquitectura actual
@@ -180,7 +180,7 @@ Solo se consume `NEXT_PUBLIC_BASE_URL`. Controla `metadataBase`, sitemap,
 robots y datos estructurados. `.env.example` documenta el valor de producción.
 
 ```dotenv
-NEXT_PUBLIC_BASE_URL=https://gallery.aleviclop.dev
+NEXT_PUBLIC_BASE_URL=https://rawvives.aleviclop.dev
 ```
 
 Al ser `NEXT_PUBLIC_*`, no debe contener secretos. La clave de Web3Forms está

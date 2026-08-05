@@ -16,7 +16,7 @@ test("production release configuration is explicit and privacy-safe", () => {
   const wrangler = JSON.parse(read("wrangler.json"));
   const webManifest = manifest();
 
-  assert.equal(siteUrl, "https://gallery.aleviclop.dev");
+  assert.equal(siteUrl, "https://rawvives.aleviclop.dev");
   assert.equal(packageJson.packageManager, "pnpm@11.20.0");
   assert.equal(read(".nvmrc").trim(), "24.18.0");
   assert.match(envExample, /NEXT_PUBLIC_BASE_URL=/);

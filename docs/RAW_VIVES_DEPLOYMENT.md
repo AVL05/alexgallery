@@ -2,7 +2,7 @@
 
 ## 1. Plataforma
 
-Cloudflare Pages sirve el export estático de Next.js. `wrangler.json` define el proyecto `alexgallery`, el directorio `out/` y la fecha de compatibilidad de Pages Functions. El subdominio técnico asignado es `alexgallery-83x.pages.dev`; el dominio canónico continúa siendo `gallery.aleviclop.dev`.
+Cloudflare Pages sirve el export estático de Next.js. `wrangler.json` define el proyecto `alexgallery`, el directorio `out/` y la fecha de compatibilidad de Pages Functions. El subdominio técnico asignado es `alexgallery-83x.pages.dev`; el dominio canónico es `rawvives.aleviclop.dev`.
 
 ## 2. Requisitos
 
@@ -53,7 +53,7 @@ pnpm install --frozen-lockfile
 ## 6. Build
 
 ```powershell
-$env:NEXT_PUBLIC_BASE_URL='https://gallery.aleviclop.dev'
+$env:NEXT_PUBLIC_BASE_URL='https://rawvives.aleviclop.dev'
 $env:NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY='public-form-key'
 pnpm build
 ```
@@ -66,7 +66,7 @@ La build valida el proceso fotográfico, exporta y ejecuta `prune-private-assets
 
 ## 8. Dominio
 
-El canonical es `https://gallery.aleviclop.dev`. No cambiarlo sin actualizar variable, route de Wrangler, metadata y smoke tests.
+El canonical es `https://rawvives.aleviclop.dev`. No cambiarlo sin actualizar variable, dominio de Pages, metadata y smoke tests.
 
 ## 9. DNS
 
@@ -76,8 +76,8 @@ El subdominio usa un CNAME DNS-only hacia `alexgallery-83x.pages.dev` y está as
 
 El certificado observado cubre `aleviclop.dev`. Cloudflare aplica la Single
 Redirect Rule `raw.vives HTTP to HTTPS`, limitada al patrón
-`http://gallery.aleviclop.dev/*`, con destino
-`https://gallery.aleviclop.dev/${1}`, estado `301` y conservación de query. La
+`https://gallery.aleviclop.dev/*`, con destino
+`https://rawvives.aleviclop.dev/${1}`, estado `308` y conservación de query. La
 regla preserva ruta y parámetros sin afectar a otros hosts de la zona. HSTS solo
 protege después de una visita HTTPS y no sustituye la redirección.
 
@@ -103,7 +103,7 @@ No hay alias antiguo válido. El viejo `alexgallery.alexviclop.workers.dev` devu
 
 ## 15. Robots
 
-Debe apuntar a `https://gallery.aleviclop.dev/sitemap.xml`, permitir `/` y declarar Host. La versión actualmente pública estaba desactualizada antes de esta release.
+Debe apuntar a `https://rawvives.aleviclop.dev/sitemap.xml`, permitir `/` y declarar Host. La versión actualmente pública estaba desactualizada antes de esta release.
 
 ## 16. Sitemap
 
@@ -153,10 +153,10 @@ Antes de publicar, anotar el deployment estable con `pnpm exec wrangler pages de
 ```powershell
 pnpm check
 pnpm exec wrangler pages functions build --outdir .wrangler/tmp/pages-functions
-curl.exe -I https://gallery.aleviclop.dev/es
-curl.exe https://gallery.aleviclop.dev/robots.txt
-curl.exe -I https://gallery.aleviclop.dev/es/photo/21
-curl.exe -I https://gallery.aleviclop.dev/no-existe-phase-12
+curl.exe -I https://rawvives.aleviclop.dev/es
+curl.exe https://rawvives.aleviclop.dev/robots.txt
+curl.exe -I https://rawvives.aleviclop.dev/es/photo/21
+curl.exe -I https://rawvives.aleviclop.dev/no-existe-phase-12
 ```
 
 Completar también [RAW_VIVES_RELEASE_CHECKLIST.md](RAW_VIVES_RELEASE_CHECKLIST.md).

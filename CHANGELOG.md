@@ -17,6 +17,7 @@ Todos los cambios relevantes de raw.vives se documentan aquí. El proyecto sigue
 
 ### Changed
 
+- Dominio canónico migrado a `rawvives.aleviclop.dev`, manteniendo una redirección permanente desde el hostname anterior.
 - Runtime actualizado a Node 24.18.0 LTS y pnpm 11.20.0.
 - Deployment migrado de Workers Static Assets a Cloudflare Pages.
 - Tipos de Sharp integrados; eliminado el paquete `@types/sharp` deprecado.

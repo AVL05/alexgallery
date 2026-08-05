@@ -1,4 +1,4 @@
-const productionSiteUrl = "https://gallery.aleviclop.dev";
+const productionSiteUrl = "https://rawvives.aleviclop.dev";
 
 function normalizeSiteUrl(value: string | undefined) {
   const candidate = value?.trim() || productionSiteUrl;

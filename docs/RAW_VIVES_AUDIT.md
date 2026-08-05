@@ -1,7 +1,7 @@
 # Auditoría técnica RAW.VIVES — Fase 0
 
 Fecha de la línea base: 16 de julio de 2026. Repositorio auditado:
-`alexgallery`. Web publicada: `https://gallery.aleviclop.dev/`.
+`alexgallery`. Web publicada: `https://rawvives.aleviclop.dev/`.
 
 ## 1. Resumen ejecutivo
 
