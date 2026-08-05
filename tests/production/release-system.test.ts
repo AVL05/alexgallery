@@ -13,11 +13,13 @@ test("production release configuration is explicit and privacy-safe", () => {
   const contact = read("components/contact.tsx");
   const ci = read(".github/workflows/ci.yml");
   const deploy = read(".github/workflows/deploy.yml");
+  const pagesFunction = read("functions/index.ts");
+  const wrangler = JSON.parse(read("wrangler.json"));
   const webManifest = manifest();
 
   assert.equal(siteUrl, "https://gallery.aleviclop.dev");
-  assert.equal(packageJson.packageManager, "pnpm@10.34.1");
-  assert.equal(read(".nvmrc").trim(), "22.22.2");
+  assert.equal(packageJson.packageManager, "pnpm@11.20.0");
+  assert.equal(read(".nvmrc").trim(), "24.18.0");
   assert.match(envExample, /NEXT_PUBLIC_BASE_URL=/);
   assert.match(envExample, /NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=/);
   assert.doesNotMatch(envExample, /d72eeacd/);
@@ -31,4 +33,9 @@ test("production release configuration is explicit and privacy-safe", () => {
   assert.match(ci, /pnpm install --frozen-lockfile/);
   assert.match(deploy, /workflow_dispatch/);
   assert.doesNotMatch(deploy, /push:/);
+  assert.match(deploy, /pnpm deploy:pages/);
+  assert.equal(wrangler.pages_build_output_dir, "./out");
+  assert.equal(wrangler.main, undefined);
+  assert.match(pagesFunction, /getRootLocaleRedirect/);
+  assert.match(pagesFunction, /context\.next\(\)/);
 });

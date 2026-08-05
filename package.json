@@ -2,17 +2,17 @@
   "name": "alexgallery",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@10.34.1",
+  "packageManager": "pnpm@11.20.0",
   "engines": {
-    "node": ">=22.22.2 <23",
-    "pnpm": ">=10.34.1 <11"
+    "node": ">=24.18.0 <25",
+    "pnpm": ">=11.20.0 <12"
   },
   "scripts": {
     "dev": "next dev",
     "build": "pnpm validate-photo-process && next build && pnpm prune-private-assets",
     "optimize-images": "tsx scripts/optimize-images.ts",
     "prepare-photo-process": "tsx scripts/prepare-photo-process.ts",
-    "preview": "wrangler dev --port 8788",
+    "preview": "wrangler pages dev --port 8788",
     "start": "pnpm preview",
     "typecheck": "tsc --noEmit",
     "lint": "pnpm typecheck",
@@ -21,7 +21,7 @@
     "prune-private-assets": "tsx scripts/prune-private-assets.ts",
     "export": "next build",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
-    "deploy:wrangler": "pnpm run build && wrangler deploy"
+    "deploy:pages": "pnpm run build && wrangler pages deploy --branch main"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -47,20 +47,11 @@
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "@types/sharp": "^0.32.0",
     "@types/three": "^0.185.4",
     "postcss": "^8.5.25",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.7",
     "typescript": "^7.0.2",
     "wrangler": "4.118.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
-      "@img/sharp-win32-x64",
-      "workerd"
-    ]
   }
 }

@@ -1,20 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "alexgallery",
-  "main": "./worker/index.ts",
-  "compatibility_date": "2025-12-21",
-  "compatibility_flags": ["nodejs_compat"],
-  "routes": [
-    {
-      "pattern": "gallery.aleviclop.dev",
-      "custom_domain": true
-    }
-  ],
-  "assets": {
-    "directory": "./out",
-    "binding": "ASSETS",
-    "run_worker_first": ["/"],
-    "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
-  }
+  "pages_build_output_dir": "./out",
+  "compatibility_date": "2026-08-05"
 }

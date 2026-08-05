@@ -6,6 +6,8 @@ Todos los cambios relevantes de raw.vives se documentan aquí. El proyecto sigue
 
 ### Added
 
+- Cloudflare Pages Function para resolver el idioma de la ruta raíz.
+- Configuración `pnpm-workspace.yaml` con builds de dependencias permitidos de forma explícita.
 - CI reproducible para push y pull request.
 - Pipeline manual de producción con smoke tests.
 - Manifest, iconos y página de privacidad bilingüe.
@@ -14,8 +16,9 @@ Todos los cambios relevantes de raw.vives se documentan aquí. El proyecto sigue
 
 ### Changed
 
-- Runtime fijado en Node 22.22.2 y pnpm 10.34.1.
-- Deployment unificado en Cloudflare Workers Static Assets.
+- Runtime actualizado a Node 24.18.0 LTS y pnpm 11.20.0.
+- Deployment migrado de Workers Static Assets a Cloudflare Pages.
+- Tipos de Sharp integrados; eliminado el paquete `@types/sharp` deprecado.
 - URL pública centralizada y metadata final normalizada.
 - Caché y headers ampliados por clase de recurso.
 - Formulario configurado mediante variable de build.

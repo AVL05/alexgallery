@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Workers
+name: Deploy to Cloudflare Pages
 
 on:
   workflow_dispatch:
@@ -46,10 +46,10 @@ jobs:
           test -n "$CLOUDFLARE_ACCOUNT_ID"
 
       - name: Validate and deploy
-        run: pnpm deploy:wrangler
+        run: pnpm deploy:pages
 
       - name: Record deployment identifiers
-        run: pnpm exec wrangler deployments list --json
+        run: pnpm exec wrangler pages deployment list --project-name alexgallery --json
 
       - name: Smoke test canonical routes
         shell: bash

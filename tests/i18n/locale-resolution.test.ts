@@ -8,7 +8,7 @@ import {
   resolveAcceptLanguage,
   resolveVisitorLocale,
 } from "@/lib/i18n/locale-routing";
-import worker from "@/worker/index";
+import { onRequest } from "@/functions/index";
 
 const spanishHeaders = ["es", "es-ES", "es-MX", "es-AR"];
 const englishFallbackHeaders = ["en-US", "fr-FR", "de-DE", "ca-ES", "zz-ZZ"];
@@ -34,7 +34,10 @@ test("root redirect is temporary, preserves query and never loops localized rout
   assert.equal(getRootLocaleRedirect(new Request("https://gallery.aleviclop.dev/es")), null);
   assert.equal(getRootLocaleRedirect(new Request("https://gallery.aleviclop.dev/en")), null);
 
-  const response = await worker.fetch(root, { ASSETS: { fetch: () => Promise.resolve(new Response("asset")) } });
+  const response = await onRequest({
+    request: root,
+    next: () => Promise.resolve(new Response("asset")),
+  });
   assert.equal(response.status, 307);
   assert.equal(response.headers.get("location"), "https://gallery.aleviclop.dev/es?ref=portfolio");
   assert.equal(response.headers.get("cache-control"), "private, no-store");
@@ -44,12 +47,12 @@ test("root redirect is temporary, preserves query and never loops localized rout
 
 test("non-root paths are delegated unchanged to static assets", async () => {
   let delegated = "";
-  const response = await worker.fetch(new Request("https://gallery.aleviclop.dev/en?ref=x"), {
-    ASSETS: {
-      fetch(request) {
-        delegated = request.url;
-        return Promise.resolve(new Response("asset", { status: 200 }));
-      },
+  const request = new Request("https://gallery.aleviclop.dev/en?ref=x");
+  const response = await onRequest({
+    request,
+    next() {
+      delegated = request.url;
+      return Promise.resolve(new Response("asset", { status: 200 }));
     },
   });
   assert.equal(response.status, 200);

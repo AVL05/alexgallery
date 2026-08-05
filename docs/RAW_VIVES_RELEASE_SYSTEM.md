@@ -10,11 +10,11 @@ Fase 11 dejó rendimiento, accesibilidad y fallbacks validados en cuatro commits
 
 ## 3. Hosting
 
-Cloudflare Workers Static Assets con `out/` como directorio servido. El workflow antiguo de Pages era inconsistente y fallaba por caché npm frente a lockfile pnpm.
+Cloudflare Pages con `out/` como directorio servido y `functions/index.ts` limitada a la resolución de idioma de `/`. La instalación usa pnpm de forma consistente en local, CI y Pages.
 
 ## 4. Entornos
 
-Local (`next dev`), preview de artefacto (`wrangler dev`) y producción (Worker custom domain). No existe staging persistente.
+Local (`next dev`), preview de artefacto (`wrangler pages dev`) y producción (Pages custom domain). Las ramas pueden generar previews efímeras; no existe staging persistente.
 
 ## 5. Variables
 
@@ -86,7 +86,7 @@ Se define un mínimo de disponibilidad, TLS, rutas y formulario; no se contrata 
 
 ## 22. Logs
 
-GitHub Actions y Cloudflare ofrecen evidencia operativa. `wrangler tail` queda para diagnóstico autorizado; evitar PII y retención innecesaria.
+GitHub Actions y Cloudflare ofrecen evidencia operativa. `wrangler pages deployment tail` queda para diagnóstico autorizado de Pages Functions; evitar PII y retención innecesaria.
 
 ## 23. Source maps
 
@@ -162,7 +162,7 @@ Plan, timeline y voz entregados; no se grabó ni publicó un vídeo.
 
 ## 41. Rollback
 
-Registrar version ID estable y usar `wrangler rollback <VERSION_ID>`; validar dominio después. Static Assets no tiene migraciones de datos propias.
+Registrar el deployment estable y usar el rollback de Cloudflare Pages; validar dominio después. El sitio no tiene migraciones de datos propias.
 
 ## 42. Smoke tests
 
@@ -192,9 +192,9 @@ El checklist separa checks técnicos completados de acciones externas pendientes
 
 | Comprobación | Resultado |
 | --- | --- |
-| Node / pnpm / Wrangler | 22.22.2 / 10.34.1 / 4.112.0 |
+| Node / pnpm / Wrangler | 24.18.0 / 11.20.0 / 4.118.0 |
 | Typecheck / lint | Correctos |
-| Vitest | 67/67 |
+| Node Test Runner | 112/112 |
 | Build | 73 rutas; 70 HTML |
 | Sitemap | 63 URLs |
 | Output | 40.983.236 bytes |

@@ -1,0 +1,9 @@
+allowBuilds:
+  "@img/sharp-win32-x64": true
+  esbuild: true
+  sharp: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - "@types/three@0.185.4"
+  - "electron-to-chromium@1.5.401"
+  - "tsx@4.23.7"

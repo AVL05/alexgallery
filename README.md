@@ -22,11 +22,11 @@ Transformar una galería personal en una pieza de portfolio con criterio editori
 
 ## Stack
 
-Next.js 16 App Router, React 19, TypeScript estricto, Tailwind CSS 4, GSAP, Three.js, Vitest, Sharp, pnpm y Cloudflare Workers Static Assets.
+Next.js 16 App Router, React 19, TypeScript estricto, Tailwind CSS 4, GSAP, Three.js, Sharp, pnpm y Cloudflare Pages.
 
 ## Arquitectura
 
-El proyecto usa `output: "export"`: no depende de un servidor Next.js en ejecución. `app/` define rutas y metadata; `components/` contiene sistemas de interfaz; `lib/` concentra datos, SEO y reglas puras; `dictionaries/` resuelve la i18n manual; `scripts/` construye y valida la tubería fotográfica. Wrangler sirve el directorio `out/`.
+El proyecto usa `output: "export"`: no depende de un servidor Next.js en ejecución. `app/` define rutas y metadata; `components/` contiene sistemas de interfaz; `lib/` concentra datos, SEO y reglas puras; `dictionaries/` resuelve la i18n manual; `scripts/` construye y valida la tubería fotográfica. Cloudflare Pages sirve `out/` y una Pages Function resuelve el idioma de `/`.
 
 Más detalle en [arquitectura](docs/RAW_VIVES_ARCHITECTURE.md), [recorrido editorial](docs/RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md), [curación de la home](docs/RAW_VIVES_CURATION_SYSTEM.md), [sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md) y [sistema de release](docs/RAW_VIVES_RELEASE_SYSTEM.md).
 
@@ -64,7 +64,7 @@ Las imágenes usan variantes responsivas y carga diferida salvo contenido priori
 
 ## Instalación
 
-Requisitos: Node `22.22.2`, pnpm `10.34.1` y Git.
+Requisitos: Node `24.18.0`, pnpm `11.20.0` y Git.
 
 ```powershell
 corepack enable
@@ -93,7 +93,7 @@ Ambas se integran en la build estática y, por tanto, son públicas. La clave de
 | `pnpm typecheck` / `pnpm lint` | TypeScript estricto |
 | `pnpm test` | Suite Vitest |
 | `pnpm build` | Valida fotos, exporta y elimina fuentes del artefacto |
-| `pnpm deploy:wrangler` | Build y despliegue manual a Cloudflare |
+| `pnpm deploy:pages` | Build y despliegue manual a Cloudflare Pages |
 
 ## Desarrollo, tests y build
 
@@ -111,7 +111,7 @@ No existe una suite E2E automatizada; los recorridos críticos se validan ademá
 
 ## Despliegue
 
-El workflow CI valida cada push y pull request a `main`. Producción solo se despliega mediante `workflow_dispatch`, usando el environment `production` y sus variables. El procedimiento, DNS, rollback y smoke tests están en [RAW_VIVES_DEPLOYMENT.md](docs/RAW_VIVES_DEPLOYMENT.md).
+El workflow CI valida cada push y pull request a `main`. Producción se despliega en Cloudflare Pages mediante `workflow_dispatch`, usando el environment `production` y sus variables. El procedimiento, dominio, rollback y smoke tests están en [RAW_VIVES_DEPLOYMENT.md](docs/RAW_VIVES_DEPLOYMENT.md).
 
 ## Estructura
 

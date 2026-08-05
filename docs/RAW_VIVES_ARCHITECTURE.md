@@ -9,8 +9,8 @@ añadió el sistema visual sin cambiar rutas, catálogo, idiomas ni despliegue.
 La aplicación usa Next.js 16 App Router y se exporta completamente a archivos
 estáticos. No existe servidor de aplicación en producción. Durante `pnpm build`,
 Next genera la home raíz, dos homes localizadas, dos políticas, 60 fichas de
-fotografía, metadata y archivos SEO. Wrangler publica `out/` como Cloudflare
-Assets.
+fotografía, metadata y archivos SEO. Cloudflare Pages publica `out/` y una Pages
+Function limita su ejecución a la resolución de idioma de `/`.
 
 La frontera principal es:
 
@@ -21,7 +21,7 @@ Catálogo TypeScript + diccionarios JSON + metadatos de imágenes
                             |
           HTML/React estático + componentes cliente interactivos
                             |
-                    Cloudflare Assets
+                     Cloudflare Pages
 ```
 
 Los Server Components cargan diccionarios y datos durante el build. La home pasa
@@ -138,7 +138,7 @@ español usa el catálogo base. No se duplica el array estable ni se cambian IDs
 
 ## Cómo ejecutar el proyecto
 
-Requisitos validados: Node.js 22 y pnpm 10.
+Requisitos validados: Node.js 24.18.0 y pnpm 11.20.0.
 
 ```powershell
 pnpm install --frozen-lockfile
@@ -189,14 +189,14 @@ restricciones de dominio configuradas en el proveedor.
 
 ## Cómo desplegar
 
-El despliegue deducido y documentado es Cloudflare mediante Wrangler:
+El despliegue documentado es Cloudflare Pages mediante Wrangler:
 
 ```powershell
-pnpm deploy:wrangler
+pnpm deploy:pages
 ```
 
-Este comando construye y ejecuta `wrangler deploy --assets=./out`. `wrangler.json`
-publica en el dominio `gallery.aleviclop.dev`. `public/_headers` se copia al
+Este comando construye y ejecuta `wrangler pages deploy`. `wrangler.json`
+declara `out/` como artefacto Pages. `public/_headers` se copia al
 artefacto y define caché/CSP. No usar `next start` como simulación fiel de
 producción: el destino real son archivos estáticos.
 
@@ -227,7 +227,7 @@ handoff explícito cuando la intro termina, se salta o se omite. Su timeline y s
 
 ## Integraciones externas
 
-- Cloudflare Assets y dominio personalizado.
+- Cloudflare Pages, Pages Functions y dominio personalizado.
 - Web3Forms para contacto/licencias.
 - Instagram y correo mediante enlaces.
 - Google Fonts a través de `next/font` durante el build.
@@ -244,7 +244,7 @@ No hay analítica, CMS, almacenamiento, autenticación ni API propia confirmados
 - `app/[locale]/photo/[id]/page.tsx`: genera 60 rutas y metadata.
 - `app/layout.tsx`: metadata global, CSP indirecta, fuentes y `lang`.
 - `public/_headers`: errores pueden bloquear scripts, imágenes o Web3Forms.
-- `wrangler.json`: dominio y directorio de publicación.
+- `wrangler.json`: proyecto Pages, fecha de compatibilidad y directorio de publicación.
 - Intro/home: mantener la home en HTML, el criterio de sesión y el timeout seguro.
 - Hero: conservar `primaryId`/`fallbackId`, prioridad LCP, un único `h1` y el
   contrato explícito de handoff con la intro.

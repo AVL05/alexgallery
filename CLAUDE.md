@@ -11,14 +11,14 @@ pnpm typecheck        # validación TypeScript (también alias: pnpm lint)
 pnpm optimize-images  # regenerar WebP/AVIF, blur placeholders y EXIF desde public/photos/raw
 pnpm validate-photo-process # validar configuración y recursos de proceso auténticos
 pnpm prepare-photo-process -- --id <id> --stage <original|corrected> --input <export>
-pnpm deploy:wrangler  # build + deploy a Cloudflare via Wrangler assets
+pnpm deploy:pages     # build + deploy a Cloudflare Pages
 ```
 
 Las pruebas automatizadas usan Node Test Runner mediante `pnpm test`.
 
 ## Arquitectura
 
-**Exportación estática** (`output: "export"` en `next.config.mjs`). No hay runtime de servidor en producción; todo se sirve como HTML/JS/CSS estático desde `out/` vía Cloudflare.
+**Exportación estática** (`output: "export"` en `next.config.mjs`). El sitio se sirve desde `out/` en Cloudflare Pages; `functions/index.ts` solo resuelve el idioma de la ruta raíz.
 
 **i18n manual** con App Router: la ruta raíz (`app/page.tsx`) redirige a `/es` por defecto. Las páginas viven bajo `app/[locale]/` y reciben el diccionario cargado en el servidor (RSC), que pasan como prop al componente cliente (`home-client.tsx`). Los locales soportados son `es` y `en`, definidos en `lib/dictionary.ts`.
 
@@ -37,4 +37,4 @@ El custom image loader (`lib/image-loader.ts`) mapea los anchos que pide Next.js
 
 **Animaciones**: GSAP + ScrollTrigger para el parallax del texto de fondo y la entrada de contenido. Lenis para smooth scroll (`components/smooth-scroll.tsx`). Framer Motion disponible pero GSAP es el principal. Siempre respetar `prefers-reduced-motion`.
 
-**Despliegue**: Cloudflare via `wrangler deploy --assets=./out`. La variable de entorno `NEXT_PUBLIC_BASE_URL` debe apuntar al dominio de producción (`https://gallery.aleviclop.dev`).
+**Despliegue**: Cloudflare Pages mediante `wrangler pages deploy`. La variable `NEXT_PUBLIC_BASE_URL` debe apuntar al dominio de producción (`https://gallery.aleviclop.dev`).

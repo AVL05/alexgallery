@@ -2,15 +2,15 @@
 
 ## 1. Plataforma
 
-Cloudflare Workers Static Assets sirve un export estático de Next.js. `wrangler.json` es la fuente de verdad del servicio `alexgallery` y del dominio `gallery.aleviclop.dev`.
+Cloudflare Pages sirve el export estático de Next.js. `wrangler.json` define el proyecto `alexgallery`, el directorio `out/` y la fecha de compatibilidad de Pages Functions.
 
 ## 2. Requisitos
 
-Git, Node 22.22.2, Corepack, pnpm 10.34.1, acceso a Cloudflare y permisos sobre el GitHub environment `production`.
+Git, Node 24.18.0, Corepack, pnpm 11.20.0, acceso a Cloudflare Pages y permisos sobre el GitHub environment `production`.
 
 ## 3. Versiones
 
-`.nvmrc`, `packageManager`, `engines` y el lockfile fijan el contrato. Wrangler está anclado a `4.112.0`.
+`.nvmrc`, `packageManager`, `engines` y el lockfile fijan el contrato. Wrangler está anclado a `4.118.0`.
 
 ## 4. Variables
 
@@ -70,7 +70,7 @@ El canonical es `https://gallery.aleviclop.dev`. No cambiarlo sin actualizar var
 
 ## 9. DNS
 
-El subdominio está proxied por Cloudflare. La route `custom_domain` vincula el Worker. Verificar desde una red externa tras cada cambio DNS.
+El subdominio está proxied por Cloudflare y asociado como dominio personalizado del proyecto Pages. Verificar desde una red externa tras cada cambio DNS.
 
 ## 10. HTTPS
 
@@ -127,20 +127,18 @@ El selector ES/EN guarda la cookie con `Path=/`, `Max-Age=31536000`, `SameSite=L
 
 ## 19. Preview
 
-Local: `pnpm preview`. Remoto recomendado: `pnpm exec wrangler versions upload --preview-alias release-candidate`, con Preview URLs habilitadas y, si procede, Cloudflare Access. Una preview URL es pública por defecto y actualmente no ofrece logs de Worker; no usar datos reales.
+Local: `pnpm preview`. Remoto: `pnpm exec wrangler pages deploy --branch release-candidate`; Pages genera una URL de preview y un alias de rama. No usar datos reales en previews públicas.
 
 ## 20. Producción
 
-Abrir Actions → `Deploy production` → `Run workflow` desde `main`. El job rechaza
-otras ramas, serializa despliegues sin cancelar uno activo, repite validaciones,
-construye, despliega y hace smoke de ES, EN, robots, sitemap y 404. CI cancela
-validaciones obsoletas del mismo ref. Checkout y setup de Node usan sus majors
-estables compatibles y la caché pnpm sigue siendo explícita. No usar push como
-disparador de producción.
+Abrir Actions → `Deploy to Cloudflare Pages` → `Run workflow` desde `main`. El job
+rechaza otras ramas, serializa despliegues, repite validaciones, construye, publica
+`out/` y hace smoke de ES, EN, robots, sitemap y 404. No usar push como disparador
+del workflow manual de producción.
 
 ## 21. Logs
 
-Revisar el run de GitHub y el panel de Workers. Para diagnóstico en tiempo real: `pnpm exec wrangler tail`. Static Assets no contiene lógica de aplicación propia; observar sobre todo estados HTTP, deployment y cuota.
+Revisar el run de GitHub y el detalle del deployment Pages. Para Pages Functions: `pnpm exec wrangler pages deployment tail --project-name alexgallery --environment production`. Observar la función de `/`, estados HTTP y errores de build.
 
 ## 22. Monitorización
 
@@ -148,13 +146,13 @@ Mínimo operativo: disponibilidad de `/es`, `/en`, una foto, `robots.txt` y `sit
 
 ## 23. Rollback
 
-Antes de publicar, anotar el version ID estable con `pnpm exec wrangler deployments list`. Ante regresión: detener cambios, ejecutar `pnpm exec wrangler rollback <VERSION_ID> --message "rollback phase 12"`, comprobar el dominio y documentar el incidente. Cloudflare crea inmediatamente un nuevo deployment con la versión elegida.
+Antes de publicar, anotar el deployment estable con `pnpm exec wrangler pages deployment list --project-name alexgallery`. Ante regresión, usar Rollback en Pages sobre ese deployment, comprobar el dominio y documentar el incidente.
 
 ## 24. Verificación
 
 ```powershell
 pnpm check
-pnpm exec wrangler deploy --dry-run
+pnpm exec wrangler pages functions build --outdir .wrangler/tmp/pages-functions
 curl.exe -I https://gallery.aleviclop.dev/es
 curl.exe https://gallery.aleviclop.dev/robots.txt
 curl.exe -I https://gallery.aleviclop.dev/es/photo/21
@@ -206,10 +204,10 @@ El environment `production` mantiene únicamente `CLOUDFLARE_API_TOKEN`, `CLOUDF
 
 ## Referencias operativas
 
-- [Cloudflare Static Assets headers](https://developers.cloudflare.com/workers/static-assets/headers/)
-- [Cloudflare local development](https://developers.cloudflare.com/workers/local-development/)
-- [Cloudflare Preview URLs](https://developers.cloudflare.com/workers/versions-and-deployments/preview-urls/)
-- [Cloudflare Workers rollbacks](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/)
-- [Cloudflare Workers logs](https://developers.cloudflare.com/workers/observability/logs/)
+- [Cloudflare Pages headers](https://developers.cloudflare.com/pages/configuration/headers/)
+- [Cloudflare Pages local development](https://developers.cloudflare.com/pages/functions/local-development/)
+- [Cloudflare Pages preview deployments](https://developers.cloudflare.com/pages/configuration/preview-deployments/)
+- [Cloudflare Pages rollbacks](https://developers.cloudflare.com/pages/configuration/rollbacks/)
+- [Cloudflare Pages deployment logs](https://developers.cloudflare.com/pages/configuration/debugging-pages/)
 - [Cloudflare Single Redirects](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/)
 - [Cloudflare wildcard redirects](https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/#wildcard-url-redirect)
