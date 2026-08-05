@@ -2,7 +2,7 @@
 
 ## 1. Plataforma
 
-Cloudflare Pages sirve el export estático de Next.js. `wrangler.json` define el proyecto `alexgallery`, el directorio `out/` y la fecha de compatibilidad de Pages Functions.
+Cloudflare Pages sirve el export estático de Next.js. `wrangler.json` define el proyecto `alexgallery`, el directorio `out/` y la fecha de compatibilidad de Pages Functions. El subdominio técnico asignado es `alexgallery-83x.pages.dev`; el dominio canónico continúa siendo `gallery.aleviclop.dev`.
 
 ## 2. Requisitos
 
