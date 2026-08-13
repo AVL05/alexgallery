@@ -88,7 +88,8 @@ test("all categories are represented without architecture dominating", () => {
   );
   assert.deepEqual(counts, {
     Fauna: 2,
-    Arquitectura: 2,
+    Arquitectura: 1,
+    Urbano: 2,
     Paisaje: 3,
     Personas: 2,
     Meteorología: 2,
@@ -108,6 +109,8 @@ test("Spanish and English narrative content, categories and alt text are localiz
   assert.notEqual(spanish.selected[0]?.title, english.selected[0]?.title);
   assert.equal(es.gallery.categories.Personas, "Personas");
   assert.equal(en.gallery.categories.Personas, "People");
+  assert.equal(es.gallery.categories.Urbano, "Urbano");
+  assert.equal(en.gallery.categories.Urbano, "Urban");
 });
 
 test("Personas is the canonical category while the public retrato slug remains stable", () => {
@@ -144,7 +147,7 @@ test("validation reports missing IDs, conflicts, wrong categories and invalid co
   assert.match(message, /featuredStory usa photo-999/);
   assert.match(message, /photo-14 aparece en:/);
   assert.match(message, /photo-21 está duplicada dentro de selectedWork/);
-  assert.match(message, /chapters\.Fauna usa photo-48, cuya categoría es Arquitectura/);
+  assert.match(message, /chapters\.Fauna usa photo-48, cuya categoría es Urbano/);
   assert.match(message, /Selected Work debe contener al menos tres fotografías/);
 
   const tooMany = withCuration({ selectedPhotoIds: [4, 12, 13, 16, 19, 23, 24] });

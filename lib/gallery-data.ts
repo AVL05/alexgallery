@@ -4,6 +4,7 @@ export const categories = [
   "Todo",
   "Fauna",
   "Arquitectura",
+  "Urbano",
   "Paisaje",
   "Personas",
   "Meteorología",
@@ -134,7 +135,7 @@ export const photos = [
   {
     id: 21,
     title: "Última parada: la noche",
-    category: "Arquitectura",
+    category: "Urbano",
     featured: true,
     year: "2024",
     image: "/21.webp",
@@ -145,7 +146,7 @@ export const photos = [
   {
     id: 23,
     title: "Luz, historia y espíritu navideño",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2024",
     image: "/23.webp",
     color: "chart-3",
@@ -154,7 +155,7 @@ export const photos = [
   {
     id: 24,
     title: "Entre espirales y campanadas",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2024",
     image: "/24.webp",
     color: "accent",
@@ -174,7 +175,7 @@ export const photos = [
   {
     id: 27,
     title: "Donde el cielo se encuentra con la ciudad",
-    category: "Arquitectura",
+    category: "Personas",
     year: "2024",
     image: "/27.webp",
     color: "accent",
@@ -184,7 +185,7 @@ export const photos = [
   {
     id: 29,
     title: "La flecha dorada entre pasos urbanos",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2024",
     image: "/29.webp",
     color: "chart-3",
@@ -205,7 +206,7 @@ export const photos = [
   {
     id: 31,
     title: "Aveiro, la Venecia portuguesa",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2024",
     image: "/31.webp",
     color: "secondary",
@@ -247,7 +248,7 @@ export const photos = [
   {
     id: 43,
     title: "La estación del silencio",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2025",
     image: "/43.webp",
     color: "chart-3",
@@ -277,7 +278,7 @@ export const photos = [
   {
     id: 48,
     title: "Entrada imaginaria",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2025",
     image: "/48.webp",
     color: "secondary",
@@ -287,7 +288,7 @@ export const photos = [
   {
     id: 49,
     title: "Flores, sol y motor clásico",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2025",
     image: "/49.webp",
     color: "chart-3",
@@ -297,7 +298,7 @@ export const photos = [
   {
     id: 50,
     title: "Entre ladrillos y cambio",
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2025",
     image: "/50.webp",
     color: "secondary",

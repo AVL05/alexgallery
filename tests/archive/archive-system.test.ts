@@ -62,6 +62,14 @@ test("archive URL parsing validates values and serialization removes defaults", 
 test("category links remain localized and shareable without JavaScript", () => {
   assert.equal(getCategoryArchiveHref("es", "Meteorología"), "/es?category=meteorologia#gallery");
   assert.equal(getCategoryArchiveHref("en", "Personas"), "/en?category=retrato#gallery");
+  assert.equal(getCategoryArchiveHref("es", "Urbano"), "/es?category=urbano#gallery");
+});
+
+test("architecture is reserved for structures and urban scenes use their own category", () => {
+  assert.equal(photos.filter((photo) => photo.category === "Arquitectura").length, 4);
+  assert.equal(photos.filter((photo) => photo.category === "Urbano").length, 9);
+  assert.equal(photos.find((photo) => photo.id === 49)?.category, "Urbano");
+  assert.equal(photos.find((photo) => photo.id === 27)?.category, "Personas");
 });
 
 test("search is accent and case insensitive across real searchable fields", () => {
@@ -82,11 +90,11 @@ test("search is accent and case insensitive across real searchable fields", () =
 test("filters combine and sorting preserves deterministic editorial fallbacks", () => {
   const filtered = selectArchivePhotos(photos, {
     ...defaultArchiveState,
-    category: "Arquitectura",
+    category: "Urbano",
     year: "2024",
     sort: "title-asc",
   });
-  assert.equal(filtered.length, 8);
+  assert.equal(filtered.length, 5);
   assert.deepEqual(
     filtered.map((photo) => photo.title),
     [...filtered.map((photo) => photo.title)].sort((a, b) =>
@@ -118,7 +126,8 @@ test("facet counts are conditioned by the other active filters", () => {
   const state = { ...defaultArchiveState, year: "2024" };
   const categoryCounts = getArchiveCategoryCounts(photos, state, categories);
   assert.equal(categoryCounts.Todo, 11);
-  assert.equal(categoryCounts.Arquitectura, 8);
+  assert.equal(categoryCounts.Arquitectura, 2);
+  assert.equal(categoryCounts.Urbano, 5);
 
   const yearCounts = getArchiveYearCounts(
     photos,

@@ -56,6 +56,8 @@ test("public microcopy stays concise and localized", () => {
   const navigation = readFileSync("components/navigation.tsx", "utf8");
   const footer = readFileSync("components/footer.tsx", "utf8");
   const intro = readFileSync("components/intro/intro-metadata.tsx", "utf8");
+  const contact = readFileSync("components/contact.tsx", "utf8");
+  const privacy = readFileSync("app/[locale]/privacidad/page.tsx", "utf8");
 
   assert.equal(es.home.featured.label, "Fotografía destacada");
   assert.equal(en.home.featured.label, "Featured photograph");
@@ -68,6 +70,12 @@ test("public microcopy stays concise and localized", () => {
   assert.equal(es.seo.title, "raw.vives | Archivo visual");
   assert.equal(es.gallery.endDescription, "Una colección abierta a nuevas escenas.");
   assert.equal(en.gallery.endDescription, "A collection open to new scenes.");
+  assert.equal(es.photoDetail.openImage, "Abrir imagen");
+  assert.equal(es.photoDetail.keyboardHelp, "← → Navegar entre fotografías");
+  assert.equal(es.series.progressLabel, "Progreso de la serie");
+  assert.doesNotMatch(contact, /raw\.vives \/ Contact<\/p>/);
+  assert.match(contact, /raw\.vives \/ \{dictionary\.title\}/);
+  assert.match(privacy, /raw\.vives \/ \{spanish \? "Privacidad" : "Privacy"\}/);
   assert.match(navigation, /Ver en inglés/);
   assert.match(navigation, /View in Spanish/);
   assert.match(footer, /Archivo visual de Alex Vicente/);

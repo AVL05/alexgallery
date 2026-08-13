@@ -24,9 +24,9 @@ test("all 31 photographs have stable localized English content and fallback-read
 });
 
 test("context navigation reconstructs combined filters without becoming circular", () => {
-  const state = { ...defaultArchiveState, category: "Arquitectura" as const, year: "2024", sort: "title-asc" as const };
+  const state = { ...defaultArchiveState, category: "Urbano" as const, year: "2024", sort: "title-asc" as const };
   const contextual = resolvePhotoNavigation(esPhotos, 21, state);
-  assert.equal(contextual.collection.length, 8);
+  assert.equal(contextual.collection.length, 5);
   assert.equal(contextual.isContextual, true);
   assert.equal(contextual.collection[contextual.index]?.id, 21);
   const first = resolvePhotoNavigation(esPhotos, contextual.collection[0]!.id, state);

@@ -10,6 +10,7 @@ export interface ExifData {
 export type PhotoCategory =
   | "Fauna"
   | "Arquitectura"
+  | "Urbano"
   | "Paisaje"
   | "Personas"
   | "Meteorología"

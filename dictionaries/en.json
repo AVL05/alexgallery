@@ -39,13 +39,14 @@
       "cta": "Open photograph"
     },
     "chapters": {
-      "title": "Five ways of looking.",
+      "title": "Six ways of looking.",
       "description": "The archive is organised through encounters, spaces and conditions of light.",
       "action": "Explore chapter",
       "empty": "There are no chapters available at the moment.",
       "descriptions": {
         "Fauna": "Brief encounters with living forms that do not pose.",
-        "Arquitectura": "Structures, movement and traces of inhabited space.",
+        "Arquitectura": "Buildings and structures that hold the image on their own.",
+        "Urbano": "Streets, movement and scenes shaped by the rhythm of the city.",
         "Paisaje": "Territories whose scale asks us to look more slowly.",
         "Personas": "Human presences within a larger scene.",
         "Meteorología": "Atmosphere as matter, tension and event."
@@ -144,6 +145,7 @@
       "Todo": "All",
       "Fauna": "Wildlife",
       "Arquitectura": "Architecture",
+      "Urbano": "Urban",
       "Paisaje": "Landscape",
       "Personas": "People",
       "Meteorología": "Weather",
@@ -171,8 +173,8 @@
     "noPrevious": "Start of sequence",
     "noNext": "End of sequence",
     "imageError": "The photograph is unavailable.",
-    "openImage": "Open optimized image",
-    "keyboardHelp": "Use the left and right arrow keys when focus is not inside a control.",
+    "openImage": "Open image",
+    "keyboardHelp": "← → Navigate photographs",
     "creator": "Photograph by Alex Vicente",
     "camera": "Camera",
     "lens": "Lens",
@@ -196,7 +198,7 @@
     "nextSeries": "Next series",
     "closingLabel": "End of series",
     "closingTitle": "The sequence ends; the archive continues.",
-    "progressLabel": "The series {title} contains {total} photographs."
+    "progressLabel": "Series progress"
   },
   "photoProcess": {
     "title": "Creative process",

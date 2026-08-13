@@ -114,7 +114,7 @@ export default async function PrivacyPage({
             {spanish ? "Volver al inicio" : "Back to home"}
           </Link>
           <header className="mb-16 max-w-4xl border-b border-border pb-12 sm:mb-20 sm:pb-16">
-            <p className="rv-kicker mb-5">raw.vives / Privacy</p>
+            <p className="rv-kicker mb-5">raw.vives / {spanish ? "Privacidad" : "Privacy"}</p>
             <h1 className="rv-page-title mb-7">{spanish ? "Privacidad" : "Privacy"}</h1>
             <p className="rv-intro">
               {spanish

@@ -156,7 +156,7 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
     <section ref={containerRef} id="contact" className="rv-section overflow-hidden bg-background">
       <Container>
         <div className="contact-reveal mb-12 max-w-3xl md:mb-16">
-          <p className="rv-kicker mb-5">raw.vives / Contact</p>
+          <p className="rv-kicker mb-5">raw.vives / {dictionary.title}</p>
           <h2 className="rv-section-title mb-6">{dictionary.title}</h2>
           <p className="rv-intro">{dictionary.description}</p>
         </div>

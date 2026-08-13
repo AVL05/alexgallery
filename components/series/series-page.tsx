@@ -78,8 +78,6 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos }: {
   const nextRaw = getNextSeries(series.id);
   const nextSeries = nextRaw ? getLocalizedSeries(nextRaw, locale) : null;
   const nextCover = nextRaw ? resolveSeriesCover(nextRaw, photos) : null;
-  const progressLabel = dictionary.progressLabel.replace("{total}", String(series.photoIds.length)).replace("{title}", series.title);
-
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden pb-24 pt-32 lg:pb-36 lg:pt-40">
       <SeriesReturnFocus />
@@ -99,7 +97,7 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos }: {
           </div>
         </header>
 
-        <SeriesProgress total={series.photoIds.length} label={progressLabel} />
+        <SeriesProgress total={series.photoIds.length} label={dictionary.progressLabel} />
 
         {cover && openingBlock ? (
           <PhotoMotionGroup groupKey={`series-cover-${series.slug}`} editorial className="mt-14 lg:mt-20">

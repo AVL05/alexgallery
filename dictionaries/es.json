@@ -39,13 +39,14 @@
       "cta": "Abrir fotografía"
     },
     "chapters": {
-      "title": "Cinco formas de mirar.",
+      "title": "Seis formas de mirar.",
       "description": "El archivo se ordena por encuentros, espacios y condiciones de luz.",
       "action": "Explorar capítulo",
       "empty": "No hay capítulos disponibles en este momento.",
       "descriptions": {
         "Fauna": "Encuentros breves con formas de vida que no posan.",
-        "Arquitectura": "Estructuras, tránsito y huellas del espacio habitado.",
+        "Arquitectura": "Edificios y estructuras que sostienen por sí mismos la imagen.",
+        "Urbano": "Calles, desplazamientos y escenas donde la ciudad marca el ritmo.",
         "Paisaje": "Territorios donde la escala obliga a mirar más despacio.",
         "Personas": "Presencias humanas dentro de una escena mayor.",
         "Meteorología": "La atmósfera como materia, tensión y acontecimiento."
@@ -144,6 +145,7 @@
       "Todo": "Todo",
       "Fauna": "Fauna",
       "Arquitectura": "Arquitectura",
+      "Urbano": "Urbano",
       "Paisaje": "Paisaje",
       "Personas": "Personas",
       "Meteorología": "Meteorología",
@@ -171,8 +173,8 @@
     "noPrevious": "Inicio de la secuencia",
     "noNext": "Fin de la secuencia",
     "imageError": "La fotografía no está disponible.",
-    "openImage": "Abrir imagen optimizada",
-    "keyboardHelp": "Usa las flechas izquierda y derecha cuando el foco no esté en un control.",
+    "openImage": "Abrir imagen",
+    "keyboardHelp": "← → Navegar entre fotografías",
     "creator": "Fotografía de Alex Vicente",
     "camera": "Cámara",
     "lens": "Objetivo",
@@ -196,7 +198,7 @@
     "nextSeries": "Siguiente serie",
     "closingLabel": "Cierre de serie",
     "closingTitle": "La secuencia termina; el archivo continúa.",
-    "progressLabel": "La serie {title} contiene {total} fotografías."
+    "progressLabel": "Progreso de la serie"
   },
   "photoProcess": {
     "title": "Proceso creativo",

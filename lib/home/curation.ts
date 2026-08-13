@@ -13,6 +13,7 @@ export type HomeCuration = {
 export const homeChapterOrder = [
   "Fauna",
   "Arquitectura",
+  "Urbano",
   "Paisaje",
   "Personas",
   "Meteorología",
@@ -24,7 +25,8 @@ export const homeCuration = {
   expansivePhotoId: 3,
   chapterPhotoIds: {
     Fauna: 7,
-    Arquitectura: 48,
+    Arquitectura: 51,
+    Urbano: 50,
     Paisaje: 30,
     Personas: 44,
     Meteorología: 41,
@@ -41,6 +43,7 @@ export const alternateHomeCuration = {
   chapterPhotoIds: {
     Fauna: 1,
     Arquitectura: 6,
+    Urbano: 21,
     Paisaje: 30,
     Personas: 46,
     Meteorología: 3,

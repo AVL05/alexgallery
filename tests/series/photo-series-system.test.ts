@@ -156,7 +156,7 @@ test("sitemap includes localized public indexes and all published series without
 
 test("home, archive and detail integrations remain compact and progressive", () => {
   const homeIds = new Set([homeCuration.heroPhotoId, ...getHomeNarrativePhotoIds(), ...photoSeries.map((series) => series.coverPhotoId)]);
-  assert.equal(homeIds.size, 15);
+  assert.equal(homeIds.size, 16);
   assert.ok(photoSeries.every((series) => Number(series.coverPhotoId) !== Number(homeCuration.heroPhotoId)));
   assert.match(read("components/home/home-narrative.tsx"), /<HomeSeries/);
   assert.match(read("components/archive/archive-item.tsx"), /seriesLabel/);
