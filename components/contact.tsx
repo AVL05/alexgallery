@@ -364,8 +364,8 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
                 <span className="flex min-w-0 items-center gap-3"><Mail aria-hidden="true" className="size-4 shrink-0" /><span className="break-all">alexviclop@gmail.com</span></span>
                 <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
-              <a href="https://instagram.com/aleexx_005/" target="_blank" rel="noreferrer" className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
-                <span className="flex items-center gap-3"><span aria-hidden="true" className="font-mono text-[10px]">IG</span>@aleexx_005</span>
+              <a href="https://www.instagram.com/raw.vives/" target="_blank" rel="noreferrer" className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
+                <span className="flex items-center gap-3"><span aria-hidden="true" className="font-mono text-[10px]">IG</span>@raw.vives</span>
                 <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
             </div>

@@ -84,7 +84,7 @@ export function Footer({
           <div className="flex flex-col items-start md:col-span-3 md:items-end">
             <a
               className="rv-editorial-link"
-              href="https://instagram.com/aleexx_005/"
+              href="https://www.instagram.com/raw.vives/"
               target="_blank"
               rel="noreferrer"
               data-press-feedback

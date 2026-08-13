@@ -54,13 +54,13 @@
     },
     "selected": {
       "title": "Trabajo seleccionado",
-      "description": "Cuatro piezas individuales fuera de las series, elegidas por su variedad de ritmo y orientación.",
+      "description": "Cuatro fotografías individuales de distintas partes del archivo.",
       "cta": "Ver fotografía",
       "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible."
     },
     "series": {
       "title": "Historias en secuencia.",
-      "description": "Tres recorridos breves construidos con relaciones reales y afinidades editoriales documentadas.",
+      "description": "Tres recorridos fotográficos por lugares, momentos y encuentros.",
       "photographs": "fotografías",
       "cta": "Ver todas las series",
       "archiveCta": "Abrir archivo"
@@ -119,7 +119,7 @@
     "clearSearch": "Borrar búsqueda",
     "sortLabel": "Orden",
     "sort": {
-      "curated": "Orden editorial",
+      "curated": "Orden predeterminado",
       "newest": "Más recientes",
       "oldest": "Más antiguas",
       "titleAsc": "Título A—Z",
@@ -163,9 +163,8 @@
     "storyLabel": "Nota de archivo",
     "technicalData": "Datos técnicos",
     "related": "Obras relacionadas",
-    "relatedDescription": "Una selección que reserva continuidad de serie y mantiene variedad por categoría, año y proximidad editorial.",
+    "relatedDescription": "Más fotografías para seguir recorriendo el archivo.",
     "archiveContext": "Contexto del archivo",
-    "globalContext": "Orden editorial global",
     "seriesContext": "Contexto de serie",
     "photoIndex": "Fotografía {current} de {total}",
     "navigationLabel": "Navegación entre fotografías",
@@ -184,7 +183,7 @@
   "series": {
     "eyebrow": "Series fotográficas",
     "indexTitle": "Historias en secuencia.",
-    "indexIntroduction": "Conjuntos breves del archivo unidos por lugar confirmado o por una afinidad visual explícita.",
+    "indexIntroduction": "Series del archivo organizadas en torno a lugares y temas recurrentes.",
     "photographs": "fotografías",
     "period": "Periodo",
     "location": "Localización",

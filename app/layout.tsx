@@ -145,7 +145,7 @@ export default function RootLayout({
                     "Personal visual archive by Alex Vicente, including photography, travel images, daily scenes, and digital captures.",
                   jobTitle: "Visual archivist",
                   sameAs: [
-                    "https://instagram.com/aleexx_005/",
+                    "https://www.instagram.com/raw.vives/",
                     "https://aleviclop.dev/",
                   ],
                   email: "mailto:alexviclop@gmail.com",

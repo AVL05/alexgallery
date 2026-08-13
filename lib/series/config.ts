@@ -9,8 +9,8 @@ export const photoSeries = [
       en: "Porto, from river to night",
     },
     description: {
-      es: "Cinco escenas de Oporto conectadas por el río, la silueta urbana y el paso de la luz del día a la noche. Todas pertenecen al mismo lugar y al archivo de 2024.",
-      en: "Five Porto scenes connected by the river, the city silhouette and the shift from daylight into night. All belong to the same place and the 2024 archive.",
+      es: "Cinco escenas de Oporto, desde el río y la silueta urbana hasta la llegada de la noche.",
+      en: "Five scenes of Porto, from the river and city skyline to nightfall.",
     },
     coverPhotoId: 21,
     photoIds: [21, 19, 26, 27, 24],
@@ -30,8 +30,8 @@ export const photoSeries = [
     slug: "atlantic-stone",
     title: { es: "Piedra atlántica", en: "Atlantic stone" },
     description: {
-      es: "Una secuencia editorial entre acantilados atlánticos, presencia humana en Moher y arquitectura irlandesa. La relación se apoya en motivos y referencias reales; no afirma una única sesión.",
-      en: "An editorial sequence spanning Atlantic cliffs, human presence at Moher and Irish architecture. The connection uses real motifs and references; it does not claim a single session.",
+      es: "Acantilados atlánticos, presencia humana en Moher y arquitectura irlandesa.",
+      en: "Atlantic cliffs, human presence at Moher and Irish architecture.",
     },
     coverPhotoId: 17,
     photoIds: [17, 16, 46, 51],
@@ -49,8 +49,8 @@ export const photoSeries = [
     slug: "small-encounters",
     title: { es: "Pequeños encuentros", en: "Small encounters" },
     description: {
-      es: "Tres observaciones cercanas de fauna entre suelo, hojas y flores durante 2025. Es una afinidad visual de escala y atención, no una localización o jornada compartida.",
-      en: "Three close observations of wildlife among ground, leaves and flowers during 2025. This is a visual affinity of scale and attention, not a shared place or day.",
+      es: "Tres encuentros cercanos con la fauna entre hojas, flores y caminos.",
+      en: "Three close encounters with wildlife among leaves, flowers and paths.",
     },
     coverPhotoId: 5,
     photoIds: [5, 11, 12],
