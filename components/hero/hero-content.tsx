@@ -35,10 +35,7 @@ export function HeroContent({
           </span>
         </h1>
 
-        <div data-hero-secondary className="mt-6 flex max-w-3xl flex-col gap-6 sm:mt-8 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
-          <p className="max-w-[32rem] text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-[var(--color-text-secondary)]">
-            {dictionary.description}
-          </p>
+        <div data-hero-secondary className="mt-6 flex sm:mt-8 sm:justify-end">
           <Magnetic>
             <a
               href="#gallery"

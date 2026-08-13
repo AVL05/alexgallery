@@ -5,6 +5,7 @@ import {
   type ArchiveSort,
   type ArchiveState,
 } from "@/lib/archive/types";
+import { isArchiveSeriesFilter } from "@/lib/archive/series";
 
 const categorySlugs: Record<GalleryFilter, string> = {
   Todo: "all",
@@ -16,7 +17,7 @@ const categorySlugs: Record<GalleryFilter, string> = {
   Virtual: "virtual",
 };
 
-const archiveParameterNames = ["category", "year", "q", "sort", "page"] as const;
+const archiveParameterNames = ["category", "year", "archive-series", "q", "sort", "page"] as const;
 
 export function getArchiveCategorySlug(category: GalleryFilter) {
   return categorySlugs[category];
@@ -40,6 +41,9 @@ export function parseArchiveSearch(
   return {
     category: (categoryEntry?.[0] as GalleryFilter | undefined) ?? "Todo",
     year: year && validYears.includes(year) ? year : "all",
+    series: isArchiveSeriesFilter(params.get("archive-series"))
+      ? params.get("archive-series")!
+      : "all",
     query: (params.get("q") || "").trim().slice(0, 120),
     sort: archiveSortOptions.includes(sort as ArchiveSort)
       ? (sort as ArchiveSort)
@@ -62,6 +66,9 @@ export function serializeArchiveState(
     params.set("category", getArchiveCategorySlug(state.category));
   }
   if (state.year !== defaultArchiveState.year) params.set("year", state.year);
+  if (state.series !== defaultArchiveState.series) {
+    params.set("archive-series", state.series);
+  }
   if (state.query) params.set("q", state.query.trim());
   if (state.sort !== defaultArchiveState.sort) params.set("sort", state.sort);
   if (state.page > 1) params.set("page", String(state.page));

@@ -54,6 +54,9 @@ export function Navigation({
   const { prefersReducedMotion, lockScroll } = useMotion();
   const openMenuLabel = currentLocale === "es" ? "Abrir menú" : "Open menu";
   const closeMenuLabel = currentLocale === "es" ? "Cerrar menú" : "Close menu";
+  const archiveName = currentLocale === "es" ? "Archivo visual" : "Visual Archive";
+  const archiveByline = currentLocale === "es" ? "Archivo visual de Alex Vicente" : "Visual Archive by Alex Vicente";
+  const alternateLocaleLabel = currentLocale === "es" ? "Ver en inglés" : "View in Spanish";
   const navigationLabel =
     currentLocale === "es" ? "Navegación principal" : "Primary navigation";
 
@@ -201,13 +204,13 @@ export function Navigation({
           <Link
             href={`/${currentLocale}`}
             className="group inline-flex min-h-11 flex-col justify-center"
-            aria-label="raw.vives — Visual Archive"
+            aria-label={`raw.vives — ${archiveName}`}
           >
             <span className="font-serif text-xl leading-none tracking-[-0.025em] text-foreground transition-colors group-hover:text-accent sm:text-2xl">
               raw.vives
             </span>
             <span className="mt-1 hidden text-[8px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)] sm:block">
-              Visual Archive
+              {archiveName}
             </span>
           </Link>
 
@@ -263,9 +266,7 @@ export function Navigation({
                 lang={alternateLocale}
                 data-press-feedback
                 className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
-                aria-label={
-                  currentLocale === "es" ? "View in English" : "Ver en español"
-                }
+                aria-label={alternateLocaleLabel}
               >
                 {alternateLocale.toUpperCase()}
               </Link>
@@ -342,7 +343,7 @@ export function Navigation({
             <div>
               <p className="rv-kicker">raw.vives</p>
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-                Visual Archive by Alex Vicente
+                {archiveByline}
               </p>
             </div>
             <div className="flex items-center gap-1">
@@ -358,6 +359,7 @@ export function Navigation({
                 hrefLang={alternateLocale}
                 lang={alternateLocale}
                 data-press-feedback
+                aria-label={alternateLocaleLabel}
                 className="inline-flex size-11 items-center justify-center border border-border font-mono text-xs text-foreground"
               >
                 {alternateLocale.toUpperCase()}

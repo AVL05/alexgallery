@@ -46,7 +46,6 @@ test("hero translations expose equivalent accessible content", () => {
     "titleLineOne",
     "titleLineTwo",
     "eyebrow",
-    "description",
     "cta",
     "scroll",
     "photographs",
@@ -60,4 +59,7 @@ test("hero translations expose equivalent accessible content", () => {
     assert.ok(es.hero[key].length > 0);
     assert.ok(en.hero[key].length > 0);
   }
+
+  assert.ok(!("description" in es.hero));
+  assert.ok(!("description" in en.hero));
 });

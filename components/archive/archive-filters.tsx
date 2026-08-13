@@ -2,6 +2,11 @@ import type { ArchiveState } from "@/lib/archive/types";
 import type { GalleryDictionary } from "@/types/dictionary";
 import type { GalleryFilter } from "@/types/photo";
 
+export type ArchiveSeriesOption = {
+  value: string;
+  label: string;
+};
+
 export function ArchiveFilters({
   dictionary,
   state,
@@ -9,8 +14,11 @@ export function ArchiveFilters({
   categoryCounts,
   years,
   yearCounts,
+  seriesOptions,
+  seriesCounts,
   onCategoryChange,
   onYearChange,
+  onSeriesChange,
 }: {
   dictionary: GalleryDictionary;
   state: ArchiveState;
@@ -18,8 +26,11 @@ export function ArchiveFilters({
   categoryCounts: Record<GalleryFilter, number>;
   years: readonly string[];
   yearCounts: Record<string, number>;
+  seriesOptions: readonly ArchiveSeriesOption[];
+  seriesCounts: Record<string, number>;
   onCategoryChange: (category: GalleryFilter) => void;
   onYearChange: (year: string) => void;
+  onSeriesChange: (series: string) => void;
 }) {
   return (
     <div className="space-y-8">
@@ -46,6 +57,30 @@ export function ArchiveFilters({
               </span>
               <span className="rv-index tabular-nums">
                 {String(categoryCounts[category] || 0).padStart(2, "0")}
+              </span>
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend className="rv-label mb-4">{dictionary.seriesLabel}</legend>
+        <div className="border-t border-border">
+          {seriesOptions.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={state.series === option.value}
+              disabled={!seriesCounts[option.value] && state.series !== option.value}
+              data-press-feedback
+              onClick={() => onSeriesChange(option.value)}
+              className="group flex min-h-12 w-full items-center justify-between gap-4 border-b border-border px-1 text-left text-sm transition-colors hover:bg-[var(--color-hover)] focus-visible:bg-[var(--color-hover)] disabled:cursor-not-allowed disabled:opacity-35"
+            >
+              <span className={state.series === option.value ? "text-accent" : "text-[var(--color-text-secondary)] group-hover:text-foreground"}>
+                {option.label}
+              </span>
+              <span className="rv-index tabular-nums">
+                {String(seriesCounts[option.value] || 0).padStart(2, "0")}
               </span>
             </button>
           ))}

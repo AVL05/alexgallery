@@ -7,6 +7,7 @@ import type {
 import type { GalleryFilter, ImagesData } from "@/types/photo";
 import type { Locale } from "@/types/dictionary";
 import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
+import { matchesArchiveSeries } from "@/lib/archive/series";
 
 export function buildArchivePhotos(imagesData: ImagesData, locale: Locale = "es"): ArchivePhoto[] {
   const optimizedById = new Map(imagesData.images.map((image) => [image.id, image]));
@@ -53,6 +54,7 @@ export function selectArchivePhotos(
     (photo) =>
       (state.category === "Todo" || photo.category === state.category) &&
       (state.year === "all" || photo.year === state.year) &&
+      matchesArchiveSeries(photo, state.series) &&
       matchesQuery(photo, state.query),
   );
 
@@ -81,6 +83,7 @@ export function getArchiveCategoryCounts(
   const scoped = photos.filter(
     (photo) =>
       (state.year === "all" || photo.year === state.year) &&
+      matchesArchiveSeries(photo, state.series) &&
       matchesQuery(photo, state.query),
   );
   return Object.fromEntries(
@@ -101,11 +104,31 @@ export function getArchiveYearCounts(
   const scoped = photos.filter(
     (photo) =>
       (state.category === "Todo" || photo.category === state.category) &&
+      matchesArchiveSeries(photo, state.series) &&
       matchesQuery(photo, state.query),
   );
   return Object.fromEntries(
     years.map((year) => [year, scoped.filter((photo) => photo.year === year).length]),
   );
+}
+
+export function getArchiveSeriesCounts(
+  photos: readonly ArchivePhoto[],
+  state: ArchiveState,
+  filters: readonly string[],
+) {
+  const scoped = photos.filter(
+    (photo) =>
+      (state.category === "Todo" || photo.category === state.category) &&
+      (state.year === "all" || photo.year === state.year) &&
+      matchesQuery(photo, state.query),
+  );
+  return Object.fromEntries(
+    filters.map((filter) => [
+      filter,
+      scoped.filter((photo) => matchesArchiveSeries(photo, filter)).length,
+    ]),
+  ) as Record<string, number>;
 }
 
 export function getArchiveItemVariant(

@@ -42,10 +42,7 @@ export function SelectedWork({
       <Container>
         <Reveal className="border-t border-border pt-8">
           <SectionMarker {...marker} label={dictionary.chapterLabel} />
-          <div className="mt-10 grid gap-6 md:grid-cols-12">
-            <h2 className="font-serif text-[clamp(2.7rem,6vw,6.5rem)] leading-none tracking-[-0.045em] md:col-span-8">{dictionary.selected.title}</h2>
-            <p className="max-w-md self-end text-base leading-7 text-[var(--color-text-secondary)] md:col-span-4">{dictionary.selected.description}</p>
-          </div>
+          <h2 className="mt-10 font-serif text-[clamp(2.7rem,6vw,6.5rem)] leading-none tracking-[-0.045em]">{dictionary.selected.title}</h2>
         </Reveal>
 
         {photos.length === 0 ? (

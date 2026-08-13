@@ -44,7 +44,7 @@ export function Footer({
                 raw.vives
               </span>
               <span className="mt-4 text-sm text-[var(--color-text-secondary)]">
-                Visual Archive by Alex Vicente
+                {currentLocale === "es" ? "Archivo visual de Alex Vicente" : "Visual Archive by Alex Vicente"}
               </span>
             </Link>
           </div>
@@ -101,7 +101,7 @@ export function Footer({
               aleviclop.dev <ArrowUpRight aria-hidden="true" className="size-3.5" />
             </a>
             <a className="rv-editorial-link" href="mailto:alexviclop@gmail.com" data-press-feedback>
-              Email
+              {currentLocale === "es" ? "Correo" : "Email"}
             </a>
           </div>
         </Reveal>

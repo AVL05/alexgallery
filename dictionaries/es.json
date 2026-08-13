@@ -16,7 +16,6 @@
     "titleLineOne": "Historias entre",
     "titleLineTwo": "la luz y el silencio.",
     "eyebrow": "Archivo visual personal",
-    "description": "Archivo visual de Alex Vicente.",
     "cta": "Explorar el archivo",
     "scroll": "Desliza para explorar",
     "photographs": "fotografías",
@@ -32,7 +31,7 @@
       "archiveNote": "Cada imagen permanece aquí porque todavía pide una segunda mirada."
     },
     "featured": {
-      "label": "Historia destacada",
+      "label": "Fotografía destacada",
       "cta": "Ver fotografía"
     },
     "expansive": {
@@ -54,7 +53,6 @@
     },
     "selected": {
       "title": "Trabajo seleccionado",
-      "description": "Cuatro fotografías individuales de distintas partes del archivo.",
       "cta": "Ver fotografía",
       "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible."
     },
@@ -102,11 +100,11 @@
     "title": "ARCHIVO",
     "subtitle": "Archivo",
     "archive_label": "Archivo visual",
-    "eyebrow": "Índice fotográfico / 001—{total}",
+    "eyebrow": "Índice fotográfico",
     "description": "Una colección en evolución de lugares, luz, movimiento y memoria. Explora el archivo por categoría, año o palabras.",
     "selected_works": "Elementos visibles",
-    "items": "items",
-    "view_grid": "Vista grid",
+    "items": "fotografías",
+    "view_grid": "Vista de cuadrícula",
     "photographsLabel": "Fotografías",
     "periodLabel": "Periodo",
     "categoriesLabel": "Categorías",
@@ -136,9 +134,11 @@
     "skipToResults": "Saltar a resultados",
     "imageError": "La imagen no está disponible",
     "seriesLabel": "Serie",
+    "allSeries": "Todas",
+    "unassignedSeries": "Sin serie",
     "endLabel": "Fin del índice visible",
     "endTitle": "El archivo sigue creciendo.",
-    "endDescription": "{total} fotografías, {years} años y una colección abierta a nuevas escenas.",
+    "endDescription": "Una colección abierta a nuevas escenas.",
     "backToTop": "Volver al inicio",
     "categories": {
       "Todo": "Todo",
@@ -277,7 +277,7 @@
     }
   },
   "seo": {
-    "title": "raw.vives | Visual Archive",
+    "title": "raw.vives | Archivo visual",
     "description": "Archivo visual de Alex Vicente: fotografía, viajes, naturaleza, ciudad, coches, escenas cotidianas y capturas digitales en una colección global."
   }
 }

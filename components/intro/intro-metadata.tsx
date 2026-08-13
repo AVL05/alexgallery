@@ -1,6 +1,6 @@
-import type { IntroDictionary } from "@/types/dictionary";
+import type { IntroDictionary, Locale } from "@/types/dictionary";
 
-export function IntroMetadata({ dictionary }: { dictionary: IntroDictionary }) {
+export function IntroMetadata({ dictionary, locale }: { dictionary: IntroDictionary; locale: Locale }) {
   return (
     <div
       data-intro-meta
@@ -11,12 +11,12 @@ export function IntroMetadata({ dictionary }: { dictionary: IntroDictionary }) {
       <MetadataItem
         className="hidden sm:block"
         label={dictionary.index}
-        value="30 / FRAME"
+        value={locale === "es" ? "30 / FOTOGRAMA" : "30 / FRAME"}
       />
       <MetadataItem
         className="hidden lg:block"
         label={dictionary.memory}
-        value="VISUAL / ACTIVE"
+        value={locale === "es" ? "VISUAL / ACTIVA" : "VISUAL / ACTIVE"}
       />
     </div>
   );

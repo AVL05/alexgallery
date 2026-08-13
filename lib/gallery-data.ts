@@ -17,7 +17,8 @@ export const photos = [
     year: "2023",
     image: "/1.webp",
     color: "secondary",
-    description: "Tres caballos, un instante de ternura en la bruma.",
+    description:
+      "Tres caballos permanecen juntos mientras la niebla borra el paisaje. Su cercanía convierte una escena silenciosa en un gesto de compañía.",
   },
   {
     id: 3,
@@ -28,7 +29,7 @@ export const photos = [
     image: "/3.webp",
     color: "chart-3",
     description:
-      "Un relámpago atraviesa las nubes encendidas, como un grito eléctrico en medio del crepúsculo.",
+      "Un relámpago atraviesa las nubes encendidas al caer la tarde. Por un instante, la tormenta dibuja el horizonte con una sola línea de luz.",
   },
   {
     id: 4,
@@ -46,7 +47,8 @@ export const photos = [
     year: "2025",
     image: "/5.webp",
     color: "secondary",
-    description: "Una ardilla saborea su tesoro en la alfombra del bosque.",
+    description:
+      "Una ardilla se detiene a comer sobre la alfombra del bosque. Durante unos segundos, permanece ajena a todo lo que ocurre a su alrededor.",
   },
   {
     id: 6,
@@ -116,7 +118,7 @@ export const photos = [
     image: "/17.webp",
     color: "accent",
     description:
-      "Una torre solitaria se asoma al vacío, mientras los acantilados se desvanecen en la bruma del Atlántico.",
+      "Una torre se asoma al borde de los acantilados de Moher mientras la niebla cubre el Atlántico. La escala del paisaje deja la construcción casi perdida frente al mar.",
   },
   {
     id: 19,
@@ -138,7 +140,7 @@ export const photos = [
     image: "/21.webp",
     color: "secondary",
     description:
-      "Un tranvía atraviesa la noche de Oporto, mientras la ciudad respira entre sombras y encuentros.",
+      "Un tranvía cruza Oporto al caer la noche mientras una figura espera junto a la vía. Las luces y el movimiento resumen el ritmo nocturno de la ciudad.",
   },
   {
     id: 23,
@@ -219,7 +221,7 @@ export const photos = [
     image: "/35.webp",
     color: "secondary",
     description:
-      "La cascada de la Cola de Caballo en Ordesa invita al silencio y la contemplación entre rocas y espuma.",
+      "La Cola de Caballo cae entre rocas y espuma al fondo del valle de Ordesa. El agua ocupa la escena y hace que el resto del paisaje parezca detenerse.",
   },
   {
     id: 37,
@@ -229,7 +231,7 @@ export const photos = [
     image: "/37.webp",
     color: "accent",
     description:
-      "Dos pies descalzos se funden con la arena mojada, en un instante sereno entre tierra y mar.",
+      "Dos pies descalzos se apoyan sobre la arena mojada junto al mar. La marea deja un reflejo breve antes de volver a transformar la orilla.",
   },
   {
     id: 41,
@@ -270,7 +272,7 @@ export const photos = [
     image: "/46.webp",
     color: "chart-3",
     description:
-      "Un músico solitario llena de música los acantilados de Moher, donde la tierra se encuentra con el cielo.",
+      "Un músico solitario toca el acordeón frente a los acantilados de Moher. Me lo encontré por sorpresa durante el recorrido, y su música cambió por completo el silencio del lugar.",
   },
   {
     id: 48,
@@ -290,7 +292,7 @@ export const photos = [
     image: "/49.webp",
     color: "chart-3",
     description:
-      "Un Mini clásico se detiene entre flores y luz, evocando tardes de verano y elegancia retro.",
+      "Un Mini clásico aparece entre flores bajo la luz del verano. El color del coche y el jardín forman una escena difícil de pasar por alto.",
   },
   {
     id: 50,

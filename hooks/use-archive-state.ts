@@ -72,6 +72,10 @@ export function useArchiveState(years: readonly string[]) {
     (year: string) => commitState({ ...state, year, page: 1 }),
     [commitState, state],
   );
+  const setSeries = useCallback(
+    (series: string) => commitState({ ...state, series, page: 1 }),
+    [commitState, state],
+  );
   const setSort = useCallback(
     (sort: ArchiveSort) => commitState({ ...state, sort, page: 1 }),
     [commitState, state],
@@ -96,6 +100,7 @@ export function useArchiveState(years: readonly string[]) {
     hydrated,
     setCategory,
     setYear,
+    setSeries,
     setSort,
     setQuery,
     setPage,

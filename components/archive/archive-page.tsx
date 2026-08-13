@@ -13,13 +13,16 @@ import { Container } from "@/components/ui/layout";
 import { useArchiveState } from "@/hooks/use-archive-state";
 import {
   getArchiveCategoryCounts,
+  getArchiveSeriesCounts,
   getArchiveYearCounts,
   getVisibleArchiveCount,
   selectArchivePhotos,
 } from "@/lib/archive/selectors";
+import { archiveSeriesFilters } from "@/lib/archive/series";
 import { getArchiveContextKey, readArchiveContext } from "@/lib/archive/context";
 import { buildArchivePhotos } from "@/lib/archive/selectors";
 import { categories } from "@/lib/gallery-data";
+import { getLocalizedSeries, getPublishedSeries } from "@/lib/series/selectors";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { ArrowUp } from "lucide-react";
@@ -47,6 +50,7 @@ export function ArchivePage({
     hydrated,
     setCategory,
     setYear,
+    setSeries,
     setSort,
     setQuery,
     setPage,
@@ -55,6 +59,14 @@ export function ArchivePage({
   const [searchValue, setSearchValue] = useState(state.query);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { refreshScrollTriggers, scrollTo } = useMotion();
+  const seriesOptions = useMemo(() => [
+    { value: "all", label: dictionary.allSeries },
+    ...getPublishedSeries().map((series) => ({
+      value: series.slug,
+      label: getLocalizedSeries(series, locale).title,
+    })),
+    { value: "unassigned", label: dictionary.unassignedSeries },
+  ], [dictionary.allSeries, dictionary.unassignedSeries, locale]);
 
   const filteredPhotos = useMemo(
     () => selectArchivePhotos(photos, state),
@@ -68,6 +80,10 @@ export function ArchivePage({
     () => getArchiveYearCounts(photos, state, years),
     [photos, state, years],
   );
+  const seriesCounts = useMemo(
+    () => getArchiveSeriesCounts(photos, state, archiveSeriesFilters),
+    [photos, state],
+  );
   const visibleCount = getVisibleArchiveCount(state.page, filteredPhotos.length);
   const visiblePhotos = filteredPhotos.slice(0, visibleCount);
   const maxPage = Math.max(
@@ -79,12 +95,11 @@ export function ArchivePage({
   const activeFilterCount =
     Number(state.category !== "Todo") +
     Number(state.year !== "all") +
+    Number(state.series !== "all") +
     Number(state.sort !== "curated");
   const startYear = [...years].sort()[0] || "—";
   const endYear = [...years].sort().at(-1) || "—";
-  const endDescription = dictionary.endDescription
-    .replace("{total}", String(photos.length))
-    .replace("{years}", String(years.length));
+  const activeSeriesLabel = seriesOptions.find((option) => option.value === state.series)?.label;
   const closeMobileFilters = useCallback(() => setMobileFiltersOpen(false), []);
 
   useEffect(() => setSearchValue(state.query), [state.query]);
@@ -145,7 +160,6 @@ export function ArchivePage({
         </a>
         <ArchiveHeader
           dictionary={dictionary}
-          total={photos.length}
           startYear={startYear}
           endYear={endYear}
           categoryCount={categories.length - 1}
@@ -188,8 +202,11 @@ export function ArchivePage({
                 categoryCounts={categoryCounts}
                 years={years}
                 yearCounts={yearCounts}
+                seriesOptions={seriesOptions}
+                seriesCounts={seriesCounts}
                 onCategoryChange={setCategory}
                 onYearChange={setYear}
+                onSeriesChange={setSeries}
               />
             </aside>
 
@@ -198,6 +215,7 @@ export function ArchivePage({
                 dictionary={dictionary}
                 state={state}
                 count={filteredPhotos.length}
+                seriesLabel={activeSeriesLabel}
                 onClear={clear}
               />
               {filteredPhotos.length === 0 ? (
@@ -209,7 +227,7 @@ export function ArchivePage({
                     locale={locale}
                     state={state}
                     dictionary={dictionary}
-                    collectionKey={`${state.category}|${state.year}|${state.query}|${state.sort}`}
+                    collectionKey={`${state.category}|${state.year}|${state.series}|${state.query}|${state.sort}`}
                   />
                   <ArchivePagination
                     dictionary={dictionary}
@@ -230,7 +248,7 @@ export function ArchivePage({
               {dictionary.endTitle}
             </h3>
             <p className="mt-5 max-w-xl text-[var(--color-text-secondary)]">
-              {endDescription}
+              {dictionary.endDescription}
             </p>
           </div>
           <Link href="#hero" className="rv-editorial-link md:col-span-4 md:justify-self-end">
@@ -247,11 +265,14 @@ export function ArchivePage({
         categoryCounts={categoryCounts}
         years={years}
         yearCounts={yearCounts}
+        seriesOptions={seriesOptions}
+        seriesCounts={seriesCounts}
         resultCount={filteredPhotos.length}
         onClose={closeMobileFilters}
         onClear={clear}
         onCategoryChange={setCategory}
         onYearChange={setYear}
+        onSeriesChange={setSeries}
         onSortChange={setSort}
       />
     </section>

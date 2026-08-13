@@ -1,6 +1,7 @@
 "use client";
 
 import { ArchiveFilters } from "@/components/archive/archive-filters";
+import type { ArchiveSeriesOption } from "@/components/archive/archive-filters";
 import { useMotion } from "@/components/motion/motion-provider";
 import type { ArchiveSort, ArchiveState } from "@/lib/archive/types";
 import type { GalleryDictionary } from "@/types/dictionary";
@@ -17,11 +18,14 @@ export function ArchiveMobileFilters({
   categoryCounts,
   years,
   yearCounts,
+  seriesOptions,
+  seriesCounts,
   resultCount,
   onClose,
   onClear,
   onCategoryChange,
   onYearChange,
+  onSeriesChange,
   onSortChange,
 }: {
   open: boolean;
@@ -31,11 +35,14 @@ export function ArchiveMobileFilters({
   categoryCounts: Record<GalleryFilter, number>;
   years: readonly string[];
   yearCounts: Record<string, number>;
+  seriesOptions: readonly ArchiveSeriesOption[];
+  seriesCounts: Record<string, number>;
   resultCount: number;
   onClose: () => void;
   onClear: () => void;
   onCategoryChange: (category: GalleryFilter) => void;
   onYearChange: (year: string) => void;
+  onSeriesChange: (series: string) => void;
   onSortChange: (sort: ArchiveSort) => void;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -120,8 +127,11 @@ export function ArchiveMobileFilters({
             categoryCounts={categoryCounts}
             years={years}
             yearCounts={yearCounts}
+            seriesOptions={seriesOptions}
+            seriesCounts={seriesCounts}
             onCategoryChange={onCategoryChange}
             onYearChange={onYearChange}
+            onSeriesChange={onSeriesChange}
           />
           <div className="mt-8">
             <label htmlFor="archive-mobile-sort" className="rv-label mb-3 block">

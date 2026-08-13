@@ -100,6 +100,8 @@ test("Spanish and English narrative content, categories and alt text are localiz
   const english = getHomeNarrativeData(imagesData, "en");
   assert.equal(spanish.featured.title, "El acordeón y el abismo");
   assert.equal(english.featured.title, "The accordion and the abyss");
+  assert.match(spanish.featured.description, /Me lo encontré por sorpresa/);
+  assert.match(english.featured.description, /I came across him unexpectedly/);
   assert.equal(spanish.expansive.title, "El ruido del cielo");
   assert.equal(english.expansive.title, "The sound of the sky");
   assert.notEqual(spanish.featured.alt, english.featured.alt);

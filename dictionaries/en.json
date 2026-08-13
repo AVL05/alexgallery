@@ -16,7 +16,6 @@
     "titleLineOne": "Stories between",
     "titleLineTwo": "light and silence.",
     "eyebrow": "Personal visual archive",
-    "description": "Visual archive by Alex Vicente.",
     "cta": "Explore the archive",
     "scroll": "Scroll to explore",
     "photographs": "photographs",
@@ -32,7 +31,7 @@
       "archiveNote": "Each image remains here because it still asks for a second look."
     },
     "featured": {
-      "label": "Featured story",
+      "label": "Featured photograph",
       "cta": "View photograph"
     },
     "expansive": {
@@ -54,7 +53,6 @@
     },
     "selected": {
       "title": "Selected work",
-      "description": "Four individual photographs from across the archive.",
       "cta": "View photograph",
       "empty": "The selection is temporarily empty. The full archive remains available."
     },
@@ -102,7 +100,7 @@
     "title": "ARCHIVE",
     "subtitle": "Archive",
     "archive_label": "Visual archive",
-    "eyebrow": "Photographic index / 001—{total}",
+    "eyebrow": "Photographic index",
     "description": "An evolving collection of places, light, movement and memory. Explore the archive by category, year or words.",
     "selected_works": "Visible items",
     "items": "items",
@@ -136,9 +134,11 @@
     "skipToResults": "Skip to results",
     "imageError": "Image unavailable",
     "seriesLabel": "Series",
+    "allSeries": "All",
+    "unassignedSeries": "No series",
     "endLabel": "End of visible index",
     "endTitle": "The archive keeps growing.",
-    "endDescription": "{total} photographs, {years} years and a collection open to new scenes.",
+    "endDescription": "A collection open to new scenes.",
     "backToTop": "Back to top",
     "categories": {
       "Todo": "All",

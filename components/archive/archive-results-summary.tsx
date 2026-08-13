@@ -5,15 +5,17 @@ export function ArchiveResultsSummary({
   dictionary,
   state,
   count,
+  seriesLabel,
   onClear,
 }: {
   dictionary: GalleryDictionary;
   state: ArchiveState;
   count: number;
+  seriesLabel?: string;
   onClear: () => void;
 }) {
   const hasFilters =
-    state.category !== "Todo" || state.year !== "all" || Boolean(state.query);
+    state.category !== "Todo" || state.year !== "all" || state.series !== "all" || Boolean(state.query);
   const resultLabel = count === 1 ? dictionary.photoSingular : dictionary.photoPlural;
 
   return (
@@ -26,6 +28,7 @@ export function ArchiveResultsSummary({
           <p className="rv-meta mt-2 flex flex-wrap gap-x-4 gap-y-1">
             {state.category !== "Todo" && <span>{dictionary.categories[state.category]}</span>}
             {state.year !== "all" && <span>{state.year}</span>}
+            {state.series !== "all" && seriesLabel && <span>{seriesLabel}</span>}
             {state.query && <span>“{state.query}”</span>}
           </p>
         )}

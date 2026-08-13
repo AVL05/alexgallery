@@ -17,6 +17,7 @@ export type ArchiveYear = "all" | string;
 export type ArchiveState = {
   category: GalleryFilter;
   year: ArchiveYear;
+  series: string;
   query: string;
   sort: ArchiveSort;
   page: number;
@@ -37,6 +38,7 @@ export type ArchiveItemVariant =
 export const defaultArchiveState: ArchiveState = {
   category: "Todo",
   year: "all",
+  series: "all",
   query: "",
   sort: "curated",
   page: 1,

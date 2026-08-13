@@ -52,6 +52,29 @@ test("Spanish and English calls to action describe their destination", () => {
   assert.equal(en.home.expansive.cta, "Open photograph");
 });
 
+test("public microcopy stays concise and localized", () => {
+  const navigation = readFileSync("components/navigation.tsx", "utf8");
+  const footer = readFileSync("components/footer.tsx", "utf8");
+  const intro = readFileSync("components/intro/intro-metadata.tsx", "utf8");
+
+  assert.equal(es.home.featured.label, "Fotografía destacada");
+  assert.equal(en.home.featured.label, "Featured photograph");
+  assert.ok(!("description" in es.hero));
+  assert.ok(!("description" in en.hero));
+  assert.ok(!("description" in es.home.selected));
+  assert.ok(!("description" in en.home.selected));
+  assert.equal(es.gallery.items, "fotografías");
+  assert.equal(es.gallery.view_grid, "Vista de cuadrícula");
+  assert.equal(es.seo.title, "raw.vives | Archivo visual");
+  assert.equal(es.gallery.endDescription, "Una colección abierta a nuevas escenas.");
+  assert.equal(en.gallery.endDescription, "A collection open to new scenes.");
+  assert.match(navigation, /Ver en inglés/);
+  assert.match(navigation, /View in Spanish/);
+  assert.match(footer, /Archivo visual de Alex Vicente/);
+  assert.match(intro, /FOTOGRAMA/);
+  assert.match(intro, /ACTIVA/);
+});
+
 test("primary home anchors and public destinations remain available", () => {
   const homeClient = readFileSync("app/[locale]/home-client.tsx", "utf8");
   const navigation = readFileSync("components/navigation.tsx", "utf8");

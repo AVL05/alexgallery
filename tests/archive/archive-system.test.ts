@@ -5,12 +5,14 @@ import { categories } from "@/lib/gallery-data";
 import {
   buildArchivePhotos,
   getArchiveCategoryCounts,
+  getArchiveSeriesCounts,
   getArchiveItemVariant,
   getArchiveYearCounts,
   getVisibleArchiveCount,
   normalizeArchiveText,
   selectArchivePhotos,
 } from "@/lib/archive/selectors";
+import { archiveSeriesFilters } from "@/lib/archive/series";
 import { defaultArchiveState } from "@/lib/archive/types";
 import {
   getCategoryArchiveHref,
@@ -31,20 +33,21 @@ test("archive resolves the complete real catalog with unique optimized images", 
 
 test("archive URL parsing validates values and serialization removes defaults", () => {
   const state = parseArchiveSearch(
-    "?category=fauna&year=2025&q=niebla&sort=newest&page=2&motion-debug=1",
+    "?category=fauna&year=2025&archive-series=small-encounters&q=niebla&sort=newest&page=2&motion-debug=1",
     categories,
     years,
   );
   assert.deepEqual(state, {
     category: "Fauna",
     year: "2025",
+    series: "small-encounters",
     query: "niebla",
     sort: "newest",
     page: 2,
   });
   assert.equal(
     serializeArchiveState(state, "?motion-debug=1"),
-    "?motion-debug=1&category=fauna&year=2025&q=niebla&sort=newest&page=2",
+    "?motion-debug=1&category=fauna&year=2025&archive-series=small-encounters&q=niebla&sort=newest&page=2",
   );
   assert.equal(serializeArchiveState(defaultArchiveState), "");
 
@@ -97,6 +100,18 @@ test("filters combine and sorting preserves deterministic editorial fallbacks", 
   });
   assert.equal(newest[0]?.year, "2026");
   assert.equal(newest.at(-1)?.year, "2022");
+
+  const porto = selectArchivePhotos(photos, {
+    ...defaultArchiveState,
+    series: "porto-river-night",
+  });
+  assert.deepEqual(porto.map((photo) => photo.id), [19, 21, 24, 26, 27]);
+
+  const unassigned = selectArchivePhotos(photos, {
+    ...defaultArchiveState,
+    series: "unassigned",
+  });
+  assert.equal(unassigned.length, 19);
 });
 
 test("facet counts are conditioned by the other active filters", () => {
@@ -112,6 +127,17 @@ test("facet counts are conditioned by the other active filters", () => {
   );
   assert.equal(yearCounts["2023"], 1);
   assert.equal(yearCounts["2025"], 5);
+
+  const seriesCounts = getArchiveSeriesCounts(
+    photos,
+    defaultArchiveState,
+    archiveSeriesFilters,
+  );
+  assert.equal(seriesCounts.all, 31);
+  assert.equal(seriesCounts["porto-river-night"], 5);
+  assert.equal(seriesCounts["atlantic-stone"], 4);
+  assert.equal(seriesCounts["small-encounters"], 3);
+  assert.equal(seriesCounts.unassigned, 19);
 });
 
 test("progressive loading and editorial variants are bounded and stable", () => {

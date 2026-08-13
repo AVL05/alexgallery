@@ -239,13 +239,13 @@ function IntroExperience({
         <div className="flex items-start justify-between gap-6">
           <p className="shrink font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
             <span className="sm:hidden">RV / 001</span>
-            <span className="hidden sm:inline">RAW.VIVES / SYSTEM 001</span>
+            <span className="hidden sm:inline">RAW.VIVES / {locale === "es" ? "SISTEMA" : "SYSTEM"} 001</span>
           </p>
           <IntroSkipButton label={dictionary.skip} onSkip={skip} />
         </div>
 
         <div className="mt-5 sm:mt-8">
-          <IntroMetadata dictionary={dictionary} />
+          <IntroMetadata dictionary={dictionary} locale={locale} />
         </div>
 
         <div className="flex flex-1 items-center py-8 sm:py-12">
