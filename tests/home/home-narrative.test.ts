@@ -152,12 +152,12 @@ test("validation reports missing IDs, conflicts, wrong categories and invalid co
   );
 });
 
-test("archive summary remains derived from all 30 catalog photographs", () => {
+test("archive summary remains derived from all 31 catalog photographs", () => {
   const archive = getArchiveSummary();
-  assert.equal(archive.total, 30);
+  assert.equal(archive.total, 31);
   assert.equal(archive.startYear, "2022");
-  assert.equal(archive.endYear, "2025");
-  assert.deepEqual(archive.years.map(({ year }) => year), ["2022", "2023", "2024", "2025"]);
+  assert.equal(archive.endYear, "2026");
+  assert.deepEqual(archive.years.map(({ year }) => year), ["2022", "2023", "2024", "2025", "2026"]);
   assert.equal(archive.categories.reduce((total, item) => total + item.count, 0), archive.total);
 });
 

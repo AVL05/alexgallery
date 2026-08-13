@@ -9,6 +9,9 @@ const OUTPUT_DIR = './public/photos/optimized';
 const DATA_FILE = './lib/images-data.json';
 
 const SIZES = [400, 800, 1200];
+const EXIF_OVERRIDES: Record<string, { make?: string; model?: string }> = {
+  "52": { make: "Xiaomi", model: "Xiaomi 17T" },
+};
 
 async function optimizeImages() {
   console.log('--- Starting Image Optimization ---');
@@ -100,6 +103,8 @@ async function optimizeImages() {
       } catch (e) {
         console.warn(`Could not extract EXIF for ${file}:`, e);
       }
+
+      exif = { ...exif, ...EXIF_OVERRIDES[fileName] };
 
       // 5. Generate Histogram Data (Manual calculation from fresh instance)
       const { data: rawData } = await sharp(inputBuffer)

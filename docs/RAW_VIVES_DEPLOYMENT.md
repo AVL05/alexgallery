@@ -107,7 +107,7 @@ Debe apuntar a `https://rawvives.aleviclop.dev/sitemap.xml`, permitir `/` y decl
 
 ## 16. Sitemap
 
-La build genera 70 URLs indexables: dos homes, 60 detalles, dos índices de
+La build genera 72 URLs indexables: dos homes, 62 detalles, dos índices de
 series y seis páginas de serie. La raíz resuelve idioma y queda fuera del sitemap;
 privacidad y política de uso se excluyen por decisión editorial.
 

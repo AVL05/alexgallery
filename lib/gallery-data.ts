@@ -312,4 +312,15 @@ export const photos = [
     description:
       "Una antigua iglesia irlandesa se alza bajo cielos densos, guardando siglos de silencio.",
   },
+  {
+    id: 52,
+    title: "12.08.2026 — Eclipse solar",
+    category: "Meteorología",
+    featured: true,
+    year: "2026",
+    image: "/52.webp",
+    color: "chart-3",
+    description:
+      "El último hilo de luz dibuja un anillo alrededor de la Luna durante el eclipse solar total.",
+  },
 ] satisfies BasePhoto[];

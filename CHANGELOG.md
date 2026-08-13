@@ -6,6 +6,7 @@ Todos los cambios relevantes de raw.vives se documentan aquí. El proyecto sigue
 
 ### Added
 
+- Fotografía `12.08.2026 — Eclipse solar` con ficha bilingüe, variantes responsivas y metadata de cámara.
 - Cloudflare Pages Function para resolver el idioma de la ruta raíz.
 - Integración Git de Pages para construir y publicar `main`.
 - Configuración `pnpm-workspace.yaml` con builds de dependencias permitidos de forma explícita.

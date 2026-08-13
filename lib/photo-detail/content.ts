@@ -37,6 +37,7 @@ const englishContent: Record<number, LocalizedPhotoContent> = {
   49: { title: "Flowers, sun and a classic engine", description: "A classic Mini pauses among flowers and light, recalling summer afternoons and retro elegance.", alt: "A classic Mini parked among flowers in sunlight." },
   50: { title: "Between brick and change", description: "A Dublin street moves between history, construction and everyday life.", alt: "A brick-lined Dublin street under construction." },
   51: { title: "Whispers of the monastery", description: "An old Irish church rises under dense skies, holding centuries of silence.", alt: "An old Irish church beneath dense clouds." },
+  52: { title: "12.08.2026 — Solar eclipse", description: "The last thread of light draws a ring around the Moon during the total solar eclipse.", alt: "Total solar eclipse showing a bright ring and diamond effect above a dark landscape." },
 };
 
 export function getLocalizedPhotoContent(photo: BasePhoto, locale: Locale): LocalizedPhotoContent {

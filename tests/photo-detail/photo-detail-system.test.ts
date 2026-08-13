@@ -16,10 +16,10 @@ const esPhotos = buildArchivePhotos(imagesData, "es");
 const enPhotos = buildArchivePhotos(imagesData, "en");
 const years = [...new Set(esPhotos.map((photo) => photo.year))];
 
-test("all 30 photographs have stable localized English content and fallback-ready Spanish content", () => {
-  assert.equal(translatedPhotoIds.length, 30);
-  assert.equal(new Set(translatedPhotoIds).size, 30);
-  assert.equal(getLocalizedPhotos("en").length, 30);
+test("all 31 photographs have stable localized English content and fallback-ready Spanish content", () => {
+  assert.equal(translatedPhotoIds.length, 31);
+  assert.equal(new Set(translatedPhotoIds).size, 31);
+  assert.equal(getLocalizedPhotos("en").length, 31);
   assert.ok(enPhotos.every((photo, index) => photo.title !== esPhotos[index]?.title && photo.description && photo.alt));
 });
 
@@ -38,7 +38,7 @@ test("context navigation reconstructs combined filters without becoming circular
 test("a photograph outside the reconstructed set falls back to the global editorial order", () => {
   const navigation = resolvePhotoNavigation(esPhotos, 1, { ...defaultArchiveState, category: "Arquitectura" });
   assert.equal(navigation.isContextual, false);
-  assert.equal(navigation.collection.length, 30);
+  assert.equal(navigation.collection.length, 31);
   assert.equal(navigation.previous, null);
   assert.equal(navigation.next?.id, 3);
 });

@@ -13,7 +13,7 @@ Transformar una galería personal en una pieza de portfolio con criterio editori
 ## Características
 
 - Home narrativa editada con 10 fotografías únicas antes del archivo, tres series y cuatro piezas individuales sin serie.
-- Archivo de 30 fotografías con búsqueda, categorías, años, orden y carga progresiva.
+- Archivo de 31 fotografías con búsqueda, categorías, años, orden y carga progresiva.
 - Detalles individuales con navegación contextual, fullscreen, compartir y obras relacionadas.
 - Español e inglés generados de forma estática, incluido contenido editorial, categorías y alt fotográfico localizado.
 - Cursor contextual, microinteracciones GSAP y WebGL progresivo solo cuando el dispositivo lo permite.

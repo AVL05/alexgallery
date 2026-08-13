@@ -23,7 +23,7 @@ const photos = buildArchivePhotos(imagesDataJson as ImagesData);
 const years = [...new Set(photos.map((photo) => photo.year))];
 
 test("archive resolves the complete real catalog with unique optimized images", () => {
-  assert.equal(photos.length, 30);
+  assert.equal(photos.length, 31);
   assert.equal(new Set(photos.map((photo) => photo.id)).size, photos.length);
   assert.ok(photos.every((photo) => photo.width > 0 && photo.height > 0));
   assert.deepEqual(new Set(photos.map((photo) => photo.category)), new Set(categories.slice(1)));
@@ -73,7 +73,7 @@ test("search is accent and case insensitive across real searchable fields", () =
     ...defaultArchiveState,
     query: "meteorologia",
   });
-  assert.equal(byCategory.length, 2);
+  assert.equal(byCategory.length, 3);
 });
 
 test("filters combine and sorting preserves deterministic editorial fallbacks", () => {
@@ -95,7 +95,7 @@ test("filters combine and sorting preserves deterministic editorial fallbacks", 
     ...defaultArchiveState,
     sort: "newest",
   });
-  assert.equal(newest[0]?.year, "2025");
+  assert.equal(newest[0]?.year, "2026");
   assert.equal(newest.at(-1)?.year, "2022");
 });
 

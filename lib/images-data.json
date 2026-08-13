@@ -1161,6 +1161,49 @@
       }
     },
     {
+      "id": "52",
+      "src": "/photos/optimized/original/52.webp",
+      "srcAvif": "/photos/optimized/original/52.avif",
+      "width": 2000,
+      "height": 2000,
+      "blurDataURL": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAAr0lEQVR4nH2OSwrCQBBE5wwZCJJKD84v/4+CBvcigrgSQTyES3duFE8liBdS8AgSBoKo2NSiql930yz8W4wAQaGgEAjeRUCLBYXW6G+5HfaTdRPMKOmC0f0iiZbz6WQ0dJ3n486KJOpUZfF5v1stZloKAdyul/Y1AsrUlqkdD4qmzsvUakEU9ATAuMe5x42SRsmmzqvYVlnsInXY931nPnx7XEtFwOl42G7WBHSMgBdk8iytydPlMAAAAABJRU5ErkJggg==",
+      "alt": "Photography by Alex Gallery - 52",
+      "exif": {
+        "make": "Xiaomi",
+        "model": "Xiaomi 17T"
+      },
+      "histogram": [
+        100,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "variants": {
+        "400": "/photos/optimized/400/52.webp",
+        "800": "/photos/optimized/800/52.webp",
+        "1200": "/photos/optimized/1200/52.webp",
+        "400avif": "/photos/optimized/400/52.avif",
+        "800avif": "/photos/optimized/800/52.avif",
+        "1200avif": "/photos/optimized/1200/52.avif"
+      }
+    },
+    {
       "id": "6",
       "src": "/photos/optimized/original/6.webp",
       "srcAvif": "/photos/optimized/original/6.avif",
