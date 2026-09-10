@@ -81,8 +81,10 @@ export function applyPhotoTexture(
   const surfaceAspect =
     photoFrameMeasurements.backing.width / photoFrameMeasurements.backing.height;
   const transform = coverTextureTransform(photoAspect, surfaceAspect);
-  texture.repeat.set(transform.repeat.x, transform.repeat.y);
-  texture.offset.set(transform.offset.x, transform.offset.y);
+  // Measured audit: the backing UVs run V opposite to +Y (cov < 0), so the
+  // V axis must be mirrored or photos render upside down. U follows +X.
+  texture.repeat.set(transform.repeat.x, -transform.repeat.y);
+  texture.offset.set(transform.offset.x, 1 - transform.offset.y);
   texture.needsUpdate = true;
   material.map = texture;
   material.needsUpdate = true;

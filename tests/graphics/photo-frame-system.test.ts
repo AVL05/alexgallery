@@ -48,6 +48,8 @@ test("frame asset loads once and photo textures stay sRGB", () => {
   assert.match(factory, /new THREE\.Mesh\(asset\.backing\.geometry, photoMaterial\)/);
   assert.match(factory, /side: THREE\.FrontSide/);
   assert.match(factory, /texture\.colorSpace = THREE\.SRGBColorSpace/);
+  assert.match(factory, /texture\.repeat\.set\(transform\.repeat\.x, -transform\.repeat\.y\)/);
+  assert.match(factory, /texture\.offset\.set\(transform\.offset\.x, 1 - transform\.offset\.y\)/);
   assert.doesNotMatch(factory, /PlaneGeometry/);
   assert.doesNotMatch(factory, /InstancedMesh/);
   assert.doesNotMatch(factory, /photo-frame\.glb"/);
