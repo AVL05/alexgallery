@@ -35,12 +35,14 @@ export function ArchivePage({
   imagesData,
   sectionId = "gallery",
   topHref = "#hero",
+  titleAs = "h2",
 }: {
   dictionary: GalleryDictionary;
   locale: Locale;
   imagesData: ImagesData;
   sectionId?: string;
   topHref?: string;
+  titleAs?: "h1" | "h2";
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const restoredRef = useRef(false);
@@ -167,6 +169,7 @@ export function ArchivePage({
           startYear={startYear}
           endYear={endYear}
           categoryCount={categories.length - 1}
+          as={titleAs}
         />
         <noscript>
           <div className="mt-10 border-y border-border py-8">

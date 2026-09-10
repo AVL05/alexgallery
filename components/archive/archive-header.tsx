@@ -6,19 +6,21 @@ export function ArchiveHeader({
   startYear,
   endYear,
   categoryCount,
+  as: Tag = "h2",
 }: {
   dictionary: GalleryDictionary;
   startYear: string;
   endYear: string;
   categoryCount: number;
+  as?: "h1" | "h2";
 }) {
   return (
     <header className="grid gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:items-end">
       <div className="lg:col-span-8">
         <p className="rv-kicker">{dictionary.eyebrow}</p>
-        <h2 id="archive-title" className="rv-section-title mt-5 max-w-[12ch] text-[clamp(3rem,7vw,7rem)]">
+        <Tag id="archive-title" className="rv-section-title mt-5 max-w-[12ch] text-[clamp(3rem,7vw,7rem)]">
           {dictionary.archive_label}
-        </h2>
+        </Tag>
         <p className="rv-intro mt-6 max-w-2xl">{dictionary.description}</p>
       </div>
       <MetaList className="border-y border-border lg:col-span-4">

@@ -54,5 +54,5 @@ export default async function SeriesRoute({ params }: { params: Promise<{ locale
       { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: dictionary.series.indexTitle, item: `${siteUrl}/${locale}/series` }, { "@type": "ListItem", position: 2, name: series.title, item: `${siteUrl}/${locale}/series/${series.slug}` }] },
     ],
   };
-  return <PageShell><Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/series/${slug}`} /><SeriesPage locale={locale} dictionary={dictionary.series} rawSeries={rawSeries} photos={archivePhotos} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /><Footer currentLocale={locale} dictionary={dictionary.nav} /></PageShell>;
+  return <PageShell as="div"><Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/series/${slug}`} /><SeriesPage locale={locale} dictionary={dictionary.series} rawSeries={rawSeries} photos={archivePhotos} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /><Footer currentLocale={locale} dictionary={dictionary.nav} /></PageShell>;
 }

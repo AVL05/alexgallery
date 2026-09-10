@@ -58,7 +58,7 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
   if (!photo) notFound();
   const dictionary = await getDictionary(locale);
   const structuredData = buildPhotoStructuredData(photo, locale);
-  return <PageShell>
+  return <PageShell as="div">
     <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/photo/${id}`} />
     <PhotoDetailPage locale={locale} photoId={photo.id} imagesData={clientImagesData} dictionary={dictionary} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />

@@ -44,7 +44,7 @@ export default async function ArchiveRoute({ params }: { params: Promise<{ local
     <PageShell>
       <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/archive`} />
       <div id="archive-top" className="pt-32 lg:pt-40">
-        <ArchivePage dictionary={dictionary.gallery} locale={locale} imagesData={clientImagesData} sectionId="archive" topHref="#archive-top" />
+        <ArchivePage dictionary={dictionary.gallery} locale={locale} imagesData={clientImagesData} sectionId="archive" topHref="#archive-top" titleAs="h1" />
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Footer currentLocale={locale} dictionary={dictionary.nav} />
