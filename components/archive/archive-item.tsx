@@ -98,7 +98,7 @@ export function ArchiveItem({
                 sizes={sizes}
                 placeholder={photo.blurDataURL && source === photo.src ? "blur" : undefined}
                 blurDataURL={photo.blurDataURL}
-                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.015] group-hover:brightness-[0.9] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.9]"
+                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.015] group-hover:brightness-[0.92] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.92]"
                 onError={() => {
                   if (source !== fallbackImage) setSource(fallbackImage);
                   else setImageFailed(true);

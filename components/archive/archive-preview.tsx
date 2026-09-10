@@ -79,7 +79,7 @@ export function ArchivePreview({
               <NarrativeImage
                 photo={photo}
                 sizes={photoSizes.archivePreview}
-                imageClassName="transition-[transform,filter] duration-500 group-hover:scale-[1.02] group-hover:brightness-[0.92] group-focus-visible:scale-[1.02] group-focus-visible:brightness-[0.92]"
+                imageClassName="transition-[transform,filter] duration-500 group-hover:scale-[1.015] group-hover:brightness-[0.92] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.92]"
               />
               <div className="mt-3 flex items-baseline justify-between gap-3">
                 <h3 className="font-serif text-lg leading-tight tracking-[-0.015em] text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground">
