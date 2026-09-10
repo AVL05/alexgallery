@@ -143,10 +143,14 @@ test("localized routes, 404 behavior, canonical metadata and development checks 
 test("sitemap includes localized public indexes and all published series without query state", () => {
   const entries = sitemap();
   const seriesEntries = entries.filter((entry) => entry.url.includes("/series"));
-  assert.equal(entries.length, 72);
+  assert.equal(entries.length, 76);
   assert.ok(!entries.some((entry) => entry.url === "https://rawvives.aleviclop.dev/"));
   assert.ok(entries.every((entry) => entry.alternates?.languages?.["x-default"]?.includes("/en")));
   assert.equal(seriesEntries.length, 8);
+  assert.ok(entries.some((entry) => entry.url.endsWith("/es/archive")));
+  assert.ok(entries.some((entry) => entry.url.endsWith("/en/archive")));
+  assert.ok(entries.some((entry) => entry.url.endsWith("/es/work")));
+  assert.ok(entries.some((entry) => entry.url.endsWith("/en/work")));
   assert.ok(seriesEntries.every((entry) => !entry.url.includes("?")));
   for (const series of photoSeries) {
     assert.ok(entries.some((entry) => entry.url.endsWith(`/es/series/${series.slug}`)));

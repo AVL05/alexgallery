@@ -29,6 +29,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
 
     sitemapEntries.push({
+      url: `${siteUrl}/${locale}/work`,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+      alternates: {
+        languages: {
+          es: `${siteUrl}/es/work`,
+          en: `${siteUrl}/en/work`,
+          'x-default': `${siteUrl}/en/work`,
+        },
+      },
+    })
+
+    sitemapEntries.push({
+      url: `${siteUrl}/${locale}/archive`,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+      alternates: {
+        languages: {
+          es: `${siteUrl}/es/archive`,
+          en: `${siteUrl}/en/archive`,
+          'x-default': `${siteUrl}/en/archive`,
+        },
+      },
+    })
+
+    sitemapEntries.push({
       url: `${siteUrl}/${locale}/series`,
       changeFrequency: 'monthly',
       priority: 0.8,

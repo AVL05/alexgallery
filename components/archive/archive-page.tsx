@@ -33,10 +33,14 @@ export function ArchivePage({
   dictionary,
   locale,
   imagesData,
+  sectionId = "gallery",
+  topHref = "#hero",
 }: {
   dictionary: GalleryDictionary;
   locale: Locale;
   imagesData: ImagesData;
+  sectionId?: string;
+  topHref?: string;
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const restoredRef = useRef(false);
@@ -124,7 +128,7 @@ export function ArchivePage({
     if (!hydrated || restoredRef.current) return;
     const context = readArchiveContext(locale);
     if (!context) return;
-    const currentHref = `${window.location.pathname}${window.location.search}#gallery`;
+    const currentHref = `${window.location.pathname}${window.location.search}#${sectionId}`;
     if (context.archiveHref !== currentHref) return;
     if (!visiblePhotos.some((photo) => photo.id === context.photoId)) return;
 
@@ -142,12 +146,12 @@ export function ArchivePage({
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [hydrated, locale, scrollTo, visiblePhotos]);
+  }, [hydrated, locale, scrollTo, sectionId, visiblePhotos]);
 
   return (
     <section
       ref={rootRef}
-      id="gallery"
+      id={sectionId}
       aria-labelledby="archive-title"
       className="rv-section overflow-hidden bg-[var(--color-background-secondary)]"
     >
@@ -228,6 +232,7 @@ export function ArchivePage({
                     state={state}
                     dictionary={dictionary}
                     collectionKey={`${state.category}|${state.year}|${state.series}|${state.query}|${state.sort}`}
+                    sectionHash={`#${sectionId}`}
                   />
                   <ArchivePagination
                     dictionary={dictionary}
@@ -251,7 +256,7 @@ export function ArchivePage({
               {dictionary.endDescription}
             </p>
           </div>
-          <Link href="#hero" className="rv-editorial-link md:col-span-4 md:justify-self-end">
+          <Link href={topHref} className="rv-editorial-link md:col-span-4 md:justify-self-end">
             {dictionary.backToTop} <ArrowUp aria-hidden="true" className="size-4" />
           </Link>
         </footer>
