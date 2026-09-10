@@ -2,10 +2,10 @@
 
 import { Container } from "@/components/ui/layout";
 import { useMotion } from "@/components/motion/motion-provider";
-import { motionDistance, motionDuration, motionEase } from "@/lib/motion/config";
+import { motionDistance, motionDuration, motionEase, motionStagger } from "@/lib/motion/config";
+import { accessibleDistance, accessibleDuration, accessibleStagger } from "@/lib/motion/accessible";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { Locale, NavDictionary } from "@/types/dictionary";
-import { ArrowUpRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
@@ -13,6 +13,73 @@ import { Magnetic } from "@/components/interactions/magnetic";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { buildLocaleHref } from "@/lib/i18n/locale-routing";
 import { saveLocalePreference } from "@/lib/i18n/locale-cookie.client";
+import { getPrimaryNavItems, isNavItemActive } from "@/lib/navigation";
+import { instagramUrl } from "@/lib/site-config";
+
+function LocaleSwitch({
+  currentLocale,
+  alternateLocale,
+  alternateHref,
+  alternateLocaleLabel,
+  variant,
+  onNavigate,
+}: {
+  currentLocale: Locale;
+  alternateLocale: Locale;
+  alternateHref: string;
+  alternateLocaleLabel: string;
+  variant: "header" | "menu";
+  onNavigate?: () => void;
+}) {
+  if (variant === "menu") {
+    return (
+      <div className="flex items-center gap-1">
+        <span
+          aria-current="page"
+          className="inline-flex size-11 items-center justify-center font-mono text-xs text-accent"
+        >
+          {currentLocale.toUpperCase()}
+        </span>
+        <Link
+          href={alternateHref}
+          onClick={() => {
+            saveLocalePreference(alternateLocale);
+            onNavigate?.();
+          }}
+          hrefLang={alternateLocale}
+          lang={alternateLocale}
+          data-press-feedback
+          aria-label={alternateLocaleLabel}
+          className="inline-flex size-11 items-center justify-center border border-border font-mono text-xs text-foreground"
+        >
+          {alternateLocale.toUpperCase()}
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center border-l border-border pl-4">
+      <span
+        aria-current="page"
+        className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-accent"
+      >
+        {currentLocale.toUpperCase()}
+      </span>
+      <Link
+        href={alternateHref}
+        onClick={() => saveLocalePreference(alternateLocale)}
+        hrefLang={alternateLocale}
+        lang={alternateLocale}
+        data-press-feedback
+        className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
+        aria-label={alternateLocaleLabel}
+      >
+        {alternateLocale.toUpperCase()}
+      </Link>
+    </div>
+  );
+}
 
 export function Navigation({
   dictionary,
@@ -26,14 +93,7 @@ export function Navigation({
   currentPath?: string;
 }) {
   const pathname = currentPath || `/${currentLocale}`;
-  const sectionHref = (hash: string) =>
-    isHome ? hash : `/${currentLocale}${hash}`;
-  const items = [
-    { name: dictionary.gallery, href: sectionHref("#gallery") },
-    { name: dictionary.series, href: `/${currentLocale}/series` },
-    { name: dictionary.about, href: sectionHref("#about") },
-    { name: dictionary.contact, href: sectionHref("#contact") },
-  ];
+  const items = getPrimaryNavItems(currentLocale, dictionary, isHome);
   const alternateLocale: Locale = currentLocale === "es" ? "en" : "es";
   const locationSnapshot = useLocationSnapshot();
   const alternateHref = buildLocaleHref(
@@ -52,11 +112,13 @@ export function Navigation({
   const scrollFrameRef = useRef<number | null>(null);
   const scrolledRef = useRef(false);
   const { prefersReducedMotion, lockScroll } = useMotion();
-  const openMenuLabel = currentLocale === "es" ? "Abrir menú" : "Open menu";
-  const closeMenuLabel = currentLocale === "es" ? "Cerrar menú" : "Close menu";
+  const openMenuLabel = dictionary.menu;
+  const closeMenuLabel = dictionary.close;
   const archiveName = currentLocale === "es" ? "Archivo visual" : "Visual Archive";
   const archiveByline = currentLocale === "es" ? "Archivo visual de Alex Vicente" : "Visual Archive by Alex Vicente";
   const alternateLocaleLabel = currentLocale === "es" ? "Ver en inglés" : "View in Spanish";
+  const externalNote =
+    currentLocale === "es" ? "(abre en una pestaña nueva)" : "(opens in a new tab)";
   const navigationLabel =
     currentLocale === "es" ? "Navegación principal" : "Primary navigation";
 
@@ -67,15 +129,15 @@ export function Navigation({
   }, []);
 
   const closeMobileMenu = useCallback(() => {
-    if (!mobileMenuRef.current || prefersReducedMotion) {
+    if (!mobileMenuRef.current) {
       finishClosingMenu();
       return;
     }
 
     gsap.to(mobileMenuRef.current, {
       opacity: 0,
-      y: -motionDistance.compact,
-      duration: motionDuration.fast,
+      y: -accessibleDistance(prefersReducedMotion, motionDistance.compact),
+      duration: accessibleDuration(prefersReducedMotion, motionDuration.fast),
       ease: motionEase.exit,
       onComplete: finishClosingMenu,
     });
@@ -88,14 +150,14 @@ export function Navigation({
 
   useGSAP(
     () => {
-      if (!headerRef.current || prefersReducedMotion) return;
+      if (!headerRef.current) return;
       gsap.fromTo(
         headerRef.current,
-        { opacity: 0, y: -motionDistance.compact },
+        { opacity: 0, y: -accessibleDistance(prefersReducedMotion, motionDistance.compact) },
         {
           opacity: 1,
           y: 0,
-          duration: motionDuration.normal,
+          duration: accessibleDuration(prefersReducedMotion, motionDuration.normal),
           ease: motionEase.enter,
           clearProps: "opacity,transform",
         },
@@ -106,17 +168,31 @@ export function Navigation({
 
   useGSAP(
     () => {
-      if (!isMobileMenuOpen || !mobileMenuRef.current || prefersReducedMotion) return;
+      if (!isMobileMenuOpen || !mobileMenuRef.current) return;
       gsap.fromTo(
         mobileMenuRef.current,
-        { opacity: 0, y: -motionDistance.compact },
+        { opacity: 0, y: -accessibleDistance(prefersReducedMotion, motionDistance.compact) },
         {
           opacity: 1,
           y: 0,
-          duration: motionDuration.normal,
+          duration: accessibleDuration(prefersReducedMotion, motionDuration.normal),
           ease: motionEase.enter,
         },
       );
+      const links = mobileMenuRef.current.querySelectorAll("[data-mobile-nav-link]");
+      if (links.length > 0) {
+        gsap.fromTo(
+          links,
+          { opacity: 0, y: accessibleDistance(prefersReducedMotion, motionDistance.label) },
+          {
+            opacity: 1,
+            y: 0,
+            duration: accessibleDuration(prefersReducedMotion, motionDuration.fast),
+            ease: motionEase.enter,
+            stagger: accessibleStagger(prefersReducedMotion, motionStagger.tight),
+          },
+        );
+      }
     },
     { dependencies: [isMobileMenuOpen, prefersReducedMotion], scope: mobileMenuRef, revertOnUpdate: true },
   );
@@ -200,84 +276,61 @@ export function Navigation({
             : "border-transparent bg-gradient-to-b from-black/55 to-transparent"
         }`}
       >
-        <Container className="flex h-[var(--layout-nav-height)] items-center justify-between">
+        <Container className="flex h-[var(--layout-nav-height)] items-center justify-between gap-8">
           <Link
             href={`/${currentLocale}`}
-            className="group inline-flex min-h-11 flex-col justify-center"
+            className="inline-flex min-h-11 shrink-0 items-center"
             aria-label={`raw.vives — ${archiveName}`}
           >
-            <span className="font-serif text-xl leading-none tracking-[-0.025em] text-foreground transition-colors group-hover:text-accent sm:text-2xl">
+            <span className="font-serif text-xl leading-none tracking-[-0.025em] text-foreground transition-colors hover:text-accent sm:text-2xl">
               raw.vives
-            </span>
-            <span className="mt-1 hidden text-[8px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)] sm:block">
-              {archiveName}
             </span>
           </Link>
 
-          <nav aria-label={navigationLabel} className="hidden items-center gap-7 lg:flex">
+          <nav aria-label={navigationLabel} className="hidden items-center gap-8 lg:flex">
             {items.map((item) => {
-              const active = pathname === item.href;
+              const active = isNavItemActive(item, pathname);
+              const isRoute = !item.href.startsWith("#");
               return (
                 <Link
-                  key={item.href}
+                  key={item.key}
                   href={item.href}
-                  aria-current={active ? "page" : undefined}
+                  aria-current={active && isRoute ? "page" : undefined}
                   data-press-feedback
-                  className={`relative inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+                  className={`inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${
                     active
-                      ? "text-accent"
+                      ? "text-foreground"
                       : "text-[var(--color-text-secondary)] hover:text-foreground"
                   }`}
                 >
-                  {item.name}
-                  {active && (
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-x-0 bottom-1 h-px origin-left bg-accent"
-                    />
-                  )}
+                  {item.label}
                 </Link>
               );
             })}
             <a
-              href="https://aleviclop.dev/"
+              href={instagramUrl}
               target="_blank"
               rel="noreferrer"
               data-press-feedback
-              className="inline-flex min-h-11 items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-text-secondary)] transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
             >
-              aleviclop.dev
-              <ArrowUpRight aria-hidden="true" className="size-3.5" />
-              <span className="sr-only">
-                {currentLocale === "es" ? "(abre en una pestaña nueva)" : "(opens in a new tab)"}
-              </span>
+              Instagram
+              <span className="sr-only"> {externalNote}</span>
             </a>
-            <div className="flex items-center border-l border-border pl-4">
-              <span
-                aria-current="page"
-                className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-accent"
-              >
-                {currentLocale.toUpperCase()}
-              </span>
-              <Link
-                href={alternateHref}
-                onClick={() => saveLocalePreference(alternateLocale)}
-                hrefLang={alternateLocale}
-                lang={alternateLocale}
-                data-press-feedback
-                className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
-                aria-label={alternateLocaleLabel}
-              >
-                {alternateLocale.toUpperCase()}
-              </Link>
-            </div>
+            <LocaleSwitch
+              currentLocale={currentLocale}
+              alternateLocale={alternateLocale}
+              alternateHref={alternateHref}
+              alternateLocaleLabel={alternateLocaleLabel}
+              variant="header"
+            />
           </nav>
 
           <Magnetic>
             <button
               ref={mobileToggleRef}
               type="button"
-              className="inline-flex size-11 items-center justify-center text-foreground lg:hidden"
+              className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground lg:hidden"
               onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
               aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
               aria-expanded={isMobileMenuOpen}
@@ -285,8 +338,8 @@ export function Navigation({
               data-press-feedback
               {...getCursorTargetAttributes({ type: isMobileMenuOpen ? "close" : "open" })}
             >
-              <span data-magnetic-content className="grid place-items-center">
-                {isMobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+              <span data-magnetic-content>
+                {isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
               </span>
             </button>
           </Magnetic>
@@ -311,13 +364,13 @@ export function Navigation({
               <button
                 autoFocus
                 type="button"
-                className="inline-flex size-11 items-center justify-center text-foreground"
+                className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground"
                 onClick={closeMobileMenu}
                 aria-label={closeMenuLabel}
                 data-press-feedback
                 {...getCursorTargetAttributes({ type: "close", contrast: "dark" })}
               >
-                <span data-magnetic-content className="grid place-items-center"><X aria-hidden="true" /></span>
+                <span data-magnetic-content>{closeMenuLabel}</span>
               </button>
             </Magnetic>
           </div>
@@ -325,18 +378,33 @@ export function Navigation({
           <nav className="mt-8 flex flex-col" aria-label={navigationLabel}>
             {items.map((item, index) => (
               <Link
-                key={item.href}
+                key={item.key}
                 href={item.href}
                 onClick={closeMobileMenu}
                 data-press-feedback
+                data-mobile-nav-link
                 className="group flex min-h-16 items-center justify-between border-b border-border py-4"
               >
                 <span className="font-serif text-[clamp(1.8rem,9vw,3.25rem)] leading-none text-foreground transition-colors group-hover:text-accent">
-                  {item.name}
+                  {item.label}
                 </span>
                 <span className="rv-index">{String(index + 1).padStart(2, "0")}</span>
               </Link>
             ))}
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              data-press-feedback
+              data-mobile-nav-link
+              className="group flex min-h-16 items-center justify-between border-b border-border py-4"
+            >
+              <span className="font-serif text-[clamp(1.8rem,9vw,3.25rem)] leading-none text-[var(--color-text-secondary)] transition-colors group-hover:text-accent">
+                Instagram
+              </span>
+              <span className="sr-only"> {externalNote}</span>
+              <span className="rv-index" aria-hidden="true">↗</span>
+            </a>
           </nav>
 
           <div className="mt-auto flex flex-wrap items-end justify-between gap-6 border-t border-border pt-6">
@@ -346,25 +414,14 @@ export function Navigation({
                 {archiveByline}
               </p>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="inline-flex size-11 items-center justify-center font-mono text-xs text-accent">
-                {currentLocale.toUpperCase()}
-              </span>
-              <Link
-                href={alternateHref}
-                onClick={() => {
-                  saveLocalePreference(alternateLocale);
-                  closeMobileMenu();
-                }}
-                hrefLang={alternateLocale}
-                lang={alternateLocale}
-                data-press-feedback
-                aria-label={alternateLocaleLabel}
-                className="inline-flex size-11 items-center justify-center border border-border font-mono text-xs text-foreground"
-              >
-                {alternateLocale.toUpperCase()}
-              </Link>
-            </div>
+            <LocaleSwitch
+              currentLocale={currentLocale}
+              alternateLocale={alternateLocale}
+              alternateHref={alternateHref}
+              alternateLocaleLabel={alternateLocaleLabel}
+              variant="menu"
+              onNavigate={closeMobileMenu}
+            />
           </div>
         </Container>
       </div>

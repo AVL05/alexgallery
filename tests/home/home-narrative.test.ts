@@ -145,7 +145,7 @@ test("validation reports missing IDs, conflicts, wrong categories and invalid co
   });
   const message = validateHomeCuration(invalid, imagesData).join("\n");
   assert.match(message, /featuredStory usa photo-999/);
-  assert.match(message, /photo-14 aparece en:/);
+  assert.match(message, /photo-52 aparece en:/);
   assert.match(message, /photo-21 está duplicada dentro de selectedWork/);
   assert.match(message, /chapters\.Fauna usa photo-48, cuya categoría es Urbano/);
   assert.match(message, /Selected Work debe contener al menos tres fotografías/);

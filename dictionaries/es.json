@@ -12,15 +12,15 @@
     "accessibleLabel": "Cargando el archivo visual raw.vives"
   },
   "hero": {
-    "title": "Historias entre la luz y el silencio.",
+    "title": "raw.vives",
     "titleLineOne": "Historias entre",
     "titleLineTwo": "la luz y el silencio.",
-    "eyebrow": "Archivo visual personal",
+    "eyebrow": "Fotografía e historias visuales",
     "cta": "Explorar el archivo",
     "scroll": "Desliza para explorar",
     "photographs": "fotografías",
     "location": "Valencia, España",
-    "imageAlt": "Acantilados de Moher desapareciendo en la bruma sobre el Atlántico",
+    "imageAlt": "Eclipse solar total sobre un paisaje a oscuras, con un anillo de luz alrededor de la Luna",
     "featured_tag": "Destacadas"
   },
   "home": {
@@ -82,10 +82,13 @@
   "nav": {
     "skipToContent": "Saltar al contenido",
     "home": "Inicio",
+    "work": "Trabajo",
     "about": "Sobre mí",
     "gallery": "Archivo",
     "series": "Series",
     "contact": "Contacto",
+    "menu": "Menú",
+    "close": "Cerrar",
     "policies": "Políticas",
     "privacy": "Privacidad"
   },

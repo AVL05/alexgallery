@@ -16,7 +16,7 @@ test("hero resolves a local optimized primary image and fallback", () => {
 
   assert.equal(primary.id, heroImageConfig.primaryId);
   assert.equal(fallback.id, heroImageConfig.fallbackId);
-  assert.match(primary.src, /^\/photos\/optimized\/original\/14\.webp$/);
+  assert.match(primary.src, /^\/photos\/optimized\/original\/52\.webp$/);
   assert.ok(primary.blurDataURL?.startsWith("data:image/"));
   assert.ok(fallback.blurDataURL?.startsWith("data:image/"));
 });

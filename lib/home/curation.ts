@@ -20,7 +20,7 @@ export const homeChapterOrder = [
 ] as const satisfies readonly HomeChapterCategory[];
 
 export const homeCuration = {
-  heroPhotoId: 14,
+  heroPhotoId: 52,
   featuredPhotoId: 46,
   expansivePhotoId: 3,
   chapterPhotoIds: {
@@ -37,7 +37,7 @@ export const homeCuration = {
 export const homeImageFallbackSrc = "/photos/optimized/800/1.webp";
 
 export const alternateHomeCuration = {
-  heroPhotoId: 14,
+  heroPhotoId: 52,
   featuredPhotoId: 17,
   expansivePhotoId: 41,
   chapterPhotoIds: {

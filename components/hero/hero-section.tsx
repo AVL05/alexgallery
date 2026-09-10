@@ -1,8 +1,8 @@
 "use client";
 
-import { Container } from "@/components/ui/layout";
 import { HeroContent } from "@/components/hero/hero-content";
 import { HeroMedia, type HeroImageState } from "@/components/hero/hero-media";
+import { HeroWebglSlot } from "@/components/hero/hero-webgl-slot";
 import { useHeroMotion } from "@/components/hero/use-hero-motion";
 import { useMotion } from "@/components/motion/motion-provider";
 import { getHeroArchiveFacts, getHeroImages } from "@/lib/hero/config";
@@ -17,12 +17,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export function HeroSection({
   dictionary,
-  chapterLabel,
   imagesData,
   entryReady,
 }: {
   dictionary: HeroDictionary;
-  chapterLabel: string;
   imagesData: ImagesData;
   entryReady: boolean;
 }) {
@@ -99,12 +97,15 @@ export function HeroSection({
         alt={dictionary.imageAlt}
         slowImage={preview.slowImage === true}
         failImage={preview.failImage === true}
-        entryReady={entryReady}
         onStateChange={handleImageState}
       />
-      <Container className="relative z-10 h-full">
-        <HeroContent dictionary={dictionary} facts={facts} chapterLabel={chapterLabel} />
-      </Container>
+      <HeroWebglSlot
+        image={primary}
+        imageReady={imageState === "loaded"}
+        entryReady={entryReady}
+      />
+      <div data-hero-overlay aria-hidden="true" className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.08)_26%,rgba(0,0,0,0)_55%,rgba(0,0,0,0.5)_100%)]" />
+      <HeroContent dictionary={dictionary} facts={facts} />
     </section>
   );
 }

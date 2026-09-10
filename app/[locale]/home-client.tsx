@@ -1,7 +1,7 @@
 "use client";
 
 import { Contact } from "@/components/contact";
-import { Gallery } from "@/components/gallery";
+import { ArchivePreview } from "@/components/archive/archive-preview";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { HomeNarrative } from "@/components/home/home-narrative";
@@ -66,7 +66,6 @@ export default function HomeClient({
         <Navigation dictionary={dictionary.nav} currentLocale={locale} />
         <Hero
           dictionary={dictionary.hero}
-          chapterLabel={dictionary.home.chapterLabel}
           imagesData={imagesData}
           entryReady={heroEntryReady}
         />
@@ -74,7 +73,7 @@ export default function HomeClient({
           dictionary={dictionary}
           locale={locale}
           imagesData={imagesData}
-          archiveSection={<Gallery dictionary={{ ...dictionary.gallery, locale }} imagesData={imagesData} />}
+          archiveSection={<ArchivePreview locale={locale} galleryDictionary={dictionary.gallery} ctaLabel={dictionary.home.archive.cta} imagesData={imagesData} />}
           contactSection={<Contact dictionary={dictionary.contact} locale={locale} />}
         />
         <Footer currentLocale={locale} dictionary={dictionary.nav} />

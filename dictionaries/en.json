@@ -12,15 +12,15 @@
     "accessibleLabel": "Loading the raw.vives visual archive"
   },
   "hero": {
-    "title": "Stories between light and silence.",
+    "title": "raw.vives",
     "titleLineOne": "Stories between",
     "titleLineTwo": "light and silence.",
-    "eyebrow": "Personal visual archive",
+    "eyebrow": "Photography & visual stories",
     "cta": "Explore the archive",
     "scroll": "Scroll to explore",
     "photographs": "photographs",
     "location": "Valencia, Spain",
-    "imageAlt": "The Cliffs of Moher fading into mist above the Atlantic",
+    "imageAlt": "Total solar eclipse over a darkened landscape, a ring of light around the Moon",
     "featured_tag": "Highlights"
   },
   "home": {
@@ -82,10 +82,13 @@
   "nav": {
     "skipToContent": "Skip to content",
     "home": "Home",
+    "work": "Work",
     "about": "About",
     "gallery": "Archive",
     "series": "Series",
     "contact": "Contact",
+    "menu": "Menu",
+    "close": "Close",
     "policies": "Policies",
     "privacy": "Privacy"
   },
