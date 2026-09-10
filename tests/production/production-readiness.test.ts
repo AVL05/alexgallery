@@ -75,7 +75,7 @@ test("motion reveals remain in the accessibility tree", () => {
 test("forced colors keeps native interaction fallbacks", () => {
   const css = readFileSync("app/globals.css", "utf8");
   const bootstrap = readFileSync("components/interactions/interaction-bootstrap.tsx", "utf8");
-  const graphics = readFileSync("components/graphics/hero-graphics-bootstrap.tsx", "utf8");
+  const graphics = readFileSync("components/graphics/hero-frames-scene.tsx", "utf8");
   assert.match(css, /forced-colors:\s*active/);
   assert.match(css, /cursor:\s*auto\s*!important/);
   assert.match(bootstrap, /forcedColors/);

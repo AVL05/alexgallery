@@ -19,7 +19,7 @@ import {
 import { readQualitySignals, resolveHeroQuality } from "@/lib/graphics/quality";
 import { subscribeHeroScrollProgress } from "@/lib/graphics/signals";
 import * as THREE from "three";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Cinematic hero scene: floating frames driven by the shared hero scroll
 // progress (0→1) plus a subtle ambient drift. Decorative only: photo,
@@ -27,6 +27,7 @@ import { useEffect, useRef } from "react";
 // (invisible) slot. Single RAF, direct three.js transforms, no React renders.
 export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [settled, setSettled] = useState(false);
   const entryReadyRef = useRef(entryReady);
   entryReadyRef.current = entryReady;
   const { prefersReducedMotion, forcedColors, isTouchDevice } = useMotion();
@@ -241,6 +242,7 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
         }
         renderer.render(scene, camera);
         framesRendered += 1;
+        if (framesRendered === 2) setSettled(true);
         // Reduced motion: settle on a static frame instead of looping.
         if (reduced && framesRendered >= 3) return;
         raf = window.requestAnimationFrame(tick);
@@ -281,5 +283,11 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div ref={mountRef} aria-hidden="true" className="absolute inset-0 [&>canvas]:h-full [&>canvas]:w-full" />;
+  return (
+    <div
+      ref={mountRef}
+      aria-hidden="true"
+      className={`absolute inset-0 transition-opacity duration-1000 [&>canvas]:h-full [&>canvas]:w-full ${settled ? "opacity-100" : "opacity-0"}`}
+    />
+  );
 }

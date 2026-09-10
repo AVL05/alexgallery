@@ -455,17 +455,6 @@
     border-color: var(--color-error);
   }
 
-  .masonry-grid {
-    display: flex;
-    gap: clamp(1rem, 2.2vw, 2rem);
-  }
-
-  .masonry-col {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(2.5rem, 5vw, 5rem);
-  }
-
   .archive-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

@@ -104,22 +104,21 @@ test("Strict Mode remount cancels deferred irreversible context loss", async () 
 });
 
 test("hero graphics stays client-only, progressive and route-local", () => {
-  const bootstrap = source("components/graphics/hero-graphics-bootstrap.tsx");
   const media = source("components/hero/hero-media.tsx");
   const slot = source("components/hero/hero-webgl-slot.tsx");
   const section = source("components/hero/hero-section.tsx");
   const localeLayout = source("app/[locale]/layout.tsx");
-  assert.match(bootstrap, /dynamic\([\s\S]*hero-webgl-effect[\s\S]*ssr: false/);
-  assert.match(bootstrap, /if \(!enabled \|\| !decision \|\| decision\.quality === "disabled"\) return null/);
+  assert.match(slot, /dynamic\([\s\S]*hero-frames-scene[\s\S]*ssr: false/);
+  assert.match(slot, /tier !== "off"/);
+  assert.match(slot, /entryReady \? <HeroFramesScene/);
+  assert.match(slot, /aria-hidden="true"/);
   assert.match(media, /<Image/);
-  assert.match(slot, /<HeroFramesScene/);
   assert.match(section, /<HeroMedia[\s\S]*<HeroWebglSlot/);
-  assert.doesNotMatch(localeLayout, /HeroGraphicsBootstrap|HeroWebglEffect/);
-  assert.match(source("components/graphics/hero-webgl-effect.tsx"), /aria-hidden="true"/);
+  assert.doesNotMatch(localeLayout, /HeroFramesScene|photo-frame/);
 });
 
 test("runtime is demand-driven and owns complete GPU cleanup", () => {
-  const runtime = source("components/graphics/hero-webgl-effect.tsx");
+  const runtime = source("components/graphics/hero-frames-scene.tsx");
   const cursor = source("components/interactions/cursor-layer.tsx");
   const heroMotion = source("components/hero/use-hero-motion.ts");
   assert.equal((cursor.match(/registry\.add\(window, "pointermove"/g) || []).length, 1);
@@ -127,16 +126,14 @@ test("runtime is demand-driven and owns complete GPU cleanup", () => {
   assert.equal((heroMotion.match(/scrollTrigger:/g) || []).length, 1);
   assert.equal((runtime.match(/scrollTrigger:/g) || []).length, 0);
   assert.match(runtime, /IntersectionObserver/);
-  assert.match(runtime, /ResizeObserver/);
   assert.match(runtime, /visibilitychange/);
   assert.match(runtime, /webglcontextlost/);
   assert.match(runtime, /webglcontextrestored/);
-  assert.match(runtime, /geometry\?\.dispose\(\)/);
-  assert.match(runtime, /material\?\.dispose\(\)/);
-  assert.match(runtime, /texture\?\.dispose\(\)/);
-  assert.match(runtime, /renderer\?\.dispose\(\)/);
-  assert.match(runtime, /scheduleContextLoss\(canvas, renderer\)/);
-  assert.doesNotMatch(runtime, /uniform float uTime|setAnimationLoop/);
+  assert.match(runtime, /instance\.dispose\(\)/);
+  assert.match(runtime, /renderer\.dispose\(\)/);
+  assert.match(runtime, /domElement\.remove\(\)/);
+  assert.match(runtime, /cancelAnimationFrame\(raf\)/);
+  assert.doesNotMatch(runtime, /setAnimationLoop|setState\(.+progress/);
 });
 
 test("configuration keeps the effect subtle and bounded", () => {
