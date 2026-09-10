@@ -52,7 +52,7 @@ test("manual diptychs have exactly two photographs and stack from semantic DOM o
   const diptychs = photoSeries.flatMap((series) => series.blocks.filter((block) => block.layout === "diptych"));
   assert.ok(diptychs.length >= 3);
   assert.ok(diptychs.every((block) => block.photoIds.length === 2));
-  assert.match(read("components/series/series-page.tsx"), /md:grid-cols-2/);
+  assert.match(read("components/series/series-essay.tsx"), /md:grid-cols-2/);
 });
 
 test("selectors resolve stable IDs, slugs, membership, covers and manual order", () => {

@@ -13,6 +13,7 @@ export const photoSizes = {
   processComparison: "(max-width: 767px) 100vw, (max-width: 1279px) 82vw, 68vw",
   workNarrow: "(max-width: 767px) 92vw, 448px",
   archivePreview: "(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw",
+  essayDiptych: "(max-width: 767px) 100vw, 42vw",
 } as const;
 
 export type PhotoSizesPreset = keyof typeof photoSizes;

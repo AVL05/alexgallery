@@ -107,8 +107,8 @@ test("route prefetch stays predictive instead of expanding across every card", (
 
   const archiveItem = readFileSync("components/archive/archive-item.tsx", "utf8");
   const selectedWork = readFileSync("components/home/selected-work.tsx", "utf8");
-  const seriesPage = readFileSync("components/series/series-page.tsx", "utf8");
+  const seriesEssay = readFileSync("components/series/series-essay.tsx", "utf8");
   assert.match(archiveItem, /prefetch=\{homeExperienceConfig\.prefetch\.archiveItems\}/);
   assert.match(selectedWork, /prefetch=\{homeExperienceConfig\.prefetch\.selectedWork\}/);
-  assert.match(seriesPage, /prefetch=\{false\}/);
+  assert.match(seriesEssay, /prefetch=\{false\}/);
 });
