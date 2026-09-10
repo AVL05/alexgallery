@@ -58,7 +58,7 @@
       "empty": "The selection is temporarily empty. The full archive remains available."
     },
     "series": {
-      "title": "Stories in sequence.",
+      "title": "Sequences.",
       "description": "Three photographic journeys through places, moments and encounters.",
       "photographs": "photographs",
       "cta": "View all series",
@@ -187,7 +187,7 @@
   },
   "series": {
     "eyebrow": "Photographic series",
-    "indexTitle": "Stories in sequence.",
+    "indexTitle": "Sequences.",
     "indexIntroduction": "Series from the archive organised around places and recurring themes.",
     "photographs": "photographs",
     "period": "Period",

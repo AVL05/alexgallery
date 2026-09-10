@@ -9,6 +9,7 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { getPhotoRevealVariant } from "@/lib/motion/photo-motion";
+import { getHomeSectionPosition } from "@/lib/home/experience";
 
 export function FeaturedStory({
   photo,
@@ -25,11 +26,12 @@ export function FeaturedStory({
   failImages?: boolean;
   slowImages?: boolean;
 }) {
+  const marker = getHomeSectionPosition("featuredStory") ?? { current: 2, total: 8 };
   return (
     <section id="featured-story" className="rv-section bg-[var(--color-background-secondary)]">
       <Container>
         <Reveal className="border-t border-border pt-8">
-          <SectionMarker current={3} label={dictionary.chapterLabel} />
+          <SectionMarker {...marker} label={dictionary.chapterLabel} />
         </Reveal>
         <PhotoMotionGroup groupKey={`featured-${photo.id}`} editorial className="mt-12 grid items-end gap-10 md:mt-16 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-7">

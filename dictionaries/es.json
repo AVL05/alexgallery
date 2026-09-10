@@ -58,7 +58,7 @@
       "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible."
     },
     "series": {
-      "title": "Historias en secuencia.",
+      "title": "Secuencias.",
       "description": "Tres recorridos fotográficos por lugares, momentos y encuentros.",
       "photographs": "fotografías",
       "cta": "Ver todas las series",
@@ -187,7 +187,7 @@
   },
   "series": {
     "eyebrow": "Series fotográficas",
-    "indexTitle": "Historias en secuencia.",
+    "indexTitle": "Secuencias.",
     "indexIntroduction": "Series del archivo organizadas en torno a lugares y temas recurrentes.",
     "photographs": "fotografías",
     "period": "Periodo",
