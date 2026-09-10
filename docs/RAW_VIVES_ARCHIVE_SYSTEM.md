@@ -59,8 +59,9 @@ lib/archive/
   context.ts                    contexto temporal en sessionStorage
 ```
 
-`components/gallery.tsx` permanece como punto compatible y delega en
-`ArchivePage`. Los datos y la presentación no se filtran dentro de las tarjetas.
+El antiguo `components/gallery.tsx` se eliminó en V2: la home monta
+`ArchivePreview` y la experiencia completa vive en `/[locale]/archive`.
+Los datos y la presentación no se filtran dentro de las tarjetas.
 
 ## 4. Fuente de datos
 

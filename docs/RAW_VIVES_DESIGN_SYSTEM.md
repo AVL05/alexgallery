@@ -164,11 +164,8 @@ Los enlaces externos usan `target="_blank"`, `rel="noreferrer"` y un indicador
 
 ## 13. Metadatos
 
-`components/ui/metadata.tsx` implementa:
-
-- `Metadata`: texto técnico común.
-- `Tag`: etiqueta con estado normal o activo.
-- `PhotoIndex`: número tabular estable de tres cifras.
+`components/ui/photo-meta.tsx` implementa `MetaList`/`MetaItem`: filas de
+definición con etiqueta `.rv-meta` y valor técnico.
 
 Categoría y año se presentan con `.rv-meta`; el título fotográfico permanece fuera
 de la imagen siempre que el layout lo permita.

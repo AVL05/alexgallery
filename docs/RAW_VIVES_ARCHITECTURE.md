@@ -277,10 +277,10 @@ verdad. La auditoría y reglas de Fase 13.1 viven en
 
 ## Archivo editorial de la Fase 6
 
-`components/gallery.tsx` es ahora un punto de compatibilidad que delega en
-`components/archive/archive-page.tsx`. El archivo conserva `/{locale}#gallery`,
-pero categoría, año, búsqueda, orden y bloque visible se serializan en query
-params mediante `lib/archive/url.ts`. Los selectores puros cruzan el catálogo y
+La home monta `ArchivePreview` bajo `/{locale}#gallery` y la experiencia
+completa vive en `/[locale]/archive` (`components/archive/archive-page.tsx`).
+En el archivo, categoría, año, búsqueda, orden y bloque visible se serializan
+en query params mediante `lib/archive/url.ts`. Los selectores puros cruzan el catálogo y
 la metadata una vez; el grid, filtros, estados y panel móvil se separan en
 componentes pequeños.
 
@@ -317,10 +317,11 @@ locks continúan sin cambios. Véase `RAW_VIVES_INTERACTION_SYSTEM.md`.
 
 ## Sistema gráfico de la Fase 10
 
-`HeroGraphicsBootstrap` vive dentro de la media existente y decide capacidades
-después de intro e imagen. `HeroWebglEffect` y Three se importan solo en cliente.
-`lib/graphics/` separa capacidades, configuración, cover, shaders, señales,
-telemetría y contextos; ninguna ruta distinta de la home monta el renderer.
+`HeroWebglSlot` monta bajo demanda la escena de frames (`HeroFramesScene`,
+import dinámico tras el entry del hero y tier distinto de `off`).
+`lib/graphics/` separa capacidades, calidad adaptativa, configuración, cover,
+señales, telemetría y contextos; ninguna ruta distinta de la home monta el
+renderer.
 
 ## Sistema de producción de la Fase 12
 

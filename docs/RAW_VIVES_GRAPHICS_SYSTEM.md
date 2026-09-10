@@ -22,17 +22,17 @@ Runtime: `three@0.185.1`. Desarrollo: `@types/three@0.185.1`. Sin React Three Fi
 
 ## 6. Arquitectura
 
-`HeroMedia` mantiene la imagen y monta un bootstrap pequeño. Este decide capacidades y solo entonces importa el runtime. `lib/graphics/` contiene configuración, capacidades, señales, cover, shaders, telemetría y contextos.
+`HeroMedia` mantiene solo la imagen. `HeroWebglSlot` monta bajo demanda la escena `HeroFramesScene` (import dinámico tras el entry del hero y tier distinto de `off`). `lib/graphics/` contiene configuración, capacidades, calidad adaptativa (`quality.ts`), señales, cover, telemetría y contextos.
 
 ## 7. Componentes
 
-- `HeroGraphicsBootstrap`: espera imagen, intro y decisión cliente.
-- `HeroWebglEffect`: posee canvas, escena, observers, textura y cleanup.
+- `HeroWebglSlot`: capa decorativa con gate de calidad; sin 3D no descarga three.js ni el GLB.
+- `HeroFramesScene`: posee canvas, escena de frames, observers, texturas y cleanup.
 - `MotionDebugPanel`: telemetría y controles solo de desarrollo.
 
 ## 8. Renderer
 
-`THREE.WebGLRenderer` usa alpha, sin antialias, preferencia de alto rendimiento y sRGB. La escena contiene cámara ortográfica y un único mesh.
+`THREE.WebGLRenderer` usa alpha, antialias, preferencia de bajo consumo y sRGB. La escena contiene cámara en perspectiva y varias instancias del marco compartiendo geometría y material.
 
 ## 9. Canvas
 
@@ -40,7 +40,7 @@ Es absoluto, decorativo, `aria-hidden`, no enfocable y `pointer-events:none`. Em
 
 ## 10. Shader
 
-El vertex shader transmite UV. El fragment shader desplaza la muestra alrededor del puntero con falloff y añade una curvatura vertical mínima por scroll. Sin reloj, glitch, RGB split, bloom o postprocesado.
+Sin shaders personalizados: materiales estándar, cover-fit en CPU y drift senoidal barato. Sin reloj global, glitch, RGB split, bloom o postprocesado.
 
 ## 11. Uniforms
 
