@@ -7,29 +7,50 @@ import {
   loadPhotoTexture,
   type PhotoFrameInstance,
 } from "@/lib/graphics/photo-frame";
-import { getHeroFrameLayout, heroFramesConfig } from "@/lib/graphics/hero-frames";
+import {
+  createScrollTransform,
+  getHeroFrameLayout,
+  getScrollIntensity,
+  heroFramesConfig,
+  writeScrollTransform,
+  type HeroFramePlacement,
+  type ScrollTransform,
+} from "@/lib/graphics/hero-frames";
+import { subscribeHeroScrollProgress } from "@/lib/graphics/signals";
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
 
-// Cinematic hero scene: a few floating frames with real project photos.
-// Decorative only: photo, content and navigation never wait for it, and any
-// failure leaves an empty (invisible) slot.
+// Cinematic hero scene: floating frames driven by the shared hero scroll
+// progress (0→1) plus a subtle ambient drift. Decorative only: photo,
+// content and navigation never wait for it, and any failure leaves an empty
+// (invisible) slot. Single RAF, direct three.js transforms, no React renders.
 export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const entryReadyRef = useRef(entryReady);
   entryReadyRef.current = entryReady;
-  const { prefersReducedMotion, forcedColors } = useMotion();
+  const { prefersReducedMotion, forcedColors, isTouchDevice } = useMotion();
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount || forcedColors) return;
+    const reduced = prefersReducedMotion;
+    const touch = isTouchDevice;
+    const heroRoot = mount.closest("[data-hero]");
     let cancelled = false;
     let renderer: THREE.WebGLRenderer | null = null;
     let raf = 0;
     let visible = true;
     let documentVisible = document.visibilityState === "visible";
     const instances: PhotoFrameInstance[] = [];
-    const baseTransforms: Array<{ y: number; rotationY: number; phase: number }> = [];
+    const placements: HeroFramePlacement[] = [];
+    const scratch: ScrollTransform[] = [];
+    let intensity = 1;
+    let progress = 0;
+    let lastEased = 0;
+    let activity = 0;
+    let fpsFrames = 0;
+    let fpsTime = performance.now();
+    let fps = 0;
 
     const init = async () => {
       // Progressive: wait for the hero entry so FCP never depends on the GLB.
@@ -64,7 +85,9 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
           scene.remove(instance.group);
           instance.dispose();
         }
-        baseTransforms.splice(0);
+        placements.splice(0);
+        scratch.splice(0);
+        intensity = getScrollIntensity(window.innerWidth);
         for (const placement of getHeroFrameLayout(window.innerWidth)) {
           const instance = createPhotoFrameInstance(asset, {
             position: placement.position,
@@ -72,8 +95,9 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
             scale: placement.scale,
           });
           instances.push(instance);
+          placements.push(placement);
+          scratch.push(createScrollTransform());
           scene.add(instance.group);
-          baseTransforms.push({ y: placement.position[1], rotationY: placement.rotation[1], phase: placement.driftPhase });
           void loadPhotoTexture(placement.photo)
             .then((texture) => {
               if (cancelled) {
@@ -109,6 +133,24 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
       };
       window.addEventListener("resize", onResize);
 
+      // Single source of truth: the shared hero scroll signal (desktop).
+      // Touch devices publish nothing, so derive progress from the hero rect
+      // inside our own RAF instead of adding another scroll listener.
+      let unsubscribe: (() => void) | null = null;
+      if (!reduced) {
+        unsubscribe = subscribeHeroScrollProgress((value) => {
+          progress = value;
+        });
+      }
+
+      const readTouchProgress = () => {
+        if (!heroRoot) return 0;
+        const rect = heroRoot.getBoundingClientRect();
+        if (rect.height <= 0) return 0;
+        const value = -rect.top / rect.height;
+        return value < 0 ? 0 : value > 1 ? 1 : value;
+      };
+
       const onVisibility = () => {
         documentVisible = document.visibilityState === "visible";
       };
@@ -121,7 +163,14 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
       );
       observer.observe(mount);
 
-      const reduced = prefersReducedMotion;
+      if (process.env.NODE_ENV === "development") {
+        (window as unknown as Record<string, unknown>).__heroFrames = {
+          getProgress: () => progress,
+          getFps: () => fps,
+          getInstances: () => instances.length,
+        };
+      }
+
       const { positionAmplitude, rotationAmplitude, positionPeriod, rotationPeriod } = heroFramesConfig.drift;
       const start = performance.now();
       let framesRendered = 0;
@@ -131,16 +180,40 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
           raf = window.requestAnimationFrame(tick);
           return;
         }
-        const elapsed = (performance.now() - start) / 1000;
-        if (!reduced) {
-          for (let i = 0; i < instances.length; i++) {
-            const instance = instances[i];
-            const base = baseTransforms[i];
-            instance.group.position.y =
-              base.y + Math.sin((elapsed / positionPeriod) * Math.PI * 2 + base.phase) * positionAmplitude;
-            instance.group.rotation.y =
-              base.rotationY + Math.sin((elapsed / rotationPeriod) * Math.PI * 2 + base.phase * 1.3) * rotationAmplitude;
+        const now = performance.now();
+        fpsFrames += 1;
+        if (now - fpsTime >= 1000) {
+          fps = Math.round((fpsFrames * 1000) / (now - fpsTime));
+          fpsFrames = 0;
+          fpsTime = now;
+        }
+        if (touch && !reduced) progress = readTouchProgress();
+        const elapsed = (now - start) / 1000;
+        // Scroll activity decays the ambient drift so both never compete.
+        const delta = progress - lastEased;
+        lastEased = progress;
+        activity += (Math.abs(delta) - activity) * 0.08;
+        const driftScale = 1 - Math.min(1, activity * 60) * 0.7;
+        for (let i = 0; i < instances.length; i++) {
+          const frame = instances[i];
+          const target = scratch[i];
+          if (reduced) {
+            frame.group.position.set(placements[i].position[0], placements[i].position[1], placements[i].position[2]);
+            continue;
           }
+          writeScrollTransform(placements[i], progress, intensity, target);
+          const phase = placements[i].driftPhase;
+          frame.group.position.set(
+            target.position[0],
+            target.position[1] + Math.sin((elapsed / positionPeriod) * Math.PI * 2 + phase) * positionAmplitude * driftScale,
+            target.position[2],
+          );
+          frame.group.rotation.set(
+            target.rotation[0],
+            target.rotation[1] + Math.sin((elapsed / rotationPeriod) * Math.PI * 2 + phase * 1.3) * rotationAmplitude * driftScale,
+            target.rotation[2],
+          );
+          frame.group.scale.setScalar(target.scale);
         }
         renderer.render(scene, camera);
         framesRendered += 1;
@@ -151,9 +224,13 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
       tick();
 
       return () => {
+        unsubscribe?.();
         window.removeEventListener("resize", onResize);
         document.removeEventListener("visibilitychange", onVisibility);
         observer.disconnect();
+        if (process.env.NODE_ENV === "development") {
+          delete (window as unknown as Record<string, unknown>).__heroFrames;
+        }
       };
     };
 
