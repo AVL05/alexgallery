@@ -26,6 +26,7 @@
   --color-focus: #efe9dd;
   --color-accent: #cfc6b5;
   --color-accent-strong: #e2d9c8;
+  --color-scrim: #000;
   --color-error: #e58b84;
   --color-success: #92b69a;
   --color-warning: #d6b36a;
@@ -45,6 +46,7 @@
   --muted-foreground: var(--color-text-secondary);
   --accent: var(--color-accent);
   --accent-foreground: var(--color-background);
+  --scrim: var(--color-scrim);
   --destructive: var(--color-error);
   --destructive-foreground: var(--color-background);
   --border: var(--color-border);
@@ -123,6 +125,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-scrim: var(--scrim);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -376,6 +379,29 @@
   .rv-editorial-link:focus-visible {
     color: var(--color-accent-strong);
     text-decoration-color: var(--color-accent);
+  }
+
+  .rv-scroll-cue {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 2.5rem;
+    overflow: hidden;
+    background: var(--color-border-strong);
+  }
+
+  .rv-scroll-cue__dot {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 50%;
+    background: var(--color-accent);
+    animation: rv-scroll-cue-drop 2.2s var(--ease-standard) infinite;
+  }
+
+  @keyframes rv-scroll-cue-drop {
+    0% { transform: translateY(-100%); }
+    60%, 100% { transform: translateY(200%); }
   }
 
   [data-press-feedback] {

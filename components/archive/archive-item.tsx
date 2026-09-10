@@ -5,7 +5,7 @@ import type {
   ArchivePhoto,
   ArchiveState,
 } from "@/lib/archive/types";
-import { saveArchiveContext } from "@/lib/archive/context";
+import { saveArchiveContext, savePhotoReturn } from "@/lib/archive/context";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import { ArrowUpRight } from "lucide-react";
 import { serializeArchiveState } from "@/lib/archive/url";
@@ -25,6 +25,7 @@ export function ArchiveItem({
   locale,
   state,
   dictionary,
+  sectionHash = "#gallery",
 }: {
   photo: ArchivePhoto;
   index: number;
@@ -32,6 +33,7 @@ export function ArchiveItem({
   locale: Locale;
   state: ArchiveState;
   dictionary: GalleryDictionary;
+  sectionHash?: string;
 }) {
   const [source, setSource] = useState(photo.src);
   const [imageFailed, setImageFailed] = useState(false);
@@ -44,13 +46,20 @@ export function ArchiveItem({
       : "(max-width: 479px) 100vw, (max-width: 1023px) 50vw, 31vw";
 
   const persistContext = () => {
-    const archiveHref = `${window.location.pathname}${window.location.search}#gallery`;
+    const archiveHref = `${window.location.pathname}${window.location.search}${sectionHash}`;
     saveArchiveContext({
       locale,
       photoId: photo.id,
       archiveHref,
       scrollY: window.scrollY,
       state,
+      savedAt: Date.now(),
+    });
+    savePhotoReturn({
+      locale,
+      photoId: photo.id,
+      returnHref: archiveHref,
+      scrollY: window.scrollY,
       savedAt: Date.now(),
     });
   };
@@ -100,7 +109,7 @@ export function ArchiveItem({
                 <span className="rv-meta">{dictionary.imageError}</span>
               </div>
             )}
-            <span className="archive-item__index absolute left-3 top-3 bg-black/70 px-2 py-1 font-mono text-[10px] tracking-[0.12em] text-white/75">
+            <span className="archive-item__index absolute left-3 top-3 bg-scrim/70 px-2 py-1 font-mono text-[10px] tracking-[0.12em] text-white/75">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>

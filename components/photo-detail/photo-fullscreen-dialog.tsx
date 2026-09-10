@@ -84,7 +84,7 @@ export function PhotoFullscreenDialog({
       <div data-fullscreen-surface className="relative grid h-dvh w-screen place-items-center p-[max(1rem,env(safe-area-inset-top))]">
         {open ? children : null}
         <Magnetic>
-          <button autoFocus type="button" onClick={() => void closeAndRestoreFocus()} className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-20 inline-flex min-h-11 items-center gap-2 bg-black/80 px-4 text-xs uppercase tracking-[0.12em]" data-press-feedback {...getCursorTargetAttributes({ type: "close", contrast: "dark", priority: 10 })}>
+          <button autoFocus type="button" onClick={() => void closeAndRestoreFocus()} className="absolute right-[max(1rem,env(safe-area-inset-right))] top-[max(1rem,env(safe-area-inset-top))] z-20 inline-flex min-h-11 items-center gap-2 bg-scrim/80 px-4 text-xs uppercase tracking-[0.12em]" data-press-feedback {...getCursorTargetAttributes({ type: "close", contrast: "dark", priority: 10 })}>
             <span data-magnetic-content className="inline-flex items-center gap-2"><X aria-hidden="true" className="size-5" /> {closeLabel}</span>
           </button>
         </Magnetic>

@@ -6,28 +6,16 @@ import type {
 } from "@/lib/archive/types";
 import type { GalleryFilter, ImagesData } from "@/types/photo";
 import type { Locale } from "@/types/dictionary";
-import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
+import { indexOptimizedImages, mergePhotoBase } from "@/lib/photos/selectors";
 import { matchesArchiveSeries } from "@/lib/archive/series";
 
 export function buildArchivePhotos(imagesData: ImagesData, locale: Locale = "es"): ArchivePhoto[] {
-  const optimizedById = new Map(imagesData.images.map((image) => [image.id, image]));
+  const optimizedById = indexOptimizedImages(imagesData);
 
-  return basePhotos.map((photo, curatedIndex) => {
-    const optimized = optimizedById.get(String(photo.id));
-    const localized = getLocalizedPhotoContent(photo, locale);
-    return {
-      ...photo,
-      ...localized,
-      ...optimized,
-      id: photo.id,
-      curatedIndex,
-      src: optimized?.src || photo.image,
-      image: optimized?.src || photo.image,
-      alt: localized.alt,
-      width: optimized?.width ?? 1200,
-      height: optimized?.height ?? 1600,
-    };
-  });
+  return basePhotos.map((photo, curatedIndex) => ({
+    ...mergePhotoBase(photo, optimizedById.get(String(photo.id)), locale),
+    curatedIndex,
+  }));
 }
 
 export function normalizeArchiveText(value: string) {

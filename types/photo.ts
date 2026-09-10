@@ -27,6 +27,12 @@ export interface BasePhoto {
   color: string;
   description: string;
   featured?: boolean;
+  // V2-ready optional metadata. Present in types since Fase 1; editorial
+  // content stays in lib/gallery-data.ts until Fase 2 fills it in.
+  slug?: string;
+  location?: string;
+  seriesId?: string | null;
+  selected?: boolean;
 }
 
 export interface Photo {

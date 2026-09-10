@@ -178,7 +178,7 @@ function ComparisonCanvas({ pair, locale, dictionary, initialPosition, eager = f
       }}
       onPointerCancel={(event) => { pointerRef.current = finishProcessPointer(pointerRef.current, event.pointerId); setCursorOverride({ active: false }); }}
     />
-    {!ready && <div className="absolute inset-0 z-20 grid place-items-center bg-black/45"><span className="rv-meta">{dictionary.loading}</span></div>}
+    {!ready && <div className="absolute inset-0 z-20 grid place-items-center bg-scrim/45"><span className="rv-meta">{dictionary.loading}</span></div>}
   </div>;
 }
 

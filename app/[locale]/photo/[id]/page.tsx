@@ -7,6 +7,7 @@ import { getDictionary, locales } from "@/lib/dictionary";
 import { photos } from "@/lib/gallery-data";
 import imagesDataJson from "@/lib/images-data.json";
 import { getClientImagesData } from "@/lib/images/client-data";
+import { getPhotoSlug, resolvePhotoParam } from "@/lib/photos";
 import { buildPhotoStructuredData, getCleanPhotoPath } from "@/lib/photo-detail/seo";
 import type { Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
@@ -17,12 +18,26 @@ const imagesData = imagesDataJson as ImagesData;
 const clientImagesData = getClientImagesData(imagesData);
 
 export function generateStaticParams() {
-  return locales.flatMap((locale) => photos.map((photo) => ({ locale, id: String(photo.id) })));
+  // Numeric ids stay canonical; slug aliases make /photo/[slug] work without
+  // breaking existing URLs.
+  const seen = new Set<string>();
+  return locales.flatMap((locale) =>
+    photos.flatMap((photo) => {
+      const params = [{ locale, id: String(photo.id) }, { locale, id: getPhotoSlug(photo) }];
+      return params.filter((entry) => {
+        const key = `${entry.locale}/${entry.id}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }),
+  );
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale; id: string }> }): Promise<Metadata> {
   const { locale, id } = await params;
-  const photo = buildArchivePhotos(imagesData, locale).find((entry) => String(entry.id) === id);
+  const photoId = resolvePhotoParam(id);
+  const photo = photoId === null ? undefined : buildArchivePhotos(imagesData, locale).find((entry) => entry.id === photoId);
   if (!photo) return { title: locale === "es" ? "Fotografía no encontrada" : "Photograph not found", robots: { index: false, follow: true } };
   const cleanPath = getCleanPhotoPath(locale, photo.id);
   const alternateLocale = locale === "es" ? "en" : "es";
@@ -38,7 +53,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function PhotoPage({ params }: { params: Promise<{ locale: Locale; id: string }> }) {
   const { locale, id } = await params;
-  const photo = buildArchivePhotos(imagesData, locale).find((entry) => String(entry.id) === id);
+  const photoId = resolvePhotoParam(id);
+  const photo = photoId === null ? undefined : buildArchivePhotos(imagesData, locale).find((entry) => entry.id === photoId);
   if (!photo) notFound();
   const dictionary = await getDictionary(locale);
   const structuredData = buildPhotoStructuredData(photo, locale);

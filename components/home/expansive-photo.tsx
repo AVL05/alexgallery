@@ -104,7 +104,7 @@ export function ExpansivePhoto({
                   slow={slowImages}
                   imageClassName="transition-[transform,filter,opacity] duration-500 group-hover:scale-[1.015] group-hover:brightness-90 group-focus-visible:scale-[1.015] group-focus-visible:brightness-90"
                 />
-                <span data-expansive-overlay aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black" />
+                <span data-expansive-overlay aria-hidden="true" className="pointer-events-none absolute inset-0 bg-scrim" />
               </Link>
             </div>
             <div data-expansive-meta className="rv-container mt-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-baseline">

@@ -4,6 +4,8 @@ import { SeriesProgress } from "@/components/series/series-progress";
 import { SeriesReturnFocus } from "@/components/series/series-return-focus";
 import { SeriesDevelopmentTools } from "@/components/series/series-development-tools";
 import { Container } from "@/components/ui/layout";
+import { MetaItem, MetaList } from "@/components/ui/photo-meta";
+import { photoSizes } from "@/lib/images/sizes";
 import type { ArchivePhoto } from "@/lib/archive/types";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { getPhotoRevealVariant } from "@/lib/motion/photo-motion";
@@ -90,10 +92,10 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos }: {
           </div>
           <div className="md:col-span-4">
             <p className="text-base leading-7 text-[var(--color-text-secondary)]">{series.description}</p>
-            <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-border pt-5">
-              {series.period ? <div><dt className="rv-meta">{dictionary.period}</dt><dd className="mt-2 text-sm">{series.period}</dd></div> : null}
-              {series.location ? <div><dt className="rv-meta">{dictionary.location}</dt><dd className="mt-2 text-sm">{series.location}</dd></div> : null}
-            </dl>
+            <MetaList className="mt-6 gap-4 border-t border-border pt-5">
+              {series.period ? <MetaItem label={dictionary.period}>{series.period}</MetaItem> : null}
+              {series.location ? <MetaItem label={dictionary.location}>{series.location}</MetaItem> : null}
+            </MetaList>
           </div>
         </header>
 
@@ -118,7 +120,7 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos }: {
           <section className="mt-20 lg:mt-28" aria-labelledby="next-series-title">
             <p className="rv-kicker">{dictionary.nextSeries}</p>
             <Link href={getSeriesHref(locale, nextSeries.slug)} className="group mt-6 grid gap-8 md:grid-cols-12 md:items-end" data-press-feedback>
-              <div className="relative overflow-hidden bg-[var(--color-surface)] md:col-span-7" style={{ aspectRatio: `${nextCover.width}/${nextCover.height}` }}><Image src={nextCover.src} alt={nextCover.alt || nextCover.description} fill loading="lazy" sizes="(max-width: 767px) 100vw, 58vw" className="object-cover transition-[transform,filter] duration-500 group-hover:scale-[1.015] group-hover:brightness-[0.9] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.9]" /></div>
+              <div className="relative overflow-hidden bg-[var(--color-surface)] md:col-span-7" style={{ aspectRatio: `${nextCover.width}/${nextCover.height}` }}><Image src={nextCover.src} alt={nextCover.alt || nextCover.description} fill loading="lazy" sizes={photoSizes.editorialFeature} className="object-cover transition-[transform,filter] duration-500 group-hover:scale-[1.015] group-hover:brightness-[0.9] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.9]" /></div>
               <div className="md:col-span-5"><p className="rv-meta">{nextSeries.photoIds.length} {dictionary.photographs}</p><h2 id="next-series-title" className="mt-4 font-serif text-[clamp(2.2rem,5vw,5rem)] leading-[0.95] tracking-[-0.04em]">{nextSeries.title}</h2><p className="mt-5 line-clamp-3 text-[var(--color-text-secondary)]">{nextSeries.description}</p><span className="rv-editorial-link mt-7">{dictionary.openSeries}<ArrowRight aria-hidden="true" className="size-4" /></span></div>
             </Link>
           </section>

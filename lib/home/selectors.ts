@@ -7,8 +7,8 @@ import {
 } from "@/lib/home/curation";
 import { assertValidHomeCuration } from "@/lib/home/validation";
 import { assertValidHomeExperience } from "@/lib/home/experience";
-import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
 import type { Locale } from "@/types/dictionary";
+import { indexOptimizedImages, mergePhotoBase } from "@/lib/photos/selectors";
 import type {
   BasePhoto,
   ImagesData,
@@ -43,36 +43,14 @@ export type HomeNarrativeData = {
   archive: ArchiveSummary;
 };
 
-function mergePhoto(
-  photo: BasePhoto,
-  optimized: OptimizedImageData | undefined,
-  locale: Locale,
-): NarrativePhoto {
-  const localized = getLocalizedPhotoContent(photo, locale);
-  return {
-    ...photo,
-    ...localized,
-    src: optimized?.src ?? photo.image,
-    srcAvif: optimized?.srcAvif,
-    width: optimized?.width ?? 1200,
-    height: optimized?.height ?? 1600,
-    blurDataURL: optimized?.blurDataURL,
-    exif: optimized?.exif,
-    histogram: optimized?.histogram,
-    variants: optimized?.variants,
-  };
-}
-
 export function getNarrativePhotos(
   imagesData: ImagesData,
   locale: Locale = "es",
 ): NarrativePhoto[] {
-  const optimizedById = new Map(
-    imagesData.images.map((image) => [Number(image.id), image]),
-  );
+  const optimizedById = indexOptimizedImages(imagesData);
 
   return photos.map((photo) =>
-    mergePhoto(photo, optimizedById.get(photo.id), locale),
+    mergePhotoBase(photo, optimizedById.get(String(photo.id)), locale),
   );
 }
 

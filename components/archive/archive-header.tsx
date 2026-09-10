@@ -1,3 +1,4 @@
+import { MetaItem, MetaList } from "@/components/ui/photo-meta";
 import type { GalleryDictionary } from "@/types/dictionary";
 
 export function ArchiveHeader({
@@ -20,18 +21,22 @@ export function ArchiveHeader({
         </h2>
         <p className="rv-intro mt-6 max-w-2xl">{dictionary.description}</p>
       </div>
-      <dl className="grid grid-cols-2 border-y border-border lg:col-span-4">
-        <div className="py-5 pr-3">
-          <dt className="rv-meta">{dictionary.periodLabel}</dt>
-          <dd className="mt-3 font-mono text-xs text-[var(--color-text-secondary)]">
-            {startYear}—{endYear}
-          </dd>
-        </div>
-        <div className="border-l border-border py-5 pl-3">
-          <dt className="rv-meta">{dictionary.categoriesLabel}</dt>
-          <dd className="mt-2 font-serif text-3xl tabular-nums">{categoryCount}</dd>
-        </div>
-      </dl>
+      <MetaList className="border-y border-border lg:col-span-4">
+        <MetaItem
+          label={dictionary.periodLabel}
+          className="py-5 pr-3"
+          valueClassName="mt-3 font-mono text-xs text-[var(--color-text-secondary)]"
+        >
+          {startYear}—{endYear}
+        </MetaItem>
+        <MetaItem
+          label={dictionary.categoriesLabel}
+          className="border-l border-border py-5 pl-3"
+          valueClassName="mt-2 font-serif text-3xl tabular-nums"
+        >
+          {categoryCount}
+        </MetaItem>
+      </MetaList>
     </header>
   );
 }
