@@ -99,11 +99,7 @@ export function HeroSection({
         failImage={preview.failImage === true}
         onStateChange={handleImageState}
       />
-      <HeroWebglSlot
-        image={primary}
-        imageReady={imageState === "loaded"}
-        entryReady={entryReady}
-      />
+      <HeroWebglSlot entryReady={entryReady} />
       <div data-hero-overlay aria-hidden="true" className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.08)_26%,rgba(0,0,0,0)_55%,rgba(0,0,0,0.5)_100%)]" />
       <HeroContent dictionary={dictionary} facts={facts} />
     </section>

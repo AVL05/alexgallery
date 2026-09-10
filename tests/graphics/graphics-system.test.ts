@@ -112,7 +112,7 @@ test("hero graphics stays client-only, progressive and route-local", () => {
   assert.match(bootstrap, /dynamic\([\s\S]*hero-webgl-effect[\s\S]*ssr: false/);
   assert.match(bootstrap, /if \(!enabled \|\| !decision \|\| decision\.quality === "disabled"\) return null/);
   assert.match(media, /<Image/);
-  assert.match(slot, /<HeroGraphicsBootstrap/);
+  assert.match(slot, /<HeroFramesScene/);
   assert.match(section, /<HeroMedia[\s\S]*<HeroWebglSlot/);
   assert.doesNotMatch(localeLayout, /HeroGraphicsBootstrap|HeroWebglEffect/);
   assert.match(source("components/graphics/hero-webgl-effect.tsx"), /aria-hidden="true"/);
