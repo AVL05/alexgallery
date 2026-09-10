@@ -13,12 +13,14 @@ export function ArchiveGrid({
   state,
   dictionary,
   collectionKey,
+  sectionHash,
 }: {
   photos: ArchivePhoto[];
   locale: Locale;
   state: ArchiveState;
   dictionary: GalleryDictionary;
   collectionKey: string;
+  sectionHash?: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   useArchivePhotoMotion({
@@ -38,6 +40,7 @@ export function ArchiveGrid({
           locale={locale}
           state={state}
           dictionary={dictionary}
+          sectionHash={sectionHash}
         />
       ))}
     </div>

@@ -80,7 +80,7 @@ export function HomeNarrative({
     <>
       {homeExperienceConfig.sectionOrder.filter((section) => section !== "hero").map((section) => {
         let content: ReactNode = null;
-        if (section === "manifesto") content = <HomeManifesto home={dictionary.home} about={dictionary.about} />;
+        if (section === "manifesto") content = <HomeManifesto home={dictionary.home} about={dictionary.about} locale={locale} />;
         if (section === "featuredStory") content = <FeaturedStory photo={data.featured} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />;
         if (section === "series") content = <HomeSeries entries={seriesEntries} dictionary={dictionary.home} locale={locale} />;
         if (section === "expansivePhoto") content = <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />;

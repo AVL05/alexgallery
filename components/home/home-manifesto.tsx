@@ -1,38 +1,32 @@
+import { AboutBio } from "@/components/about/about-bio";
 import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/layout";
-import { SectionMarker } from "@/components/home/section-marker";
-import type { AboutDictionary, HomeDictionary } from "@/types/dictionary";
+import type { AboutDictionary, HomeDictionary, Locale } from "@/types/dictionary";
 
 export function HomeManifesto({
   home,
   about,
+  locale,
 }: {
   home: HomeDictionary;
   about: AboutDictionary;
+  locale: Locale;
 }) {
   return (
     <section id="about" className="rv-section bg-[var(--color-background)]">
       <Container>
-        <Reveal className="border-t border-border pt-8">
-          <SectionMarker current={2} label={home.chapterLabel} />
-        </Reveal>
-        <div className="mt-12 grid gap-12 md:mt-16 lg:grid-cols-12 lg:gap-8">
-          <Reveal className="lg:col-span-8">
-            <h2 className="max-w-[15ch] font-serif text-[clamp(2.6rem,6vw,6.75rem)] leading-[0.98] tracking-[-0.045em]">
+        <div className="grid gap-14 md:grid-cols-12 md:gap-8 lg:gap-12">
+          <Reveal className="md:col-span-7">
+            <p className="rv-kicker">{about.label}</p>
+            <h2 className="mt-6 max-w-[16ch] font-serif text-[clamp(2.4rem,5.5vw,5.5rem)] leading-[1.0] tracking-[-0.04em]">
               {home.manifesto.title}
             </h2>
-            <p className="mt-8 max-w-2xl text-[clamp(1.1rem,2vw,1.55rem)] leading-relaxed text-[var(--color-text-secondary)] md:mt-12">
+            <p className="mt-8 max-w-xl text-[clamp(1.1rem,2vw,1.5rem)] leading-relaxed text-[var(--color-text-secondary)] md:mt-12">
               {home.manifesto.lead}
             </p>
           </Reveal>
-          <Reveal className="self-end border-l border-border pl-6 lg:col-span-4 lg:pl-8" delay={0.08}>
-            <p className="rv-meta text-accent">{about.role}</p>
-            <p className="mt-5 max-w-md text-sm leading-7 text-[var(--color-text-secondary)] md:text-base">
-              {about.body}
-            </p>
-            <p className="mt-5 max-w-md text-sm leading-7 text-[var(--color-text-muted)]">
-              {home.manifesto.archiveNote}
-            </p>
+          <Reveal className="md:col-span-4 md:col-start-9 md:self-end" delay={0.08}>
+            <AboutBio about={about} locale={locale} />
           </Reveal>
         </div>
       </Container>

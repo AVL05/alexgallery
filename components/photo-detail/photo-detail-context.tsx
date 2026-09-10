@@ -2,8 +2,9 @@
 
 import { buildArchivePhotos } from "@/lib/archive/selectors";
 import { defaultArchiveState, type ArchivePhoto, type ArchiveState } from "@/lib/archive/types";
-import { getArchiveHref, parseArchiveSearch, serializeArchiveState } from "@/lib/archive/url";
-import { readArchiveContext, saveArchiveContext } from "@/lib/archive/context";
+import { parseArchiveSearch, serializeArchiveState } from "@/lib/archive/url";
+import { readArchiveContext, readPhotoReturn, resolvePhotoReturnHref, saveArchiveContext } from "@/lib/archive/context";
+import { archivePageHref } from "@/lib/routes";
 import { categories } from "@/lib/gallery-data";
 import { getPhotoDetailHref, resolvePhotoNavigation, selectRelatedPhotos } from "@/lib/photo-detail/selectors";
 import { getLocalizedSeries, getSeriesForPhoto, getSeriesReturnHref, getValidSeriesContext } from "@/lib/series/selectors";
@@ -13,6 +14,7 @@ import type { ImagesData } from "@/types/photo";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 type PhotoDetailContextValue = {
+  locale: Locale;
   photos: ArchivePhoto[];
   state: ArchiveState;
   current: ArchivePhoto;
@@ -41,7 +43,7 @@ export function PhotoDetailContextProvider({ children, locale, currentId, images
   const photos = useMemo(() => buildArchivePhotos(imagesData, locale), [imagesData, locale]);
   const years = useMemo(() => [...new Set(photos.map((photo) => photo.year))], [photos]);
   const [state, setState] = useState<ArchiveState>(defaultArchiveState);
-  const [returnHref, setReturnHref] = useState(`/${locale}#gallery`);
+  const [returnHref, setReturnHref] = useState(() => archivePageHref(locale));
   const [seriesSlug, setSeriesSlug] = useState<string | null>(null);
 
   useEffect(() => {
@@ -65,7 +67,12 @@ export function PhotoDetailContextProvider({ children, locale, currentId, images
       return;
     }
     const saved = readArchiveContext(locale, currentId);
-    setReturnHref(saved?.archiveHref || getArchiveHref(locale, parsed));
+    const stored = readPhotoReturn(locale, currentId);
+    setReturnHref(resolvePhotoReturnHref({
+      seriesHref: null,
+      storedHref: stored?.returnHref ?? saved?.archiveHref ?? null,
+      fallbackHref: archivePageHref(locale),
+    }));
   }, [currentId, locale, years]);
 
   const navigation = useMemo(() => resolvePhotoNavigation(photos, currentId, state, seriesSlug), [currentId, photos, seriesSlug, state]);
@@ -81,6 +88,7 @@ export function PhotoDetailContextProvider({ children, locale, currentId, images
   if (!current) return null;
   const membership = getSeriesForPhoto(currentId);
   const value = {
+    locale,
     photos,
     state,
     current,

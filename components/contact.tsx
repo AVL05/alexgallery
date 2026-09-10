@@ -14,10 +14,10 @@ import {
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { ContactDictionary } from "@/types/dictionary";
 import type { Locale } from "@/types/dictionary";
-import { ArrowUpRight, ChevronDown, Mail } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { type FormEvent, useRef, useState } from "react";
 import Link from "next/link";
-import { web3FormsAccessKey } from "@/lib/site-config";
+import { contactEmail, developerUrl, instagramUrl, web3FormsAccessKey } from "@/lib/site-config";
 
 const labelClass = "rv-label mb-2 block text-[var(--color-text-secondary)]";
 const errorClass = "mt-2 text-xs leading-relaxed text-[var(--color-error)]";
@@ -137,6 +137,12 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
     });
   };
 
+  const switchFormType = (kind: "general" | "license") => {
+    setFormType(kind);
+    setSubmitStatus(null);
+    setFormErrors({});
+  };
+
   const status = submitStatus && (
     <div
       ref={statusRef}
@@ -155,48 +161,50 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
   return (
     <section ref={containerRef} id="contact" className="rv-section overflow-hidden bg-background">
       <Container>
-        <div className="contact-reveal mb-12 max-w-3xl md:mb-16">
+        <div className="contact-reveal max-w-4xl">
           <p className="rv-kicker mb-5">raw.vives / {dictionary.title}</p>
-          <h2 className="rv-section-title mb-6">{dictionary.title}</h2>
-          <p className="rv-intro">{dictionary.description}</p>
+          <h2 className="max-w-[14ch] font-serif text-[clamp(2.6rem,6.5vw,6.5rem)] leading-[0.95] tracking-[-0.04em]">{dictionary.title}</h2>
+          <p className="rv-intro mt-6">{dictionary.description}</p>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="contact-reveal lg:col-span-8">
-            <fieldset className="mb-8 flex flex-wrap gap-2 border-0 p-0">
-              <legend className="sr-only">{dictionary.title}</legend>
-              <Button
-                type="button"
-                variant={formType === "general" ? "default" : "outline"}
-                aria-pressed={formType === "general"}
-                onClick={() => {
-                  setFormType("general");
-                  setSubmitStatus(null);
-                  setFormErrors({});
-                }}
-              >
-                {dictionary.general}
-              </Button>
-              <Button
-                type="button"
-                variant={formType === "license" ? "default" : "outline"}
-                aria-pressed={formType === "license"}
-                onClick={() => {
-                  setFormType("license");
-                  setSubmitStatus(null);
-                  setFormErrors({});
-                }}
-              >
-                {dictionary.license}
-              </Button>
-            </fieldset>
+        <div className="contact-reveal mt-12 md:mt-16">
+          <p className="rv-meta">{dictionary.social}</p>
+          <a
+            href={`mailto:${contactEmail}`}
+            data-press-feedback
+            className="mt-4 block w-fit max-w-full font-serif text-[clamp(1.9rem,5.5vw,4.75rem)] leading-none tracking-[-0.03em] text-foreground underline decoration-[var(--color-border-strong)] decoration-1 underline-offset-[0.2em] transition-colors hover:text-accent hover:decoration-accent"
+          >
+            <span className="break-all">{contactEmail}</span>
+          </a>
+        </div>
+
+        <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-12 lg:gap-16">
+          <div className="contact-reveal lg:col-span-7">
+            <div className="mb-8 flex flex-wrap gap-x-8 gap-y-3" role="group" aria-label={dictionary.title}>
+              {(["general", "license"] as const).map((kind) => (
+                <button
+                  key={kind}
+                  type="button"
+                  aria-pressed={formType === kind}
+                  onClick={() => switchFormType(kind)}
+                  data-press-feedback
+                  className={`min-h-11 text-xs font-semibold uppercase tracking-[0.16em] underline underline-offset-8 transition-colors ${
+                    formType === kind
+                      ? "text-foreground decoration-accent"
+                      : "text-[var(--color-text-muted)] decoration-transparent hover:text-foreground"
+                  }`}
+                >
+                  {kind === "general" ? dictionary.general : dictionary.license}
+                </button>
+              ))}
+            </div>
 
             {formType === "general" ? (
               <form
                 onSubmit={(event) => submit(event, "general")}
                 action="https://api.web3forms.com/submit"
                 method="POST"
-                className="space-y-6"
+                className="max-w-2xl space-y-6"
               >
                 <input type="hidden" name="access_key" value={web3FormsAccessKey} />
                 <input type="hidden" name="subject" value="Nuevo contacto - raw.vives" />
@@ -292,7 +300,7 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
                 onSubmit={(event) => submit(event, "license")}
                 action="https://api.web3forms.com/submit"
                 method="POST"
-                className="space-y-6"
+                className="max-w-2xl space-y-6"
               >
                 <input type="hidden" name="access_key" value={web3FormsAccessKey} />
                 <input type="hidden" name="subject" value="Solicitud de licencia - raw.vives" />
@@ -357,15 +365,15 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
             )}
           </div>
 
-          <aside className="contact-reveal border-t border-border pt-8 lg:col-span-4 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-            <p className="rv-kicker mb-6">{dictionary.social}</p>
-            <div className="space-y-2">
-              <a href="mailto:alexviclop@gmail.com" className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
-                <span className="flex min-w-0 items-center gap-3"><Mail aria-hidden="true" className="size-4 shrink-0" /><span className="break-all">alexviclop@gmail.com</span></span>
-                <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
-              <a href="https://www.instagram.com/raw.vives/" target="_blank" rel="noreferrer" className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
+          <aside className="contact-reveal lg:col-span-4 lg:col-start-9">
+            <p className="rv-kicker">{dictionary.social}</p>
+            <div className="mt-6 space-y-2">
+              <a href={instagramUrl} target="_blank" rel="noreferrer" data-press-feedback className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
                 <span className="flex items-center gap-3"><span aria-hidden="true" className="font-mono text-[10px]">IG</span>@raw.vives</span>
+                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+              <a href={developerUrl} target="_blank" rel="noreferrer" data-press-feedback className="group flex min-h-14 items-center justify-between gap-4 border-b border-border py-3 text-sm text-[var(--color-text-muted)] transition-colors hover:text-foreground">
+                <span>aleviclop.dev</span>
                 <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
             </div>

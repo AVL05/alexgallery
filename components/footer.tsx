@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
 import { buildLocaleHref } from "@/lib/i18n/locale-routing";
 import { saveLocalePreference } from "@/lib/i18n/locale-cookie.client";
+import { contactEmail, developerUrl, instagramUrl } from "@/lib/site-config";
 
 export function Footer({
   currentLocale,
@@ -84,7 +85,7 @@ export function Footer({
           <div className="flex flex-col items-start md:col-span-3 md:items-end">
             <a
               className="rv-editorial-link"
-              href="https://www.instagram.com/raw.vives/"
+              href={instagramUrl}
               target="_blank"
               rel="noreferrer"
               data-press-feedback
@@ -93,14 +94,14 @@ export function Footer({
             </a>
             <a
               className="rv-editorial-link"
-              href="https://aleviclop.dev/"
+              href={developerUrl}
               target="_blank"
               rel="noreferrer"
               data-press-feedback
             >
               aleviclop.dev <ArrowUpRight aria-hidden="true" className="size-3.5" />
             </a>
-            <a className="rv-editorial-link" href="mailto:alexviclop@gmail.com" data-press-feedback>
+            <a className="rv-editorial-link" href={`mailto:${contactEmail}`} data-press-feedback>
               {currentLocale === "es" ? "Correo" : "Email"}
             </a>
           </div>
