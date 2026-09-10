@@ -4,6 +4,7 @@ import type React from "react";
 import { Suspense } from "react";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { MotionDevelopmentTools } from "@/components/motion/development-tools";
+import { PhotoFrameDevelopmentTools } from "@/components/graphics/photo-frame-development-tools";
 import { IntroBootstrapScript } from "@/components/intro/intro-bootstrap-script";
 import { DocumentLanguageBootstrap } from "@/components/document-language-bootstrap";
 import { siteUrl } from "@/lib/site-config";
@@ -175,6 +176,7 @@ export default function RootLayout({
           <MotionProvider>
             <div className="flex min-h-screen flex-col">{children}</div>
             <MotionDevelopmentTools />
+            <PhotoFrameDevelopmentTools />
           </MotionProvider>
         </Suspense>
       </body>
