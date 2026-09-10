@@ -16,6 +16,7 @@ import {
   type HeroFramePlacement,
   type ScrollTransform,
 } from "@/lib/graphics/hero-frames";
+import { readQualitySignals, resolveHeroQuality } from "@/lib/graphics/quality";
 import { subscribeHeroScrollProgress } from "@/lib/graphics/signals";
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
@@ -33,9 +34,21 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount || forcedColors) return;
-    const reduced = prefersReducedMotion;
-    const touch = isTouchDevice;
-    const heroRoot = mount.closest("[data-hero]");
+      const reduced = prefersReducedMotion;
+      const touch = isTouchDevice;
+      const heroRoot = mount.closest("[data-hero]");
+      // Context loss: suspend once, resume once, then stay suspended.
+      // Never loops renderer recreation; the photographic hero persists.
+      let contextLosses = 0;
+      let contextSuspended = false;
+      const handleContextLost = (event: Event) => {
+        event.preventDefault();
+        contextLosses += 1;
+        contextSuspended = true;
+      };
+      const handleContextRestored = () => {
+        if (contextLosses <= 1) contextSuspended = false;
+      };
     let cancelled = false;
     let renderer: THREE.WebGLRenderer | null = null;
     let raf = 0;
@@ -53,6 +66,10 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
     let fps = 0;
 
     const init = async () => {
+      // Adaptive gate first: off-tier devices never download the GLB.
+      const signals = readQualitySignals();
+      const quality = resolveHeroQuality(signals);
+      if (quality.tier === "off") return;
       // Progressive: wait for the hero entry so FCP never depends on the GLB.
       while (!entryReadyRef.current && !cancelled) {
         await new Promise((resolve) => window.setTimeout(resolve, 120));
@@ -62,7 +79,7 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
       if (!asset || cancelled) return;
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, heroFramesConfig.maxPixelRatio));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, quality.maxPixelRatio));
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       mount.appendChild(renderer.domElement);
@@ -87,8 +104,8 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
         }
         placements.splice(0);
         scratch.splice(0);
-        intensity = getScrollIntensity(window.innerWidth);
-        for (const placement of getHeroFrameLayout(window.innerWidth)) {
+        intensity = getScrollIntensity(window.innerWidth) * quality.scrollScale;
+        for (const placement of getHeroFrameLayout(window.innerWidth).slice(0, quality.maxFrames)) {
           const instance = createPhotoFrameInstance(asset, {
             position: placement.position,
             rotation: placement.rotation,
@@ -119,6 +136,8 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
       const key = new THREE.DirectionalLight(0xfff2e0, 1.35);
       key.position.set(1.8, 2.4, 3);
       scene.add(key);
+      renderer.domElement.addEventListener("webglcontextlost", handleContextLost);
+      renderer.domElement.addEventListener("webglcontextrestored", handleContextRestored);
 
       rebuild();
       let currentLayout = window.innerWidth < heroFramesConfig.mobileBreakpoint ? "mobile" : "desktop";
@@ -168,6 +187,11 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
           getProgress: () => progress,
           getFps: () => fps,
           getInstances: () => instances.length,
+          getTier: () => quality.tier,
+          getDpr: () => renderer?.getPixelRatio() ?? 0,
+          getWebglStatus: () => (contextSuspended ? "suspended" : "active"),
+          getReducedMotion: () => reduced,
+          getSaveData: () => signals.saveData,
         };
       }
 
@@ -176,7 +200,7 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
       let framesRendered = 0;
       const tick = () => {
         if (cancelled || !renderer) return;
-        if (!visible || !documentVisible) {
+        if (!visible || !documentVisible || contextSuspended) {
           raf = window.requestAnimationFrame(tick);
           return;
         }
@@ -193,7 +217,7 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
         const delta = progress - lastEased;
         lastEased = progress;
         activity += (Math.abs(delta) - activity) * 0.08;
-        const driftScale = 1 - Math.min(1, activity * 60) * 0.7;
+        const driftScale = quality.driftScale * (1 - Math.min(1, activity * 60) * 0.7);
         for (let i = 0; i < instances.length; i++) {
           const frame = instances[i];
           const target = scratch[i];
@@ -227,6 +251,8 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
         unsubscribe?.();
         window.removeEventListener("resize", onResize);
         document.removeEventListener("visibilitychange", onVisibility);
+        renderer?.domElement.removeEventListener("webglcontextlost", handleContextLost);
+        renderer?.domElement.removeEventListener("webglcontextrestored", handleContextRestored);
         observer.disconnect();
         if (process.env.NODE_ENV === "development") {
           delete (window as unknown as Record<string, unknown>).__heroFrames;
