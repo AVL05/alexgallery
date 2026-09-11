@@ -20,7 +20,6 @@ const experienceSectionOrder: readonly HomeExperienceSection[] = [
   "hero",
   "featuredStory",
   "series",
-  "expansivePhoto",
   "selectedWork",
   "archive",
   "manifesto",

@@ -18,7 +18,6 @@ test("home experience keeps the required editorial order without redundant secti
     "hero",
     "featuredStory",
     "series",
-    "expansivePhoto",
     "selectedWork",
     "archive",
     "manifesto",
@@ -27,7 +26,7 @@ test("home experience keeps the required editorial order without redundant secti
   assert.equal(new Set(homeExperienceConfig.sectionOrder).size, homeExperienceConfig.sectionOrder.length);
   assert.ok(!homeExperienceConfig.sectionOrder.includes("visualChapters"));
   assert.ok(!homeExperienceConfig.sectionOrder.includes("closing"));
-  assert.deepEqual(getHomeSectionPosition("series"), { current: 3, total: 8 });
+  assert.deepEqual(getHomeSectionPosition("series"), { current: 3, total: 7 });
 });
 
 test("Selected Work is limited to four photographs outside published series", () => {

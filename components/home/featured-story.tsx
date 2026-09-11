@@ -26,7 +26,7 @@ export function FeaturedStory({
   failImages?: boolean;
   slowImages?: boolean;
 }) {
-  const marker = getHomeSectionPosition("featuredStory") ?? { current: 2, total: 8 };
+  const marker = getHomeSectionPosition("featuredStory") ?? { current: 2, total: 7 };
   return (
     <section id="featured-story" className="rv-section bg-[var(--color-background-secondary)]">
       <Container>
