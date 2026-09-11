@@ -14,7 +14,7 @@ import { LOCATION_CHANGE_EVENT } from "@/hooks/use-location-snapshot";
 
 type HistoryMode = "push" | "replace";
 
-export function useArchiveState(years: readonly string[]) {
+export function useArchiveState(years: readonly string[], anchor = "#gallery") {
   const [state, setState] = useState<ArchiveState>(defaultArchiveState);
   const [hydrated, setHydrated] = useState(false);
 
@@ -23,7 +23,7 @@ export function useArchiveState(years: readonly string[]) {
       setState(next);
       if (typeof window === "undefined") return;
       const search = serializeArchiveState(next, window.location.search);
-      const nextUrl = `${window.location.pathname}${search}#gallery`;
+      const nextUrl = `${window.location.pathname}${search}${anchor}`;
       window.history[historyMode === "push" ? "pushState" : "replaceState"](
         { ...window.history.state, rawVivesArchive: true },
         "",
@@ -31,7 +31,7 @@ export function useArchiveState(years: readonly string[]) {
       );
       window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
     },
-    [],
+    [anchor],
   );
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export function useArchiveState(years: readonly string[]) {
         window.history.replaceState(
           { ...window.history.state, rawVivesArchive: true },
           "",
-          `${window.location.pathname}${normalizedSearch}${window.location.hash || "#gallery"}`,
+          `${window.location.pathname}${normalizedSearch}${window.location.hash || anchor}`,
         );
         window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT));
       }
@@ -52,7 +52,7 @@ export function useArchiveState(years: readonly string[]) {
     readLocation();
     window.addEventListener("popstate", readLocation);
     return () => window.removeEventListener("popstate", readLocation);
-  }, [years]);
+  }, [anchor, years]);
 
   useEffect(() => {
     const handleRequestedFilter = (event: Event) => {

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import imagesDataJson from "@/lib/images-data.json";
 import { categories } from "@/lib/gallery-data";
@@ -57,6 +58,16 @@ test("archive URL parsing validates values and serialization removes defaults", 
     years,
   );
   assert.deepEqual(invalid, defaultArchiveState);
+});
+
+test("archive state keeps the section anchor of its host page", () => {
+  const hook = readFileSync("hooks/use-archive-state.ts", "utf8");
+  assert.match(hook, /useArchiveState\(years: readonly string\[\], anchor = "#gallery"\)/);
+  assert.doesNotMatch(hook, /\$\{window\.location\.pathname\}\$\{search\}#gallery/);
+  assert.match(
+    readFileSync("components/archive/archive-page.tsx", "utf8"),
+    /useArchiveState\(years, `#\$\{sectionId\}`\)/,
+  );
 });
 
 test("category links remain localized and shareable without JavaScript", () => {

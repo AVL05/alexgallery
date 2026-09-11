@@ -98,7 +98,10 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
         camera.updateProjectionMatrix();
       };
 
+      let buildGeneration = 0;
       const rebuild = () => {
+        buildGeneration += 1;
+        const generation = buildGeneration;
         for (const instance of instances.splice(0)) {
           scene.remove(instance.group);
           instance.dispose();
@@ -118,7 +121,7 @@ export function HeroFramesScene({ entryReady }: { entryReady: boolean }) {
           scene.add(instance.group);
           void loadPhotoTexture(placement.photo)
             .then((texture) => {
-              if (cancelled) {
+              if (cancelled || generation !== buildGeneration) {
                 texture.dispose();
                 return;
               }

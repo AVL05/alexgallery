@@ -61,7 +61,7 @@ export function ArchivePage({
     setQuery,
     setPage,
     clear,
-  } = useArchiveState(years);
+  } = useArchiveState(years, `#${sectionId}`);
   const [searchValue, setSearchValue] = useState(state.query);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { refreshScrollTriggers, scrollTo } = useMotion();

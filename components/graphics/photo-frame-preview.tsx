@@ -127,6 +127,7 @@ export function PhotoFramePreview() {
     };
   }, [enabled]);
 
+  const appliedTextureRef = useRef<THREE.Texture | null>(null);
   useEffect(() => {
     if (!enabled) return;
     const photo = photos.current[photoIndex];
@@ -140,6 +141,8 @@ export function PhotoFramePreview() {
           texture.dispose();
           return;
         }
+        appliedTextureRef.current?.dispose();
+        appliedTextureRef.current = texture;
         instance.setPhotoTexture(texture, photo.width / photo.height, 8);
         setStatus("foto aplicada");
       })
