@@ -90,7 +90,9 @@
     "menu": "Menú",
     "close": "Cerrar",
     "policies": "Políticas",
-    "privacy": "Privacidad"
+    "privacy": "Privacidad",
+    "licensing": "Licencias",
+    "breadcrumb": "Migas de pan"
   },
   "about": {
     "label": "Sobre mí",
@@ -280,6 +282,33 @@
         "usage_description": "Describe el uso previsto con al menos 10 caracteres."
       }
     }
+  },
+  "faq": {
+    "eyebrow": "Preguntas frecuentes",
+    "title": "Antes de escribir.",
+    "description": "Respuestas rápidas sobre licencias, usos y colaboraciones. Si tu caso es distinto, usa el formulario de contacto.",
+    "items": [
+      {
+        "q": "¿Puedo usar una fotografía del archivo?",
+        "a": "Sí, con licencia previa. Escríbeme indicando la foto y el uso previsto (comercial, editorial o personal) y te propongo condiciones."
+      },
+      {
+        "q": "¿Cómo solicito una licencia?",
+        "a": "Usa la pestaña Licencias del formulario: indica el ID o título de la foto, el tipo de uso y una breve descripción. Cuantos más detalles, más rápida la respuesta."
+      },
+      {
+        "q": "¿Cuánto tardas en responder?",
+        "a": "Normalmente en 48-72 horas laborables. Si tu solicitud tiene fecha límite, indícala en el mensaje y la priorizo."
+      },
+      {
+        "q": "¿Aceptas encargos o colaboraciones?",
+        "a": "Sí, siempre que encajen con el archivo: viajes, ciudad, naturaleza y escenas cotidianas. Cuéntame la idea por el formulario general."
+      },
+      {
+        "q": "¿Puedo compartir una foto con crédito?",
+        "a": "Para usos no comerciales con crédito visible a raw.vives, escríbeme igualmente: suelo autorizarlos sin coste."
+      }
+    ]
   },
   "seo": {
     "title": "raw.vives | Archivo visual",

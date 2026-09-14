@@ -66,3 +66,7 @@ public/photos/**/*.xmp
 .playwright-mcp/
 .wrangler/
 .codex-preview/
+
+# Playwright smoke E2E artifacts.
+test-results/
+playwright-report/

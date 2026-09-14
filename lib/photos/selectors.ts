@@ -47,6 +47,9 @@ export function mergePhotoBase(
     id: photo.id,
     src,
     image: src,
+    // Runtime alt is the single source of truth: localized editorial content
+    // (lib/photo-detail/content.ts) wins over the pipeline placeholder stored
+    // in lib/images-data.json.
     alt: localized.alt,
     width: optimized?.width ?? 1200,
     height: optimized?.height ?? 1600,

@@ -67,6 +67,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     })
 
+    sitemapEntries.push({
+      url: `${siteUrl}/${locale}/licencias`,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+      alternates: {
+        languages: {
+          es: `${siteUrl}/es/licencias`,
+          en: `${siteUrl}/en/licencias`,
+          'x-default': `${siteUrl}/en/licencias`,
+        },
+      },
+    })
+
     for (const series of publishedSeries) {
       sitemapEntries.push({
         url: `${siteUrl}/${locale}/series/${series.slug}`,

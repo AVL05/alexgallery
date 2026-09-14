@@ -1,6 +1,10 @@
+import { buttonVariants } from "@/components/ui/button";
 import type { HeroArchiveFacts } from "@/lib/hero/config";
-import type { HeroDictionary } from "@/types/dictionary";
+import type { HeroDictionary, Locale } from "@/types/dictionary";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
+import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 // Hero V2 composition: giant brand over the photograph, short descriptor,
 // one quiet metadata row and a discreet scroll cue. data-hero-* hooks feed
@@ -8,9 +12,11 @@ import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 export function HeroContent({
   dictionary,
   facts,
+  locale,
 }: {
   dictionary: HeroDictionary;
   facts: HeroArchiveFacts;
+  locale: Locale;
 }) {
   return (
     <div data-hero-content className="relative z-10 flex h-full flex-col justify-end pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-[calc(var(--layout-nav-height)+2rem)]">
@@ -35,6 +41,18 @@ export function HeroContent({
             <span data-hero-title-line className="block">{dictionary.titleLineTwo}</span>
           </span>
         </p>
+
+        <div data-hero-secondary className="mt-8 sm:mt-10">
+          <Link
+            href={`/${locale}/archive`}
+            data-press-feedback
+            {...getCursorTargetAttributes({ type: "explore", contrast: "light" })}
+            className={cn(buttonVariants({ variant: "secondary" }))}
+          >
+            {dictionary.cta}
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
+        </div>
 
         <div data-hero-secondary className="mt-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-5 border-t border-[var(--color-border)] pt-4 sm:mt-10">
           <p className="font-mono text-[10px] uppercase leading-relaxed tracking-[0.14em] text-[var(--color-text-secondary)]">

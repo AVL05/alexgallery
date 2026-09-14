@@ -47,5 +47,11 @@ jobs:
       - name: Build static export
         run: pnpm build
 
+      - name: Install Chromium for smoke E2E
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Smoke E2E
+        run: pnpm e2e
+
       - name: Check whitespace errors
         run: git diff --check

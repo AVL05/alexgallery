@@ -13,9 +13,12 @@ import { PhotoDetailSeries } from "@/components/photo-detail/photo-detail-series
 import { PhotoProcessDevelopmentTools } from "@/components/photo-process/photo-process-development-tools";
 import { PhotoProcessSection } from "@/components/photo-process/photo-process-section";
 import { Container } from "@/components/ui/layout";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { buildArchivePhotos } from "@/lib/archive/selectors";
 import { getPhotoOrientation } from "@/lib/photo-detail/selectors";
 import { resolvePhotoProcess } from "@/lib/photo-process/selectors";
+import { archivePageHref } from "@/lib/routes";
+import { getLocalizedSeries, getSeriesForPhoto, getSeriesHref } from "@/lib/series/selectors";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 
@@ -24,11 +27,21 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
   const photo = buildArchivePhotos(imagesData, locale).find((entry) => entry.id === photoId);
   const photoProcess = photo ? resolvePhotoProcess(photo) : null;
   const orientation = optimized ? getPhotoOrientation({ width: optimized.width, height: optimized.height }) : "vertical";
+  const seriesMembership = photo ? getSeriesForPhoto(photo.id) : null;
+  const localizedSeries = seriesMembership ? getLocalizedSeries(seriesMembership, locale) : null;
+  const breadcrumbItems = [
+    { label: dictionary.nav.gallery, href: archivePageHref(locale) },
+    ...(localizedSeries ? [{ label: localizedSeries.title, href: getSeriesHref(locale, localizedSeries.slug) }] : []),
+    ...(photo ? [{ label: photo.title }] : []),
+  ];
   return <PhotoDetailContextProvider locale={locale} currentId={photoId} imagesData={imagesData}>
     <PhotoDetailKeyboard />
     <main id="main-content" tabIndex={-1} className={`photo-detail photo-detail--${orientation} overflow-hidden pt-28 sm:pt-32`}>
       <Container>
-        <PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} className="mb-10" />
+        <div className="mb-10">
+          <Breadcrumbs items={breadcrumbItems} ariaLabel={dictionary.nav.breadcrumb} />
+          <PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} className="mt-2" />
+        </div>
         <PhotoDetailMotion photoId={photoId}>
           <PhotoDetailMedia dictionary={dictionary.photoDetail} />
 

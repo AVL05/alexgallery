@@ -90,7 +90,9 @@
     "menu": "Menu",
     "close": "Close",
     "policies": "Policies",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "licensing": "Licensing",
+    "breadcrumb": "Breadcrumb"
   },
   "about": {
     "label": "About",
@@ -280,6 +282,33 @@
         "usage_description": "Describe the intended use in at least 10 characters."
       }
     }
+  },
+  "faq": {
+    "eyebrow": "Frequently asked questions",
+    "title": "Before writing.",
+    "description": "Quick answers about licenses, uses and collaborations. If your case is different, use the contact form.",
+    "items": [
+      {
+        "q": "Can I use a photograph from the archive?",
+        "a": "Yes, with a prior license. Write to me with the photo and the intended use (commercial, editorial or personal) and I will propose terms."
+      },
+      {
+        "q": "How do I request a license?",
+        "a": "Use the Licenses tab in the form: include the photo ID or title, the type of use and a short description. The more detail, the faster the answer."
+      },
+      {
+        "q": "How long do you take to reply?",
+        "a": "Usually within 48-72 business hours. If your request has a deadline, mention it in the message and I will prioritize it."
+      },
+      {
+        "q": "Do you take commissions or collaborations?",
+        "a": "Yes, when they fit the archive: travel, city, nature and everyday scenes. Tell me the idea through the general form."
+      },
+      {
+        "q": "Can I share a photo with credit?",
+        "a": "For non-commercial uses with visible credit to raw.vives, write to me anyway: I usually authorize them at no cost."
+      }
+    ]
   },
   "seo": {
     "title": "raw.vives | Visual Archive",

@@ -9,6 +9,9 @@ import imagesDataJson from "@/lib/images-data.json";
 import { getClientImagesData } from "@/lib/images/client-data";
 import { getPhotoSlug, resolvePhotoParam } from "@/lib/photos";
 import { buildPhotoStructuredData, getCleanPhotoPath } from "@/lib/photo-detail/seo";
+import { buildBreadcrumbList } from "@/lib/seo/breadcrumbs";
+import { getLocalizedSeries, getSeriesForPhoto } from "@/lib/series/selectors";
+import { siteUrl } from "@/lib/site-config";
 import type { Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import type { Metadata } from "next";
@@ -57,7 +60,19 @@ export default async function PhotoPage({ params }: { params: Promise<{ locale: 
   const photo = photoId === null ? undefined : buildArchivePhotos(imagesData, locale).find((entry) => entry.id === photoId);
   if (!photo) notFound();
   const dictionary = await getDictionary(locale);
-  const structuredData = buildPhotoStructuredData(photo, locale);
+  const seriesMembership = getSeriesForPhoto(photo.id);
+  const localizedSeries = seriesMembership ? getLocalizedSeries(seriesMembership, locale) : null;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      buildPhotoStructuredData(photo, locale),
+      buildBreadcrumbList([
+        { name: dictionary.nav.gallery, url: `${siteUrl}/${locale}/archive` },
+        ...(localizedSeries ? [{ name: localizedSeries.title, url: `${siteUrl}/${locale}/series/${localizedSeries.slug}` }] : []),
+        { name: photo.title },
+      ]),
+    ],
+  };
   return <PageShell as="div">
     <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/photo/${id}`} />
     <PhotoDetailPage locale={locale} photoId={photo.id} imagesData={clientImagesData} dictionary={dictionary} />

@@ -26,5 +26,7 @@ export function buildPhotoStructuredData(photo: ArchivePhoto, locale: Locale) {
     dateCreated: photo.year,
     genre: photo.category,
     inLanguage: locale,
+    license: `${siteUrl}/${locale}/politica-uso`,
+    acquireLicensePage: `${siteUrl}/${locale}/licencias`,
   };
 }

@@ -15,7 +15,7 @@ import { gsap, useGSAP } from "@/lib/motion/gsap";
 import type { ContactDictionary } from "@/types/dictionary";
 import type { Locale } from "@/types/dictionary";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
-import { type FormEvent, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { contactEmail, developerUrl, instagramUrl, web3FormsAccessKey } from "@/lib/site-config";
 
@@ -33,6 +33,14 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
   const statusRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const { prefersReducedMotion, isTouchDevice } = useMotion();
+
+  // Deep link from the licensing page (?form=license): preselect the license
+  // tab on mount. Effect (not initializer) avoids SSR hydration mismatch.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("form") === "license") {
+      setFormType("license");
+    }
+  }, []);
 
   useGSAP(() => {
     if (submitStatus && statusRef.current) {

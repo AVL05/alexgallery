@@ -66,6 +66,9 @@ export function Footer({
             <Link className="rv-editorial-link" href={`/${currentLocale}#contact`} data-press-feedback>
               {dictionary.contact}
             </Link>
+            <Link className="rv-editorial-link" href={`/${currentLocale}/licencias`} data-press-feedback>
+              {dictionary.licensing}
+            </Link>
             <Link
               className="rv-editorial-link"
               href={`/${currentLocale}/politica-uso`}

@@ -2,6 +2,7 @@ import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
 import { SeriesProgress } from "@/components/series/series-progress";
 import { SeriesReturnFocus } from "@/components/series/series-return-focus";
 import { SeriesDevelopmentTools } from "@/components/series/series-development-tools";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { EssayDiptych, EssayImage, SeriesFooter, SeriesHero, essaySingleSize } from "@/components/series/series-essay";
 import { Container } from "@/components/ui/layout";
 import type { ArchivePhoto } from "@/lib/archive/types";
@@ -39,11 +40,12 @@ function EssayBlock({ block, photos, positions, total, locale, slug }: {
   );
 }
 
-export function SeriesPage({ locale, dictionary, rawSeries, photos }: {
+export function SeriesPage({ locale, dictionary, rawSeries, photos, breadcrumbLabel }: {
   locale: Locale;
   dictionary: SeriesDictionary;
   rawSeries: PhotoSeries;
   photos: readonly ArchivePhoto[];
+  breadcrumbLabel: string;
 }) {
   const series = getLocalizedSeries(rawSeries, locale);
   const byId = new Map(photos.map((photo) => [photo.id, photo]));
@@ -58,6 +60,14 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos }: {
       <SeriesReturnFocus />
       <SeriesDevelopmentTools />
       <Container>
+        <Breadcrumbs
+          ariaLabel={breadcrumbLabel}
+          items={[
+            { label: dictionary.indexTitle, href: `/${locale}/series` },
+            { label: series.title },
+          ]}
+          className="mb-10"
+        />
         <SeriesHero series={series} dictionary={dictionary} />
 
         <SeriesProgress total={series.photoIds.length} label={dictionary.progressLabel} />

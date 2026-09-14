@@ -12,4 +12,5 @@ export type SeriesDictionary = Dictionary["series"];
 export type PhotoProcessDictionary = Dictionary["photoProcess"];
 export type CursorDictionary = Dictionary["cursor"];
 export type ContactDictionary = Dictionary["contact"];
+export type FaqDictionary = Dictionary["faq"];
 export type IntroDictionary = Dictionary["intro"];

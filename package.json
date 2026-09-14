@@ -17,6 +17,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "pnpm typecheck",
     "test": "tsx --test tests/**/*.test.ts",
+    "e2e": "playwright test",
     "validate-photo-process": "tsx scripts/validate-photo-process.ts",
     "prune-private-assets": "tsx scripts/prune-private-assets.ts",
     "export": "next build",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@plaiceholder/next": "^3.0.0",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.18",

@@ -11,7 +11,7 @@ import {
   reportHeroState,
   type HeroPreviewOptions,
 } from "@/lib/hero/development";
-import type { HeroDictionary } from "@/types/dictionary";
+import type { HeroDictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -19,10 +19,12 @@ export function HeroSection({
   dictionary,
   imagesData,
   entryReady,
+  locale,
 }: {
   dictionary: HeroDictionary;
   imagesData: ImagesData;
   entryReady: boolean;
+  locale: Locale;
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const { primary, fallback } = useMemo(() => getHeroImages(imagesData), [imagesData]);
@@ -101,7 +103,7 @@ export function HeroSection({
       />
       <HeroWebglSlot entryReady={entryReady} />
       <div data-hero-overlay aria-hidden="true" className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.08)_26%,rgba(0,0,0,0)_55%,rgba(0,0,0,0.5)_100%)]" />
-      <HeroContent dictionary={dictionary} facts={facts} />
+      <HeroContent dictionary={dictionary} facts={facts} locale={locale} />
     </section>
   );
 }

@@ -13,7 +13,7 @@ test("sitemap covers public routes without duplicates or placeholders", () => {
   const urls = entries.map((entry) => entry.url);
   assert.equal(new Set(urls).size, urls.length);
   for (const locale of ["es", "en"]) {
-    for (const path of ["", "/work", "/archive", "/series"]) {
+    for (const path of ["", "/work", "/archive", "/series", "/licencias"]) {
       assert.ok(urls.includes(`https://rawvives.aleviclop.dev/${locale}${path}`));
     }
   }

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Prata } from "next/font/google";
 import type React from "react";
 import { Suspense } from "react";
+import { Analytics } from "@/components/analytics";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { MotionDevelopmentTools } from "@/components/motion/development-tools";
 import { PhotoFrameDevelopmentTools } from "@/components/graphics/photo-frame-development-tools";
@@ -158,6 +159,15 @@ export default function RootLayout({
                   name: "Alex Vicente Visual Archive",
                   publisher: { "@id": `${siteUrl}/#person` },
                   inLanguage: ["es", "en"],
+                  potentialAction: (["es", "en"] as const).map((locale) => ({
+                    "@type": "SearchAction",
+                    target: {
+                      "@type": "EntryPoint",
+                      urlTemplate: `${siteUrl}/${locale}/archive?q={search_term_string}`,
+                    },
+                    "query-input": "required name=search_term_string",
+                    inLanguage: locale,
+                  })),
                 },
                 {
                   "@type": "ImageGallery",
@@ -179,6 +189,7 @@ export default function RootLayout({
             <PhotoFrameDevelopmentTools />
           </MotionProvider>
         </Suspense>
+        <Analytics />
       </body>
     </html>
   );
