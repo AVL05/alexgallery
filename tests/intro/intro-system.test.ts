@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import { INTRO_STORAGE_KEY, isLocalizedHomePath } from "../../lib/intro/constants";
 import { createIntroSafetyTimer } from "../../lib/intro/lifecycle";
@@ -120,4 +121,14 @@ test("safety timeout can be cleaned before it completes", () => {
   cleanup();
   assert.equal(cleared, true);
   assert.equal(callback, undefined);
+});
+
+test("active intro behaves as a modal and isolates the home content", () => {
+  const intro = readFileSync("components/intro/intro-overlay.tsx", "utf8");
+
+  assert.match(intro, /role="dialog"/);
+  assert.match(intro, /aria-modal="true"/);
+  assert.match(intro, /mainContent\.inert = true/);
+  assert.match(intro, /mainContent\.setAttribute\("aria-hidden", "true"\)/);
+  assert.match(intro, /skipButtonRef\.current\?\.focus/);
 });

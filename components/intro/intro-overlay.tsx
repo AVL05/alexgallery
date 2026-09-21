@@ -132,6 +132,7 @@ function IntroExperience({
   onFinished: (result: "completed" | "skipped") => void;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const skipButtonRef = useRef<HTMLButtonElement>(null);
   const releaseScrollRef = useRef<(() => void) | null>(null);
   const finishedRef = useRef(false);
   const [phase, setPhase] = useState<IntroPhase>("checking");
@@ -189,10 +190,26 @@ function IntroExperience({
   });
 
   useLayoutEffect(() => {
+    const mainContent = document.querySelector<HTMLElement>("#main-content");
+    const previousInert = mainContent?.inert ?? false;
+    const previousAriaHidden = mainContent?.getAttribute("aria-hidden");
+
     document.documentElement.dataset.introActive = "true";
     releaseScrollRef.current = lockScroll(INTRO_SCROLL_LOCK_SOURCE);
+    if (mainContent) {
+      mainContent.inert = true;
+      mainContent.setAttribute("aria-hidden", "true");
+    }
+    skipButtonRef.current?.focus({ preventScroll: true });
 
-    return () => releaseScroll();
+    return () => {
+      if (mainContent) {
+        mainContent.inert = previousInert;
+        if (previousAriaHidden == null) mainContent.removeAttribute("aria-hidden");
+        else mainContent.setAttribute("aria-hidden", previousAriaHidden);
+      }
+      releaseScroll();
+    };
   }, [lockScroll, releaseScroll]);
 
   useEffect(() => {
@@ -215,7 +232,8 @@ function IntroExperience({
       data-intro-overlay
       data-native-cursor
       data-phase={phase}
-      role="region"
+      role="dialog"
+      aria-modal="true"
       aria-label={dictionary.accessibleLabel}
     >
       <div
@@ -241,7 +259,7 @@ function IntroExperience({
             <span className="sm:hidden">RV / 001</span>
             <span className="hidden sm:inline">RAW.VIVES / {locale === "es" ? "SISTEMA" : "SYSTEM"} 001</span>
           </p>
-          <IntroSkipButton label={dictionary.skip} onSkip={skip} />
+          <IntroSkipButton label={dictionary.skip} onSkip={skip} buttonRef={skipButtonRef} />
         </div>
 
         <div className="mt-5 sm:mt-8">

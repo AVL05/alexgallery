@@ -24,6 +24,27 @@ test("hero exposes the archive CTA above the fold", async ({ page }) => {
   expect(box!.y).toBeLessThan(viewport!.height);
 });
 
+test("intro isolates the page until it is skipped", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "webdriver", { get: () => false });
+  });
+  await page.goto("/es");
+
+  const intro = page.getByRole("dialog", { name: /archivo/i });
+  const skip = page.getByRole("button", { name: /saltar introducción/i });
+  const main = page.locator("#main-content");
+
+  await expect(intro).toHaveAttribute("aria-modal", "true");
+  await expect(main).toHaveAttribute("inert", "");
+  await expect(main).toHaveAttribute("aria-hidden", "true");
+  await expect(skip).toBeFocused();
+
+  await skip.click();
+  await expect(intro).toBeHidden();
+  await expect(main).not.toHaveAttribute("inert", "");
+  await expect(main).not.toHaveAttribute("aria-hidden", "true");
+});
+
 test("photo detail keeps breadcrumbs above the content", async ({ page }) => {
   await page.goto("/es/photo/21");
   const crumbs = page.getByRole("navigation", { name: "Migas de pan" });
