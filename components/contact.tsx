@@ -110,6 +110,7 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
+        signal: AbortSignal.timeout(15_000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           access_key: web3FormsAccessKey,

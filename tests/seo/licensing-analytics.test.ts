@@ -108,3 +108,10 @@ test("licensing page is indexed, localized and linked from discovery surfaces", 
     /get\("form"\) === "license"/,
   );
 });
+
+test("contact submissions do not stay pending indefinitely", () => {
+  assert.match(
+    read("components/contact.tsx"),
+    /signal: AbortSignal\.timeout\(15_000\)/,
+  );
+});
