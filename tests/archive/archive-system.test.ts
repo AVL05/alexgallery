@@ -26,7 +26,7 @@ const photos = buildArchivePhotos(imagesDataJson as ImagesData);
 const years = [...new Set(photos.map((photo) => photo.year))];
 
 test("archive resolves the complete real catalog with unique optimized images", () => {
-  assert.equal(photos.length, 31);
+  assert.equal(photos.length, 44);
   assert.equal(new Set(photos.map((photo) => photo.id)).size, photos.length);
   assert.ok(photos.every((photo) => photo.width > 0 && photo.height > 0));
   assert.deepEqual(new Set(photos.map((photo) => photo.category)), new Set(categories.slice(1)));
@@ -77,7 +77,7 @@ test("category links remain localized and shareable without JavaScript", () => {
 });
 
 test("architecture is reserved for structures and urban scenes use their own category", () => {
-  assert.equal(photos.filter((photo) => photo.category === "Arquitectura").length, 4);
+  assert.equal(photos.filter((photo) => photo.category === "Arquitectura").length, 5);
   assert.equal(photos.filter((photo) => photo.category === "Urbano").length, 9);
   assert.equal(photos.find((photo) => photo.id === 49)?.category, "Urbano");
   assert.equal(photos.find((photo) => photo.id === 27)?.category, "Personas");
@@ -95,7 +95,7 @@ test("search is accent and case insensitive across real searchable fields", () =
     ...defaultArchiveState,
     query: "meteorologia",
   });
-  assert.equal(byCategory.length, 3);
+  assert.equal(byCategory.length, 5);
 });
 
 test("filters combine and sorting preserves deterministic editorial fallbacks", () => {
@@ -130,7 +130,7 @@ test("filters combine and sorting preserves deterministic editorial fallbacks", 
     ...defaultArchiveState,
     series: "unassigned",
   });
-  assert.equal(unassigned.length, 19);
+  assert.equal(unassigned.length, 32);
 });
 
 test("facet counts are conditioned by the other active filters", () => {
@@ -153,11 +153,11 @@ test("facet counts are conditioned by the other active filters", () => {
     defaultArchiveState,
     archiveSeriesFilters,
   );
-  assert.equal(seriesCounts.all, 31);
+  assert.equal(seriesCounts.all, 44);
   assert.equal(seriesCounts["porto-river-night"], 5);
   assert.equal(seriesCounts["atlantic-stone"], 4);
   assert.equal(seriesCounts["small-encounters"], 3);
-  assert.equal(seriesCounts.unassigned, 19);
+  assert.equal(seriesCounts.unassigned, 32);
 });
 
 test("progressive loading and editorial variants are bounded and stable", () => {

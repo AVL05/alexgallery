@@ -38,6 +38,19 @@ const englishContent: Record<number, LocalizedPhotoContent> = {
   50: { title: "Between brick and change", description: "A Dublin street moves between history, construction and everyday life.", alt: "A brick-lined Dublin street under construction." },
   51: { title: "Whispers of the monastery", description: "An old Irish church rises under dense skies, holding centuries of silence.", alt: "An old Irish church beneath dense clouds." },
   52: { title: "12.08.2026 — Solar eclipse", description: "The last thread of light draws a ring around the Moon during the total solar eclipse.", alt: "Total solar eclipse showing a bright ring and diamond effect above a dark landscape." },
+  53: { title: "Last light over the peaks", description: "The sun disappears behind the range, leaving the peaks outlined against a glowing sky.", alt: "Mountain peaks silhouetted against an orange sunset sky." },
+  54: { title: "Path towards the heights", description: "The trail crosses a high mountain meadow among pines, rock and early light.", alt: "A trail crossing a sunlit mountain meadow among pine trees." },
+  55: { title: "The peak above the stream", description: "A sharp peak dominates the passage as water moves between rock walls and pines.", alt: "A sharp mountain peak above a rocky stream and pine forest." },
+  56: { title: "The lake between two slopes", description: "Water fills the centre of the pass as the slopes descend towards it from both sides.", alt: "An alpine lake between two steep rocky slopes." },
+  57: { title: "Small woodland inhabitant", description: "A red-and-black striped insect stands out against the soft green leaves.", alt: "A red-and-black striped insect resting on a green leaf." },
+  58: { title: "Shelter among thorns", description: "A butterfly rests at the centre of a dry thistle, surrounded by the mountain's rough textures.", alt: "A butterfly resting on the centre of a dry thistle." },
+  59: { title: "The sky in motion", description: "Stars draw arcs above the valley during a long night exposure.", alt: "Star trails crossing the night sky above a mountain valley." },
+  60: { title: "The hour among the clouds", description: "The stone bell tower rises towards a clock outlined by light and clouds.", alt: "A stone bell tower and clock seen from below against the sky." },
+  61: { title: "Beneath the empty chairs", description: "Two horses stay together on the slope beneath the motionless chairlift.", alt: "Two horses on a mountain slope beneath an empty chairlift." },
+  62: { title: "The woodland boardwalk", description: "A wooden boardwalk curves among trunks, moss and the subdued light of the forest.", alt: "A wooden boardwalk curving through a dense forest." },
+  63: { title: "The mountain appears", description: "The mist parts for a moment, revealing the mountain ridge against the blue sky.", alt: "A mountain ridge emerging from mist under a blue sky." },
+  64: { title: "Water among the pines", description: "A waterfall drops with force among vegetation and the forest's dark rock.", alt: "A waterfall framed by dense pine forest and dark rock." },
+  65: { title: "Teeth of stone", description: "Two rock needles emerge among the pines and cut their profile against the clouds.", alt: "Two jagged rock needles rising above a pine forest." },
 };
 
 export function getLocalizedPhotoContent(photo: BasePhoto, locale: Locale): LocalizedPhotoContent {

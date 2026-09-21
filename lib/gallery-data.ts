@@ -326,4 +326,17 @@ export const photos = [
     description:
       "El último hilo de luz dibuja un anillo alrededor de la Luna durante el eclipse solar total.",
   },
+  { id: 53, title: "Última luz sobre las cumbres", category: "Paisaje", year: "2026", image: "/53.webp", color: "accent", description: "El sol desaparece tras la sierra y deja las cumbres recortadas sobre un cielo encendido." },
+  { id: 54, title: "Sendero hacia la altura", category: "Paisaje", year: "2026", image: "/54.webp", color: "secondary", description: "La senda atraviesa una pradera de alta montaña entre pinos, roca y primeras luces." },
+  { id: 55, title: "El pico sobre el torrente", category: "Paisaje", year: "2026", image: "/55.webp", color: "chart-3", description: "Un pico afilado domina el paso mientras el agua avanza entre paredes de roca y pinos." },
+  { id: 56, title: "El lago entre dos vertientes", category: "Paisaje", year: "2026", image: "/56.webp", color: "accent", description: "El agua ocupa el centro del collado mientras las laderas descienden hacia ella desde ambos lados." },
+  { id: 57, title: "Pequeño habitante del bosque", category: "Fauna", year: "2026", image: "/57.webp", color: "secondary", description: "Un insecto de franjas rojas y negras destaca sobre el verde suave de las hojas." },
+  { id: 58, title: "Refugio entre espinas", category: "Fauna", year: "2026", image: "/58.webp", color: "chart-3", description: "Una mariposa se posa en el centro de un cardo seco, rodeada por la textura áspera del monte." },
+  { id: 59, title: "El cielo en movimiento", category: "Meteorología", featured: true, year: "2026", image: "/59.webp", color: "accent", description: "Las estrellas trazan arcos sobre el valle durante una larga exposición nocturna." },
+  { id: 60, title: "La hora entre las nubes", category: "Arquitectura", year: "2026", image: "/60.webp", color: "secondary", description: "El campanario de piedra asciende hacia un reloj recortado por la luz y las nubes." },
+  { id: 61, title: "Bajo las sillas vacías", category: "Fauna", featured: true, year: "2026", image: "/61.webp", color: "chart-3", description: "Dos caballos permanecen juntos en la ladera bajo las sillas inmóviles del remonte." },
+  { id: 62, title: "La pasarela del bosque", category: "Paisaje", year: "2026", image: "/62.webp", color: "accent", description: "Una pasarela de madera se curva entre troncos, musgo y la luz contenida del bosque." },
+  { id: 63, title: "La montaña aparece", category: "Meteorología", featured: true, year: "2026", image: "/63.webp", color: "secondary", description: "La niebla se abre por un instante y deja ver la arista de la montaña contra el cielo azul." },
+  { id: 64, title: "Agua entre los pinos", category: "Paisaje", year: "2026", image: "/64.webp", color: "chart-3", description: "Una cascada cae con fuerza entre la vegetación y la roca oscura del bosque." },
+  { id: 65, title: "Dientes de piedra", category: "Paisaje", year: "2026", image: "/65.webp", color: "accent", description: "Dos agujas de roca emergen entre los pinos y recortan su perfil contra las nubes." },
 ] satisfies BasePhoto[];
