@@ -20,7 +20,6 @@ const experienceSectionOrder: readonly HomeExperienceSection[] = [
   "hero",
   "featuredStory",
   "series",
-  "selectedWork",
   "archive",
   "manifesto",
   "contact",
@@ -31,7 +30,6 @@ const requiredExperienceSections: readonly HomeExperienceSection[] = [
   "manifesto",
   "featuredStory",
   "series",
-  "selectedWork",
   "archive",
   "contact",
 ];
@@ -47,7 +45,7 @@ export const homeExperienceConfig = {
   hiddenSections: hiddenExperienceSections,
   selectedWorkLimit: 4,
   selectedWorkOnlyUnassigned: true,
-  showArchivePreview: false,
+  showArchivePreview: true,
   featuredSeriesId: "porto-river-night",
   compactMobileSections: true,
   prefetch: {

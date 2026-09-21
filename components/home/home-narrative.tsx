@@ -4,7 +4,6 @@ import { HomeSeries, type HomeSeriesEntry } from "@/components/home/home-series"
 import { ExpansivePhoto } from "@/components/home/expansive-photo";
 import { FeaturedStory } from "@/components/home/featured-story";
 import { HomeManifesto } from "@/components/home/home-manifesto";
-import { SelectedWork } from "@/components/home/selected-work";
 import { VisualChapters } from "@/components/home/visual-chapters";
 import {
   HOME_PREVIEW_EVENT,
@@ -18,7 +17,7 @@ import {
   orderHomeSeries,
 } from "@/lib/home/experience";
 import { getHomeNarrativeData, getNarrativePhotos } from "@/lib/home/selectors";
-import { getLocalizedSeries, getPublishedSeries, getUnassignedPhotoIds, resolveSeriesCover } from "@/lib/series/selectors";
+import { getLocalizedSeries, getPublishedSeries, resolveSeriesCover } from "@/lib/series/selectors";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { Fragment, type ReactNode, useEffect, useMemo, useState } from "react";
@@ -45,12 +44,6 @@ export function HomeNarrative({
     [imagesData, locale, preview.alternate],
   );
   const chapters = preview.emptyCategories ? [] : data.chapters;
-  const unassignedSelectedIds = new Set(getUnassignedPhotoIds(data.selected.map((photo) => photo.id)));
-  const curatedSelected = homeExperienceConfig.selectedWorkOnlyUnassigned
-    ? data.selected.filter((photo) => unassignedSelectedIds.has(photo.id))
-    : data.selected;
-  const selected = (preview.fewPhotos ? curatedSelected.slice(0, 2) : curatedSelected)
-    .slice(0, homeExperienceConfig.selectedWorkLimit);
   const seriesEntries = useMemo(() => {
     const narrativePhotos = getNarrativePhotos(imagesData, locale);
     return orderHomeSeries(getPublishedSeries()).flatMap((rawSeries) => {
@@ -71,10 +64,10 @@ export function HomeNarrative({
   useEffect(() => {
     reportHomeState({
       ...preview,
-      selectedCount: selected.length,
+      selectedCount: 0,
       chapterCount: homeExperienceConfig.sectionOrder.includes("visualChapters") ? chapters.length : 0,
     });
-  }, [chapters.length, preview, selected.length]);
+  }, [chapters.length, preview]);
 
   return (
     <>
@@ -85,7 +78,6 @@ export function HomeNarrative({
         if (section === "series") content = <HomeSeries entries={seriesEntries} dictionary={dictionary.home} locale={locale} />;
         if (section === "expansivePhoto") content = <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />;
         if (section === "visualChapters") content = <VisualChapters chapters={chapters} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />;
-        if (section === "selectedWork") content = <SelectedWork photos={selected} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />;
         if (section === "archive") content = archiveSection;
         if (section === "contact") content = contactSection;
         return <Fragment key={section}>{content}</Fragment>;
