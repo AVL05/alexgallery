@@ -219,7 +219,7 @@ export function PhotoProcessComparison({ process, locale, dictionary, debugDelay
       <figure><img src={pair.before.variants["800"]} alt={getLocalizedProcessAlt(pair.before, locale)} width={pair.before.width} height={pair.before.height} /><figcaption>{getProcessStageLabel(pair.before.kind, dictionary)}</figcaption></figure>
       <figure><img src={pair.after.variants["800"]} alt={getLocalizedProcessAlt(pair.after, locale)} width={pair.after.width} height={pair.after.height} /><figcaption>{getProcessStageLabel(pair.after.kind, dictionary)}</figcaption></figure>
     </div></noscript>
-    <PhotoFullscreenDialog open={fullscreen} onClose={() => setFullscreen(false)} triggerRef={triggerRef} closeLabel={dictionary.close} lockSource="photo-process-fullscreen">
+    <PhotoFullscreenDialog open={fullscreen} onClose={() => setFullscreen(false)} triggerRef={triggerRef} closeLabel={dictionary.close} label={dictionary.comparisonLabel} lockSource="photo-process-fullscreen">
       <div className="grid h-full w-full place-items-center pt-16"><ComparisonCanvas pair={pair} locale={locale} dictionary={dictionary} initialPosition={initialPosition} eager /></div>
     </PhotoFullscreenDialog>
   </div>;

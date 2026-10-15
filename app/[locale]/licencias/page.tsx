@@ -1,3 +1,4 @@
+import { socialImage } from "@/lib/site-config";
 import { getDictionary, locales } from "@/lib/dictionary";
 import type { Locale } from "@/types/dictionary";
 import type { Metadata } from "next";
@@ -9,7 +10,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
-  const title = locale === "es" ? "Licencias de fotografía — raw.vives" : "Photography licensing — raw.vives";
+  const title = locale === "es" ? "Licencias de fotografía" : "Photography licensing";
   const description =
     locale === "es"
       ? "Licencia una fotografía de Alex Vicente para uso personal, editorial o comercial. Tipos de licencia, proceso de solicitud y respuesta en 48-72 horas."
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
       title,
       description,
       siteName: "raw.vives — Visual Archive",
+      images: [socialImage],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [socialImage.url] },
   };
 }
 

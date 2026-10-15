@@ -33,9 +33,9 @@ test("photo canonicals stay numeric while slugs resolve", () => {
 
 test("primary destinations point at routes, anchors stay compatible", () => {
   const esItems = getPrimaryNavItems("es", es.nav, true);
-  assert.deepEqual(esItems.map((item) => item.href), ["/es/work", "/es/archive", "/es/series", "#about"]);
+  assert.deepEqual(esItems.map((item) => item.href), ["/es/archive", "/es/series", "/es/work", "#about"]);
   const enItems = getPrimaryNavItems("en", en.nav, false);
-  assert.deepEqual(enItems.map((item) => item.href), ["/en/work", "/en/archive", "/en/series", "/en#about"]);
+  assert.deepEqual(enItems.map((item) => item.href), ["/en/archive", "/en/series", "/en/work", "/en#about"]);
   const archive = esItems.find((item) => item.key === "archive")!;
   assert.equal(isNavItemActive(archive, "/es/archive"), true);
   assert.equal(isNavItemActive(archive, "/es/archive?category=urbano"), false);

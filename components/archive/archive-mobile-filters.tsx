@@ -53,6 +53,9 @@ export function ArchiveMobileFilters({
     if (!open) return;
     previousFocusRef.current = document.activeElement as HTMLElement | null;
     const releaseScroll = lockScroll("archive-mobile-filters");
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => { if (desktop.matches) onClose(); };
+    desktop.addEventListener("change", closeOnDesktop);
     const panel = panelRef.current;
     const focusable = panel
       ? Array.from(
@@ -84,6 +87,7 @@ export function ArchiveMobileFilters({
     return () => {
       window.cancelAnimationFrame(frame);
       document.removeEventListener("keydown", handleKeyDown);
+      desktop.removeEventListener("change", closeOnDesktop);
       releaseScroll();
       previousFocusRef.current?.focus();
     };
@@ -97,7 +101,7 @@ export function ArchiveMobileFilters({
       role="dialog"
       aria-modal="true"
       aria-labelledby="archive-mobile-filter-title"
-      className="fixed inset-0 z-[var(--z-overlay)] overflow-y-auto bg-background px-[var(--layout-gutter)] pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] md:hidden"
+      className="fixed inset-0 z-[var(--z-overlay)] overflow-y-auto bg-background px-[var(--layout-gutter)] pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] lg:hidden"
     >
       <div className="mx-auto flex min-h-full max-w-xl flex-col">
         <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/95 py-3 backdrop-blur-md">

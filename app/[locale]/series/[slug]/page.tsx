@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   if (!rawSeries || rawSeries.status !== "published") return { title: locale === "es" ? "Serie no encontrada" : "Series not found", robots: { index: false, follow: true } };
   const series = getLocalizedSeries(rawSeries, locale);
   const cover = resolveSeriesCover(rawSeries, buildArchivePhotos(imagesData, locale));
-  const title = `${series.title} — raw.vives`;
+  const title = series.title;
   return {
     title,
     description: series.description,

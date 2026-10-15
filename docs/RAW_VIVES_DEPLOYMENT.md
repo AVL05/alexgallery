@@ -1,3 +1,5 @@
+> Actualización 2026-10-15: contacto y licencias usan solo borradores `mailto:`. No hay proveedor externo de formularios, clave de acceso ni POST. Las menciones al proveedor anterior en registros de auditoría describen el estado histórico. Para validar: comprobar asunto, cuerpo y destino del borrador; no confundir apertura con envío.
+
 # raw.vives — Despliegue y operación
 
 ## 1. Plataforma
@@ -17,7 +19,6 @@ Git, Node 24.18.0, Corepack, pnpm 11.20.0, acceso a Cloudflare Pages y permisos 
 | Nombre | Lugar | Carácter |
 | --- | --- | --- |
 | `NEXT_PUBLIC_BASE_URL` | Pages, producción y preview | URL pública de build |
-| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Pages secret, producción y preview | Identificador público inyectado en build |
 | `NODE_VERSION` | Pages, producción y preview | Node exacto de build |
 | `PNPM_VERSION` | Pages, producción y preview | pnpm exacto de instalación |
 
@@ -54,11 +55,14 @@ pnpm install --frozen-lockfile
 
 ```powershell
 $env:NEXT_PUBLIC_BASE_URL='https://rawvives.aleviclop.dev'
-$env:NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY='public-form-key'
 pnpm build
 ```
 
-La build valida el proceso fotográfico, exporta y ejecuta `prune-private-assets`.
+La build valida el proceso fotográfico, exporta, normaliza los nombres de los
+segmentos de navegación generados en Windows y ejecuta `prune-private-assets`.
+La normalización conserva los archivos originales y genera además
+`opengraph-image.png` desde el endpoint exportado, para que Pages sirva la imagen
+social con el tipo MIME correcto. `pnpm export` usa esta misma secuencia.
 
 ## 7. Output
 
@@ -117,7 +121,7 @@ No hay analítica de aplicación ni eventos de producto. No añadir scripts hast
 
 ## 18. Privacidad
 
-El sitio no persiste analítica. La cookie funcional `raw-vives-locale` conserva únicamente `es` o `en` durante un año para respetar la elección manual. El formulario envía nombre, email, mensaje o solicitud de licencia a Web3Forms; la página `/[locale]/privacidad` explica el almacenamiento, el encargado y los derechos.
+El sitio no persiste analítica. La cookie funcional `raw-vives-locale` conserva únicamente `es` o `en` durante un año para respetar la elección manual. El formulario prepara un borrador mailto, sin enviar ni almacenar el mensaje; la página `/[locale]/privacidad` explica el almacenamiento, el encargado y los derechos.
 
 ## 18.1 Resolución de idioma
 
@@ -128,6 +132,10 @@ El selector ES/EN guarda la cookie con `Path=/`, `Max-Age=31536000`, `SameSite=L
 ## 19. Preview
 
 Local: `pnpm preview`. Remoto: `pnpm exec wrangler pages deploy --branch release-candidate`; Pages genera una URL de preview y un alias de rama. No usar datos reales en previews públicas.
+
+Reiniciar la preview después de reconstruir `out/` para evitar mezclar cachés y
+datos de navegación de builds distintos. `pnpm e2e` usa Wrangler y comprueba
+también navegación mediante clics, filtros de tablet, borradores y metadatos.
 
 ## 20. Producción
 
@@ -164,7 +172,7 @@ Completar también [RAW_VIVES_RELEASE_CHECKLIST.md](RAW_VIVES_RELEASE_CHECKLIST.
 ## 25. Problemas comunes
 
 - Canonical incorrecto: revisar `NEXT_PUBLIC_BASE_URL` y reconstruir.
-- Formulario no disponible: comprobar secret del environment y restricciones de Web3Forms.
+- Correo no abierto: comprobar que el dispositivo tiene una aplicación asociada a mailto; el borrador puede volver a abrirse desde el enlace de estado.
 - Rutas 404: confirmar `html_handling`/`not_found_handling` y que `out/` es reciente.
 - Assets viejos: inspeccionar cache headers, esperar TTL o purgar con alcance mínimo.
 - Build `EBUSY` en Windows: cerrar `pnpm preview`; Wrangler mantiene archivos de `out/` abiertos y Next necesita regenerar el directorio.

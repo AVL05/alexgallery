@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm validate-photo-process && next build && pnpm prune-private-assets",
+    "build": "pnpm validate-photo-process && next build && pnpm exec tsx scripts/normalize-static-export.ts && pnpm prune-private-assets",
     "optimize-images": "tsx scripts/optimize-images.ts",
     "prepare-photo-process": "tsx scripts/prepare-photo-process.ts",
     "preview": "wrangler pages dev --port 8788",
@@ -20,7 +20,7 @@
     "e2e": "playwright test",
     "validate-photo-process": "tsx scripts/validate-photo-process.ts",
     "prune-private-assets": "tsx scripts/prune-private-assets.ts",
-    "export": "next build",
+    "export": "pnpm build",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
     "deploy:pages": "pnpm run build && wrangler pages deploy --branch main"
   },

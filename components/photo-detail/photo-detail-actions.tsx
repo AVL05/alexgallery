@@ -6,10 +6,11 @@ import { Check, Copy, ExternalLink, Share2 } from "lucide-react";
 import { useState } from "react";
 import { getCleanShareUrl } from "@/lib/photo-detail/interaction";
 import { Magnetic } from "@/components/interactions/magnetic";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 export function PhotoDetailActions({ dictionary, imageHref }: { dictionary: PhotoDetailDictionary; imageHref: string }) {
-  const { current } = usePhotoDetailContext();
+  const { current, locale } = usePhotoDetailContext();
   const [status, setStatus] = useState<"idle" | "copied" | "error">("idle");
   const statusTimerRef = useRef<number | null>(null);
   useEffect(() => () => {
@@ -62,6 +63,7 @@ export function PhotoDetailActions({ dictionary, imageHref }: { dictionary: Phot
   };
   return (
     <div data-photo-motion-copy className="flex flex-wrap gap-x-6 gap-y-2 border-y border-border py-4">
+      <Link href={`/${locale}?form=license&photo=${current.id}#contact`} className="rv-editorial-link" data-press-feedback>{dictionary.requestLicense}</Link>
       <Magnetic><button type="button" onClick={share} className="rv-editorial-link" data-press-feedback><span data-magnetic-content className="inline-flex items-center gap-[0.65rem]"><Share2 aria-hidden="true" className="size-4" />{dictionary.share}</span></button></Magnetic>
       <Magnetic><button type="button" onClick={copy} className="rv-editorial-link" data-press-feedback><span data-magnetic-content className="inline-flex items-center gap-[0.65rem]">{status === "copied" ? <Check aria-hidden="true" className="size-4" /> : <Copy aria-hidden="true" className="size-4" />}{status === "copied" ? dictionary.linkCopied : dictionary.copyLink}</span></button></Magnetic>
       <Magnetic><a href={imageHref} target="_blank" rel="noreferrer" className="rv-editorial-link" data-press-feedback><span data-magnetic-content className="inline-flex items-center gap-[0.65rem]"><ExternalLink aria-hidden="true" className="size-4" />{dictionary.openImage}</span></a></Magnetic>

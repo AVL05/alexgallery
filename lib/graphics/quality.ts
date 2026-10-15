@@ -12,6 +12,7 @@ export type HeroQualitySignals = {
   hardwareConcurrency: number;
   coarsePointer: boolean;
   saveData: boolean;
+  effectiveType?: string;
 };
 
 export type HeroQualityProfile = {
@@ -31,7 +32,7 @@ const profiles: Record<HeroQualityTier, Omit<HeroQualityProfile, "tier">> = {
 
 export function resolveHeroQuality(signals: HeroQualitySignals): HeroQualityProfile {
   let tier: HeroQualityTier;
-  if (!signals.webgl || signals.saveData) {
+  if (!signals.webgl || signals.saveData || signals.effectiveType === "slow-2g" || signals.effectiveType === "2g") {
     tier = "off";
   } else if (
     (signals.deviceMemory !== null && signals.deviceMemory <= 2) ||
@@ -74,7 +75,7 @@ export function isWebGLAvailable(): boolean {
 type NavigatorHints = {
   deviceMemory?: number;
   hardwareConcurrency?: number;
-  connection?: { saveData?: boolean };
+  connection?: { saveData?: boolean; effectiveType?: string };
 };
 
 // Live signals for the current browser. Missing APIs degrade to the most
@@ -100,5 +101,6 @@ export function readQualitySignals(): HeroQualitySignals {
       typeof window.matchMedia === "function" &&
       window.matchMedia("(pointer: coarse)").matches,
     saveData: hints.connection?.saveData === true,
+    effectiveType: hints.connection?.effectiveType,
   };
 }

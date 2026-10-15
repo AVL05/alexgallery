@@ -3,6 +3,7 @@ import type { Locale } from '@/types/dictionary'
 import type { ImagesData } from '@/types/photo'
 import imagesDataJson from '@/lib/images-data.json'
 import { getClientImagesData } from '@/lib/images/client-data'
+import { socialImage } from '@/lib/site-config'
 import HomeClient from './home-client'
 
 const imagesData = imagesDataJson as ImagesData
@@ -30,7 +31,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
     openGraph: {
       locale: locale === 'es' ? 'es_ES' : 'en_US',
       url: `/${locale}`,
-    }
+      title: dict.seo.title,
+      description: dict.seo.description,
+      images: [socialImage],
+    },
+    twitter: { card: 'summary_large_image', title: dict.seo.title, description: dict.seo.description, images: [socialImage.url] },
   }
 }
 

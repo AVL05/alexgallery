@@ -17,19 +17,18 @@ import type { Locale } from "@/types/dictionary";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { contactEmail, developerUrl, instagramUrl, web3FormsAccessKey } from "@/lib/site-config";
+import { contactEmail, developerUrl, instagramUrl } from "@/lib/site-config";
+import { buildContactMailto } from "@/lib/contact/mailto";
+import { getLocalizedPhoto } from "@/lib/photo-detail/content";
 
 const labelClass = "rv-label mb-2 block text-[var(--color-text-secondary)]";
 const errorClass = "mt-2 text-xs leading-relaxed text-[var(--color-error)]";
 
 export function Contact({ dictionary, locale }: { dictionary: ContactDictionary; locale: Locale }) {
   const [formType, setFormType] = useState<"general" | "license">("general");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
+  const [preparedMailto, setPreparedMailto] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<ContactFieldErrors>({});
+  const [requestedPhoto, setRequestedPhoto] = useState("");
   const statusRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const { prefersReducedMotion, isTouchDevice } = useMotion();
@@ -37,20 +36,23 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
   // Deep link from the licensing page (?form=license): preselect the license
   // tab on mount. Effect (not initializer) avoids SSR hydration mismatch.
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("form") === "license") {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("form") === "license") {
       setFormType("license");
+      const photo = getLocalizedPhoto(Number(params.get("photo")), locale);
+      if (photo) setRequestedPhoto(`${photo.id} — ${photo.title}`);
     }
-  }, []);
+  }, [locale]);
 
   useGSAP(() => {
-    if (submitStatus && statusRef.current) {
+    if (preparedMailto && statusRef.current) {
       gsap.fromTo(
         statusRef.current,
         { opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : -8 },
         { opacity: 1, y: 0, duration: prefersReducedMotion ? 0 : motionDuration.fast, ease: motionEase.standard },
       );
     }
-  }, { dependencies: [prefersReducedMotion, submitStatus], scope: statusRef, revertOnUpdate: true });
+  }, { dependencies: [prefersReducedMotion, preparedMailto], scope: statusRef, revertOnUpdate: true });
 
   useGSAP(() => {
     if (prefersReducedMotion) {
@@ -71,7 +73,7 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
     });
   }, { dependencies: [isTouchDevice, prefersReducedMotion], scope: containerRef, revertOnUpdate: true });
 
-  const submit = async (
+  const submit = (
     event: FormEvent<HTMLFormElement>,
     kind: "general" | "license",
   ) => {
@@ -99,45 +101,18 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
       ? validateContactForm(data as ContactFormValues, dictionary.form.validation)
       : validateLicenseForm(data as LicenseFormValues, dictionary.form.validation);
     setFormErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-    if (data.botcheck) return;
-    if (!web3FormsAccessKey) {
-      setSubmitStatus({ type: "error", message: dictionary.form.error });
+    if (Object.keys(errors).length > 0) {
+      window.requestAnimationFrame(() => form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
       return;
     }
-    setIsSubmitting(true);
-    setSubmitStatus(null);
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        signal: AbortSignal.timeout(15_000),
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: web3FormsAccessKey,
-          ...data,
-          subject:
-            kind === "general"
-              ? "Nuevo contacto - raw.vives"
-              : `Solicitud de licencia - raw.vives: ${(data as LicenseFormValues).photoId}`,
-        }),
-      });
-      if (!response.ok) throw new Error();
-      setSubmitStatus({
-        type: "success",
-        message:
-          kind === "general"
-            ? dictionary.form.success
-            : dictionary.form.license_success,
-      });
-      form.reset();
-    } catch {
-      setSubmitStatus({ type: "error", message: dictionary.form.error });
-    } finally {
-      setIsSubmitting(false);
-    }
+    if (data.botcheck) return;
+    const href = buildContactMailto(data, dictionary);
+    setPreparedMailto(href);
+    window.location.href = href;
   };
 
   const clearFieldError = (field: keyof ContactFieldErrors) => {
+    setPreparedMailto(null);
     if (!formErrors[field]) return;
     setFormErrors((current) => {
       const next = { ...current };
@@ -148,22 +123,14 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
 
   const switchFormType = (kind: "general" | "license") => {
     setFormType(kind);
-    setSubmitStatus(null);
+    setPreparedMailto(null);
     setFormErrors({});
   };
 
-  const status = submitStatus && (
-    <div
-      ref={statusRef}
-      role="status"
-      aria-live="polite"
-      className={`border px-4 py-3 text-sm ${
-        submitStatus.type === "success"
-          ? "border-[var(--color-success)] text-[var(--color-success)]"
-          : "border-[var(--color-error)] text-[var(--color-error)]"
-      }`}
-    >
-      {submitStatus.message}
+  const status = preparedMailto && (
+    <div ref={statusRef} role="status" aria-live="polite" className="border border-border px-4 py-3 text-sm">
+      {dictionary.form.prepared}{" "}
+      <a className="underline underline-offset-4" href={preparedMailto}>{dictionary.form.openEmail}</a>
     </div>
   );
 
@@ -208,15 +175,13 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
               ))}
             </div>
 
-            {formType === "general" ? (
               <form
+                hidden={formType !== "general"}
                 onSubmit={(event) => submit(event, "general")}
-                action="https://api.web3forms.com/submit"
-                method="POST"
+                action={`mailto:${contactEmail}`}
+                method="GET"
                 className="max-w-2xl space-y-6"
               >
-                <input type="hidden" name="access_key" value={web3FormsAccessKey} />
-                <input type="hidden" name="subject" value="Nuevo contacto - raw.vives" />
                 <input
                   type="checkbox"
                   name="botcheck"
@@ -293,26 +258,24 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
                     </p>
                   )}
                 </div>
-                {status}
+                {formType === "general" && status}
                 <p className="rv-body-sm text-[var(--color-text-muted)]">
                   {dictionary.privacyNotice}{" "}
                   <Link className="rv-editorial-link" href={`/${locale}/privacidad`}>
                     {dictionary.form.privacy_link}
                   </Link>
                 </p>
-                <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
-                  {isSubmitting ? dictionary.form.sending : dictionary.form.send}
+                <Button type="submit" size="lg">
+                  {dictionary.form.send}
                 </Button>
               </form>
-            ) : (
               <form
+                hidden={formType !== "license"}
                 onSubmit={(event) => submit(event, "license")}
-                action="https://api.web3forms.com/submit"
-                method="POST"
+                action={`mailto:${contactEmail}`}
+                method="GET"
                 className="max-w-2xl space-y-6"
               >
-                <input type="hidden" name="access_key" value={web3FormsAccessKey} />
-                <input type="hidden" name="subject" value="Solicitud de licencia - raw.vives" />
                 <input
                   type="checkbox"
                   name="botcheck"
@@ -339,7 +302,7 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
                 </div>
                 <div>
                   <label className={labelClass} htmlFor="license-photo">{dictionary.form.photo_id}</label>
-                  <input id="license-photo" name="photoId" maxLength={120} required onInput={() => clearFieldError("photoId")} aria-invalid={!!formErrors.photoId} aria-describedby={formErrors.photoId ? "license-photo-error" : undefined} className="rv-field" />
+                  <input key={requestedPhoto} defaultValue={requestedPhoto} id="license-photo" name="photoId" maxLength={120} required onInput={() => clearFieldError("photoId")} aria-invalid={!!formErrors.photoId} aria-describedby={formErrors.photoId ? "license-photo-error" : undefined} className="rv-field" />
                   {formErrors.photoId && <p id="license-photo-error" className={errorClass} role="alert">{formErrors.photoId}</p>}
                 </div>
                 <div>
@@ -360,18 +323,17 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
                   <textarea id="license-description" name="description" rows={5} minLength={10} maxLength={2000} required onInput={() => clearFieldError("description")} aria-invalid={!!formErrors.description} aria-describedby={formErrors.description ? "license-description-error" : undefined} className="rv-field resize-y" />
                   {formErrors.description && <p id="license-description-error" className={errorClass} role="alert">{formErrors.description}</p>}
                 </div>
-                {status}
+                {formType === "license" && status}
                 <p className="rv-body-sm text-[var(--color-text-muted)]">
                   {dictionary.privacyNotice}{" "}
                   <Link className="rv-editorial-link" href={`/${locale}/privacidad`}>
                     {dictionary.form.privacy_link}
                   </Link>
                 </p>
-                <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>
-                  {isSubmitting ? dictionary.form.sending : dictionary.form.request}
+                <Button type="submit" size="lg">
+                  {dictionary.form.request}
                 </Button>
               </form>
-            )}
           </div>
 
           <aside className="contact-reveal lg:col-span-4 lg:col-start-9">

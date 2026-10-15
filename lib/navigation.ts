@@ -20,11 +20,10 @@ export function getPrimaryNavItems(
   const home = `/${locale}`;
   const sectionHref = (hash: string) => (isHome ? hash : `${home}${hash}`);
   return [
-    // Standalone work page; #selected-work stays as the home section anchor.
-    { key: "work", label: dictionary.work, href: workHref(locale) },
     // Standalone archive page; #gallery stays as the home preview anchor.
     { key: "archive", label: dictionary.gallery, href: archivePageHref(locale) },
     { key: "series", label: dictionary.series, href: `${home}/series` },
+    { key: "work", label: dictionary.work, href: workHref(locale) },
     // Temp: about section. Future: aboutHref(locale) -> /about.
     { key: "about", label: dictionary.about, href: sectionHref("#about") },
   ];

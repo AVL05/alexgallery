@@ -492,31 +492,13 @@ Any routing, locale, photograph-slug, or series-route change requires SEO review
 
 ---
 
-## 15. Contact and Web3Forms
+## 15. Contact and Licensing
 
-The project uses Web3Forms.
-
-The current integration uses:
-
-```text
-NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
-```
-
-This is intentionally a **public build-time identifier**, not a server secret.
-
-Do not incorrectly migrate it into server-only logic unless the architecture changes.
-
-Do not hardcode the real identifier in source code.
-
-Domain restrictions must remain configured at the provider.
-
-When modifying contact/licensing flows, preserve:
-
-- accessible labels;
-- validation;
-- localized states;
-- error handling;
-- privacy information.
+Contact and licensing use `mailto:` drafts only. No third-party form service,
+API request, access key or server handler is required. Visitors review and send
+messages in their own email application. Never claim that the website sent mail.
+Preserve accessible labels, localized validation, drafts, photo references and
+privacy information. The explicit user request supersedes the former integration.
 
 ---
 
@@ -664,7 +646,7 @@ Do not weaken the global CSP merely to make a new feature work.
 
 Any new external origin requires explicit review.
 
-Preserve the existing narrow allowlist for Web3Forms and local media.
+Preserve the existing narrow allowlist for mailto form actions and local media.
 
 Cloudflare deployment configuration and release behavior are documented in:
 

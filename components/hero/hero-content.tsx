@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-// Hero V2 composition: giant brand over the photograph, short descriptor,
+// Hero composition: brand over the photograph, author identification,
 // one quiet metadata row and a discreet scroll cue. data-hero-* hooks feed
 // the existing entry/scroll choreography in use-hero-motion.
 export function HeroContent({
@@ -27,7 +27,7 @@ export function HeroContent({
 
         <h1 className="mt-4 font-serif leading-[0.88] tracking-[-0.045em] text-foreground sm:mt-6">
           <span className="block overflow-hidden pb-[0.1em]">
-            <span data-hero-title-line className="block text-[clamp(3.75rem,14vw,13.5rem)]">
+            <span data-hero-title-line className="block text-[clamp(3.35rem,11vw,10.5rem)]">
               {dictionary.title}
             </span>
           </span>
@@ -47,7 +47,7 @@ export function HeroContent({
             href={`/${locale}/archive`}
             data-press-feedback
             {...getCursorTargetAttributes({ type: "explore", contrast: "light" })}
-            className={cn(buttonVariants({ variant: "secondary" }))}
+            className={cn(buttonVariants({ variant: "default", size: "lg" }))}
           >
             {dictionary.cta}
             <ArrowRight aria-hidden="true" className="size-4" />
@@ -63,7 +63,7 @@ export function HeroContent({
             {facts.dateRange}
           </p>
           <a
-            href="#about"
+            href="#featured-story"
             data-press-feedback
             {...getCursorTargetAttributes({ type: "explore", contrast: "light" })}
             className="group inline-flex min-h-11 items-center gap-3 font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-secondary)] transition-colors hover:text-foreground focus-visible:text-foreground"

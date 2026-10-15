@@ -72,9 +72,12 @@ test("constrained devices resolve low with minimal load", () => {
   assert.ok(low.scrollScale < 0.7);
 });
 
-test("missing webgl or saveData disables 3d entirely", () => {
+test("missing webgl, saveData or a 2G connection disables 3d entirely", () => {
   assert.equal(resolveHeroQuality({ ...capableDesktop, webgl: false }).tier, "off");
   assert.equal(resolveHeroQuality({ ...capableDesktop, saveData: true }).tier, "off");
+  assert.equal(resolveHeroQuality({ ...capableDesktop, effectiveType: "slow-2g" }).tier, "off");
+  assert.equal(resolveHeroQuality({ ...capableDesktop, effectiveType: "2g" }).tier, "off");
+  assert.equal(resolveHeroQuality({ ...capableDesktop, effectiveType: "4g" }).tier, "high");
   const off = resolveHeroQuality({ ...capableDesktop, webgl: false });
   assert.equal(off.maxFrames, 0);
 });

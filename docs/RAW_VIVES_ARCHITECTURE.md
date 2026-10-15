@@ -1,3 +1,5 @@
+> Actualización 2026-10-15: contacto y licencias usan solo borradores `mailto:`. No hay proveedor externo de formularios, clave de acceso ni POST. Las menciones al proveedor anterior en registros de auditoría describen el estado histórico. Para validar: comprobar asunto, cuerpo y destino del borrador; no confundir apertura con envío.
+
 # Arquitectura de RAW.VIVES
 
 Este documento describe la aplicación existente `alexgallery`, publicada en
@@ -183,9 +185,8 @@ robots y datos estructurados. `.env.example` documenta el valor de producción.
 NEXT_PUBLIC_BASE_URL=https://rawvives.aleviclop.dev
 ```
 
-Al ser `NEXT_PUBLIC_*`, no debe contener secretos. La clave de Web3Forms está
-actualmente embebida en el bundle y debe tratarse como identificador público con
-restricciones de dominio configuradas en el proveedor.
+Al ser `NEXT_PUBLIC_*`, no debe contener secretos. Contacto y licencias usan
+borradores `mailto:` sin claves ni peticiones de envío desde la web.
 
 ## Cómo desplegar
 
@@ -228,7 +229,7 @@ handoff explícito cuando la intro termina, se salta o se omite. Su timeline y s
 ## Integraciones externas
 
 - Cloudflare Pages, Pages Functions y dominio personalizado.
-- Web3Forms para contacto/licencias.
+- Borradores `mailto:` para contacto/licencias.
 - Instagram y correo mediante enlaces.
 - Google Fonts a través de `next/font` durante el build.
 - Archivo de verificación de Google en `public/`.
@@ -243,7 +244,7 @@ No hay analítica, CMS, almacenamiento, autenticación ni API propia confirmados
 - `lib/image-loader.ts`: cualquier cambio afecta todas las imágenes.
 - `app/[locale]/photo/[id]/page.tsx`: genera 60 rutas y metadata.
 - `app/layout.tsx`: metadata global, CSP indirecta, fuentes y `lang`.
-- `public/_headers`: errores pueden bloquear scripts, imágenes o Web3Forms.
+- `public/_headers`: errores pueden bloquear scripts, imágenes o apertura de correo.
 - `wrangler.json`: proyecto Pages, fecha de compatibilidad y directorio de publicación.
 - Intro/home: mantener la home en HTML, el criterio de sesión y el timeout seguro.
 - Hero: conservar `primaryId`/`fallbackId`, prioridad LCP, un único `h1` y el
@@ -338,7 +339,6 @@ se fija en `.nvmrc`, `package.json` y el lockfile; Wrangler es dependencia local
 La arquitectura no incorpora backend,
 base de datos, analítica ni observabilidad externa en esta release.
 
-La página de privacidad y el formulario comparten una variable pública de build
-para Web3Forms. La clave no es una credencial de servidor, pero se mantiene como
-secret operativo de GitHub para evitar valores de producción en el repositorio.
+La página de privacidad explica que los campos solo preparan un borrador local.
+El visitante revisa y envía el mensaje desde su aplicación de correo.
 Véanse `RAW_VIVES_DEPLOYMENT.md` y `RAW_VIVES_RELEASE_SYSTEM.md`.

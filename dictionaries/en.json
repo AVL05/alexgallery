@@ -13,9 +13,9 @@
   },
   "hero": {
     "title": "raw.vives",
-    "titleLineOne": "Stories between",
-    "titleLineTwo": "light and silence.",
-    "eyebrow": "Photography & visual stories",
+    "titleLineOne": "A photographic archive",
+    "titleLineTwo": "by Alex Vicente.",
+    "eyebrow": "City, nature and light",
     "cta": "Explore the archive",
     "scroll": "Scroll to explore",
     "photographs": "photographs",
@@ -55,7 +55,8 @@
     "selected": {
       "title": "Selected work",
       "cta": "View photograph",
-      "empty": "The selection is temporarily empty. The full archive remains available."
+      "empty": "The selection is temporarily empty. The full archive remains available.",
+      "description": "A short selection from the archive: encounters with wildlife, landscapes and everyday scenes."
     },
     "series": {
       "title": "Sequences.",
@@ -82,7 +83,7 @@
   "nav": {
     "skipToContent": "Skip to content",
     "home": "Home",
-    "work": "Work",
+    "work": "Selected work",
     "about": "About",
     "gallery": "Archive",
     "series": "Series",
@@ -185,7 +186,8 @@
     "lens": "Lens",
     "aperture": "Aperture",
     "shutter": "Shutter",
-    "iso": "ISO"
+    "iso": "ISO",
+    "requestLicense": "Request a license"
   },
   "series": {
     "eyebrow": "Photographic series",
@@ -254,7 +256,7 @@
     "social": "Contact",
     "location": "Valencia, Spain",
     "independent": "Independent photographic archive.",
-    "privacyNotice": "When you submit the form, your data is sent to Web3Forms to handle your request.",
+    "privacyNotice": "Your details are only added to a draft in your email application. This website does not send or store the message.",
     "form": {
       "name": "Name",
       "email": "Email",
@@ -266,12 +268,10 @@
       "usage_personal": "Personal",
       "usage_description": "Describe the intended use",
       "message": "Message",
-      "send": "Send message",
-      "request": "Request license",
-      "sending": "Sending...",
-      "success": "Message sent.",
-      "license_success": "License request sent.",
-      "error": "Something went wrong.",
+      "send": "Open email",
+      "request": "Prepare license request",
+      "prepared": "Your draft is ready. Review and send it from your email application. If it did not open,",
+      "openEmail": "open the draft again.",
       "privacy_link": "Read the privacy policy.",
       "validation": {
         "name": "Enter a valid name.",

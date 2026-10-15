@@ -1,3 +1,4 @@
+import { socialImage } from "@/lib/site-config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
@@ -32,7 +33,13 @@ export async function generateMetadata({
         "x-default": "/en/privacidad",
       },
     },
-    openGraph: { locale: locale === "es" ? "es_ES" : "en_US", url: canonical },
+    openGraph: { locale: locale === "es" ? "es_ES" : "en_US", url: canonical, images: [socialImage] },
+    twitter: {
+      card: "summary_large_image",
+      title: locale === "es" ? "Privacidad | raw.vives" : "Privacy | raw.vives",
+      description: locale === "es" ? "Cómo raw.vives trata los datos de navegación y de los formularios." : "How raw.vives handles browsing and form data.",
+      images: [socialImage.url],
+    },
     robots: { index: false, follow: true },
   };
 }
@@ -54,15 +61,15 @@ export default async function PrivacyPage({
         },
         {
           title: "Datos que se tratan",
-          body: "Los formularios transmiten el nombre, correo electrónico, mensaje y, cuando corresponde, empresa, fotografía solicitada y uso previsto. No se solicitan datos sensibles ni archivos adjuntos.",
+          body: "Los campos preparan un borrador con nombre, correo electrónico, mensaje y, cuando corresponde, empresa, fotografía y uso previsto. La web no envía ni almacena estos datos. Solo se reciben si envías el correo desde tu aplicación.",
         },
         {
           title: "Finalidad y conservación",
           body: "Los datos se usan únicamente para responder a la consulta o gestionar una solicitud de licencia. Las respuestas se conservan en el correo del responsable durante el tiempo necesario para atender la conversación y obligaciones aplicables.",
         },
         {
-          title: "Proveedor del formulario",
-          body: "Web3Forms procesa el envío y lo reenvía al correo del responsable. Según su documentación, no almacena las entregas del formulario, puede mantener logs técnicos con datos personales hasta dos meses y opera infraestructura en Estados Unidos.",
+          title: "Aplicación de correo",
+          body: "Los enlaces mailto abren tu aplicación de correo con un borrador. Tú decides si lo envías. El envío se realiza mediante tu proveedor de correo, sujeto a sus propias condiciones y política de privacidad.",
         },
         {
           title: "Almacenamiento local y cookies",
@@ -80,15 +87,15 @@ export default async function PrivacyPage({
         },
         {
           title: "Data processed",
-          body: "The forms send name, email, message and, where applicable, company, requested photograph and intended use. Sensitive data and file uploads are not requested.",
+          body: "The fields prepare a draft containing name, email, message and, where applicable, company, photograph and intended use. This website does not send or store these details. They are only received if you send the email from your application.",
         },
         {
           title: "Purpose and retention",
           body: "Data is used only to reply to an enquiry or handle a licensing request. Replies remain in the controller's email for as long as needed to manage the conversation and applicable obligations.",
         },
         {
-          title: "Form provider",
-          body: "Web3Forms processes the submission and forwards it to the controller's email. Its documentation states that it does not store form submissions, may retain technical logs containing personal data for up to two months, and runs infrastructure in the United States.",
+          title: "Email application",
+          body: "Mailto links open your email application with a draft. You decide whether to send it. Delivery uses your email provider, subject to its own terms and privacy policy.",
         },
         {
           title: "Local storage and cookies",
@@ -130,15 +137,8 @@ export default async function PrivacyPage({
               </section>
             ))}
             <p className="rv-body-sm pt-10 text-[var(--color-text-muted)]">
-              {spanish ? "Última actualización: 17 de julio de 2026." : "Last updated: 17 July 2026."}{" "}
-              <a
-                className="rv-editorial-link"
-                href="https://docs.web3forms.com/getting-started/faq"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {spanish ? "Privacidad de Web3Forms" : "Web3Forms privacy information"}
-              </a>
+              {spanish ? "Última actualización: 15 de octubre de 2026." : "Last updated: 15 October 2026."}{" "}
+
             </p>
           </div>
         </Container>

@@ -7,7 +7,7 @@ import { getNarrativePhotos } from "@/lib/home/selectors";
 import imagesDataJson from "@/lib/images-data.json";
 import { getClientImagesData } from "@/lib/images/client-data";
 import { selectSelectedPhotos } from "@/lib/photos/selectors";
-import { siteUrl } from "@/lib/site-config";
+import { siteUrl, socialImage } from "@/lib/site-config";
 import type { Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import type { Metadata } from "next";
@@ -22,13 +22,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const dictionary = await getDictionary(locale);
-  const title = `${dictionary.nav.work} — raw.vives`;
+  const title = dictionary.nav.work;
   return {
     title,
     description: dictionary.seo.description,
     alternates: { canonical: `/${locale}/work`, languages: { "es-ES": "/es/work", "en-US": "/en/work", "x-default": "/en/work" } },
-    openGraph: { type: "website", locale: locale === "es" ? "es_ES" : "en_US", url: `/${locale}/work`, title, description: dictionary.seo.description, siteName: "raw.vives — Visual Archive" },
-    twitter: { card: "summary_large_image", title, description: dictionary.seo.description },
+    openGraph: { type: "website", locale: locale === "es" ? "es_ES" : "en_US", url: `/${locale}/work`, title, description: dictionary.seo.description, siteName: "raw.vives — Visual Archive", images: [socialImage] },
+    twitter: { card: "summary_large_image", title, description: dictionary.seo.description, images: [socialImage.url] },
   };
 }
 
@@ -44,15 +44,18 @@ export default async function WorkRoute({ params }: { params: Promise<{ locale: 
     url: `${siteUrl}/${locale}/work`,
   };
   return (
-    <PageShell>
+    <PageShell as="div">
       <Navigation dictionary={dictionary.nav} currentLocale={locale} isHome={false} currentPath={`/${locale}/work`} />
-      <WorkPage
-        photos={photos}
-        locale={locale}
-        galleryDictionary={dictionary.gallery}
-        title={dictionary.nav.work}
-        selectedCta={dictionary.home.selected.cta}
-      />
+      <main id="main-content" tabIndex={-1}>
+        <WorkPage
+          photos={photos}
+          locale={locale}
+          galleryDictionary={dictionary.gallery}
+          title={dictionary.nav.work}
+          selectedCta={dictionary.home.selected.cta}
+          introduction={dictionary.home.selected.description}
+        />
+      </main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Footer currentLocale={locale} dictionary={dictionary.nav} />
     </PageShell>

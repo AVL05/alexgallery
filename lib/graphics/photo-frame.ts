@@ -32,7 +32,11 @@ export function loadPhotoFrameAsset(): Promise<PhotoFrameAsset> {
   if (!cachedAsset) {
     THREE.Cache.enabled = true;
     cachedAsset = new Promise<PhotoFrameAsset>((resolve, reject) => {
-      new GLTFLoader().load(
+      new GLTFLoader().register((parser) => {
+        // Embedded images use img-src blob:, avoiding fetch under connect-src.
+        parser.textureLoader = new THREE.TextureLoader();
+        return { name: "RAW_VIVES_image_loader" };
+      }).load(
         PHOTO_FRAME_MODEL_URL,
         (gltf) => {
           try {

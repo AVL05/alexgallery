@@ -11,8 +11,12 @@ function normalizeSiteUrl(value: string | undefined) {
 }
 
 export const siteUrl = normalizeSiteUrl(process.env.NEXT_PUBLIC_BASE_URL);
+export const socialImage = {
+  url: "/opengraph-image.png",
+  width: 1200,
+  height: 630,
+  alt: "raw.vives — Alex Vicente",
+};
 export const instagramUrl = "https://www.instagram.com/raw.vives/";
 export const contactEmail = "alexviclop@gmail.com";
 export const developerUrl = "https://aleviclop.dev/";
-export const web3FormsAccessKey =
-  process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY?.trim() || "";

@@ -155,7 +155,7 @@ export function ArchivePage({
       ref={rootRef}
       id={sectionId}
       aria-labelledby="archive-title"
-      className="rv-section overflow-hidden bg-[var(--color-background-secondary)]"
+      className="rv-section overflow-hidden bg-[var(--color-background-secondary)] py-8 lg:py-12"
     >
       <Container>
         <a
@@ -189,7 +189,7 @@ export function ArchivePage({
           </div>
         </noscript>
 
-        <div className="mt-12 lg:mt-16">
+        <div className="mt-8 lg:mt-10">
           <ArchiveToolbar
             dictionary={dictionary}
             query={searchValue}

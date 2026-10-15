@@ -1,3 +1,4 @@
+import { socialImage } from "@/lib/site-config";
 import { PoliticaClient } from "./politica-client"
 import { getDictionary } from "@/lib/dictionary"
 import type { Locale } from "@/types/dictionary"
@@ -25,7 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'x-default': '/en/politica-uso',
       },
     },
-    openGraph: { locale: locale === 'es' ? 'es_ES' : 'en_US', url: canonical },
+    openGraph: { locale: locale === 'es' ? 'es_ES' : 'en_US', url: canonical, images: [socialImage] },
+    twitter: {
+      card: 'summary_large_image',
+      title: locale === 'es' ? 'Condiciones de uso | raw.vives' : 'Terms of use | raw.vives',
+      description: locale === 'es' ? 'Derechos de autor y condiciones de uso de las fotografías de Alex Vicente.' : "Copyright and terms of use for Alex Vicente's photography.",
+      images: [socialImage.url],
+    },
     robots: { index: false, follow: true },
   }
 }

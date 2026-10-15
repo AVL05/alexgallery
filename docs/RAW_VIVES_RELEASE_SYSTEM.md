@@ -1,3 +1,5 @@
+> Actualización 2026-10-15: contacto y licencias usan solo borradores `mailto:`. No hay proveedor externo de formularios, clave de acceso ni POST. Las menciones al proveedor anterior en registros de auditoría describen el estado histórico. Para validar: comprobar asunto, cuerpo y destino del borrador; no confundir apertura con envío.
+
 # raw.vives — Sistema final de release (Fase 12)
 
 ## 1. Objetivo
@@ -18,7 +20,7 @@ Local (`next dev`), preview de artefacto (`wrangler pages dev`) y producción (P
 
 ## 5. Variables
 
-`NEXT_PUBLIC_BASE_URL` y `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` son inputs públicos de build. Token y account ID de Cloudflare son secretos operativos.
+`NEXT_PUBLIC_BASE_URL` es un input público de build. El contacto mailto no necesita claves. Token y account ID de Cloudflare son secretos operativos.
 
 ## 6. Dominio
 
@@ -42,7 +44,7 @@ No se detectó alias válido que conservar. `www.gallery...` no resuelve y el an
 
 ## 11. CSP
 
-Mantiene `default-src 'self'`, permite los orígenes estrictamente necesarios para imágenes, Web3Forms y estilos/scripts del build. Cambios externos requieren revisión.
+Mantiene `default-src 'self'`, permite los orígenes estrictamente necesarios para imágenes y estilos/scripts del build. Cambios externos requieren revisión.
 
 ## 12. Permissions Policy
 
@@ -74,11 +76,11 @@ No se emiten eventos de producto. Una taxonomía futura debería cubrir navegaci
 
 ## 19. Privacidad
 
-Página ES/EN, enlace en contacto/footer y explicación de Web3Forms, almacenamiento de sesión, cookies y derechos.
+Página ES/EN, enlace en contacto/footer y explicación de mailto, almacenamiento de sesión, cookies y derechos.
 
 ## 20. Cookies
 
-No hay cookies propias ni consent banner. Cloudflare/Web3Forms pueden tener tratamiento independiente sujeto a sus políticas.
+No hay cookies propias ni consent banner. Cloudflare puede tener tratamiento independiente sujeto a sus políticas.
 
 ## 21. Monitorización
 
@@ -178,7 +180,7 @@ No ejecutada. Exige autorización, secrets, preview y checklist.
 
 ## 45. Riesgos
 
-HTTP sin redirect, dependencia Web3Forms, ausencia de field data/monitorización, preview remota pendiente y release pública antigua.
+HTTP sin redirect, ausencia de field data/monitorización, preview remota pendiente y release pública antigua.
 
 ## 46. Problemas pendientes
 

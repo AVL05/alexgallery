@@ -35,7 +35,7 @@ export function PhotoDetailMedia({ dictionary }: { dictionary: PhotoDetailDictio
         <figcaption className="mt-3 flex justify-between gap-4 rv-meta"><span>{current.width} × {current.height}</span><span>{dictionary.creator}</span></figcaption>
       </figure>
 
-      <PhotoFullscreenDialog open={open} onClose={close} triggerRef={triggerRef} closeLabel={dictionary.closeFullscreen} lockSource="photo-detail-fullscreen">
+      <PhotoFullscreenDialog open={open} onClose={close} triggerRef={triggerRef} closeLabel={dictionary.closeFullscreen} label={`${dictionary.fullscreen} — ${current.title}`} lockSource="photo-detail-fullscreen">
         <Image src={current.src} alt={current.alt || current.description} fill loading="eager" sizes="100vw" className="object-contain p-4 sm:p-8" />
       </PhotoFullscreenDialog>
     </>

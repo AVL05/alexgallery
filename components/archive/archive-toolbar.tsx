@@ -62,7 +62,7 @@ export function ArchiveToolbar({
           aria-haspopup="dialog"
           data-press-feedback
           {...getCursorTargetAttributes({ type: "open" })}
-          className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 border border-border px-4 text-xs font-semibold uppercase tracking-[0.14em] transition-colors hover:border-[var(--color-border-strong)] md:hidden"
+          className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 border border-border px-4 text-xs font-semibold uppercase tracking-[0.14em] transition-colors hover:border-[var(--color-border-strong)] lg:hidden"
         >
           <SlidersHorizontal aria-hidden="true" className="size-4" />
           {dictionary.filtersLabel}

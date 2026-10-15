@@ -77,10 +77,9 @@ pnpm dev
 
 ```dotenv
 NEXT_PUBLIC_BASE_URL=https://rawvives.aleviclop.dev
-NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=replace-with-your-public-access-key
 ```
 
-Ambas se integran en la build estática y, por tanto, son públicas. La clave de Web3Forms es un identificador público del formulario, no un secreto de servidor. Se configura como secret del entorno GitHub para evitar almacenarla en el repositorio.
+La URL se integra en la build estática y es pública. Contacto y licencias preparan borradores `mailto:`; no requieren claves ni servicios externos de formularios. El visitante revisa y envía el correo desde su aplicación.
 
 ## Scripts
 
@@ -130,7 +129,7 @@ docs/                decisiones, auditorías y materiales de entrega
 
 - Export estático para reducir superficie operativa y servir desde CDN.
 - Sin analítica: la única cookie propia es `raw-vives-locale`, funcional y limitada a recordar ES/EN durante un año.
-- Web3Forms es un tercero; su disponibilidad, tratamiento y controles anti-spam quedan fuera del runtime propio.
+- El contacto requiere una aplicación de correo configurada; la web prepara el borrador y no confirma su envío.
 - CSP está definida en `_headers`; cualquier nuevo origen debe revisarse explícitamente.
 - No hay comparator before/after ni vídeo generado: no se fabrican activos que el producto no ofrece.
 - La validación en producción de esta release solo puede realizarse después de un despliegue autorizado.

@@ -1,3 +1,4 @@
+import { archivePageHref } from "@/lib/routes";
 import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
 import { Container } from "@/components/ui/layout";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -60,7 +61,7 @@ export function SeriesIndexPage({
         </PhotoMotionGroup>
 
         <div className="mt-20 border-t border-border pt-8">
-          <Link href={`/${locale}#gallery`} className="rv-editorial-link">{dictionary.exploreArchive}</Link>
+          <Link href={archivePageHref(locale)} className="rv-editorial-link">{dictionary.exploreArchive}</Link>
         </div>
       </Container>
     </main>

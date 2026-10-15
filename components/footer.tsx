@@ -10,6 +10,7 @@ import { useLocationSnapshot } from "@/hooks/use-location-snapshot";
 import { buildLocaleHref } from "@/lib/i18n/locale-routing";
 import { saveLocalePreference } from "@/lib/i18n/locale-cookie.client";
 import { contactEmail, developerUrl, instagramUrl } from "@/lib/site-config";
+import { archivePageHref } from "@/lib/routes";
 
 export function Footer({
   currentLocale,
@@ -54,7 +55,7 @@ export function Footer({
             aria-label={navigationLabel}
             className="grid grid-cols-2 gap-x-6 gap-y-2 md:col-span-3"
           >
-            <Link className="rv-editorial-link" href={`/${currentLocale}#gallery`} data-press-feedback>
+            <Link className="rv-editorial-link" href={archivePageHref(currentLocale)} data-press-feedback>
               {dictionary.gallery}
             </Link>
             <Link className="rv-editorial-link" href={`/${currentLocale}#about`} data-press-feedback>

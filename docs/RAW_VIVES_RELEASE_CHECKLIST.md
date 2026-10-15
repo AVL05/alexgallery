@@ -1,3 +1,5 @@
+> Actualización 2026-10-15: contacto y licencias usan solo borradores `mailto:`. No hay proveedor externo de formularios, clave de acceso ni POST. Las menciones al proveedor anterior en registros de auditoría describen el estado histórico. Para validar: comprobar asunto, cuerpo y destino del borrador; no confundir apertura con envío.
+
 # raw.vives — Checklist de release
 
 Marca solo con evidencia del artefacto que se va a publicar.
@@ -51,7 +53,7 @@ Marca solo con evidencia del artefacto que se va a publicar.
 - [x] GitHub environment y secretos confirmados.
 - [ ] Preview remota creada y validada.
 - [x] HTTP → HTTPS forzado mediante Single Redirect específica y comprobado.
-- [ ] Restricción de dominio/anti-spam de Web3Forms revisada.
+- [ ] Asunto, cuerpo y destinatario mailto comprobados en ES/EN.
 - [x] Version ID estable anterior registrado.
 
 ## Publicación
@@ -67,5 +69,5 @@ Marca solo con evidencia del artefacto que se va a publicar.
 ## Estado posterior al despliegue
 
 La release está publicada y validada. Permanecen como tareas operativas
-independientes la preview remota, la revisión anti-spam de Web3Forms, la medición
+independientes la preview remota, la apertura de un cliente de correo real, la medición
 de Web Vitals de campo y una auditoría manual con lector de pantalla real.

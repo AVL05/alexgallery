@@ -28,7 +28,7 @@ test("intro isolates the page until it is skipped", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "webdriver", { get: () => false });
   });
-  await page.goto("/es");
+  await page.goto("/es", { waitUntil: "domcontentloaded" });
 
   const intro = page.getByRole("dialog", { name: /archivo/i });
   const skip = page.getByRole("button", { name: /saltar introducción/i });
@@ -108,7 +108,7 @@ test("license form validates before any external submit", async ({ page }) => {
   await page.goto("/es?form=license#contact");
   let externalSubmit = false;
   page.on("request", (request) => {
-    if (request.url().includes("web3forms")) externalSubmit = true;
+    if (request.method() === "POST") externalSubmit = true;
   });
   await page.locator("#license-name").fill("Smoke Test");
   // Native-valid but custom-invalid email: passes the browser check so the
@@ -117,7 +117,7 @@ test("license form validates before any external submit", async ({ page }) => {
   await page.locator("#license-photo").fill("21");
   await page.locator("#license-usage").selectOption("editorial");
   await page.locator("#license-description").fill("Prueba de validación del formulario.");
-  await page.getByRole("button", { name: "Solicitar licencia" }).click();
-  await expect(page.getByText("Introduce un correo válido.")).toBeVisible();
+  await page.getByRole("button", { name: "Preparar solicitud de licencia" }).click();
+  await expect(page.locator("#license-email-error")).toBeVisible();
   expect(externalSubmit).toBe(false);
 });

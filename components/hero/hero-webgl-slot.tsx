@@ -16,13 +16,19 @@ export function HeroWebglSlot({ entryReady }: { entryReady: boolean }) {
   const [sceneAllowed, setSceneAllowed] = useState(false);
 
   useEffect(() => {
-    // Sync quality gate runs before any 3D code loads: off-tier devices
-    // never download three.js or the GLB.
-    setSceneAllowed(resolveHeroQuality(readQualitySignals()).tier !== "off");
+    const conditions = [
+      window.matchMedia("(min-width: 768px)"),
+      window.matchMedia("(prefers-reduced-motion: reduce)"),
+      window.matchMedia("(forced-colors: active)"),
+    ];
+    const update = () => setSceneAllowed(conditions[0].matches && !conditions[1].matches && !conditions[2].matches && resolveHeroQuality(readQualitySignals()).tier !== "off");
+    update();
+    conditions.forEach((condition) => condition.addEventListener("change", update));
+    return () => conditions.forEach((condition) => condition.removeEventListener("change", update));
   }, []);
 
   return (
-    <div data-hero-webgl aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1]">
+    <div data-hero-webgl aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] opacity-30">
       {sceneAllowed && entryReady ? <HeroFramesScene entryReady={entryReady} /> : null}
     </div>
   );

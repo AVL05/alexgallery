@@ -13,9 +13,9 @@
   },
   "hero": {
     "title": "raw.vives",
-    "titleLineOne": "Historias entre",
-    "titleLineTwo": "la luz y el silencio.",
-    "eyebrow": "Fotografía e historias visuales",
+    "titleLineOne": "Archivo fotográfico",
+    "titleLineTwo": "de Alex Vicente.",
+    "eyebrow": "Ciudad, naturaleza y luz",
     "cta": "Explorar el archivo",
     "scroll": "Desliza para explorar",
     "photographs": "fotografías",
@@ -55,7 +55,8 @@
     "selected": {
       "title": "Trabajo seleccionado",
       "cta": "Ver fotografía",
-      "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible."
+      "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible.",
+      "description": "Una selección breve del archivo: encuentros con la fauna, el paisaje y las escenas cotidianas."
     },
     "series": {
       "title": "Secuencias.",
@@ -82,7 +83,7 @@
   "nav": {
     "skipToContent": "Saltar al contenido",
     "home": "Inicio",
-    "work": "Trabajo",
+    "work": "Selección",
     "about": "Sobre mí",
     "gallery": "Archivo",
     "series": "Series",
@@ -185,7 +186,8 @@
     "lens": "Objetivo",
     "aperture": "Apertura",
     "shutter": "Velocidad",
-    "iso": "ISO"
+    "iso": "ISO",
+    "requestLicense": "Preparar solicitud de licencia"
   },
   "series": {
     "eyebrow": "Series fotográficas",
@@ -254,7 +256,7 @@
     "social": "Contacto",
     "location": "Valencia, España",
     "independent": "Archivo fotográfico independiente.",
-    "privacyNotice": "Al enviar el formulario, tus datos se transmiten a Web3Forms para gestionar tu solicitud.",
+    "privacyNotice": "Los datos solo se incorporan a un borrador en tu aplicación de correo. La web no envía ni almacena el mensaje.",
     "form": {
       "name": "Nombre",
       "email": "Correo electrónico",
@@ -266,12 +268,10 @@
       "usage_personal": "Personal",
       "usage_description": "Describe el uso previsto",
       "message": "Mensaje",
-      "send": "Enviar mensaje",
-      "request": "Solicitar licencia",
-      "sending": "Enviando...",
-      "success": "Mensaje enviado.",
-      "license_success": "Solicitud de licencia enviada.",
-      "error": "Algo salió mal.",
+      "send": "Abrir correo",
+      "request": "Preparar solicitud de licencia",
+      "prepared": "El borrador está preparado. Revisa y envía el mensaje desde tu aplicación de correo. Si no se ha abierto,",
+      "openEmail": "abre el borrador de nuevo.",
       "privacy_link": "Consulta la política de privacidad.",
       "validation": {
         "name": "Introduce un nombre válido.",

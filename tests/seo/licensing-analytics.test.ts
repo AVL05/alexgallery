@@ -109,9 +109,8 @@ test("licensing page is indexed, localized and linked from discovery surfaces", 
   );
 });
 
-test("contact submissions do not stay pending indefinitely", () => {
-  assert.match(
-    read("components/contact.tsx"),
-    /signal: AbortSignal\.timeout\(15_000\)/,
-  );
+test("contact prepares email drafts without a network submission", () => {
+  const contact = read("components/contact.tsx");
+  assert.match(contact, /buildContactMailto\(data, dictionary\)/);
+  assert.doesNotMatch(contact, /fetch\(|web3FormsAccessKey|access_key/);
 });

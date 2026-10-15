@@ -9,7 +9,7 @@ import imagesDataJson from "@/lib/images-data.json";
 import { photoSeries } from "@/lib/series/config";
 import { getPublishedSeries } from "@/lib/series/selectors";
 import { assertValidPhotoSeries } from "@/lib/series/validation";
-import { siteUrl } from "@/lib/site-config";
+import { siteUrl, socialImage } from "@/lib/site-config";
 import type { Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import type { Metadata } from "next";
@@ -24,13 +24,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
   const dictionary = await getDictionary(locale);
-  const title = `${dictionary.series.indexTitle} — raw.vives`;
+  const title = dictionary.series.indexTitle;
   return {
     title,
     description: dictionary.series.indexIntroduction,
     alternates: { canonical: `/${locale}/series`, languages: { "es-ES": "/es/series", "en-US": "/en/series", "x-default": "/en/series" } },
-    openGraph: { type: "website", url: `/${locale}/series`, title, description: dictionary.series.indexIntroduction, siteName: "raw.vives — Visual Archive" },
-    twitter: { card: "summary_large_image", title, description: dictionary.series.indexIntroduction },
+    openGraph: { type: "website", url: `/${locale}/series`, title, description: dictionary.series.indexIntroduction, siteName: "raw.vives — Visual Archive", images: [socialImage] },
+    twitter: { card: "summary_large_image", title, description: dictionary.series.indexIntroduction, images: [socialImage.url] },
   };
 }
 

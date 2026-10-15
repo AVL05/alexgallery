@@ -13,6 +13,7 @@ export function PhotoFullscreenDialog({
   onClose,
   triggerRef,
   closeLabel,
+  label,
   lockSource,
   children,
 }: {
@@ -20,6 +21,7 @@ export function PhotoFullscreenDialog({
   onClose: () => void;
   triggerRef: React.RefObject<HTMLButtonElement | null>;
   closeLabel: string;
+  label: string;
   lockSource: string;
   children: React.ReactNode;
 }) {
@@ -77,6 +79,7 @@ export function PhotoFullscreenDialog({
   return (
     <dialog
       ref={dialogRef}
+      aria-label={label}
       className="photo-detail-dialog m-0 h-dvh max-h-none w-screen max-w-none bg-black p-0 text-white backdrop:bg-black"
       onCancel={(event) => { event.preventDefault(); closeAndRestoreFocus(); }}
       onClose={onClose}

@@ -6,21 +6,68 @@ export type LocalizedPhotoContent = Pick<BasePhoto, "title" | "description"> & {
   alt: string;
 };
 
+const spanishAlt: Record<number, string> = {
+  1: "Tres caballos juntos entre la niebla.",
+  3: "Un relámpago cruza las nubes iluminadas al atardecer.",
+  4: "Una gaviota posada en una roca sobre el mar.",
+  5: "Una ardilla come en el suelo del bosque.",
+  6: "Vista de Sevilla con el río, los puentes y las torres.",
+  7: "Un cisne descansa sobre el agua junto a su reflejo.",
+  11: "Dos mariposas sobre las flores moradas de unos cardos.",
+  12: "Una mariposa posada entre hojas de otoño.",
+  13: "Un lago tranquilo entre colinas cubiertas de brezo.",
+  16: "Una formación rocosa solitaria emerge del océano.",
+  17: "Una torre junto a los acantilados de Moher entre la niebla atlántica.",
+  19: "Un puente cruza el Duero entre los edificios de Oporto.",
+  21: "Un tranvía recorre Oporto de noche junto a una figura que espera.",
+  23: "Luces navideñas sobre una calle histórica de Braga.",
+  24: "Decoración navideña frente al ayuntamiento de Oporto.",
+  26: "La torre de los Clérigos sobre Oporto al caer la tarde.",
+  27: "Un músico toca sobre la ciudad de Oporto al atardecer.",
+  29: "Una señal dorada del Camino de Santiago entre adoquines.",
+  30: "Un valle con bosques y tejados rojos entre montañas.",
+  31: "Barcas de colores en un canal de Aveiro.",
+  35: "La cascada de la Cola de Caballo cae entre las rocas de Ordesa.",
+  37: "Dos pies descalzos sobre la arena mojada junto al mar.",
+  41: "Un relámpago ilumina las siluetas de la ciudad de noche.",
+  43: "Vías de tren que se prolongan hacia las montañas desde una estación.",
+  44: "Un conductor vestido de rojo en una escena urbana de estilo retro.",
+  46: "Un músico toca el acordeón frente a los acantilados de Moher.",
+  48: "Una puerta dibujada con tiza sobre una pared.",
+  49: "Un Mini clásico aparcado entre flores bajo la luz del sol.",
+  50: "Una calle de Dublín con fachadas de ladrillo y obras.",
+  51: "Una antigua iglesia irlandesa bajo un cielo cubierto.",
+  52: "Eclipse solar total con anillo luminoso y efecto diamante sobre un paisaje oscuro.",
+  53: "Picos de montaña recortados contra un cielo naranja al atardecer.",
+  54: "Un sendero cruza un prado de montaña entre pinos y rocas.",
+  55: "Una cumbre escarpada sobre un arroyo de rocas y pinos.",
+  56: "Un lago de montaña entre dos laderas rocosas.",
+  57: "Un insecto de rayas rojas y negras sobre una hoja verde.",
+  58: "Una mariposa posada en el centro de un cardo seco.",
+  59: "Trazas de estrellas dibujan arcos sobre un valle nocturno.",
+  60: "Un campanario de piedra con reloj visto desde abajo contra el cielo.",
+  61: "Dos caballos en una ladera bajo las sillas de un telesilla vacío.",
+  62: "Una pasarela de madera serpentea entre los árboles del bosque.",
+  63: "Una cresta de montaña emerge entre la niebla y el cielo azul.",
+  64: "Una cascada entre pinos y rocas oscuras del bosque.",
+  65: "Dos agujas de roca se alzan entre pinos bajo las nubes.",
+};
+
 const englishContent: Record<number, LocalizedPhotoContent> = {
   1: { title: "Trio in the mist", description: "Three horses stay close while the mist erases the landscape. Their closeness turns a silent scene into a gesture of companionship.", alt: "Three horses standing together in the mist." },
   3: { title: "The sound of the sky", description: "Lightning crosses the glowing clouds at dusk. For an instant, the storm draws the horizon with a single line of light.", alt: "Lightning crossing glowing storm clouds at dusk." },
   4: { title: "Silence on the rock", description: "A seagull looks out over the drop in absolute calm.", alt: "A seagull perched on a rock above the sea." },
   5: { title: "A feast in the woods", description: "A squirrel stops to eat on the forest floor. For a few seconds, it remains unaware of everything happening around it.", alt: "A squirrel eating on the forest floor." },
   6: { title: "Seville, reflections and heights", description: "The city breathes between river, bridges and towers, where the modern and historic meet.", alt: "Aerial view of Seville, its river, bridges and towers." },
-  7: { title: "Serene reflection", description: "A swan rests with the stillness of a poem.", alt: "A swan resting on calm water with its reflection." },
+  7: { title: "Serene reflection", description: "A swan rests on the water beside its reflection. The scene draws attention to that pause.", alt: "A swan resting on calm water with its reflection." },
   11: { title: "Wings over purple", description: "Two butterflies visit thistles in full bloom.", alt: "Two butterflies on purple flowering thistles." },
   12: { title: "Autumn wings", description: "A butterfly rests among leaves coloured by the season.", alt: "A butterfly resting on autumn leaves." },
   13: { title: "Where the lake embraces the land", description: "A quiet lake stretches between hills covered in heather.", alt: "A quiet lake between hills covered in heather." },
-  16: { title: "The ocean sentinel", description: "A solitary rock formation rises from the water, an ancient guardian against time.", alt: "A solitary rock formation rising from the ocean." },
+  16: { title: "The ocean sentinel", description: "A rock formation rises from the water. Its outline holds the attention within the expanse of the sea.", alt: "A solitary rock formation rising from the ocean." },
   17: { title: "Guardians of the cliff", description: "A tower stands at the edge of the Cliffs of Moher as mist covers the Atlantic. The scale of the landscape leaves the building almost lost against the sea.", alt: "A tower and cliffs fading into Atlantic mist." },
-  19: { title: "A bridge to the soul of Porto", description: "Porto's bridge joins history and modern life above the Douro.", alt: "A bridge crossing the Douro through Porto." },
+  19: { title: "A bridge to the soul of Porto", description: "The bridge crosses the Douro between Porto's two banks. Its structure organizes the view of the city around the river.", alt: "A bridge crossing the Douro through Porto." },
   21: { title: "Last stop: night", description: "A tram crosses Porto at night while a figure waits beside the tracks. The lights and movement capture the city's nocturnal rhythm.", alt: "A tram moving through Porto at night." },
-  23: { title: "Light, history and Christmas spirit", description: "Christmas turns Braga into a passage of light and tradition.", alt: "Christmas lights illuminating a historic street in Braga." },
+  23: { title: "Light, history and Christmas spirit", description: "Christmas lights stretch along a Braga street. The decorations connect the facades and lead the eye into the scene.", alt: "Christmas lights illuminating a historic street in Braga." },
   24: { title: "Between spirals and chimes", description: "Christmas brings past and future together outside Porto City Hall.", alt: "Christmas lights and architecture outside Porto City Hall." },
   26: { title: "The tower watching over dreams", description: "Clerigos Tower rises over Porto as the day fades in soft light.", alt: "Clerigos Tower above Porto in fading daylight." },
   27: { title: "Where the sky meets the city", description: "A musician accompanies sunset in Porto as the city says goodbye to the day.", alt: "A musician performing above Porto at sunset." },
@@ -55,7 +102,7 @@ const englishContent: Record<number, LocalizedPhotoContent> = {
 
 export function getLocalizedPhotoContent(photo: BasePhoto, locale: Locale): LocalizedPhotoContent {
   if (locale === "en" && englishContent[photo.id]) return englishContent[photo.id];
-  return { title: photo.title, description: photo.description, alt: photo.description || photo.title };
+  return { title: photo.title, description: photo.description, alt: spanishAlt[photo.id] || photo.title };
 }
 
 export function getLocalizedPhoto(id: number, locale: Locale) {

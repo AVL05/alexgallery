@@ -66,8 +66,8 @@ export function PoliticaClient({
                   <h2 className="rv-card-title mb-5">© Copyright</h2>
                   <p className="rv-body">
                     {spanish
-                      ? "Todas las fotografías mostradas en esta galería son propiedad intelectual de Alex Vicente y están protegidas por las leyes de copyright internacionales. Cada imagen contiene metadatos de copyright embebidos con la información del autor."
-                      : "All photographs shown in this gallery are the intellectual property of Alex Vicente and are protected by international copyright laws. Each image contains embedded copyright metadata with author information."}
+                      ? "Todas las fotografías mostradas en esta galería son propiedad intelectual de Alex Vicente y están protegidas por las leyes de copyright internacionales. La autoría se indica en las fichas de las fotografías y en los datos estructurados del sitio. Las versiones web optimizadas no conservan necesariamente los metadatos del archivo fuente."
+                      : "All photographs shown in this gallery are the intellectual property of Alex Vicente and are protected by international copyright laws. Authorship is stated on photograph pages and in the site's structured data. Optimized web versions do not necessarily retain the source file metadata."}
                   </p>
                 </div>
               </section>
@@ -102,7 +102,7 @@ export function PoliticaClient({
                       ? "Si quieres utilizar una fotografía en un proyecto comercial, editorial o publicitario, solicita permiso antes de publicarla."
                       : "If you want to use a photograph in a commercial, editorial, or advertising project, request permission before publishing it."}
                   </p>
-                  <Link href={`/${locale}#contact`} className="rv-editorial-link">
+                  <Link href={`/${locale}?form=license#contact`} className="rv-editorial-link">
                     {spanish ? "Abrir formulario de licencias" : "Open licensing form"}
                   </Link>
                 </div>

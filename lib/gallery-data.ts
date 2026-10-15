@@ -69,7 +69,7 @@ export const photos = [
     year: "2025",
     image: "/7.webp",
     color: "accent",
-    description: "Un cisne reposa con la calma de un poema.",
+    description: "Un cisne descansa sobre el agua junto a su reflejo. La escena concentra la mirada en esa pausa.",
   },
   {
     id: 11,
@@ -108,7 +108,7 @@ export const photos = [
     image: "/16.webp",
     color: "chart-3",
     description:
-      "Una formación rocosa solitaria se alza entre las aguas, como un guardián ancestral frente al paso del tiempo.",
+      "Una formación rocosa emerge del agua. Su perfil concentra la atención en medio de la extensión del mar.",
   },
   {
     id: 17,
@@ -130,7 +130,7 @@ export const photos = [
     image: "/19.webp",
     color: "chart-3",
     description:
-      "El puente de Oporto une historia y modernidad sobre las aguas del Duero.",
+      "El puente cruza el Duero entre las dos orillas de Oporto. Su estructura organiza la vista de la ciudad alrededor del río.",
   },
   {
     id: 21,
@@ -150,7 +150,7 @@ export const photos = [
     year: "2024",
     image: "/23.webp",
     color: "chart-3",
-    description: "La Navidad transforma Braga en un túnel de luz y tradición.",
+    description: "Las luces navideñas recorren una calle de Braga. La decoración enlaza las fachadas y conduce la mirada hacia el fondo.",
   },
   {
     id: 24,

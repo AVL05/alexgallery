@@ -71,7 +71,7 @@ export function PhotoDetailContextProvider({ children, locale, currentId, images
     setReturnHref(resolvePhotoReturnHref({
       seriesHref: null,
       storedHref: stored?.returnHref ?? saved?.archiveHref ?? null,
-      fallbackHref: archivePageHref(locale),
+      fallbackHref: `${archivePageHref(locale)}${serializeArchiveState(parsed)}`,
     }));
   }, [currentId, locale, years]);
 

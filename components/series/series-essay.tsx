@@ -1,3 +1,4 @@
+import { archivePageHref } from "@/lib/routes";
 import { MetaItem, MetaList } from "@/components/ui/photo-meta";
 import { photoSizes } from "@/lib/images/sizes";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
@@ -26,12 +27,12 @@ export function SeriesHero({
   return (
     <header>
       <p className="rv-kicker">{dictionary.eyebrow} / {String(series.photoIds.length).padStart(2, "0")}</p>
-      <h1 className="mt-8 max-w-[12ch] font-serif text-[clamp(3.2rem,9vw,9rem)] leading-[0.9] tracking-[-0.05em]">
+      <h1 className="mt-5 max-w-[20ch] font-serif text-[clamp(2.4rem,5vw,4.5rem)] leading-[1] tracking-[-0.025em] text-balance">
         {series.title}
       </h1>
-      <div className="mt-8 grid gap-8 md:grid-cols-12">
-        <p className="text-lg leading-8 text-[var(--color-text-secondary)] md:col-span-7">{series.description}</p>
-        <MetaList className="gap-4 border-t border-border pt-5 md:col-span-4 md:col-start-9">
+      <div className="mt-5 grid gap-5 md:grid-cols-12">
+        <p className="max-w-[65ch] text-base leading-7 text-[var(--color-text-secondary)] md:col-span-7">{series.description}</p>
+        <MetaList className="gap-4 border-t border-border pt-4 md:col-span-4 md:col-start-9">
           {series.period ? <MetaItem label={dictionary.period}>{series.period}</MetaItem> : null}
           {series.location ? <MetaItem label={dictionary.location}>{series.location}</MetaItem> : null}
           <MetaItem label={dictionary.photographs}>{String(series.photoIds.length).padStart(2, "0")}</MetaItem>
@@ -130,7 +131,7 @@ export function SeriesFooter({
     <>
       <section className="grid gap-8 border-y border-border py-12 md:grid-cols-12 lg:py-20">
         <div className="md:col-span-3"><p className="rv-kicker">{dictionary.closingLabel}</p></div>
-        <div className="md:col-span-8 md:col-start-5"><h2 className="max-w-[18ch] font-serif text-[clamp(2rem,4vw,4.5rem)] leading-tight tracking-[-0.035em]">{dictionary.closingTitle}</h2><div className="mt-8 flex flex-wrap gap-6"><Link href={`/${locale}/series`} className="rv-editorial-link"><ArrowLeft aria-hidden="true" className="size-4" />{dictionary.backToIndex}</Link><Link href={`/${locale}#gallery`} className="rv-editorial-link">{dictionary.exploreArchive}</Link></div></div>
+        <div className="md:col-span-8 md:col-start-5"><h2 className="max-w-[18ch] font-serif text-[clamp(2rem,4vw,4.5rem)] leading-tight tracking-[-0.035em]">{dictionary.closingTitle}</h2><div className="mt-8 flex flex-wrap gap-6"><Link href={`/${locale}/series`} className="rv-editorial-link"><ArrowLeft aria-hidden="true" className="size-4" />{dictionary.backToIndex}</Link><Link href={archivePageHref(locale)} className="rv-editorial-link">{dictionary.exploreArchive}</Link></div></div>
       </section>
 
       {nextSeries && nextCover ? (

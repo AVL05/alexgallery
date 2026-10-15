@@ -8,7 +8,7 @@ import { MotionDevelopmentTools } from "@/components/motion/development-tools";
 import { PhotoFrameDevelopmentTools } from "@/components/graphics/photo-frame-development-tools";
 import { IntroBootstrapScript } from "@/components/intro/intro-bootstrap-script";
 import { DocumentLanguageBootstrap } from "@/components/document-language-bootstrap";
-import { siteUrl } from "@/lib/site-config";
+import { siteUrl, socialImage } from "@/lib/site-config";
 import "./globals.css";
 
 const prata = Prata({
@@ -74,21 +74,14 @@ export const metadata: Metadata = {
     description:
       "A global archive of photography, travel, urban scenes, nature and digital captures.",
     siteName: "raw.vives — Visual Archive",
-    images: [
-      {
-        url: "/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Alex Vicente Visual Archive",
-      },
-    ],
+    images: [socialImage],
   },
   twitter: {
     card: "summary_large_image",
     title: "raw.vives | Visual Archive by Alex Vicente",
     description:
-      "Explora un archivo visual global de fotos y capturas digitales.",
-    images: ["/opengraph-image.png"],
+      "Explore Alex Vicente's visual archive of photography and visual stories.",
+    images: [socialImage.url],
   },
   robots: {
     index: true,

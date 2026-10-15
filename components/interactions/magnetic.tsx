@@ -28,7 +28,8 @@ export function Magnetic({
   const restoreCallRef = useRef<ReturnType<typeof gsap.delayedCall> | null>(null);
   const xToRef = useRef<ReturnType<typeof gsap.quickTo> | null>(null);
   const yToRef = useRef<ReturnType<typeof gsap.quickTo> | null>(null);
-  const scaleToRef = useRef<ReturnType<typeof gsap.quickTo> | null>(null);
+  const scaleXToRef = useRef<ReturnType<typeof gsap.quickTo> | null>(null);
+  const scaleYToRef = useRef<ReturnType<typeof gsap.quickTo> | null>(null);
   const { hasFinePointer, hasHover, prefersReducedMotion } = useMotion();
   const enabled = cursorConfig.magnetic.enabled
     && !disabled
@@ -45,7 +46,8 @@ export function Magnetic({
   const restore = () => {
     xToRef.current?.(0);
     yToRef.current?.(0);
-    scaleToRef.current?.(1);
+    scaleXToRef.current?.(1);
+    scaleYToRef.current?.(1);
     boundsRef.current = null;
     restoreCallRef.current?.kill();
     restoreCallRef.current = gsap.delayedCall(cursorConfig.magnetic.duration, () => {
@@ -65,7 +67,8 @@ export function Magnetic({
     restoreWillChangeRef.current = applyTemporaryWillChange(content, "transform");
     xToRef.current = gsap.quickTo(content, "x", { duration: cursorConfig.magnetic.duration, ease: "power2.out" });
     yToRef.current = gsap.quickTo(content, "y", { duration: cursorConfig.magnetic.duration, ease: "power2.out" });
-    scaleToRef.current = gsap.quickTo(content, "scale", { duration: cursorConfig.magnetic.duration, ease: "power2.out" });
+    scaleXToRef.current = gsap.quickTo(content, "scaleX", { duration: cursorConfig.magnetic.duration, ease: "power2.out" });
+    scaleYToRef.current = gsap.quickTo(content, "scaleY", { duration: cursorConfig.magnetic.duration, ease: "power2.out" });
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
@@ -73,7 +76,8 @@ export function Magnetic({
     if (!enabled || !bounds || !isFinePointerType(event.pointerType)) return;
     xToRef.current?.(getMagneticOffset(event.clientX, bounds.left + bounds.width / 2, strength, maxOffset));
     yToRef.current?.(getMagneticOffset(event.clientY, bounds.top + bounds.height / 2, strength, maxOffset));
-    scaleToRef.current?.(cursorConfig.magnetic.scale);
+    scaleXToRef.current?.(cursorConfig.magnetic.scale);
+    scaleYToRef.current?.(cursorConfig.magnetic.scale);
   };
 
   return (

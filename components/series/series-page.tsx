@@ -56,7 +56,7 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos, breadcrumbLa
   const nextSeries = nextRaw ? getLocalizedSeries(nextRaw, locale) : null;
   const nextCover = nextRaw ? resolveSeriesCover(nextRaw, photos) : null;
   return (
-    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden pb-24 pt-32 lg:pb-36 lg:pt-40">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden pb-24 pt-28 lg:pb-36 lg:pt-32">
       <SeriesReturnFocus />
       <SeriesDevelopmentTools />
       <Container>
@@ -66,14 +66,14 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos, breadcrumbLa
             { label: dictionary.indexTitle, href: `/${locale}/series` },
             { label: series.title },
           ]}
-          className="mb-10"
+          className="mb-6"
         />
         <SeriesHero series={series} dictionary={dictionary} />
 
         <SeriesProgress total={series.photoIds.length} label={dictionary.progressLabel} />
 
         {cover ? (
-          <PhotoMotionGroup groupKey={`series-cover-${series.slug}`} editorial className="mt-14 lg:mt-20">
+          <PhotoMotionGroup groupKey={`series-cover-${series.slug}`} editorial className="mt-8 lg:mt-10">
             <EssayImage photo={cover} locale={locale} slug={series.slug} position={positions.get(cover.id) || 1} total={series.photoIds.length} priority size={essaySingleSize(cover)} />
           </PhotoMotionGroup>
         ) : null}

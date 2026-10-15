@@ -23,6 +23,14 @@ test("all 44 photographs have stable localized English content and fallback-read
   assert.ok(enPhotos.every((photo, index) => photo.title !== esPhotos[index]?.title && photo.description && photo.alt));
 });
 
+test("Spanish alt text describes the scene independently of the editorial note", () => {
+  for (const photo of esPhotos) {
+    assert.ok(photo.alt);
+    assert.ok(photo.alt.length > 10 && photo.alt.length < 180, `photo ${photo.id}`);
+    assert.notEqual(photo.alt, photo.description, `photo ${photo.id}`);
+  }
+});
+
 test("context navigation reconstructs combined filters without becoming circular", () => {
   const state = { ...defaultArchiveState, category: "Urbano" as const, year: "2024", sort: "title-asc" as const };
   const contextual = resolvePhotoNavigation(esPhotos, 21, state);

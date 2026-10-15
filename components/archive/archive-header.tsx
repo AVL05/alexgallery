@@ -15,13 +15,13 @@ export function ArchiveHeader({
   as?: "h1" | "h2";
 }) {
   return (
-    <header className="grid gap-10 border-t border-border pt-8 lg:grid-cols-12 lg:items-end">
+    <header className="grid gap-6 border-t border-border pt-6 lg:grid-cols-12 lg:items-end">
       <div className="lg:col-span-8">
         <p className="rv-kicker">{dictionary.eyebrow}</p>
-        <Tag id="archive-title" className="rv-section-title mt-5 max-w-[12ch] text-[clamp(3rem,7vw,7rem)]">
+        <Tag id="archive-title" className="rv-section-title mt-4 max-w-[16ch] text-[clamp(2.4rem,5vw,4.5rem)]">
           {dictionary.archive_label}
         </Tag>
-        <p className="rv-intro mt-6 max-w-2xl">{dictionary.description}</p>
+        <p className="rv-body mt-4 max-w-2xl text-[var(--color-text-secondary)]">{dictionary.description}</p>
       </div>
       <MetaList className="border-y border-border lg:col-span-4">
         <MetaItem

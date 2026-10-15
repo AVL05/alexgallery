@@ -263,6 +263,7 @@ export function Navigation({
     <>
       <a
         href="#main-content"
+        onClick={() => document.getElementById("main-content")?.focus()}
         className="fixed left-4 top-4 z-[var(--z-modal)] -translate-y-24 bg-accent px-4 py-3 text-sm font-semibold text-accent-foreground transition-transform focus:translate-y-0"
       >
         {dictionary.skipToContent}

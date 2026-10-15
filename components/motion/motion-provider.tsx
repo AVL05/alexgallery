@@ -98,7 +98,8 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     (target: HTMLElement | string | number) => {
       if (prefersReducedMotion || !lenisRef.current) {
         if (typeof target === "number") {
-          window.scrollTo({ top: target, behavior: "auto" });
+          // Keep ScrollTrigger's scroll cache in sync before a queued refresh.
+          ScrollTrigger.getScrollFunc(window)(target);
         } else {
           const element =
             typeof target === "string" ? document.querySelector(target) : target;

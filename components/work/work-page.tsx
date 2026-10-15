@@ -17,12 +17,14 @@ export function WorkPage({
   galleryDictionary,
   title,
   selectedCta,
+  introduction,
 }: {
   photos: NarrativePhoto[];
   locale: Locale;
   galleryDictionary: GalleryDictionary;
   title: string;
   selectedCta: string;
+  introduction: string;
 }) {
   const originHref = workHref(locale);
   return (
@@ -34,6 +36,7 @@ export function WorkPage({
             tone="page"
             eyebrow={`${String(photos.length).padStart(2, "0")} ${galleryDictionary.photoPlural}`}
             title={title}
+            intro={introduction}
           />
         </Reveal>
 

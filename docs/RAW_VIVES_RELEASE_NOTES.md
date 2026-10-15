@@ -1,3 +1,5 @@
+> Actualización 2026-10-15: contacto y licencias usan solo borradores `mailto:`. No hay proveedor externo de formularios, clave de acceso ni POST. Las menciones al proveedor anterior en registros de auditoría describen el estado histórico. Para validar: comprobar asunto, cuerpo y destino del borrador; no confundir apertura con envío.
+
 # raw.vives 1.0.0-rc.1 — Release notes
 
 Fecha de preparación: 17 de julio de 2026. Estado: candidata validada localmente, sin despliegue ni tag.
@@ -14,7 +16,7 @@ Esta candidata cierra la preparación profesional de raw.vives para Cloudflare W
 - Headers de seguridad, Permissions Policy y caché por tipo de recurso.
 - Manifest PWA, favicon adaptativo e iconos 16/32/180/192/512.
 - URL de sitio centralizada para canonical, sitemap, robots y JSON-LD.
-- Política de privacidad ES/EN y Web3Forms configurable por entorno.
+- Política de privacidad ES/EN y borradores mailto sin proveedor de formularios.
 - Pruning de fuentes `public/photos/raw` fuera del artefacto `out`.
 - README, caso de estudio, portfolio, LinkedIn, capturas y guion de vídeo.
 
@@ -30,7 +32,7 @@ Esta candidata cierra la preparación profesional de raw.vives para Cloudflare W
 ## Breaking changes
 
 - Node 22.22.2 y pnpm 10.34.1 pasan a ser el contrato soportado.
-- El formulario necesita `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` durante build.
+- El contacto no necesita clave de build; abre un borrador en la aplicación de correo.
 - `out/photos/raw/` deja de publicarse de forma intencionada.
 - El workflow antiguo de Cloudflare Pages se sustituye por Workers Static Assets manual.
 
@@ -38,7 +40,7 @@ Esta candidata cierra la preparación profesional de raw.vives para Cloudflare W
 
 - La versión pública observada antes de esta release seguía usando robots antiguos.
 - HTTP no redirigía a HTTPS; requiere configuración manual de Cloudflare.
-- Web3Forms es una dependencia externa y la restricción por dominio puede requerir plan Pro.
+- El dispositivo debe tener un cliente de correo asociado a mailto; abrir el borrador no confirma el envío.
 - No hay Web Vitals de campo, observabilidad externa ni E2E continuo.
 
 ## Acciones antes de producción

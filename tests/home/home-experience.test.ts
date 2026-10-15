@@ -63,8 +63,9 @@ test("public microcopy stays concise and localized", () => {
   assert.equal(en.home.featured.label, "Featured photograph");
   assert.ok(!("description" in es.hero));
   assert.ok(!("description" in en.hero));
-  assert.ok(!("description" in es.home.selected));
-  assert.ok(!("description" in en.home.selected));
+  assert.ok(es.home.selected.description.length < 140);
+  assert.ok(en.home.selected.description.length < 140);
+  assert.notEqual(es.home.selected.description, en.home.selected.description);
   assert.equal(es.gallery.items, "fotografías");
   assert.equal(es.gallery.view_grid, "Vista de cuadrícula");
   assert.equal(es.seo.title, "raw.vives | Archivo visual");
@@ -89,9 +90,11 @@ test("primary home anchors and public destinations remain available", () => {
   const footer = readFileSync("components/footer.tsx", "utf8");
   const series = readFileSync("components/home/home-series.tsx", "utf8");
 
-  for (const anchor of ["#about", "#gallery", "#contact"]) {
+  for (const anchor of ["#about", "#contact"]) {
     assert.match(`${homeClient}\n${navigation}\n${footer}`, new RegExp(anchor));
   }
+  assert.match(footer, /archivePageHref\(currentLocale\)/);
+  assert.match(readFileSync("components/archive/archive-preview.tsx", "utf8"), /id="gallery"/);
   assert.match(series, /\`\/\$\{locale\}\/series\`/);
   assert.doesNotMatch(homeClient, /ClosingStatement/);
   assert.doesNotMatch(navigation.match(/const items = \[[\s\S]*?\];/)?.[0] ?? "", /dictionary\.policies/);

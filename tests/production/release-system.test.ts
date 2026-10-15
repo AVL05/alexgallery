@@ -20,7 +20,8 @@ test("production release configuration is explicit and privacy-safe", () => {
   assert.equal(packageJson.packageManager, "pnpm@11.20.0");
   assert.equal(read(".nvmrc").trim(), "24.18.0");
   assert.match(envExample, /NEXT_PUBLIC_BASE_URL=/);
-  assert.match(envExample, /NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=/);
+  assert.doesNotMatch(envExample, /WEB3FORMS/);
+  assert.doesNotMatch(headers, /web3forms/);
   assert.doesNotMatch(envExample, /d72eeacd/);
   assert.doesNotMatch(contact, /d72eeacd/);
   assert.match(headers, /Permissions-Policy:/);
