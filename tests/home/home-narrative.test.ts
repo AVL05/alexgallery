@@ -157,9 +157,9 @@ test("validation reports missing IDs, conflicts, wrong categories and invalid co
   );
 });
 
-test("archive summary remains derived from all 45 catalog photographs", () => {
+test("archive summary remains derived from all 46 catalog photographs", () => {
   const archive = getArchiveSummary();
-  assert.equal(archive.total, 45);
+  assert.equal(archive.total, 46);
   assert.equal(archive.startYear, "2022");
   assert.equal(archive.endYear, "2026");
   assert.deepEqual(archive.years.map(({ year }) => year), ["2022", "2023", "2024", "2025", "2026"]);

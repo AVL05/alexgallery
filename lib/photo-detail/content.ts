@@ -52,6 +52,7 @@ const spanishAlt: Record<number, string> = {
   64: "Una cascada entre pinos y rocas oscuras del bosque.",
   65: "Dos agujas de roca se alzan entre pinos bajo las nubes.",
   66: "Un rayo ramificado cruza en diagonal un cielo rosado sobre los tejados de varios edificios.",
+  67: "Cocinera con chaqueta azul trabajando con utensilios sobre una sartén detrás de una mesa de cocina.",
 };
 
 const englishContent: Record<number, LocalizedPhotoContent> = {
@@ -100,6 +101,7 @@ const englishContent: Record<number, LocalizedPhotoContent> = {
   64: { title: "Water among the pines", description: "A waterfall drops with force among vegetation and the forest's dark rock.", alt: "A waterfall framed by dense pine forest and dark rock." },
   65: { title: "Teeth of stone", description: "Two rock needles emerge among the pines and cut their profile against the clouds.", alt: "Two jagged rock needles rising above a pine forest." },
   66: { title: "A crack in the sky", description: "A branching lightning bolt crosses the pink sky above the rooftops. Its diagonal line draws the eye through the storm.", alt: "A branching lightning bolt cutting diagonally across a pink sky above city rooftops." },
+  67: { title: "The craft of cooking", description: "A cook concentrates on her work during a competition in Villajoyosa. Her hands, gaze and utensils draw attention to the pan.", alt: "A cook in a blue jacket working with utensils over a pan behind a kitchen table." },
 };
 
 export function getLocalizedPhotoContent(photo: BasePhoto, locale: Locale): LocalizedPhotoContent {

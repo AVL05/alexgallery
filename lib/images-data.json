@@ -1804,6 +1804,46 @@
       }
     },
     {
+      "id": "67",
+      "src": "/photos/optimized/original/67.webp",
+      "srcAvif": "/photos/optimized/original/67.avif",
+      "width": 2398,
+      "height": 3200,
+      "blurDataURL": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAKCAIAAAD3rtNaAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAA4UlEQVQImWNQZ2JQYWKQZQAhA3lmG21hC00RBi02Bg1OBmUGBhUWBhstfmdjCQd9KQZ1NgZVVgYvE5ZFM+rnTylzN5d2MgGLqjAx5MS47T206fyJ5RbqvPaGEgzSYL3S6uphCVFHjyyxNJCyMZJmcDCXz051m9qbnp3qXFYctWd5cXqYKUNKtr+rKa+sLLuKvnJGbU5IlGtSmClDQ1fB/5c167ssxXkYtszwqss0DPeSY5g2Me3/1wmbpvjmRBn8f1L4/1HO/yeZDAuKtJc32jSXus1fWLd3V8/VQx3/n7QDAI6VRZBCkUiKAAAAAElFTkSuQmCC",
+      "alt": "Photography by Alex Gallery - 67",
+      "exif": {},
+      "histogram": [
+        0,
+        30,
+        100,
+        40,
+        44,
+        11,
+        14,
+        17,
+        28,
+        17,
+        13,
+        15,
+        18,
+        17,
+        5,
+        3,
+        2,
+        0,
+        0,
+        0
+      ],
+      "variants": {
+        "400": "/photos/optimized/400/67.webp",
+        "800": "/photos/optimized/800/67.webp",
+        "1200": "/photos/optimized/1200/67.webp",
+        "400avif": "/photos/optimized/400/67.avif",
+        "800avif": "/photos/optimized/800/67.avif",
+        "1200avif": "/photos/optimized/1200/67.avif"
+      }
+    },
+    {
       "id": "7",
       "src": "/photos/optimized/original/7.webp",
       "srcAvif": "/photos/optimized/original/7.avif",

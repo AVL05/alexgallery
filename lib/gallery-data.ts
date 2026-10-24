@@ -340,4 +340,5 @@ export const photos = [
   { id: 64, title: "Agua entre los pinos", category: "Paisaje", year: "2026", image: "/64.webp", color: "chart-3", description: "Una cascada cae con fuerza entre la vegetación y la roca oscura del bosque." },
   { id: 65, title: "Dientes de piedra", category: "Paisaje", year: "2026", image: "/65.webp", color: "accent", description: "Dos agujas de roca emergen entre los pinos y recortan su perfil contra las nubes." },
   { id: 66, title: "La grieta del cielo", category: "Meteorología", year: "2026", image: "/66.webp", color: "secondary", description: "Un relámpago ramificado atraviesa el cielo rosado sobre los tejados. Su trazo diagonal concentra la mirada en medio de la tormenta." },
+  { id: 67, title: "El oficio en las manos", category: "Personas", year: "2026", image: "/67.webp", color: "accent", description: "Una cocinera se concentra en la preparación durante un concurso en Villajoyosa. Las manos, la mirada y los utensilios reúnen la atención alrededor de la sartén." },
 ] satisfies BasePhoto[];

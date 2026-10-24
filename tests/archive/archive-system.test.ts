@@ -26,7 +26,7 @@ const photos = buildArchivePhotos(imagesDataJson as ImagesData);
 const years = [...new Set(photos.map((photo) => photo.year))];
 
 test("archive resolves the complete real catalog with unique optimized images", () => {
-  assert.equal(photos.length, 45);
+  assert.equal(photos.length, 46);
   assert.equal(new Set(photos.map((photo) => photo.id)).size, photos.length);
   assert.ok(photos.every((photo) => photo.width > 0 && photo.height > 0));
   assert.deepEqual(new Set(photos.map((photo) => photo.category)), new Set(categories.slice(1)));
@@ -130,7 +130,7 @@ test("filters combine and sorting preserves deterministic editorial fallbacks", 
     ...defaultArchiveState,
     series: "unassigned",
   });
-  assert.equal(unassigned.length, 33);
+  assert.equal(unassigned.length, 34);
 });
 
 test("facet counts are conditioned by the other active filters", () => {
@@ -153,11 +153,11 @@ test("facet counts are conditioned by the other active filters", () => {
     defaultArchiveState,
     archiveSeriesFilters,
   );
-  assert.equal(seriesCounts.all, 45);
+  assert.equal(seriesCounts.all, 46);
   assert.equal(seriesCounts["porto-river-night"], 5);
   assert.equal(seriesCounts["atlantic-stone"], 4);
   assert.equal(seriesCounts["small-encounters"], 3);
-  assert.equal(seriesCounts.unassigned, 33);
+  assert.equal(seriesCounts.unassigned, 34);
 });
 
 test("progressive loading and editorial variants are bounded and stable", () => {

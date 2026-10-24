@@ -22,7 +22,7 @@ test("hero resolves a local optimized primary image and fallback", () => {
 });
 
 test("hero archive facts are derived from the real catalog", () => {
-  assert.deepEqual(getHeroArchiveFacts(), { count: 45, dateRange: "2022–2026" });
+  assert.deepEqual(getHeroArchiveFacts(), { count: 46, dateRange: "2022–2026" });
 });
 
 test("hero motion disables scroll effects for reduced motion and touch", () => {
