@@ -16,10 +16,10 @@ const esPhotos = buildArchivePhotos(imagesData, "es");
 const enPhotos = buildArchivePhotos(imagesData, "en");
 const years = [...new Set(esPhotos.map((photo) => photo.year))];
 
-test("all 44 photographs have stable localized English content and fallback-ready Spanish content", () => {
-  assert.equal(translatedPhotoIds.length, 44);
-  assert.equal(new Set(translatedPhotoIds).size, 44);
-  assert.equal(getLocalizedPhotos("en").length, 44);
+test("all 45 photographs have stable localized English content and fallback-ready Spanish content", () => {
+  assert.equal(translatedPhotoIds.length, 45);
+  assert.equal(new Set(translatedPhotoIds).size, 45);
+  assert.equal(getLocalizedPhotos("en").length, 45);
   assert.ok(enPhotos.every((photo, index) => photo.title !== esPhotos[index]?.title && photo.description && photo.alt));
 });
 
@@ -29,6 +29,24 @@ test("Spanish alt text describes the scene independently of the editorial note",
     assert.ok(photo.alt.length > 10 && photo.alt.length < 180, `photo ${photo.id}`);
     assert.notEqual(photo.alt, photo.description, `photo ${photo.id}`);
   }
+});
+
+test("the selected storm photograph has bilingual content and real image metadata", () => {
+  const spanish = esPhotos.find((photo) => photo.id === 66)!;
+  const english = enPhotos.find((photo) => photo.id === 66)!;
+  assert.equal(spanish.title, "La grieta del cielo");
+  assert.equal(english.title, "A crack in the sky");
+  assert.equal(spanish.category, "Meteorología");
+  assert.equal(spanish.year, "2026");
+  assert.equal(spanish.src, "/photos/optimized/original/66.webp");
+  assert.equal(spanish.width, 3840);
+  assert.equal(spanish.height, 2160);
+  assert.deepEqual(spanish.exif, {});
+  assert.ok(spanish.alt);
+  assert.ok(english.alt);
+  assert.match(spanish.alt, /rayo ramificado/);
+  assert.match(english.alt, /branching lightning bolt/);
+  assert.equal(buildPhotoStructuredData(english, "en").name, english.title);
 });
 
 test("context navigation reconstructs combined filters without becoming circular", () => {
@@ -46,7 +64,7 @@ test("context navigation reconstructs combined filters without becoming circular
 test("a photograph outside the reconstructed set falls back to the global editorial order", () => {
   const navigation = resolvePhotoNavigation(esPhotos, 1, { ...defaultArchiveState, category: "Arquitectura" });
   assert.equal(navigation.isContextual, false);
-  assert.equal(navigation.collection.length, 44);
+  assert.equal(navigation.collection.length, 45);
   assert.equal(navigation.previous, null);
   assert.equal(navigation.next?.id, 3);
 });

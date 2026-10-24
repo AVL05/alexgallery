@@ -26,7 +26,7 @@ const photos = buildArchivePhotos(imagesDataJson as ImagesData);
 const years = [...new Set(photos.map((photo) => photo.year))];
 
 test("archive resolves the complete real catalog with unique optimized images", () => {
-  assert.equal(photos.length, 44);
+  assert.equal(photos.length, 45);
   assert.equal(new Set(photos.map((photo) => photo.id)).size, photos.length);
   assert.ok(photos.every((photo) => photo.width > 0 && photo.height > 0));
   assert.deepEqual(new Set(photos.map((photo) => photo.category)), new Set(categories.slice(1)));
@@ -95,7 +95,7 @@ test("search is accent and case insensitive across real searchable fields", () =
     ...defaultArchiveState,
     query: "meteorologia",
   });
-  assert.equal(byCategory.length, 5);
+  assert.equal(byCategory.length, 6);
 });
 
 test("filters combine and sorting preserves deterministic editorial fallbacks", () => {
@@ -130,7 +130,7 @@ test("filters combine and sorting preserves deterministic editorial fallbacks", 
     ...defaultArchiveState,
     series: "unassigned",
   });
-  assert.equal(unassigned.length, 32);
+  assert.equal(unassigned.length, 33);
 });
 
 test("facet counts are conditioned by the other active filters", () => {
@@ -153,11 +153,11 @@ test("facet counts are conditioned by the other active filters", () => {
     defaultArchiveState,
     archiveSeriesFilters,
   );
-  assert.equal(seriesCounts.all, 44);
+  assert.equal(seriesCounts.all, 45);
   assert.equal(seriesCounts["porto-river-night"], 5);
   assert.equal(seriesCounts["atlantic-stone"], 4);
   assert.equal(seriesCounts["small-encounters"], 3);
-  assert.equal(seriesCounts.unassigned, 32);
+  assert.equal(seriesCounts.unassigned, 33);
 });
 
 test("progressive loading and editorial variants are bounded and stable", () => {

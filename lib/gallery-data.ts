@@ -339,4 +339,5 @@ export const photos = [
   { id: 63, title: "La montaña aparece", category: "Meteorología", featured: true, year: "2026", image: "/63.webp", color: "secondary", description: "La niebla se abre por un instante y deja ver la arista de la montaña contra el cielo azul." },
   { id: 64, title: "Agua entre los pinos", category: "Paisaje", year: "2026", image: "/64.webp", color: "chart-3", description: "Una cascada cae con fuerza entre la vegetación y la roca oscura del bosque." },
   { id: 65, title: "Dientes de piedra", category: "Paisaje", year: "2026", image: "/65.webp", color: "accent", description: "Dos agujas de roca emergen entre los pinos y recortan su perfil contra las nubes." },
+  { id: 66, title: "La grieta del cielo", category: "Meteorología", year: "2026", image: "/66.webp", color: "secondary", description: "Un relámpago ramificado atraviesa el cielo rosado sobre los tejados. Su trazo diagonal concentra la mirada en medio de la tormenta." },
 ] satisfies BasePhoto[];

@@ -51,6 +51,7 @@ const spanishAlt: Record<number, string> = {
   63: "Una cresta de montaña emerge entre la niebla y el cielo azul.",
   64: "Una cascada entre pinos y rocas oscuras del bosque.",
   65: "Dos agujas de roca se alzan entre pinos bajo las nubes.",
+  66: "Un rayo ramificado cruza en diagonal un cielo rosado sobre los tejados de varios edificios.",
 };
 
 const englishContent: Record<number, LocalizedPhotoContent> = {
@@ -98,6 +99,7 @@ const englishContent: Record<number, LocalizedPhotoContent> = {
   63: { title: "The mountain appears", description: "The mist parts for a moment, revealing the mountain ridge against the blue sky.", alt: "A mountain ridge emerging from mist under a blue sky." },
   64: { title: "Water among the pines", description: "A waterfall drops with force among vegetation and the forest's dark rock.", alt: "A waterfall framed by dense pine forest and dark rock." },
   65: { title: "Teeth of stone", description: "Two rock needles emerge among the pines and cut their profile against the clouds.", alt: "Two jagged rock needles rising above a pine forest." },
+  66: { title: "A crack in the sky", description: "A branching lightning bolt crosses the pink sky above the rooftops. Its diagonal line draws the eye through the storm.", alt: "A branching lightning bolt cutting diagonally across a pink sky above city rooftops." },
 };
 
 export function getLocalizedPhotoContent(photo: BasePhoto, locale: Locale): LocalizedPhotoContent {
