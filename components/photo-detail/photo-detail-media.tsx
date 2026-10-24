@@ -23,7 +23,7 @@ export function PhotoDetailMedia({ dictionary }: { dictionary: PhotoDetailDictio
 
   return (
     <>
-      <figure className="photo-detail-media">
+      <figure className="photo-detail-media mx-auto w-full" style={{ maxWidth: `calc(max(16rem, 100svh - 20rem) * ${current.width / current.height})` }}>
         <div data-photo-detail-id={current.id} data-photo-reveal="soft-scale" className="relative grid place-items-center overflow-hidden border border-border bg-[var(--color-surface)]" style={{ aspectRatio: `${current.width}/${current.height}`, viewTransitionName: getPhotoViewTransitionName(current.id) }}>
           {!failed ? <Image data-photo-motion-media src={current.src} alt={current.alt || current.description} fill priority sizes={photoSizes.detailMain} placeholder={current.blurDataURL ? "blur" : undefined} blurDataURL={current.blurDataURL} className="object-contain" onError={() => setFailed(true)} /> : <p className="rv-meta p-8">{dictionary.imageError}</p>}
           <Magnetic>

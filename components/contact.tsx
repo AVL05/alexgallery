@@ -137,21 +137,21 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
   return (
     <section ref={containerRef} id="contact" className="rv-section overflow-hidden bg-background">
       <Container>
-        <div className="contact-reveal max-w-4xl">
-          <p className="rv-kicker mb-5">raw.vives / {dictionary.title}</p>
-          <h2 className="max-w-[14ch] font-serif text-[clamp(2.6rem,6.5vw,6.5rem)] leading-[0.95] tracking-[-0.04em]">{dictionary.title}</h2>
-          <p className="rv-intro mt-6">{dictionary.description}</p>
-        </div>
-
-        <div className="contact-reveal mt-12 md:mt-16">
-          <p className="rv-meta">{dictionary.social}</p>
+        <div className="grid gap-8 border-t border-border pt-6 lg:grid-cols-12 lg:gap-12">
+          <div className="contact-reveal lg:col-span-5">
+            <h2 className="rv-home-heading">{dictionary.title}</h2>
+            <p className="rv-body-sm mt-5 max-w-md">{dictionary.description}</p>
+          </div>
+          <div className="contact-reveal lg:col-span-7 lg:self-end">
+          <p className="text-xs text-[var(--color-text-secondary)]">{dictionary.social}</p>
           <a
             href={`mailto:${contactEmail}`}
             data-press-feedback
-            className="mt-4 block w-fit max-w-full font-serif text-[clamp(1.9rem,5.5vw,4.75rem)] leading-none tracking-[-0.03em] text-foreground underline decoration-[var(--color-border-strong)] decoration-1 underline-offset-[0.2em] transition-colors hover:text-accent hover:decoration-accent"
+            className="mt-2 inline-flex min-h-11 max-w-full items-center text-[clamp(1.125rem,2.5vw,2.25rem)] leading-relaxed tracking-[-0.025em] text-foreground underline decoration-[var(--color-border-strong)] decoration-1 underline-offset-[0.2em] transition-colors hover:text-accent hover:decoration-accent"
           >
             <span className="break-all">{contactEmail}</span>
           </a>
+          </div>
         </div>
 
         <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-12 lg:gap-16">

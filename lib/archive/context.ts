@@ -51,15 +51,17 @@ export function savePhotoReturn(context: PhotoReturnContext) {
   }
 }
 
-export function readPhotoReturn(locale: Locale, photoId: number): PhotoReturnContext | null {
+export function readPhotoReturn(locale: Locale, photoId?: number): PhotoReturnContext | null {
   try {
     const raw = window.sessionStorage.getItem(`${PHOTO_RETURN_PREFIX}:${locale}`);
     if (!raw) return null;
     const context = JSON.parse(raw) as PhotoReturnContext;
     if (
       context.locale !== locale ||
-      context.photoId !== photoId ||
+      !Number.isInteger(context.photoId) || context.photoId <= 0 ||
+      (photoId !== undefined && context.photoId !== photoId) ||
       typeof context.returnHref !== "string" ||
+      !Number.isFinite(context.savedAt) ||
       Date.now() - context.savedAt > MAX_CONTEXT_AGE
     ) {
       return null;

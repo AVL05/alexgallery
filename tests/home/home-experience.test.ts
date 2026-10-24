@@ -16,7 +16,7 @@ test("home experience keeps the required editorial order without redundant secti
   assert.deepEqual(validateHomeExperience(homeCuration), []);
   assert.deepEqual(homeExperienceConfig.sectionOrder, [
     "hero",
-    "featuredStory",
+    "selectedWork",
     "series",
     "archive",
     "manifesto",
@@ -25,7 +25,7 @@ test("home experience keeps the required editorial order without redundant secti
   assert.equal(new Set(homeExperienceConfig.sectionOrder).size, homeExperienceConfig.sectionOrder.length);
   assert.ok(!homeExperienceConfig.sectionOrder.includes("visualChapters"));
   assert.ok(!homeExperienceConfig.sectionOrder.includes("closing"));
-  assert.ok(!homeExperienceConfig.sectionOrder.includes("selectedWork"));
+  assert.ok(!homeExperienceConfig.sectionOrder.includes("featuredStory"));
   assert.equal(homeExperienceConfig.showArchivePreview, true);
   assert.deepEqual(getHomeSectionPosition("series"), { current: 3, total: 6 });
 });
@@ -61,8 +61,10 @@ test("public microcopy stays concise and localized", () => {
 
   assert.equal(es.home.featured.label, "Fotografía destacada");
   assert.equal(en.home.featured.label, "Featured photograph");
-  assert.ok(!("description" in es.hero));
-  assert.ok(!("description" in en.hero));
+  assert.match(es.hero.description, /afición/);
+  assert.match(en.hero.description, /hobby/);
+  assert.match(es.about.role, /afición/);
+  assert.match(en.about.role, /hobby/);
   assert.ok(es.home.selected.description.length < 140);
   assert.ok(en.home.selected.description.length < 140);
   assert.notEqual(es.home.selected.description, en.home.selected.description);
@@ -75,7 +77,7 @@ test("public microcopy stays concise and localized", () => {
   assert.equal(es.photoDetail.keyboardHelp, "← → Navegar entre fotografías");
   assert.equal(es.series.progressLabel, "Progreso de la serie");
   assert.doesNotMatch(contact, /raw\.vives \/ Contact<\/p>/);
-  assert.match(contact, /raw\.vives \/ \{dictionary\.title\}/);
+  assert.match(contact, /<h2[^>]*>\{dictionary\.title\}<\/h2>/);
   assert.match(privacy, /raw\.vives \/ \{spanish \? "Privacidad" : "Privacy"\}/);
   assert.match(navigation, /Ver en inglés/);
   assert.match(navigation, /View in Spanish/);

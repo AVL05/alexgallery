@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Prata } from "next/font/google";
 import type React from "react";
-import { Suspense } from "react";
 import { Analytics } from "@/components/analytics";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { MotionDevelopmentTools } from "@/components/motion/development-tools";
 import { PhotoFrameDevelopmentTools } from "@/components/graphics/photo-frame-development-tools";
-import { IntroBootstrapScript } from "@/components/intro/intro-bootstrap-script";
 import { DocumentLanguageBootstrap } from "@/components/document-language-bootstrap";
 import { siteUrl, socialImage } from "@/lib/site-config";
 import "./globals.css";
@@ -119,7 +117,6 @@ export default function RootLayout({
     >
       <head>
         <DocumentLanguageBootstrap />
-        <IntroBootstrapScript />
       </head>
       <body className="relative bg-background font-sans text-foreground">
         <div className="noise-texture" aria-hidden="true" />
@@ -138,7 +135,6 @@ export default function RootLayout({
                   image: `${siteUrl}/photos/optimized/original/14.webp`,
                   description:
                     "Personal visual archive by Alex Vicente, including photography, travel images, daily scenes, and digital captures.",
-                  jobTitle: "Visual archivist",
                   sameAs: [
                     "https://www.instagram.com/raw.vives/",
                     "https://aleviclop.dev/",
@@ -175,13 +171,11 @@ export default function RootLayout({
           }}
         />
 
-        <Suspense fallback={null}>
-          <MotionProvider>
-            <div className="flex min-h-screen flex-col">{children}</div>
-            <MotionDevelopmentTools />
-            <PhotoFrameDevelopmentTools />
-          </MotionProvider>
-        </Suspense>
+        <MotionProvider>
+          <div className="flex min-h-screen flex-col">{children}</div>
+          <MotionDevelopmentTools />
+          <PhotoFrameDevelopmentTools />
+        </MotionProvider>
         <Analytics />
       </body>
     </html>

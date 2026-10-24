@@ -2,10 +2,11 @@
 
 import { HeroContent } from "@/components/hero/hero-content";
 import { HeroMedia, type HeroImageState } from "@/components/hero/hero-media";
-import { HeroWebglSlot } from "@/components/hero/hero-webgl-slot";
 import { useHeroMotion } from "@/components/hero/use-hero-motion";
 import { useMotion } from "@/components/motion/motion-provider";
 import { getHeroArchiveFacts, getHeroImages } from "@/lib/hero/config";
+import { photos } from "@/lib/gallery-data";
+import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
 import {
   HERO_PREVIEW_EVENT,
   reportHeroState,
@@ -33,6 +34,8 @@ export function HeroSection({
   const [preview, setPreview] = useState<HeroPreviewOptions>({});
   const [replayKey, setReplayKey] = useState(0);
   const [imageState, setImageState] = useState<HeroImageState>("loading");
+  const photo = photos.find((photo) => String(photo.id) === (imageState === "fallback" ? fallback.id : primary.id))!;
+  const content = getLocalizedPhotoContent(photo, locale);
   const imageStateRef = useRef<HeroImageState>("loading");
   const phaseRef = useRef<"waiting" | "playing" | "settled">("waiting");
   const durationRef = useRef(0);
@@ -88,22 +91,22 @@ export function HeroSection({
     <section
       id="hero"
       ref={rootRef}
-      className="relative min-h-[100svh] h-[100dvh] overflow-hidden bg-background text-foreground"
+      className="relative overflow-hidden bg-background pt-[calc(var(--layout-nav-height)+1rem)] text-foreground"
       data-hero
       data-entry-ready={entryReady}
       data-image-state={imageState}
     >
-      <HeroMedia
-        primary={primary}
-        fallback={fallback}
-        alt={dictionary.imageAlt}
-        slowImage={preview.slowImage === true}
-        failImage={preview.failImage === true}
-        onStateChange={handleImageState}
-      />
-      <HeroWebglSlot entryReady={entryReady} />
-      <div data-hero-overlay aria-hidden="true" className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(0,0,0,0.5)_0%,rgba(0,0,0,0.08)_26%,rgba(0,0,0,0)_55%,rgba(0,0,0,0.5)_100%)]" />
-      <HeroContent dictionary={dictionary} facts={facts} locale={locale} />
+      <HeroContent dictionary={dictionary} facts={facts} locale={locale} photoId={photo.id} photoTitle={content.title} photoYear={photo.year} photoRatio={primary.width / primary.height}>
+        <HeroMedia
+          primary={primary}
+          fallback={fallback}
+          alt={content.alt}
+          errorLabel={dictionary.imageError}
+          slowImage={preview.slowImage === true}
+          failImage={preview.failImage === true}
+          onStateChange={handleImageState}
+        />
+      </HeroContent>
     </section>
   );
 }

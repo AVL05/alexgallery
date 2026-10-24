@@ -170,6 +170,33 @@ Marca Prata a la izquierda, enlaces Manrope de alto contraste y selector de idio
 integrado. El panel móvil ocupa el viewport, bloquea scroll, atrapa foco y cierra
 con Escape.
 
+### Personal archive composition
+
+La home abre con una proyección panorámica de la fotografía 3, completa y sin
+texto superpuesto. Autor, acceso al archivo y cartela quedan fuera del marco.
+La selección se recorre verticalmente: cuatro fotografías a escalas distintas
+en una retícula de doce columnas, con encuadres completos, pausas y pies discretos.
+En móvil se ordenan en una columna. La serie principal combina portada grande y
+contexto lateral; las otras dos se presentan escalonadas. No hay autoplay, scroll
+horizontal obligatorio, WebGL ni parallax. El archivo ofrece categorías con
+recuentos reales. La ficha conserva el ratio y se adapta a la altura visible.
+
+Los títulos de las secciones de inicio comparten una escala de 32–48 px y un
+espaciado común. Las cartelas fotográficas priorizan título, categoría y año,
+con sans legible y numeración discreta. En la apertura, marco, autor y pie se
+alinean también cuando el alto del viewport limita el ancho de la fotografía.
+La navegación principal usa texto en caja normal; los enlaces externos quedan
+en el menú móvil y el cierre. Contacto, notas y footer tienen una jerarquía más
+contenida que las secciones fotográficas.
+
+Referencias estudiadas visualmente para esta composición:
+- [Benjamin Hardman](https://benjaminhardman.com/): predominio de la fotografía de apertura.
+- [Tom Hegen](https://www.tomhegen.com/): escala y presentación de series como relatos.
+- [Romain Laprade](https://www.romainlaprade.com/): navegación discreta e índice visual.
+
+Se toman criterios de jerarquía y recorrido; se conservan la identidad de
+raw.vives, las fotografías propias y su posicionamiento como afición personal.
+
 ### Photograph Entry
 
 La fotografía define su propio ratio. En escritorio recibe escala máxima 1.018 y

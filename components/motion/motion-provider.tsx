@@ -89,6 +89,8 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     }
     refreshFrameRef.current = window.requestAnimationFrame(() => {
       lenisRef.current?.resize();
+      // Native anchor jumps can precede ScrollTrigger's cached scroll update.
+      ScrollTrigger.getScrollFunc(window)(window.scrollY);
       ScrollTrigger.refresh();
       refreshFrameRef.current = null;
     });

@@ -3,11 +3,11 @@
 import { NarrativeImage } from "@/components/home/narrative-image";
 import { Reveal } from "@/components/motion/reveal";
 import { savePhotoReturn } from "@/lib/archive/context";
+import { defaultArchiveState } from "@/lib/archive/types";
+import { serializeArchiveState } from "@/lib/archive/url";
 import { Container } from "@/components/ui/layout";
-import { SectionHeader } from "@/components/ui/section-header";
 import { getArchiveSummary, getNarrativePhotos } from "@/lib/home/selectors";
 import { homeCuration } from "@/lib/home/curation";
-import { photoSizes } from "@/lib/images/sizes";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { getPhotoHref } from "@/lib/photos";
 import { selectArchivePreviewPhotos } from "@/lib/photos/selectors";
@@ -46,17 +46,20 @@ export function ArchivePreview({
   return (
     <section id="gallery" aria-labelledby="archive-preview-title" className="rv-section bg-[var(--color-background)]">
       <Container>
-        <Reveal>
-          <SectionHeader
-            as="h2"
-            tone="page"
-            titleId="archive-preview-title"
-            eyebrow={`${summary.total} ${galleryDictionary.photoPlural} · ${summary.startYear}–${summary.endYear}`}
-            title={galleryDictionary.archive_label}
-          />
+        <Reveal className="rv-home-section-header mb-6 border-t border-border pt-6">
+          <h2 id="archive-preview-title" className="rv-home-heading">{galleryDictionary.archive_label}</h2>
+          <p className="text-xs tabular-nums text-[var(--color-text-secondary)]">{summary.total} {galleryDictionary.photoPlural} · {summary.startYear}–{summary.endYear}</p>
         </Reveal>
 
-        <div className="mt-14 columns-2 gap-5 md:columns-3 lg:columns-4 lg:mt-20">
+        <nav aria-label={galleryDictionary.categoriesLabel} className="flex flex-wrap gap-x-6 gap-y-1 border-b border-border pb-4">
+          {summary.categories.map(({ category, count }) => (
+            <Link key={category} href={`${archivePageHref(locale)}${serializeArchiveState({ ...defaultArchiveState, category })}`} prefetch={false} className="inline-flex min-h-11 items-center gap-2 text-xs text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
+              {galleryDictionary.categories[category]}<span className="font-mono text-[10px] text-[var(--color-text-muted)]">{String(count).padStart(2, "0")}</span>
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-10 columns-1 gap-6 min-[480px]:columns-2 md:columns-3 lg:columns-4">
           {preview.map((photo) => (
             <Link
               key={photo.id}
@@ -71,21 +74,21 @@ export function ArchivePreview({
                   savedAt: Date.now(),
                 });
               }}
-              className="group mb-5 block break-inside-avoid"
+              className="group mb-8 block break-inside-avoid"
               data-press-feedback
               {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}
               aria-label={`${photo.title}, ${galleryDictionary.categories[photo.category]}, ${photo.year}`}
             >
               <NarrativeImage
                 photo={photo}
-                sizes={photoSizes.archivePreview}
+                sizes="(max-width: 479px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
                 imageClassName="transition-[transform,filter] duration-500 group-hover:scale-[1.015] group-hover:brightness-[0.92] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.92]"
               />
               <div className="mt-3 flex items-baseline justify-between gap-3">
-                <h3 className="font-serif text-lg leading-tight tracking-[-0.015em] text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground">
+                <h3 className="text-[13px] leading-relaxed text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground">
                   {photo.title}
                 </h3>
-                <span className="rv-meta shrink-0">{photo.year}</span>
+                <span className="shrink-0 text-xs tabular-nums text-[var(--color-text-secondary)]">{photo.year}</span>
               </div>
             </Link>
           ))}

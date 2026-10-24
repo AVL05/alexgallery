@@ -58,7 +58,7 @@ export function mergePhotoBase(
 
 // Editorial entry layout for Selected Work / /work, driven by each photo's
 // ratio and position. Server-safe so pages can resolve it during prerender.
-export type WorkEntryVariant = "offset-right" | "offset-left" | "narrow" | "panorama";
+export type WorkEntryVariant = "offset-right" | "offset-left" | "narrow" | "panorama" | "sheet" | "exhibition";
 
 export function resolveWorkEntryVariant(
   photo: Pick<MergedPhotoBase, "width" | "height">,

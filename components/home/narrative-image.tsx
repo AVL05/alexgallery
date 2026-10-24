@@ -6,7 +6,7 @@ import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { PhotoRevealVariant } from "@/lib/motion/photo-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export function NarrativeImage({
   photo,
@@ -16,6 +16,7 @@ export function NarrativeImage({
   failPrimary = false,
   slow = false,
   motionVariant,
+  priority = false,
 }: {
   photo: NarrativePhoto;
   className?: string;
@@ -24,13 +25,15 @@ export function NarrativeImage({
   failPrimary?: boolean;
   slow?: boolean;
   motionVariant?: PhotoRevealVariant;
+  priority?: boolean;
 }) {
   const [src, setSrc] = useState(failPrimary ? "/__home-image-failure__.webp" : photo.src);
   const [loaded, setLoaded] = useState(false);
   const slowTimerRef = useRef<number | null>(null);
   const { refreshScrollTriggers } = useMotion();
 
-  useEffect(() => {
+  // Reset before a cached image can report its load and reveal the photograph.
+  useLayoutEffect(() => {
     if (slowTimerRef.current !== null) window.clearTimeout(slowTimerRef.current);
     setSrc(failPrimary ? "/__home-image-failure__.webp" : photo.src);
     setLoaded(false);
@@ -51,6 +54,8 @@ export function NarrativeImage({
         src={src}
         alt={photo.alt}
         fill
+        priority={priority}
+        loading={priority ? "eager" : "lazy"}
         sizes={sizes}
         placeholder={photo.blurDataURL && !failPrimary ? "blur" : undefined}
         blurDataURL={photo.blurDataURL}

@@ -31,6 +31,29 @@ test("photo return storage is a safe no-op without a browser", () => {
   assert.equal(readPhotoReturn("es", 1), null);
 });
 
+test("photo return can read the latest origin and rejects malformed or expired context", () => {
+  const previousWindow = Object.getOwnPropertyDescriptor(globalThis, "window");
+  const context = { locale: "es", photoId: 49, returnHref: "/es#selected-work", scrollY: 300, savedAt: Date.now() };
+  let stored = JSON.stringify(context);
+  Object.defineProperty(globalThis, "window", { configurable: true, value: { sessionStorage: { getItem: () => stored } } });
+  try {
+    assert.deepEqual(readPhotoReturn("es"), context);
+    assert.deepEqual(readPhotoReturn("es", 49), context);
+    assert.equal(readPhotoReturn("es", 1), null);
+    for (const invalid of [
+      { ...context, photoId: '49"]' },
+      { ...context, savedAt: "invalid" },
+      { ...context, savedAt: Date.now() - 7 * 60 * 60 * 1000 },
+    ]) {
+      stored = JSON.stringify(invalid);
+      assert.equal(readPhotoReturn("es"), null);
+    }
+  } finally {
+    if (previousWindow) Object.defineProperty(globalThis, "window", previousWindow);
+    else Reflect.deleteProperty(globalThis, "window");
+  }
+});
+
 test("photo entries capture their origin section for the return link", () => {
   const work = read("components/work/work-entry.tsx");
   assert.match(work, /savePhotoReturn\(\{/);

@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const title = locale === "es" ? "Licencias de fotografía" : "Photography licensing";
   const description =
     locale === "es"
-      ? "Licencia una fotografía de Alex Vicente para uso personal, editorial o comercial. Tipos de licencia, proceso de solicitud y respuesta en 48-72 horas."
-      : "License a photograph by Alex Vicente for personal, editorial or commercial use. License types, request process and reply within 48-72 hours.";
+      ? "Consulta el uso de una fotografía del archivo personal de Alex Vicente. Tipos de licencia y cómo preparar una solicitud."
+      : "Ask about using a photograph from Alex Vicente's personal archive. License types and how to prepare a request.";
   return {
     title,
     description,

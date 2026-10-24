@@ -18,7 +18,7 @@ export type HomeExperienceSection = (typeof homeExperienceSections)[number];
 
 const experienceSectionOrder: readonly HomeExperienceSection[] = [
   "hero",
-  "featuredStory",
+  "selectedWork",
   "series",
   "archive",
   "manifesto",
@@ -28,7 +28,7 @@ const experienceSectionOrder: readonly HomeExperienceSection[] = [
 const requiredExperienceSections: readonly HomeExperienceSection[] = [
   "hero",
   "manifesto",
-  "featuredStory",
+  "selectedWork",
   "series",
   "archive",
   "contact",

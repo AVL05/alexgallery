@@ -42,7 +42,7 @@ export function Footer({
         <Reveal className="grid gap-12 pb-12 md:grid-cols-12 md:gap-8 md:pb-16">
           <div className="md:col-span-6">
             <Link href={`/${currentLocale}`} className="inline-flex flex-col" data-press-feedback>
-              <span className="font-serif text-[clamp(2.5rem,6vw,5.5rem)] leading-none tracking-[-0.04em] text-foreground">
+              <span className="font-serif text-[clamp(2rem,3.5vw,3rem)] leading-none tracking-[-0.04em] text-foreground">
                 raw.vives
               </span>
               <span className="mt-4 text-sm text-[var(--color-text-secondary)]">
@@ -112,7 +112,7 @@ export function Footer({
         </Reveal>
 
         <AnimatedDivider />
-        <div className="flex flex-col gap-4 py-6 text-[10px] uppercase tracking-[0.12em] text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 py-6 text-xs leading-relaxed text-[var(--color-text-secondary)] sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Alex Vicente</p>
           <p>{copyright}</p>
           <div className="flex items-center font-mono">

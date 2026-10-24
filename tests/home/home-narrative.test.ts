@@ -103,8 +103,8 @@ test("Spanish and English narrative content, categories and alt text are localiz
   assert.equal(english.featured.title, "The accordion and the abyss");
   assert.match(spanish.featured.description, /Me lo encontré por sorpresa/);
   assert.match(english.featured.description, /I came across him unexpectedly/);
-  assert.equal(spanish.expansive.title, "El ruido del cielo");
-  assert.equal(english.expansive.title, "The sound of the sky");
+  assert.equal(spanish.expansive.title, "12.08.2026 — Eclipse solar");
+  assert.equal(english.expansive.title, "12.08.2026 — Solar eclipse");
   assert.notEqual(spanish.featured.alt, english.featured.alt);
   assert.notEqual(spanish.selected[0]?.title, english.selected[0]?.title);
   assert.equal(es.gallery.categories.Personas, "Personas");
@@ -145,7 +145,7 @@ test("validation reports missing IDs, conflicts, wrong categories and invalid co
   });
   const message = validateHomeCuration(invalid, imagesData).join("\n");
   assert.match(message, /featuredStory usa photo-999/);
-  assert.match(message, /photo-52 aparece en:/);
+  assert.match(message, /photo-3 aparece en:/);
   assert.match(message, /photo-21 está duplicada dentro de selectedWork/);
   assert.match(message, /chapters\.Fauna usa photo-48, cuya categoría es Urbano/);
   assert.match(message, /Selected Work debe contener al menos tres fotografías/);

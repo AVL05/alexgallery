@@ -90,6 +90,6 @@ test("hero scene reuses the frame factory without new libraries", () => {
   assert.match(slot, /aria-hidden="true"/);
   assert.match(slot, /pointer-events-none/);
   const section = read("components/hero/hero-section.tsx");
-  assert.match(section, /<HeroWebglSlot entryReady/);
+  assert.doesNotMatch(section, /HeroWebglSlot/);
   assert.doesNotMatch(section, /HeroGraphicsBootstrap/);
 });

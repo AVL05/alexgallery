@@ -13,21 +13,25 @@
   },
   "hero": {
     "title": "raw.vives",
-    "titleLineOne": "A photographic archive",
-    "titleLineTwo": "by Alex Vicente.",
-    "eyebrow": "City, nature and light",
+    "titleLineOne": "A reason to",
+    "titleLineTwo": "look closer.",
+    "eyebrow": "Personal photographic archive",
+    "description": "I'm Alex Vicente. Photography is my hobby: an excuse to head out, pay attention and keep a little of what I find.",
+    "byline": "Photographs by Alex Vicente",
+    "openPhoto": "View photograph",
+    "imageError": "The photograph could not be loaded.",
     "cta": "Explore the archive",
-    "scroll": "Scroll to explore",
+    "scroll": "View selection",
     "photographs": "photographs",
     "location": "Valencia, Spain",
-    "imageAlt": "Total solar eclipse over a darkened landscape, a ring of light around the Moon",
+    "imageAlt": "An orange lightning bolt cuts through dark clouds at dusk",
     "featured_tag": "Highlights"
   },
   "home": {
     "chapterLabel": "Chapter {current} of {total}",
     "manifesto": {
       "title": "Photography is a way of learning to pause.",
-      "lead": "raw.vives gathers scenes found between travel, city and nature. A personal archive shaped by light, time and attention.",
+      "lead": "A camera, some free time and a little curiosity. That's how this archive of trips, walks and small discoveries begins.",
       "archiveNote": "Each image remains here because it still asks for a second look."
     },
     "featured": {
@@ -53,13 +57,13 @@
       }
     },
     "selected": {
-      "title": "Selected work",
+      "title": "Selected photographs",
       "cta": "View photograph",
       "empty": "The selection is temporarily empty. The full archive remains available.",
-      "description": "A short selection from the archive: encounters with wildlife, landscapes and everyday scenes."
+      "description": "Four photographs to begin with. Each one, a reason to linger a little longer."
     },
     "series": {
-      "title": "Sequences.",
+      "title": "Photographic series",
       "description": "Three photographic journeys through places, moments and encounters.",
       "photographs": "photographs",
       "cta": "View all series",
@@ -98,9 +102,9 @@
   "about": {
     "label": "About",
     "title": "Behind the viewfinder",
-    "body": "I'm Alex Vicente. I photograph whatever crosses my path: the light on a cliff at dawn, a lone musician, a street that breathes. I'm not after the perfect postcard, but the moment worth keeping.",
-    "body2": "This archive grows with every trip and every walk. Here I keep only the images that truly make me stop and look.",
-    "role": "Photographer · Visual archive",
+    "body": "I'm Alex Vicente and I take photographs as a hobby. I enjoy finding something worth keeping on a trip, a walk or in an everyday scene.",
+    "body2": "raw.vives is my space to share those images and keep learning. I don't need every photograph to be perfect; I enjoy the journey to finding it.",
+    "role": "Alex Vicente · Photography as a hobby",
     "location": "Spain"
   },
   "gallery": {
@@ -160,6 +164,7 @@
   },
   "photoDetail": {
     "back": "Back to archive",
+    "backToSelection": "Back to selection",
     "previous": "Previous",
     "next": "Next",
     "fullscreen": "View fullscreen",
@@ -249,13 +254,13 @@
     "unavailable": "Unavailable"
   },
   "contact": {
-    "title": "Contact",
-    "description": "If you want to ask about an image, request a license, or propose a visual collaboration, send me a message.",
+    "title": "Let's talk.",
+    "description": "If a photograph made you pause, I'd love to hear about it. You can also write to share an idea or ask about using an image.",
     "license": "Licenses",
     "general": "Message",
     "social": "Contact",
     "location": "Valencia, Spain",
-    "independent": "Independent photographic archive.",
+    "independent": "A personal archive, made for the joy of it.",
     "privacyNotice": "Your details are only added to a draft in your email application. This website does not send or store the message.",
     "form": {
       "name": "Name",
@@ -286,7 +291,7 @@
   "faq": {
     "eyebrow": "Frequently asked questions",
     "title": "Before writing.",
-    "description": "Quick answers about licenses, uses and collaborations. If your case is different, use the contact form.",
+    "description": "A few notes about this archive and sharing its photographs.",
     "items": [
       {
         "q": "Can I use a photograph from the archive?",
@@ -298,11 +303,11 @@
       },
       {
         "q": "How long do you take to reply?",
-        "a": "Usually within 48-72 business hours. If your request has a deadline, mention it in the message and I will prioritize it."
+        "a": "This is a personal project that I work on in my free time. I reply when I can; if your question has a deadline, please mention it in your message."
       },
       {
-        "q": "Do you take commissions or collaborations?",
-        "a": "Yes, when they fit the archive: travel, city, nature and everyday scenes. Tell me the idea through the general form."
+        "q": "Are you a professional photographer?",
+        "a": "No. Photography is a hobby, and this archive is a way to enjoy it and share what I'm learning. If you have an idea in common, feel free to write."
       },
       {
         "q": "Can I share a photo with credit?",

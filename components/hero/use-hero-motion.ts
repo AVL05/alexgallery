@@ -4,7 +4,6 @@ import { getHeroMotionProfile } from "@/lib/hero/config";
 import { motionEase, motionStagger } from "@/lib/motion/config";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { applyTemporaryWillChange } from "@/lib/motion/will-change";
-import { publishHeroScrollProgress } from "@/lib/graphics/signals";
 import type { RefObject } from "react";
 import { photoMotionTokens } from "@/lib/motion/photo-motion";
 
@@ -38,10 +37,7 @@ export function useHeroMotion({
       const titleLines = gsap.utils.toArray<HTMLElement>("[data-hero-title-line]", root);
       const secondary = gsap.utils.toArray<HTMLElement>("[data-hero-secondary]", root);
       const entryMedia = root.querySelector<HTMLElement>("[data-hero-entry-media]");
-      const scrollMedia = root.querySelector<HTMLElement>("[data-hero-scroll-media]");
-      const content = root.querySelector<HTMLElement>("[data-hero-content]");
-      const overlay = root.querySelector<HTMLElement>("[data-hero-overlay]");
-      if (!entryMedia || !scrollMedia || !content || !overlay || titleLines.length === 0) {
+      if (!entryMedia || titleLines.length === 0) {
         onPhaseChange("settled", 0);
         return;
       }
@@ -60,11 +56,11 @@ export function useHeroMotion({
       }
 
       const restoreWillChange = [
-        applyTemporaryWillChange(entryMedia, "transform, opacity"),
+        applyTemporaryWillChange(entryMedia, "opacity"),
         ...titleLines.map((line) => applyTemporaryWillChange(line, "transform")),
       ];
 
-      gsap.set(entryMedia, { opacity: 0.84, scale: profile.mediaScale });
+      gsap.set(entryMedia, { opacity: 0 });
       gsap.set(titleLines, { yPercent: 112 });
       gsap.set(secondary, { opacity: 0, y: profile.entryDistance });
       onPhaseChange("playing", profile.entryDuration);
@@ -78,29 +74,12 @@ export function useHeroMotion({
       });
 
       entryTimeline
-        .to(entryMedia, { opacity: 1, scale: 1, duration: profile.entryDuration }, 0)
+        .to(entryMedia, { opacity: 1, duration: profile.entryDuration }, 0)
         .to(titleLines, { yPercent: 0, duration: profile.entryDuration * 0.66, stagger: motionStagger.normal }, photoMotionTokens.hero.titleDelay)
         .to(secondary, { opacity: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, photoMotionTokens.hero.copyDelay);
 
-      const scrollTimeline = profile.scrollMotionEnabled
-        ? gsap.timeline({
-            scrollTrigger: {
-              trigger: root,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.65,
-              onUpdate: (self) => publishHeroScrollProgress(self.progress),
-            },
-          })
-            .to(scrollMedia, { scale: photoMotionTokens.hero.scrollScale, yPercent: 1.8, ease: "none" }, 0)
-            .to(content, { y: -photoMotionTokens.hero.scrollDistance, ease: "none" }, 0)
-            .to(overlay, { opacity: 1, ease: "none" }, 0)
-        : null;
-
       return () => {
-        publishHeroScrollProgress(0);
         entryTimeline.kill();
-        scrollTimeline?.kill();
         restoreWillChange.forEach((restore) => restore());
       };
     },

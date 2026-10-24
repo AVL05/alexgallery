@@ -1,21 +1,15 @@
+"use client";
+
 import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
-import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/layout";
-import { SectionHeader } from "@/components/ui/section-header";
 import { WorkEntry } from "@/components/work/work-entry";
-import { resolveWorkEntryVariant } from "@/lib/photos/selectors";
+import { readPhotoReturn } from "@/lib/archive/context";
+import { homeExperienceConfig } from "@/lib/home/experience";
 import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { GalleryDictionary, HomeDictionary, Locale } from "@/types/dictionary";
-import { homeExperienceConfig } from "@/lib/home/experience";
+import { useEffect, useRef } from "react";
 
-export function SelectedWork({
-  photos,
-  dictionary,
-  galleryDictionary,
-  locale,
-  failImages,
-  slowImages,
-}: {
+export function SelectedWork({ photos, dictionary, galleryDictionary, locale, failImages, slowImages }: {
   photos: NarrativePhoto[];
   dictionary: HomeDictionary;
   galleryDictionary: GalleryDictionary;
@@ -23,36 +17,35 @@ export function SelectedWork({
   failImages?: boolean;
   slowImages?: boolean;
 }) {
-  return (
-    <section id="selected-work" className="rv-section bg-[var(--color-background)]">
-      <Container>
-        <Reveal>
-          <SectionHeader
-            as="h2"
-            tone="page"
-            eyebrow={`${String(photos.length).padStart(2, "0")} ${galleryDictionary.photoPlural}`}
-            title={dictionary.selected.title}
-          />
-        </Reveal>
+  const rootRef = useRef<HTMLElement>(null);
 
-        {photos.length === 0 ? (
-          <p className="mt-16 border-y border-border py-12 text-[var(--color-text-secondary)]">{dictionary.selected.empty}</p>
-        ) : (
-          <PhotoMotionGroup groupKey={`selected-${photos.map((photo) => photo.id).join("-")}`} className="mt-16 space-y-24 md:space-y-36 lg:mt-24 lg:space-y-44">
+  useEffect(() => {
+    const saved = readPhotoReturn(locale);
+    if (window.location.hash !== "#selected-work" || saved?.returnHref !== `/${locale}#selected-work`) return;
+    const link = rootRef.current?.querySelector<HTMLAnchorElement>(`[data-exhibition-photo="${saved.photoId}"] a`);
+    if (!link) return;
+    // Wait for the route's hash scroll before restoring the photograph.
+    const frame = window.requestAnimationFrame(() => {
+      link.scrollIntoView({ block: "center", behavior: "instant" });
+      link.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [locale]);
+
+  return (
+    <section id="selected-work" ref={rootRef} aria-labelledby="selection-title" className="rv-section bg-background">
+      <Container>
+        <div className="rv-home-section-header">
+          <h2 id="selection-title" className="rv-home-heading">{dictionary.selected.title}</h2>
+          <p className="rv-body-sm max-w-[35ch]">{dictionary.selected.description}</p>
+        </div>
+        {photos.length === 0 ? <p className="rv-body py-12">{dictionary.selected.empty}</p> : (
+          <PhotoMotionGroup groupKey={`home-selection-${photos.map(photo => photo.id).join("-")}`} className="rv-exhibition-grid">
             {photos.map((photo, index) => (
-              <WorkEntry
-                key={photo.id}
-                photo={photo}
-                locale={locale}
-                galleryDictionary={galleryDictionary}
-                index={index}
-                total={photos.length}
-                variant={resolveWorkEntryVariant(photo, index, photos.length)}
-                prefetch={homeExperienceConfig.prefetch.selectedWork}
-                ctaLabel={dictionary.selected.cta}
-                failImages={failImages}
-                slowImages={slowImages}
-              />
+              <div key={photo.id} data-exhibition-photo={photo.id} className="rv-exhibition-print">
+                <WorkEntry photo={photo} locale={locale} galleryDictionary={galleryDictionary} index={index} total={photos.length} variant="exhibition"
+                  prefetch={homeExperienceConfig.prefetch.selectedWork} ctaLabel={dictionary.selected.cta} failImages={failImages} slowImages={slowImages} />
+              </div>
             ))}
           </PhotoMotionGroup>
         )}

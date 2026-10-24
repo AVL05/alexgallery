@@ -103,7 +103,7 @@ test("Strict Mode remount cancels deferred irreversible context loss", async () 
   assert.equal(losses, 0);
 });
 
-test("hero graphics stays client-only, progressive and route-local", () => {
+test("reserved graphics stays client-only and the public hero uses photography alone", () => {
   const media = source("components/hero/hero-media.tsx");
   const slot = source("components/hero/hero-webgl-slot.tsx");
   const section = source("components/hero/hero-section.tsx");
@@ -113,7 +113,8 @@ test("hero graphics stays client-only, progressive and route-local", () => {
   assert.match(slot, /entryReady \? <HeroFramesScene/);
   assert.match(slot, /aria-hidden="true"/);
   assert.match(media, /<Image/);
-  assert.match(section, /<HeroMedia[\s\S]*<HeroWebglSlot/);
+  assert.match(section, /<HeroMedia/);
+  assert.doesNotMatch(section, /HeroWebglSlot|HeroFramesScene/);
   assert.doesNotMatch(localeLayout, /HeroFramesScene|photo-frame/);
 });
 
@@ -123,7 +124,7 @@ test("runtime is demand-driven and owns complete GPU cleanup", () => {
   const heroMotion = source("components/hero/use-hero-motion.ts");
   assert.equal((cursor.match(/registry\.add\(window, "pointermove"/g) || []).length, 1);
   assert.equal((runtime.match(/pointermove/g) || []).length, 0);
-  assert.equal((heroMotion.match(/scrollTrigger:/g) || []).length, 1);
+  assert.equal((heroMotion.match(/scrollTrigger:/g) || []).length, 0);
   assert.equal((runtime.match(/scrollTrigger:/g) || []).length, 0);
   assert.match(runtime, /IntersectionObserver/);
   assert.match(runtime, /visibilitychange/);

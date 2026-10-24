@@ -1,8 +1,7 @@
 import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
 import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/layout";
-import { SectionHeader } from "@/components/ui/section-header";
-import { resolveSeriesEntryVariant, SeriesEntry } from "@/components/series/series-entry";
+import { SeriesEntry } from "@/components/series/series-entry";
 import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { LocalizedPhotoSeries } from "@/lib/series/types";
 import type { HomeDictionary, Locale } from "@/types/dictionary";
@@ -23,33 +22,28 @@ export function HomeSeries({ entries, dictionary, locale }: {
   return (
     <section id="series" className="rv-section bg-[var(--color-background-secondary)]">
       <Container>
-        <Reveal>
-          <SectionHeader
-            as="h2"
-            tone="page"
-            title={dictionary.series.title}
-          />
+        <Reveal className="rv-home-section-header border-t border-border pt-6">
+          <h2 className="rv-home-heading">{dictionary.series.title}</h2>
+          <Link href={`/${locale}/series`} className="rv-editorial-link">{dictionary.series.cta}<ArrowRight aria-hidden="true" className="size-4" /></Link>
         </Reveal>
 
-        <PhotoMotionGroup groupKey={`home-series-${entries.map(({ series }) => series.id).join("-")}`} className="mt-16 space-y-24 md:space-y-36 lg:mt-24 lg:space-y-44">
+        <PhotoMotionGroup groupKey={`home-series-${entries.map(({ series }) => series.id).join("-")}`} className="grid items-start gap-x-12 gap-y-16 md:grid-cols-12 lg:gap-y-28">
           {entries.map(({ series, cover }, index) => (
-            <SeriesEntry
-              key={series.id}
-              series={series}
-              cover={cover}
-              locale={locale}
-              index={index}
-              total={entries.length}
-              variant={resolveSeriesEntryVariant(index, entries.length)}
-              prefetch={index === 0 ? homeExperienceConfig.prefetch.featuredSeries : homeExperienceConfig.prefetch.secondarySeries}
-              photographsLabel={dictionary.series.photographs}
-            />
+            <div key={series.id} className={`min-w-0 ${index === 0 ? "md:col-span-12" : "md:col-span-5 md:col-start-2 last:md:col-start-8 last:md:pt-28"}`}>
+              <SeriesEntry
+                series={series}
+                cover={cover}
+                locale={locale}
+                index={index}
+                total={entries.length}
+                variant={index === 0 ? "offset-right" : "centered"}
+                prefetch={index === 0 ? homeExperienceConfig.prefetch.featuredSeries : homeExperienceConfig.prefetch.secondarySeries}
+                photographsLabel={dictionary.series.photographs}
+              />
+            </div>
           ))}
         </PhotoMotionGroup>
 
-        <Reveal className="mt-20 border-t border-border pt-8 lg:mt-28">
-          <Link href={`/${locale}/series`} className="rv-editorial-link">{dictionary.series.cta}<ArrowRight aria-hidden="true" className="size-4" /></Link>
-        </Reveal>
       </Container>
     </section>
   );

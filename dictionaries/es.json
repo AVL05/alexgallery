@@ -13,21 +13,25 @@
   },
   "hero": {
     "title": "raw.vives",
-    "titleLineOne": "Archivo fotográfico",
-    "titleLineTwo": "de Alex Vicente.",
-    "eyebrow": "Ciudad, naturaleza y luz",
+    "titleLineOne": "Una forma de",
+    "titleLineTwo": "mirar despacio.",
+    "eyebrow": "Archivo fotográfico personal",
+    "description": "Soy Alex Vicente. La fotografía es mi afición: una excusa para salir, observar y guardar algo de lo que encuentro.",
+    "byline": "Fotografías de Alex Vicente",
+    "openPhoto": "Ver fotografía",
+    "imageError": "No se ha podido cargar la fotografía.",
     "cta": "Explorar el archivo",
-    "scroll": "Desliza para explorar",
+    "scroll": "Ver selección",
     "photographs": "fotografías",
     "location": "Valencia, España",
-    "imageAlt": "Eclipse solar total sobre un paisaje a oscuras, con un anillo de luz alrededor de la Luna",
+    "imageAlt": "Un relámpago naranja atraviesa las nubes oscuras al caer la tarde",
     "featured_tag": "Destacadas"
   },
   "home": {
     "chapterLabel": "Capítulo {current} de {total}",
     "manifesto": {
       "title": "Fotografiar es aprender a detenerse.",
-      "lead": "raw.vives reúne escenas encontradas entre viajes, ciudad y naturaleza. Un archivo personal construido desde la luz, el tiempo y la atención.",
+      "lead": "Una cámara, tiempo libre y ganas de mirar. Así empieza este archivo de viajes, paseos y pequeños descubrimientos.",
       "archiveNote": "Cada imagen permanece aquí porque todavía pide una segunda mirada."
     },
     "featured": {
@@ -53,13 +57,13 @@
       }
     },
     "selected": {
-      "title": "Trabajo seleccionado",
+      "title": "Selección",
       "cta": "Ver fotografía",
       "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible.",
-      "description": "Una selección breve del archivo: encuentros con la fauna, el paisaje y las escenas cotidianas."
+      "description": "Cuatro fotografías para empezar. Cada una, una razón para detenerse un poco más."
     },
     "series": {
-      "title": "Secuencias.",
+      "title": "Series fotográficas",
       "description": "Tres recorridos fotográficos por lugares, momentos y encuentros.",
       "photographs": "fotografías",
       "cta": "Ver todas las series",
@@ -98,9 +102,9 @@
   "about": {
     "label": "Sobre mí",
     "title": "Detrás del visor",
-    "body": "Soy Alex Vicente. Fotografío lo que me cruza en el camino: la luz de un acantilado al amanecer, un músico solitario, una calle que respira. No persigo la postal perfecta, sino el instante que merece quedarse.",
-    "body2": "Este archivo crece con cada viaje y cada paseo. Aquí selecciono solo las imágenes que de verdad me hacen parar a mirar.",
-    "role": "Fotógrafo · Archivo visual",
+    "body": "Soy Alex Vicente y hago fotos por afición. Me gusta encontrar algo que merezca quedarse en un viaje, un paseo o una escena cotidiana.",
+    "body2": "raw.vives es mi espacio para compartir esas imágenes y seguir aprendiendo. No busco tener siempre la foto perfecta; disfruto del camino hasta encontrarla.",
+    "role": "Alex Vicente · Fotografía por afición",
     "location": "España"
   },
   "gallery": {
@@ -160,6 +164,7 @@
   },
   "photoDetail": {
     "back": "Volver al archivo",
+    "backToSelection": "Volver a la selección",
     "previous": "Anterior",
     "next": "Siguiente",
     "fullscreen": "Pantalla completa",
@@ -249,13 +254,13 @@
     "unavailable": "No disponible"
   },
   "contact": {
-    "title": "Contacto",
-    "description": "Si quieres comentar una imagen, pedir una licencia o proponer una colaboración visual, escríbeme.",
+    "title": "¿Hablamos?",
+    "description": "Si una foto te ha hecho parar, me encantará saberlo. También puedes escribirme para compartir una idea o consultar el uso de una imagen.",
     "license": "Licencias",
     "general": "Mensaje",
     "social": "Contacto",
     "location": "Valencia, España",
-    "independent": "Archivo fotográfico independiente.",
+    "independent": "Un archivo personal, hecho por afición.",
     "privacyNotice": "Los datos solo se incorporan a un borrador en tu aplicación de correo. La web no envía ni almacena el mensaje.",
     "form": {
       "name": "Nombre",
@@ -286,7 +291,7 @@
   "faq": {
     "eyebrow": "Preguntas frecuentes",
     "title": "Antes de escribir.",
-    "description": "Respuestas rápidas sobre licencias, usos y colaboraciones. Si tu caso es distinto, usa el formulario de contacto.",
+    "description": "Unas notas sobre este archivo y cómo compartir sus fotografías.",
     "items": [
       {
         "q": "¿Puedo usar una fotografía del archivo?",
@@ -298,11 +303,11 @@
       },
       {
         "q": "¿Cuánto tardas en responder?",
-        "a": "Normalmente en 48-72 horas laborables. Si tu solicitud tiene fecha límite, indícala en el mensaje y la priorizo."
+        "a": "Este es un proyecto personal al que dedico mi tiempo libre. Respondo cuando puedo; si tu consulta tiene una fecha concreta, indícala en el mensaje."
       },
       {
-        "q": "¿Aceptas encargos o colaboraciones?",
-        "a": "Sí, siempre que encajen con el archivo: viajes, ciudad, naturaleza y escenas cotidianas. Cuéntame la idea por el formulario general."
+        "q": "¿Eres fotógrafo profesional?",
+        "a": "No. La fotografía es una afición y este archivo es una forma de disfrutarla y compartir lo que voy aprendiendo. Si tienes una idea en común, puedes escribirme."
       },
       {
         "q": "¿Puedo compartir una foto con crédito?",

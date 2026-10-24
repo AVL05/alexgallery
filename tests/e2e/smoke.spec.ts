@@ -24,25 +24,19 @@ test("hero exposes the archive CTA above the fold", async ({ page }) => {
   expect(box!.y).toBeLessThan(viewport!.height);
 });
 
-test("intro isolates the page until it is skipped", async ({ page }) => {
+test("first visit opens the photographs without a blocking introduction", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "webdriver", { get: () => false });
   });
   await page.goto("/es", { waitUntil: "domcontentloaded" });
 
-  const intro = page.getByRole("dialog", { name: /archivo/i });
-  const skip = page.getByRole("button", { name: /saltar introducción/i });
   const main = page.locator("#main-content");
-
-  await expect(intro).toHaveAttribute("aria-modal", "true");
-  await expect(main).toHaveAttribute("inert", "");
-  await expect(main).toHaveAttribute("aria-hidden", "true");
-  await expect(skip).toBeFocused();
-
-  await skip.click();
-  await expect(intro).toBeHidden();
+  await expect(page.locator("#hero")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explorar el archivo", exact: true })).toBeInViewport();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(main).not.toHaveAttribute("inert", "");
   await expect(main).not.toHaveAttribute("aria-hidden", "true");
+  await expect(page.locator("html")).not.toHaveAttribute("data-intro-pending", "true");
 });
 
 test("photo detail keeps breadcrumbs above the content", async ({ page }) => {

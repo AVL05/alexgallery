@@ -16,7 +16,7 @@ test("hero resolves a local optimized primary image and fallback", () => {
 
   assert.equal(primary.id, heroImageConfig.primaryId);
   assert.equal(fallback.id, heroImageConfig.fallbackId);
-  assert.match(primary.src, /^\/photos\/optimized\/original\/52\.webp$/);
+  assert.match(primary.src, /^\/photos\/optimized\/original\/3\.webp$/);
   assert.ok(primary.blurDataURL?.startsWith("data:image/"));
   assert.ok(fallback.blurDataURL?.startsWith("data:image/"));
 });
@@ -51,6 +51,10 @@ test("hero translations expose equivalent accessible content", () => {
     "photographs",
     "location",
     "imageAlt",
+    "description",
+    "byline",
+    "openPhoto",
+    "imageError",
   ] as const;
 
   for (const key of keys) {
@@ -60,6 +64,6 @@ test("hero translations expose equivalent accessible content", () => {
     assert.ok(en.hero[key].length > 0);
   }
 
-  assert.ok(!("description" in es.hero));
-  assert.ok(!("description" in en.hero));
+  assert.match(es.hero.description, /afición/);
+  assert.match(en.hero.description, /hobby/);
 });

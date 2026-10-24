@@ -11,6 +11,10 @@ curated body of photography and visual stories in Spanish and English while
 preserving direct access to the archive, category filters, individual images,
 licensing information, and contact.
 
+Photography is Alex's hobby, not a professional service. Public copy should
+sound personal and curious, avoid offering commissions or promising response
+times, and present licensing as a way to ask permission to use existing work.
+
 The public identity is `raw.vives`, described as `Visual Archive` and authored
 by Alex Vicente. `aleviclop.dev` is the related development identity, not a
 replacement for the photographic brand.

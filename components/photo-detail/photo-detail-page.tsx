@@ -40,7 +40,7 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
       <Container>
         <div className="mb-10">
           <Breadcrumbs items={breadcrumbItems} ariaLabel={dictionary.nav.breadcrumb} />
-          <PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} className="mt-2" />
+          <PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} selectionLabel={dictionary.photoDetail.backToSelection} className="mt-2" />
         </div>
         <PhotoDetailMotion photoId={photoId}>
           <PhotoDetailMedia dictionary={dictionary.photoDetail} />
@@ -65,7 +65,7 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
 
           <section className="mx-auto mt-20 w-full max-w-5xl lg:mt-28"><PhotoDetailNavigation dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></section>
           <div className="mt-24 lg:mt-36"><PhotoDetailRelated dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} /></div>
-          <div className="flex flex-col items-start gap-6 border-t border-border py-16 sm:flex-row sm:items-center sm:justify-between lg:py-24"><PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} /><p className="rv-meta">{dictionary.photoDetail.keyboardHelp}</p></div>
+          <div className="flex flex-col items-start gap-6 border-t border-border py-16 sm:flex-row sm:items-center sm:justify-between lg:py-24"><PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} selectionLabel={dictionary.photoDetail.backToSelection} /><p className="rv-meta">{dictionary.photoDetail.keyboardHelp}</p></div>
         </PhotoDetailMotion>
       </Container>
       {process.env.NODE_ENV === "development" ? <PhotoProcessDevelopmentTools locale={locale} dictionary={dictionary.photoProcess} /> : null}

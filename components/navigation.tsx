@@ -125,7 +125,6 @@ export function Navigation({
   const finishClosingMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
     setIsMobileMenuMounted(false);
-    window.requestAnimationFrame(() => mobileToggleRef.current?.focus());
   }, []);
 
   const closeMobileMenu = useCallback(() => {
@@ -220,7 +219,11 @@ export function Navigation({
 
   useEffect(() => {
     if (!isMobileMenuMounted) return;
-    return lockScroll("mobile-navigation");
+    const releaseScroll = lockScroll("mobile-navigation");
+    return () => {
+      releaseScroll();
+      mobileToggleRef.current?.focus({ preventScroll: true });
+    };
   }, [isMobileMenuMounted, lockScroll]);
 
   useEffect(() => {
@@ -273,8 +276,8 @@ export function Navigation({
         inert={isMobileMenuMounted}
         className={`fixed inset-x-0 top-0 z-[var(--z-nav)] border-b transition-[background-color,border-color] duration-300 ${
           isScrolled || !isHome
-            ? "border-border bg-background/92 backdrop-blur-md"
-            : "border-transparent bg-gradient-to-b from-black/55 to-transparent"
+            ? "border-border bg-background"
+            : "border-transparent bg-background"
         }`}
       >
         <Container className="flex h-[var(--layout-nav-height)] items-center justify-between gap-8">
@@ -288,7 +291,7 @@ export function Navigation({
             </span>
           </Link>
 
-          <nav aria-label={navigationLabel} className="hidden items-center gap-8 lg:flex">
+          <nav aria-label={navigationLabel} className="hidden items-center gap-6 lg:flex">
             {items.map((item) => {
               const active = isNavItemActive(item, pathname);
               const isRoute = !item.href.startsWith("#");
@@ -298,9 +301,9 @@ export function Navigation({
                   href={item.href}
                   aria-current={active && isRoute ? "page" : undefined}
                   data-press-feedback
-                  className={`inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+                  className={`inline-flex min-h-11 items-center text-[13px] transition-colors ${
                     active
-                      ? "text-foreground"
+                      ? "text-foreground underline decoration-accent underline-offset-8"
                       : "text-[var(--color-text-secondary)] hover:text-foreground"
                   }`}
                 >
@@ -308,16 +311,13 @@ export function Navigation({
                 </Link>
               );
             })}
-            <a
-              href={instagramUrl}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href={`/${currentLocale}#contact`}
               data-press-feedback
-              className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 items-center text-[13px] text-[var(--color-text-secondary)] transition-colors hover:text-foreground"
             >
-              Instagram
-              <span className="sr-only"> {externalNote}</span>
-            </a>
+              {dictionary.contact}
+            </Link>
             <LocaleSwitch
               currentLocale={currentLocale}
               alternateLocale={alternateLocale}
@@ -331,7 +331,7 @@ export function Navigation({
             <button
               ref={mobileToggleRef}
               type="button"
-              className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground lg:hidden"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground lg:hidden"
               onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
               aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
               aria-expanded={isMobileMenuOpen}
@@ -354,7 +354,7 @@ export function Navigation({
         role="dialog"
         aria-modal="true"
         aria-label={navigationLabel}
-        className="fixed inset-0 z-[110] bg-background lg:hidden"
+        className="fixed inset-0 z-[110] overflow-y-auto bg-background lg:hidden"
       >
         <Container className="flex min-h-[100svh] flex-col pb-8 pt-4">
           <div className="flex h-16 items-center justify-between">
@@ -365,7 +365,7 @@ export function Navigation({
               <button
                 autoFocus
                 type="button"
-                className="inline-flex min-h-11 items-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground"
                 onClick={closeMobileMenu}
                 aria-label={closeMenuLabel}
                 data-press-feedback
@@ -392,6 +392,9 @@ export function Navigation({
                 <span className="rv-index">{String(index + 1).padStart(2, "0")}</span>
               </Link>
             ))}
+            <Link href={`/${currentLocale}#contact`} onClick={closeMobileMenu} data-mobile-nav-link className="flex min-h-16 items-center justify-between border-b border-border py-4 font-serif text-[clamp(1.8rem,9vw,3.25rem)] leading-none">
+              {dictionary.contact}<span aria-hidden="true" className="rv-index">↗</span>
+            </Link>
             <a
               href={instagramUrl}
               target="_blank"

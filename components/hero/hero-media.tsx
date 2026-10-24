@@ -1,20 +1,18 @@
 "use client";
 
 import { useMotion } from "@/components/motion/motion-provider";
-import { heroImageConfig } from "@/lib/hero/config";
-import { photoSizes } from "@/lib/images/sizes";
 import type { OptimizedImageData } from "@/types/photo";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export type HeroImageState = "loading" | "loaded" | "fallback" | "failed";
 
-// Photography layer of the hero: fullscreen image with primary/fallback
-// handling. Decorative layers (WebGL slot, scrims) compose above it.
+// Keep the complete photograph visible inside its frame, including the signature.
 export function HeroMedia({
   primary,
   fallback,
   alt,
+  errorLabel,
   slowImage,
   failImage,
   onStateChange,
@@ -22,6 +20,7 @@ export function HeroMedia({
   primary: OptimizedImageData;
   fallback: OptimizedImageData;
   alt: string;
+  errorLabel: string;
   slowImage: boolean;
   failImage: boolean;
   onStateChange: (state: HeroImageState) => void;
@@ -31,7 +30,7 @@ export function HeroMedia({
   const [imageState, setImageState] = useState<HeroImageState>("loading");
   const [simulationReady, setSimulationReady] = useState(!slowImage);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setActiveImage(primary);
     setImageState("loading");
     setSimulationReady(!slowImage);
@@ -45,7 +44,7 @@ export function HeroMedia({
     onStateChange(imageState);
   }, [imageState, onStateChange]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
     if (failImage) {
       setActiveImage(fallback);
@@ -66,32 +65,27 @@ export function HeroMedia({
   };
 
   return (
-    <div data-hero-entry-media className="absolute -inset-[2%] z-0 bg-[var(--color-image-placeholder)]">
-      <div data-hero-scroll-media className="absolute inset-0">
-        {imageState !== "failed" && (
-          <Image
-            key={activeImage.id}
-            src={activeImage.src}
-            alt={alt}
-            fill
-            sizes={photoSizes.fullBleed}
-            priority
-            loading="eager"
-            fetchPriority="high"
-            placeholder={activeImage.blurDataURL ? "blur" : "empty"}
-            blurDataURL={activeImage.blurDataURL}
-            className={`object-cover transition-opacity duration-300 ${simulationReady ? "opacity-100" : "opacity-0"}`}
-            style={{
-              objectPosition: heroImageConfig.objectPosition,
-            }}
-            onLoad={() => {
-              setImageState((state) => state === "fallback" ? "fallback" : "loaded");
-              refreshScrollTriggers();
-            }}
-            onError={handleError}
-          />
-        )}
-      </div>
+    <div data-hero-entry-media className="absolute inset-0 bg-background">
+      {imageState === "failed" ? <p role="status" className="rv-meta absolute inset-0 grid place-items-center px-6 text-center">{errorLabel}</p> : (
+        <Image
+          key={activeImage.id}
+          src={activeImage.src}
+          alt={alt}
+          fill
+          sizes="(max-width: 767px) 100vw, 92vw"
+          priority
+          loading="eager"
+          fetchPriority="high"
+          placeholder={activeImage.blurDataURL ? "blur" : "empty"}
+          blurDataURL={activeImage.blurDataURL}
+          className={`object-contain transition-opacity duration-300 ${simulationReady ? "opacity-100" : "opacity-0"}`}
+          onLoad={() => {
+            setImageState((state) => state === "fallback" ? "fallback" : "loaded");
+            refreshScrollTriggers();
+          }}
+          onError={handleError}
+        />
+      )}
     </div>
   );
 }

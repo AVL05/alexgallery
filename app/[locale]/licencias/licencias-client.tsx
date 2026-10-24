@@ -69,12 +69,12 @@ export function LicenciasClient({
     ? [
         { name: "Elige la foto", detail: "Anota el ID o el título tal como aparece en el archivo." },
         { name: "Cuéntame el uso", detail: "Tipo de licencia, medio, duración y alcance previsto." },
-        { name: "Recibe condiciones", detail: "Respuesta en 48-72 horas laborables con propuesta y archivo final." },
+        { name: "Hablamos de las condiciones", detail: "Reviso la consulta en mi tiempo libre y acordamos el uso antes de compartir el archivo." },
       ]
     : [
         { name: "Pick the photo", detail: "Note the ID or title exactly as shown in the archive." },
         { name: "Describe the use", detail: "License type, medium, duration and expected reach." },
-        { name: "Receive terms", detail: "Reply within 48-72 business hours with proposal and final file." },
+        { name: "Discuss the terms", detail: "I review requests in my free time, and we agree on the use before I share the file." },
       ];
 
   const structuredData = {
@@ -120,8 +120,8 @@ export function LicenciasClient({
               <h1 className="rv-page-title mb-7">{title}</h1>
               <p className="rv-intro">
                 {spanish
-                  ? "Cada fotografía del archivo puede licenciarse. Sin precios cerrados: condiciones a medida según el uso."
-                  : "Every photograph in the archive can be licensed. No fixed prices: tailored terms based on use."}
+                  ? "La fotografía es mi afición. Si quieres usar una imagen del archivo, cuéntame la idea y consultamos las condiciones."
+                  : "Photography is my hobby. If you'd like to use an image from the archive, tell me your idea and we can discuss the terms."}
               </p>
             </header>
 

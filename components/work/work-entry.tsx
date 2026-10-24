@@ -1,6 +1,7 @@
 "use client";
 
 import { NarrativeImage } from "@/components/home/narrative-image";
+import { PhotoTransitionLink } from "@/components/motion/photo-transition-link";
 import { MetaItem, MetaList } from "@/components/ui/photo-meta";
 import { savePhotoReturn } from "@/lib/archive/context";
 import { photoSizes } from "@/lib/images/sizes";
@@ -11,11 +12,12 @@ import type { WorkEntryVariant } from "@/lib/photos/selectors";
 import { getLocalizedSeries, getSeriesForPhoto } from "@/lib/series/selectors";
 import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
-import Link from "next/link";
 
 // Editorial entry for Selected Work (home) and the /work route. Layout
 // variants are resolved server-side via resolveWorkEntryVariant.
 const entrySizes: Record<WorkEntryVariant, string> = {
+  exhibition: "(max-width: 767px) 100vw, 66vw",
+  sheet: "(max-width: 767px) 100vw, (max-width: 1440px) 50vw, 680px",
   "offset-right": photoSizes.archiveFeature,
   "offset-left": photoSizes.archiveFeature,
   narrow: photoSizes.workNarrow,
@@ -23,6 +25,8 @@ const entrySizes: Record<WorkEntryVariant, string> = {
 };
 
 const entryFigureClass: Record<WorkEntryVariant, string> = {
+  exhibition: "",
+  sheet: "",
   "offset-right": "md:col-start-5 md:col-span-8",
   "offset-left": "md:col-start-1 md:col-span-8",
   narrow: "mx-auto w-full max-w-md",
@@ -30,6 +34,8 @@ const entryFigureClass: Record<WorkEntryVariant, string> = {
 };
 
 const entryMetaClass: Record<WorkEntryVariant, string> = {
+  exhibition: "",
+  sheet: "",
   "offset-right": "md:col-start-1 md:col-span-3 md:row-start-1 md:self-end",
   "offset-left": "md:col-start-10 md:col-span-3 md:row-start-1 md:self-end",
   narrow: "mx-auto w-full max-w-md",
@@ -48,6 +54,7 @@ export function WorkEntry({
   returnHref,
   failImages,
   slowImages,
+  priority = false,
 }: {
   photo: NarrativePhoto;
   locale: Locale;
@@ -60,10 +67,12 @@ export function WorkEntry({
   returnHref?: string;
   failImages?: boolean;
   slowImages?: boolean;
+  priority?: boolean;
 }) {
   const rawSeries = getSeriesForPhoto(photo.id);
   const series = rawSeries ? getLocalizedSeries(rawSeries, locale) : null;
   const split = variant === "offset-right" || variant === "offset-left";
+  const exhibition = variant === "exhibition";
   const captureReturn = () => {
     savePhotoReturn({
       locale,
@@ -76,10 +85,11 @@ export function WorkEntry({
 
   return (
     <article>
-      <Link
+      <PhotoTransitionLink
+        photoId={photo.id}
         href={getPhotoHref(locale, photo.id)}
         prefetch={prefetch}
-        onClick={captureReturn}
+        onBeforeNavigate={captureReturn}
         className="group block"
         data-press-feedback
         {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}
@@ -89,6 +99,7 @@ export function WorkEntry({
           <figure className={entryFigureClass[variant]}>
             <NarrativeImage
               photo={photo}
+              priority={priority}
               sizes={entrySizes[variant]}
               failPrimary={failImages}
               slow={slowImages}
@@ -96,14 +107,14 @@ export function WorkEntry({
               imageClassName="transition-[transform,filter] duration-500 group-hover:scale-[1.015] group-hover:brightness-[0.92] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.92]"
             />
             {!split && (
-              <figcaption className="mt-5 border-t border-border pt-4">
+              <figcaption className={exhibition ? "mt-4" : "mt-5 border-t border-border pt-4"}>
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className={`font-serif leading-tight tracking-[-0.02em] text-foreground transition-colors group-hover:text-accent ${variant === "panorama" ? "text-[clamp(1.8rem,3vw,3rem)]" : "text-[clamp(1.4rem,2.4vw,2.1rem)]"}`}>
+                  <h3 className={`text-foreground transition-colors group-hover:text-accent ${exhibition ? "text-[15px] leading-relaxed" : `font-serif leading-tight tracking-[-0.02em] ${variant === "panorama" ? "text-[clamp(1.8rem,3vw,3rem)]" : "text-[clamp(1.4rem,2.4vw,2.1rem)]"}`}`}>
                     {photo.title}
                   </h3>
-                  <span className="rv-index shrink-0">{String(index + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}</span>
+                  <span className="rv-index shrink-0">{String(index + 1).padStart(2, "0")}{!exhibition && `/${String(total).padStart(2, "0")}`}</span>
                 </div>
-                <p className="rv-meta mt-3 flex flex-wrap items-center gap-x-3">
+                <p className={`flex flex-wrap items-center gap-x-3 ${exhibition ? "mt-1.5 text-xs leading-relaxed text-[var(--color-text-secondary)]" : "rv-meta mt-3"}`}>
                   <span>{galleryDictionary.categories[photo.category]}</span>
                   <span aria-hidden="true">/</span>
                   <span>{photo.year}</span>
@@ -129,7 +140,7 @@ export function WorkEntry({
           )}
         </div>
         <span className="sr-only">{ctaLabel}</span>
-      </Link>
+      </PhotoTransitionLink>
     </article>
   );
 }

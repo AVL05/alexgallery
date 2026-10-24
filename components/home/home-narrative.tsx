@@ -3,6 +3,7 @@
 import { HomeSeries, type HomeSeriesEntry } from "@/components/home/home-series";
 import { ExpansivePhoto } from "@/components/home/expansive-photo";
 import { FeaturedStory } from "@/components/home/featured-story";
+import { SelectedWork } from "@/components/home/selected-work";
 import { HomeManifesto } from "@/components/home/home-manifesto";
 import { VisualChapters } from "@/components/home/visual-chapters";
 import {
@@ -64,10 +65,10 @@ export function HomeNarrative({
   useEffect(() => {
     reportHomeState({
       ...preview,
-      selectedCount: 0,
+      selectedCount: data.selected.length,
       chapterCount: homeExperienceConfig.sectionOrder.includes("visualChapters") ? chapters.length : 0,
     });
-  }, [chapters.length, preview]);
+  }, [chapters.length, data.selected.length, preview]);
 
   return (
     <>
@@ -75,6 +76,7 @@ export function HomeNarrative({
         let content: ReactNode = null;
         if (section === "manifesto") content = <HomeManifesto home={dictionary.home} about={dictionary.about} locale={locale} />;
         if (section === "featuredStory") content = <FeaturedStory photo={data.featured} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />;
+        if (section === "selectedWork") content = <SelectedWork photos={data.selected} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />;
         if (section === "series") content = <HomeSeries entries={seriesEntries} dictionary={dictionary.home} locale={locale} />;
         if (section === "expansivePhoto") content = <ExpansivePhoto photo={data.expansive} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} forceReducedMotion={preview.reducedMotion} slowImages={preview.slowImages} />;
         if (section === "visualChapters") content = <VisualChapters chapters={chapters} dictionary={dictionary.home} galleryDictionary={dictionary.gallery} locale={locale} failImages={preview.failImages} slowImages={preview.slowImages} />;

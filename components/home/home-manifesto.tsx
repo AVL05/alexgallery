@@ -13,19 +13,19 @@ export function HomeManifesto({
   locale: Locale;
 }) {
   return (
-    <section id="about" className="rv-section bg-[var(--color-background)]">
+    <section id="about" className="rv-section border-t border-border bg-[var(--color-background)]">
       <Container>
         <div className="grid gap-14 md:grid-cols-12 md:gap-8 lg:gap-12">
-          <Reveal className="md:col-span-7">
+          <Reveal className="md:col-span-5">
             <p className="rv-kicker">{about.label}</p>
-            <h2 className="mt-6 max-w-[16ch] font-serif text-[clamp(2.4rem,5.5vw,5.5rem)] leading-[1.0] tracking-[-0.04em]">
-              {home.manifesto.title}
+            <h2 className="rv-home-heading mt-5">
+              {about.title}
             </h2>
-            <p className="mt-8 max-w-xl text-[clamp(1.1rem,2vw,1.5rem)] leading-relaxed text-[var(--color-text-secondary)] md:mt-12">
+            <p className="mt-6 max-w-md text-sm leading-7 text-[var(--color-text-secondary)]">
               {home.manifesto.lead}
             </p>
           </Reveal>
-          <Reveal className="md:col-span-4 md:col-start-9 md:self-end" delay={0.08}>
+          <Reveal className="md:col-span-6 md:col-start-7" delay={0.08}>
             <AboutBio about={about} locale={locale} />
           </Reveal>
         </div>

@@ -86,10 +86,10 @@ export function SeriesEntry({
             />
           </div>
           <div className={entryMetaClass[variant]}>
-            <div className="mt-6 flex items-start justify-between gap-4 border-t border-border pt-4 md:mt-0">
+            <div className={`mt-6 flex items-start justify-between gap-4 border-t border-border pt-4 ${split ? "md:mt-0" : ""}`}>
               <div>
                 <p className="rv-meta">{String(series.photoIds.length).padStart(2, "0")} {photographsLabel}</p>
-                <h3 className={`mt-3 font-serif leading-tight tracking-[-0.025em] text-foreground transition-colors group-hover:text-accent ${split ? "text-[clamp(1.6rem,2.4vw,2.4rem)]" : "text-[clamp(1.8rem,3vw,3rem)]"}`}>
+                <h3 className={`mt-3 font-serif leading-tight tracking-[-0.025em] text-foreground transition-colors group-hover:text-accent ${split ? "text-[clamp(1.6rem,2.4vw,2.4rem)]" : "text-[clamp(1.5rem,2.2vw,2rem)]"}`}>
                   {series.title}
                 </h3>
                 <p className="rv-body-sm mt-3">{series.description}</p>

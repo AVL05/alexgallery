@@ -20,9 +20,9 @@ export const homeChapterOrder = [
 ] as const satisfies readonly HomeChapterCategory[];
 
 export const homeCuration = {
-  heroPhotoId: 52,
+  heroPhotoId: 3,
   featuredPhotoId: 46,
-  expansivePhotoId: 3,
+  expansivePhotoId: 52,
   chapterPhotoIds: {
     Fauna: 7,
     Arquitectura: 51,
