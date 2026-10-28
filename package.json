@@ -52,7 +52,7 @@
     "@types/three": "^0.185.4",
     "postcss": "^8.5.32",
     "tailwindcss": "^4.3.3",
-    "tsx": "^4.23.7",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "wrangler": "4.153.0"
   }
