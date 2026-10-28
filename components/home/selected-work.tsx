@@ -33,7 +33,7 @@ export function SelectedWork({ photos, dictionary, galleryDictionary, locale, fa
   }, [locale]);
 
   return (
-    <section id="selected-work" ref={rootRef} aria-labelledby="selection-title" className="rv-section bg-background">
+    <section id="selected-work" ref={rootRef} aria-labelledby="selection-title" className="rv-section bg-background max-md:pt-10">
       <Container>
         <div className="rv-home-section-header">
           <h2 id="selection-title" className="rv-home-heading">{dictionary.selected.title}</h2>

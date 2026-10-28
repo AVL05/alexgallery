@@ -91,7 +91,7 @@ export function HeroSection({
     <section
       id="hero"
       ref={rootRef}
-      className="relative overflow-hidden bg-background pt-[calc(var(--layout-nav-height)+1rem)] text-foreground"
+      className="relative overflow-hidden bg-background pt-[var(--layout-nav-height)] text-foreground md:pt-[calc(var(--layout-nav-height)+1rem)]"
       data-hero
       data-entry-ready={entryReady}
       data-image-state={imageState}
