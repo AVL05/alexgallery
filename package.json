@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm validate-photo-process && next build && pnpm exec tsx scripts/normalize-static-export.ts && pnpm prune-private-assets",
+    "build": "pnpm validate-photo-process && next build && pnpm exec tsx scripts/normalize-static-export.ts && pnpm exec tsx scripts/secure-static-export.ts && pnpm prune-private-assets",
     "optimize-images": "tsx scripts/optimize-images.ts",
     "prepare-photo-process": "tsx scripts/prepare-photo-process.ts",
     "preview": "wrangler pages dev --port 8788",
@@ -34,11 +34,11 @@
     "gsap": "^3.15.0",
     "lenis": "^1.3.25",
     "lucide-react": "^1.28.0",
-    "next": "^16.3.6",
+    "next": "^16.4.3",
     "plaiceholder": "^3.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "tailwind-merge": "^3.6.0",
     "three": "^0.185.1"
   },
@@ -50,10 +50,10 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@types/three": "^0.185.4",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.32",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.7",
     "typescript": "^7.0.2",
-    "wrangler": "4.118.0"
+    "wrangler": "4.153.0"
   }
 }

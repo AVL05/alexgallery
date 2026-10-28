@@ -1,4 +1,5 @@
 import { getRootLocaleRedirect } from "../lib/i18n/locale-routing";
+import { redirectSecurityHeaders } from "../lib/security/redirect-headers";
 
 interface PagesContext {
   request: Request;
@@ -12,6 +13,7 @@ export async function onRequest(context: PagesContext): Promise<Response> {
   return new Response(null, {
     status: 307,
     headers: {
+      ...redirectSecurityHeaders,
       "Cache-Control": "private, no-store",
       Location: redirect.toString(),
       Vary: "Accept-Language, Cookie",

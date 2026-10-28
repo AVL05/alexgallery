@@ -1,3 +1,5 @@
+import { redirectSecurityHeaders } from "../lib/security/redirect-headers";
+
 const legacyHostname = "gallery.aleviclop.dev";
 const productionHostname = "rawvives.aleviclop.dev";
 
@@ -12,5 +14,5 @@ export async function onRequest(context: PagesContext): Promise<Response> {
 
   requestUrl.protocol = "https:";
   requestUrl.host = productionHostname;
-  return Response.redirect(requestUrl, 308);
+  return new Response(null, { status: 308, headers: { ...redirectSecurityHeaders, Location: requestUrl.toString() } });
 }

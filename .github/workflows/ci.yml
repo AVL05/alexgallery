@@ -20,13 +20,13 @@ jobs:
       NEXT_PUBLIC_BASE_URL: https://rawvives.aleviclop.dev
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Setup Node.js and pnpm cache
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -36,6 +36,9 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high
 
       - name: Lint
         run: pnpm lint

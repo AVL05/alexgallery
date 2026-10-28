@@ -89,6 +89,20 @@ protege después de una visita HTTPS y no sustituye la redirección.
 
 `public/_headers` define CSP, HSTS, `X-Content-Type-Options`, referrer, frame protection, COOP y policies. Cloudflare aplica `_headers` a respuestas de Static Assets; cualquier origen externo nuevo requiere revisar CSP.
 
+El build ejecuta `scripts/secure-static-export.ts` sobre todos los HTML, incluido
+el 404. Inserta tras el charset y antes de cualquier script una segunda CSP con hashes
+SHA-256 de los scripts de esa página. Ambas políticas se aplican conjuntamente:
+el `unsafe-inline` de la cabecera no autoriza scripts que la política del HTML
+bloquea. Esto mantiene la exportación estática sin nonces de servidor ni superar
+los límites de `_headers` de Pages (100 reglas y 2.000 caracteres por línea).
+Los estilos inline siguen permitidos por las animaciones existentes. No editar
+los HTML después de este paso: cualquier cambio en un script invalida su hash.
+
+Las redirecciones de idioma y del dominio anterior incluyen sus propias
+cabeceras de seguridad, ya que las respuestas de Functions no heredan `_headers`.
+CI audita las dependencias y bloquea avisos altos o críticos; Dependabot propone
+actualizaciones semanales de paquetes y GitHub Actions sin fusionarlas.
+
 ## 12. Caché
 
 - HTML: `max-age=0, must-revalidate`.
