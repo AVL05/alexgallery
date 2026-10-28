@@ -40,7 +40,7 @@
     "react-dom": "^19.2.8",
     "sharp": "^0.35.5",
     "tailwind-merge": "^3.6.0",
-    "three": "^0.185.1"
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@plaiceholder/next": "^3.0.0",
