@@ -1,152 +1,192 @@
+<div align="center">
+
 # raw.vives
 
-Archivo visual bilingüe de Alex Vicente: una experiencia editorial para recorrer fotografía, memoria y territorio con una navegación rápida, accesible y preparada para distribución estática.
+### A personal visual archive
 
-![Hero de raw.vives](docs/assets/screenshots/home-hero-desktop.webp)
+**Photography × Art Direction × Creative Development**
 
-**Producción:** [rawvives.aleviclop.dev](https://rawvives.aleviclop.dev) · **Estado de este checkout:** preparado y validado localmente; el despliegue de esta versión es una acción manual pendiente.
+Un archivo fotográfico personal de **Alex Vicente**, diseñado como una experiencia editorial donde las imágenes tienen el protagonismo y la tecnología hace posible explorarlas.
 
-## Objetivo
+**[Explorar la galería](https://rawvives.aleviclop.dev)** · **[Ver archivo](https://rawvives.aleviclop.dev/es/archive)** · **[Portfolio de desarrollo](https://www.aleviclop.dev)** · **[Contacto](mailto:alexviclop@gmail.com)**
 
-Transformar una galería personal en una pieza de portfolio con criterio editorial, rutas profundas compartibles y una base técnica mantenible. El proyecto conserva la fotografía como centro: la interfaz acompaña, no compite.
+</div>
 
-## Características
+![Portada real de raw.vives en escritorio](docs/assets/screenshots/home-hero-desktop.webp)
 
-- Home narrativa editada con 10 fotografías únicas antes del archivo, tres series y cuatro piezas individuales sin serie.
-- Archivo de 31 fotografías con búsqueda, categorías, años, orden y carga progresiva.
-- Detalles individuales con navegación contextual, fullscreen, compartir y obras relacionadas.
-- Español e inglés generados de forma estática, incluido contenido editorial, categorías y alt fotográfico localizado.
-- Cursor contextual, microinteracciones GSAP y WebGL progresivo solo cuando el dispositivo lo permite.
-- Reduced motion, forced colors, teclado, foco visible, 404, fallbacks de imagen y sin JavaScript crítico para leer el contenido.
-- Sitemap, robots, JSON-LD, Open Graph, manifest, iconos y headers de producción.
+<div align="center"><sub>Captura del proyecto incluida en el repositorio. La interfaz publicada puede variar respecto a esta versión.</sub></div>
 
-## Stack
+---
 
-Next.js 16 App Router, React 19, TypeScript estricto, Tailwind CSS 4, GSAP, Three.js, Sharp, pnpm y Cloudflare Pages.
+## El proyecto
 
-## Arquitectura
+**raw.vives** nace de una idea sencilla: las fotografías merecen algo más que una cuadrícula de miniaturas. Quería construir un lugar propio para presentar imágenes, series y recuerdos visuales con una narrativa clara, sin convertir mi afición por la fotografía en un servicio comercial.
 
-El proyecto usa `output: "export"`: no depende de un servidor Next.js en ejecución. `app/` define rutas y metadata; `components/` contiene sistemas de interfaz; `lib/` concentra datos, SEO y reglas puras; `dictionaries/` resuelve la i18n manual; `scripts/` construye y valida la tubería fotográfica. Cloudflare Pages sirve `out/` y una Pages Function resuelve el idioma de `/`.
+También es un proyecto de desarrollo frontend: explora cómo combinar **dirección de arte, interfaces interactivas, tratamiento de imágenes, accesibilidad y rendimiento** dentro de una experiencia que sigue funcionando cuando los efectos visuales no están disponibles.
 
-Más detalle en [arquitectura](docs/RAW_VIVES_ARCHITECTURE.md), [recorrido editorial](docs/RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md), [curación de la home](docs/RAW_VIVES_CURATION_SYSTEM.md), [sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md) y [sistema de release](docs/RAW_VIVES_RELEASE_SYSTEM.md).
+| | |
+| :--- | :--- |
+| **Mi papel** | Concepto, fotografía, diseño y desarrollo |
+| **Formato** | Archivo fotográfico y experiencia editorial |
+| **Idiomas** | Español e inglés |
+| **Arquitectura** | Next.js con exportación estática |
+| **Distribución** | Cloudflare Pages |
+| **Visitar** | [rawvives.aleviclop.dev](https://rawvives.aleviclop.dev) |
 
-## Sistema visual
+## Explorar la experiencia
 
-La dirección combina tipografía editorial, negro cálido, líneas finas, ritmo modular y fotografía a gran escala. El sistema evita cards genéricas y ornamento gratuito; cada transición sostiene jerarquía, contexto o continuidad.
+### 01 — Narrativa visual
 
-## Motion, cursor y WebGL
+Una portada que introduce el lenguaje fotográfico mediante composición, escala, tipografía y transiciones controladas. La interfaz acompaña a las imágenes en lugar de competir con ellas.
 
-GSAP coordina entradas, scroll y feedback con limpieza por ciclo de vida. El cursor contextual solo se activa con puntero fino y hover. El fondo WebGL es enriquecimiento progresivo: no carga con reduced motion, forced colors, dispositivos limitados o ausencia de soporte; el contenido y la imagen hero permanecen disponibles.
+![Portada de raw.vives](docs/assets/screenshots/selected-work-desktop.webp)
 
-## Archivo y detalle
+### 02 — Archivo fotográfico
 
-El estado del archivo se refleja en la URL para poder compartir búsquedas y filtros. Cada fotografía dispone de rutas `/es/photo/[id]` y `/en/photo/[id]`, metadata propia, imagen optimizada y navegación anterior/siguiente sin perder el contexto editorial.
+Un archivo de **31 fotografías** con búsqueda, filtros por categoría y año, opciones de ordenación y carga progresiva. El estado de los filtros puede compartirse mediante la URL.
 
-![Archivo visual](docs/assets/screenshots/archive-grid-desktop.webp)
+![Archivo fotográfico real](docs/assets/screenshots/archive-grid-desktop.webp)
 
-![Detalle fotográfico](docs/assets/screenshots/photo-detail-desktop.webp)
+### 03 — Una página para cada fotografía
 
-## Proceso creativo
+Cada imagen dispone de su propia ruta, contenido contextual, metadatos, navegación entre fotografías, vista a pantalla completa y obras relacionadas. Esto permite explorar el trabajo sin perder la continuidad del archivo.
 
-Las variantes públicas se generan desde `public/photos/raw/` mediante Sharp. El proceso crea WebP, AVIF, dimensiones, EXIF permitido y placeholders; después valida correspondencia y evita que las fuentes de proceso se copien al artefacto público. Los originales de cámara, catálogos y sidecars no pertenecen al repositorio.
+![Página de detalle de una fotografía](docs/assets/screenshots/photo-detail-desktop.webp)
 
-## Accesibilidad
+### 04 — Experiencia móvil
 
-La interfaz incluye skip link, landmarks, HTML semántico, foco restaurado en menús y fullscreen, navegación por teclado, estados anunciados y alternativas para movimiento reducido y colores forzados. La accesibilidad se comprueba con tests y smoke tests de navegador; no se presenta como certificación formal.
+El diseño se adapta a pantallas pequeñas y mantiene las mismas prioridades: imágenes legibles, navegación accesible y controles utilizables con el dedo.
 
-## Rendimiento
+<img src="docs/assets/screenshots/home-hero-mobile.webp" alt="Captura real de raw.vives en móvil" width="320" />
 
-Las imágenes usan variantes responsivas y carga diferida salvo contenido prioritario. Los chunks versionados reciben caché inmutable, el HTML se revalida y las fotografías tienen caché corta para permitir sustituciones editoriales. La build final validada ocupa aproximadamente 39,1 MiB y excluye `out/photos/raw/`.
+## Diseño y decisiones técnicas
 
-## Internacionalización y SEO
+| Desafío | Solución |
+| :--- | :--- |
+| **Crear una galería con identidad** | Composición editorial, jerarquía tipográfica, fotografía a gran escala y un sistema visual contenido. |
+| **Mostrar imágenes de forma eficiente** | Procesamiento con Sharp, variantes WebP/AVIF, placeholders y recursos responsivos. |
+| **Permitir descubrir y compartir fotografías** | Archivo con filtros reflejados en la URL y páginas individuales indexables. |
+| **Añadir movimiento sin excluir visitantes** | GSAP, cursor contextual y WebGL como mejoras progresivas, desactivadas cuando el dispositivo o la accesibilidad lo requieren. |
+| **Ofrecer dos idiomas** | Diccionarios ES/EN, rutas localizadas, metadata y textos alternativos adaptados. |
+| **Simplificar operación y alojamiento** | Generación estática, distribución por CDN y despliegue en Cloudflare Pages. |
+| **Proteger los originales** | Validaciones del pipeline y exclusión de archivos fuente privados del artefacto distribuido. |
 
-`es` y `en` son las únicas locales admitidas. El Worker resuelve `/` con un `307`: primero respeta la cookie funcional `raw-vives-locale`, después el idioma principal de `Accept-Language` y usa inglés como fallback. Canonicals, `hreflang`, sitemap, robots, Open Graph e `ImageObject` se generan con `NEXT_PUBLIC_BASE_URL`; `x-default` apunta a inglés y la raíz de resolución queda fuera del sitemap.
+El objetivo no es demostrar cuántos efectos se pueden añadir, sino **cuándo merece la pena utilizarlos y cuándo es mejor prescindir de ellos**.
 
-## Instalación
+## Tecnologías
 
-Requisitos: Node `24.18.0`, pnpm `11.20.0` y Git.
+**Interfaz:** Next.js 16 · React 19 · TypeScript · Tailwind CSS 4
 
-```powershell
+**Movimiento y gráficos:** GSAP · Three.js · Lenis
+
+**Fotografía y optimización:** Sharp · EXIF · WebP · AVIF
+
+**Calidad y distribución:** Node.js · pnpm · Playwright · GitHub Actions · Cloudflare Pages
+
+Las versiones instaladas se resuelven mediante `pnpm-lock.yaml`.
+
+---
+
+<details>
+<summary><strong>Instalación y desarrollo local</strong></summary>
+
+### Requisitos
+
+- Node.js 24.18.0 (rango 24.x compatible según `package.json`)
+- pnpm 11.20.0
+- Git
+
+### Inicio rápido
+
+```bash
+git clone https://github.com/AVL05/alexgallery.git
+cd alexgallery
 corepack enable
 pnpm install --frozen-lockfile
-Copy-Item .env.example .env.local
 pnpm dev
 ```
 
-## Variables de entorno
+Para configurar las URLs públicas del sitio, copia `.env.example` a `.env.local` y revisa:
 
 ```dotenv
-NEXT_PUBLIC_BASE_URL=https://rawvives.aleviclop.dev
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-La URL se integra en la build estática y es pública. Contacto y licencias preparan borradores `mailto:`; no requieren claves ni servicios externos de formularios. El visitante revisa y envía el correo desde su aplicación.
+La variable indica el origen que utilizará el proyecto para URLs y metadatos. No se necesita una API de pago para explorar localmente el archivo.
 
-## Scripts
+### Comandos principales
 
-| Comando | Uso |
-| --- | --- |
-| `pnpm dev` | Desarrollo Next.js |
-| `pnpm preview` | Preview del `out/` con Wrangler en `:8788` |
-| `pnpm optimize-images` | Regenera variantes y metadata fotográfica |
-| `pnpm check` | Typecheck, lint, tests y build |
-| `pnpm typecheck` / `pnpm lint` | TypeScript estricto |
-| `pnpm test` | Suite Vitest |
-| `pnpm build` | Valida fotos, exporta y elimina fuentes del artefacto |
-| `pnpm deploy:pages` | Build y despliegue manual a Cloudflare Pages |
+| Comando | Descripción |
+| :--- | :--- |
+| `pnpm dev` | Servidor de desarrollo. |
+| `pnpm optimize-images` | Genera variantes y metadatos fotográficos. |
+| `pnpm typecheck` | Verificación de tipos. |
+| `pnpm test` | Tests automatizados. |
+| `pnpm e2e` | Pruebas de navegador con Playwright. |
+| `pnpm build` | Valida y prepara la exportación estática. |
+| `pnpm preview` | Vista previa mediante Wrangler. |
+| `pnpm check` | Validaciones de tipos, lint, tests y build. |
+| `pnpm deploy:pages` | Genera y envía un despliegue a Cloudflare Pages; requiere credenciales y configuración. |
 
-## Desarrollo, tests y build
+**Nota:** en esta versión, `pnpm lint` ejecuta la comprobación de TypeScript; no es un proceso de ESLint independiente. La suite E2E existe como comando, pero no forma parte del script `pnpm check`.
 
-Antes de entregar cambios:
+</details>
 
-```powershell
-pnpm typecheck
-pnpm lint
-pnpm test
-pnpm build
-git diff --check
-```
-
-No existe una suite E2E automatizada; los recorridos críticos se validan además en navegador sobre `pnpm preview`.
-
-## Despliegue
-
-El workflow CI valida cada push y pull request a `main`. La integración Git de Cloudflare Pages construye y publica `main`; las variables de build se gestionan en el proyecto Pages. El procedimiento, dominio, rollback y smoke tests están en [RAW_VIVES_DEPLOYMENT.md](docs/RAW_VIVES_DEPLOYMENT.md).
-
-## Estructura
+<details>
+<summary><strong>Arquitectura y publicación</strong></summary>
 
 ```text
-app/                 rutas, metadata, sitemap, robots y manifest
-components/          UI, archivo, series, motion, intro y detalle
-dictionaries/        contenido ES/EN
-lib/                 configuración, datos, SEO y utilidades
-public/photos/        fuentes web y variantes optimizadas
-scripts/             generación y controles del pipeline
-tests/               tests unitarios y de producción
-docs/                decisiones, auditorías y materiales de entrega
+app/              Rutas, layouts y metadatos
+components/       UI, narrativa, archivo, motion y detalle
+dictionaries/     Contenido localizado ES/EN
+hooks/            Hooks de interacción y capacidades
+lib/              Datos, filtros, configuración y SEO
+public/photos/    Recursos fotográficos para la web
+scripts/          Preparación, optimización y validación
+functions/        Funciones y middleware de Cloudflare
+tests/            Tests automatizados
+docs/             Diseño, arquitectura, auditorías y releases
 ```
 
-## Decisiones y limitaciones
+### Exportación estática
 
-- Export estático para reducir superficie operativa y servir desde CDN.
-- Sin analítica: la única cookie propia es `raw-vives-locale`, funcional y limitada a recordar ES/EN durante un año.
-- El contacto requiere una aplicación de correo configurada; la web prepara el borrador y no confirma su envío.
-- CSP está definida en `_headers`; cualquier nuevo origen debe revisarse explícitamente.
-- No hay comparator before/after ni vídeo generado: no se fabrican activos que el producto no ofrece.
-- La validación en producción de esta release solo puede realizarse después de un despliegue autorizado.
+La aplicación utiliza `output: "export"` para generar páginas y recursos estáticos. Los cambios en el contenido fotográfico requieren una nueva compilación.
 
-## Roadmap realista
+El procesamiento fotográfico prepara imágenes optimizadas y verifica que los archivos privados de origen no terminen en la salida pública.
 
-1. Ejecutar preview remoto y validación visual independiente.
-2. Configurar environment de GitHub, desplegar manualmente y completar smoke tests reales.
-3. Incorporar monitorización o analítica únicamente con objetivos, base legal y presupuesto de privacidad definidos.
-4. Automatizar E2E sobre las rutas y controles críticos si crece la frecuencia de release.
+### Accesibilidad y SEO
 
-## Documentación
+La experiencia contempla navegación por teclado, foco visible, enlaces de salto, alternativas de movimiento reducido, colores forzados y degradación progresiva de gráficos. Incluye rutas localizadas, canonical, `hreflang`, sitemap, robots, Open Graph y datos estructurados.
 
-Consulta el [sistema de recorrido editorial](docs/RAW_VIVES_EXPERIENCE_FLOW_SYSTEM.md), el [sistema de series fotográficas](docs/RAW_VIVES_PHOTO_SERIES_SYSTEM.md), el [sistema de motion fotográfico](docs/RAW_VIVES_PHOTO_MOTION_SYSTEM.md), el [caso de estudio](docs/RAW_VIVES_CASE_STUDY.md), la [auditoría de producción](docs/RAW_VIVES_PRODUCTION_AUDIT.md), el [checklist de release](docs/RAW_VIVES_RELEASE_CHECKLIST.md) y las [release notes](docs/RAW_VIVES_RELEASE_NOTES.md).
+Estas decisiones son objetivos de ingeniería y comprobaciones del proyecto; **no implican una certificación de accesibilidad ni métricas de producción garantizadas**.
 
-## Autor y derechos
+### Publicación
 
-Diseño, desarrollo y fotografía: **Alex Vicente**.
+El código incluye integración continua y herramientas de despliegue en Cloudflare. La disponibilidad de la web pública no demuestra por sí sola que el último commit esté desplegado: debe validarse cada release.
 
-El código fuente no declara una licencia open source. Todas las fotografías, textos de marca y activos visuales están protegidos por derechos de autor; no pueden reutilizarse, entrenarse, redistribuirse ni explotarse comercialmente sin permiso expreso. Las dependencias conservan sus licencias propias.
+- [Arquitectura](docs/RAW_VIVES_ARCHITECTURE.md)
+- [Sistema de archivo](docs/RAW_VIVES_ARCHIVE_SYSTEM.md)
+- [Sistema de diseño](docs/RAW_VIVES_DESIGN_SYSTEM.md)
+- [Caso de estudio](docs/RAW_VIVES_CASE_STUDY.md)
+- [Proceso de despliegue](docs/RAW_VIVES_DEPLOYMENT.md)
+- [Auditoría técnica](docs/RAW_VIVES_PRODUCTION_AUDIT.md)
+
+</details>
+
+---
+
+## Sobre el autor
+
+Soy **Alex Vicente**, desarrollador web de Valencia (España) y aficionado a la fotografía y al vídeo. raw.vives reúne estas dos facetas: mi interés por capturar escenas con una mirada cinematográfica y el deseo de diseñar una experiencia digital propia para presentarlas.
+
+La fotografía aquí es una **práctica personal y creativa**, no una oferta de sesiones o encargos profesionales.
+
+**[Ver fotografía](https://rawvives.aleviclop.dev)** · **[Portfolio de desarrollo](https://www.aleviclop.dev)** · **[GitHub](https://github.com/AVL05)** · **[LinkedIn](https://www.linkedin.com/in/aleviclop/)**
+
+## Derechos y uso de las imágenes
+
+© 2026 Alex Vicente López. **Todos los derechos reservados.**
+
+Las fotografías, el diseño y los contenidos visuales no se ofrecen para reutilización libre. Se puede enlazar a la galería; para reproducir, publicar, licenciar o utilizar una imagen se debe solicitar autorización previamente a **[alexviclop@gmail.com](mailto:alexviclop@gmail.com)**.
+
+El repositorio no declara una licencia de código abierto. Consulta el archivo [LICENSE](LICENSE) para conocer las condiciones.
