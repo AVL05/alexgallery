@@ -22,7 +22,7 @@ Un archivo fotográfico personal de **Alex Vicente**, diseñado como una experie
 
 El repositorio incorpora una guía de arte reforzada **sin haber desplegado ningún rediseño todavía**. Para ejecutar la prueba en Codex, sigue [el brief cinematográfico](docs/RAW_VIVES_CINEMATIC_BRIEF.md), [el sistema visual autoritativo](DESIGN.md) y [las reglas de trabajo](AGENTS.md). La skill principal y sus cuatro complementos se instalan **localmente en el proyecto**, no están incluidos en este repositorio.
 
-**Perfil recomendado:** Premium Frontend Director + UI UX Pro Max + Taste Skill + Impeccable + Web Design Guidelines. Instalación y requisitos: [guía oficial de Premium Frontend Director](https://github.com/AVL05/premium-frontend-director/blob/main/docs/GUIA-ES.md). La instalación no es un requisito para compilar raw.vives y no se debe descargar automáticamente al ejecutar el build.
+**Instalación en Windows y limpieza local:** [guía paso a paso](docs/RAW_VIVES_PREMIUM_SETUP.md).\n\n**Perfil recomendado:** Premium Frontend Director + UI UX Pro Max + Taste Skill + Impeccable + Web Design Guidelines. Instalación y requisitos: [guía oficial de Premium Frontend Director](https://github.com/AVL05/premium-frontend-director/blob/main/docs/GUIA-ES.md). La instalación no es un requisito para compilar raw.vives y no se debe descargar automáticamente al ejecutar el build.
 
 **Alcance de la preparación:** solo documentación y limpieza de configuración antigua de diseño. Fotografías, catálogo, componentes, dependencias, imágenes generadas y despliegue permanecen sin cambios. Los documentos históricos de fases anteriores no sustituyen el estado real del código.
 
