@@ -1,5 +1,16 @@
 # RAW.VIVES — Repository Instructions
 
+## Rediseño cinematográfico — prueba Premium (noviembre de 2026)
+
+**Esta tarea está autorizada como exploración y rediseño local**, no como despliegue ni como permiso para reescribir el catálogo o la arquitectura. Usar `premium-frontend-director` como coordinador cuando esté instalado **en este proyecto**, con UI UX Pro Max (investigación), Taste Skill (concepto), Impeccable (crítica) y Web Design Guidelines (QA); no instalar otras skills ni afirmar que se han usado sin evidencia.
+
+Antes de modificar: leer **`PRODUCT.md`, `DESIGN.md`, `docs/RAW_VIVES_CINEMATIC_BRIEF.md`**, comprobar `git status` y tomar capturas reales. Proponer tres direcciones cinematográficas, elegir con justificación dentro del encargo y permitir **cambios creativos amplios en la UI** siempre que se respeten fotos, curación, accesibilidad, ES/EN, SEO, export estática, rendimiento y contratos de navegación. Las referencias de docs de fases antiguas describen decisiones históricas, no vetos permanentes a un nuevo rediseño autorizado.
+
+**El código actual manda sobre documentación de implementación obsoleta.** `PRODUCT.md` define la misión, `DESIGN.md` la dirección visual, `AGENTS.md` los límites técnicos. Ninguna skill externa sustituye estas autoridades. Validar cambios en navegador y `pnpm`, documentando `PASS/FAIL/NOT RUN` honestos. No crear ramas, commits, PR ni desplegar sin autorización.
+
+---
+
+
 ## 1. Product Purpose
 
 This repository powers **raw.vives**, the personal photographic archive of Alex Vicente.

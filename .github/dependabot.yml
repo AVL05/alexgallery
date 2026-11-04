@@ -1,29 +1,16 @@
+# Version-update pull requests are temporarily paused to keep the redesign
+# workflow on main with no automated PRs. This does NOT disable security alerts
+# or guarantee that security update PRs cannot be opened.
+# Restore an appropriate nonzero limit when branch/PR workflows resume.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
-      day: monday
-    open-pull-requests-limit: 3
-    groups:
-      npm-minor-patch:
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-
+    open-pull-requests-limit: 0
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
-      day: monday
-    open-pull-requests-limit: 2
-    groups:
-      actions-minor-patch:
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
+    open-pull-requests-limit: 0

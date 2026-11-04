@@ -1,3 +1,5 @@
+ > Estado de archivo: documentación técnica histórica de fases previas; la autoridad visual para el nuevo rediseño cinematográfico es [`DESIGN.md`](../DESIGN.md) y el encargo actual está en [`RAW_VIVES_CINEMATIC_BRIEF.md`](RAW_VIVES_CINEMATIC_BRIEF.md). No interpretar prohibiciones de una fase antigua como veto a cambios de UI explícitamente autorizados. Verificar siempre el código vigente antes de actuar.
+
 # Sistema visual de RAW.VIVES
 
 Documento de referencia visual de la Fase 1. La infraestructura de movimiento

@@ -67,3 +67,9 @@ headings, visible focus, keyboard navigation, minimum 44 x 44 px touch targets,
 200% browser zoom, reduced-motion support, image aspect ratios, and usable layouts
 from 320 px through ultrawide screens. Visual-system changes must not materially
 increase initial JavaScript or weaken the current static deployment model.
+
+## Cinematic experience objective (November 2026)
+
+The authorized redesign aims to make raw.vives feel like a **cinematic, authored photographic exhibition** of exceptional craft. Prioritize real imagery, generous composition, editorial rhythm, clear visual hierarchy, purposeful transitions, smooth and accessible navigation, and excellent mobile presentation. This is a quality aspiration, not a verified monetary valuation. Do not imitate the fictional AETHER studio or turn personal photography into a commercial offering.
+
+The core visitor journey remains: discover the first photograph → explore curated work → open a series or the full archive → inspect an individual photograph → find the author/contact/licensing information. Preserve ES/EN, real catalogue data, rights and stable links. Creative freedom is encouraged **inside these contracts**. See `DESIGN.md` and `docs/RAW_VIVES_CINEMATIC_BRIEF.md` for the authorized design brief and criteria; inspect actual implementation before editing.
