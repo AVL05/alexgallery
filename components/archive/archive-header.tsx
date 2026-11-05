@@ -1,6 +1,7 @@
-import { MetaItem, MetaList } from "@/components/ui/photo-meta";
 import type { GalleryDictionary } from "@/types/dictionary";
 
+// Archive title card: same grammar as the series films (slate, display
+// title, description and a short facts roll), tuned to sit above the tools.
 export function ArchiveHeader({
   dictionary,
   startYear,
@@ -15,30 +16,18 @@ export function ArchiveHeader({
   as?: "h1" | "h2";
 }) {
   return (
-    <header className="grid gap-6 border-t border-border pt-6 lg:grid-cols-12 lg:items-end">
-      <div className="lg:col-span-8">
-        <p className="rv-kicker">{dictionary.eyebrow}</p>
-        <Tag id="archive-title" className="rv-section-title mt-4 max-w-[16ch] text-[clamp(2.4rem,5vw,4.5rem)]">
-          {dictionary.archive_label}
-        </Tag>
-        <p className="rv-body mt-4 max-w-2xl text-[var(--color-text-secondary)]">{dictionary.description}</p>
+    <header className="rv-titlecard rv-titlecard--compact">
+      <p className="rv-slate">{dictionary.eyebrow}</p>
+      <Tag id="archive-title" className="rv-titlecard__title">
+        {dictionary.archive_label}
+      </Tag>
+      <div className="rv-titlecard__body">
+        <p className="rv-titlecard__description">{dictionary.description}</p>
+        <dl className="rv-credits__roll mt-0 max-md:hidden">
+          <div><dt>{dictionary.periodLabel}</dt><dd className="tabular-nums">{startYear}–{endYear}</dd></div>
+          <div><dt>{dictionary.categoriesLabel}</dt><dd className="tabular-nums">{String(categoryCount).padStart(2, "0")}</dd></div>
+        </dl>
       </div>
-      <MetaList className="border-y border-border lg:col-span-4">
-        <MetaItem
-          label={dictionary.periodLabel}
-          className="py-5 pr-3"
-          valueClassName="mt-3 font-mono text-xs text-[var(--color-text-secondary)]"
-        >
-          {startYear}—{endYear}
-        </MetaItem>
-        <MetaItem
-          label={dictionary.categoriesLabel}
-          className="border-l border-border py-5 pl-3"
-          valueClassName="mt-2 font-serif text-3xl tabular-nums"
-        >
-          {categoryCount}
-        </MetaItem>
-      </MetaList>
     </header>
   );
 }

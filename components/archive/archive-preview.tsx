@@ -7,19 +7,21 @@ import { defaultArchiveState } from "@/lib/archive/types";
 import { serializeArchiveState } from "@/lib/archive/url";
 import { Container } from "@/components/ui/layout";
 import { getArchiveSummary, getNarrativePhotos } from "@/lib/home/selectors";
-import { homeCuration } from "@/lib/home/curation";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
 import { getPhotoHref } from "@/lib/photos";
-import { selectArchivePreviewPhotos } from "@/lib/photos/selectors";
 import { archivePageHref } from "@/lib/routes";
-import { getPublishedSeries } from "@/lib/series/selectors";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { type CSSProperties, useMemo, useState } from "react";
 
-// Home preview of the archive (section #gallery): compact editorial masonry
-// with a stable deterministic pick. The full experience lives on /archive.
+const pad = (value: number) => String(value).padStart(2, "0");
+
+// Home preview of the archive (section #gallery): the whole archive as a
+// contact sheet in catalogue order. Frames keep their proportions; a single
+// readout line names the frame under the pointer or keyboard focus. The full
+// instrument (search, filters, ordering) lives on /archive.
 export function ArchivePreview({
   locale,
   galleryDictionary,
@@ -31,68 +33,73 @@ export function ArchivePreview({
   ctaLabel: string;
   imagesData: ImagesData;
 }) {
-  const allPhotos = getNarrativePhotos(imagesData, locale);
+  const allPhotos = useMemo(() => getNarrativePhotos(imagesData, locale), [imagesData, locale]);
   const summary = getArchiveSummary();
-  const preview = selectArchivePreviewPhotos(
-    allPhotos,
-    [
-      homeCuration.heroPhotoId,
-      ...homeCuration.selectedPhotoIds,
-      ...getPublishedSeries().map((series) => series.coverPhotoId),
-    ],
-    8,
-  );
+  const [inspected, setInspected] = useState<number | null>(null);
+  const current = inspected === null ? null : allPhotos[inspected];
 
   return (
-    <section id="gallery" aria-labelledby="archive-preview-title" className="rv-section bg-[var(--color-background)]">
+    <section id="gallery" aria-labelledby="archive-preview-title" className="rv-section bg-[var(--color-background-secondary)]">
       <Container>
-        <Reveal className="rv-home-section-header mb-6 border-t border-border pt-6">
-          <h2 id="archive-preview-title" className="rv-home-heading">{galleryDictionary.archive_label}</h2>
-          <p className="text-xs tabular-nums text-[var(--color-text-secondary)]">{summary.total} {galleryDictionary.photoPlural} · {summary.startYear}–{summary.endYear}</p>
+        <Reveal className="rv-home-section-header mb-8">
+          <div>
+            <p className="rv-slate">{summary.total} <span aria-hidden="true" className="rv-slate__rule" /> {summary.startYear}–{summary.endYear}</p>
+            <h2 id="archive-preview-title" className="rv-home-heading mt-5">{galleryDictionary.archive_label}</h2>
+          </div>
+          <nav aria-label={galleryDictionary.categoriesLabel} className="flex flex-wrap gap-x-6 gap-y-0 md:justify-end">
+            {summary.categories.map(({ category, count }) => (
+              <Link key={category} href={`${archivePageHref(locale)}${serializeArchiveState({ ...defaultArchiveState, category })}`} prefetch={false} className="inline-flex min-h-11 items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-colors hover:text-foreground focus-visible:text-foreground">
+                {galleryDictionary.categories[category]}<span className="font-mono text-[11px] text-[var(--color-text-muted)]">{pad(count)}</span>
+              </Link>
+            ))}
+          </nav>
         </Reveal>
 
-        <nav aria-label={galleryDictionary.categoriesLabel} className="flex flex-wrap gap-x-6 gap-y-1 border-b border-border pb-4">
-          {summary.categories.map(({ category, count }) => (
-            <Link key={category} href={`${archivePageHref(locale)}${serializeArchiveState({ ...defaultArchiveState, category })}`} prefetch={false} className="inline-flex min-h-11 items-center gap-2 text-xs text-[var(--color-text-secondary)] transition-colors hover:text-foreground">
-              {galleryDictionary.categories[category]}<span className="font-mono text-[10px] text-[var(--color-text-muted)]">{String(count).padStart(2, "0")}</span>
-            </Link>
-          ))}
-        </nav>
+        <p aria-hidden="true" className="rv-sheet-readout">
+          {current ? (
+            <>
+              <span className="rv-index text-foreground">{pad(inspected! + 1)}</span>
+              <span className="text-foreground">{current.title}</span>
+              <span>{galleryDictionary.categories[current.category]} · {current.year}</span>
+            </>
+          ) : (
+            <span>{galleryDictionary.contactSheet}</span>
+          )}
+        </p>
 
-        <div className="mt-10 columns-1 gap-6 min-[480px]:columns-2 md:columns-3 lg:columns-4">
-          {preview.map((photo) => (
-            <Link
-              key={photo.id}
-              href={getPhotoHref(locale, photo.id)}
-              prefetch={false}
-              onClick={() => {
-                savePhotoReturn({
-                  locale,
-                  photoId: photo.id,
-                  returnHref: `/${locale}#gallery`,
-                  scrollY: window.scrollY,
-                  savedAt: Date.now(),
-                });
-              }}
-              className="group mb-8 block break-inside-avoid"
-              data-press-feedback
-              {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}
-              aria-label={`${photo.title}, ${galleryDictionary.categories[photo.category]}, ${photo.year}`}
-            >
-              <NarrativeImage
-                photo={photo}
-                sizes="(max-width: 479px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw"
-                imageClassName="transition-[transform,filter] duration-500 group-hover:scale-[1.015] group-hover:brightness-[0.92] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.92]"
-              />
-              <div className="mt-3 flex items-baseline justify-between gap-3">
-                <h3 className="text-[13px] leading-relaxed text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground">
-                  {photo.title}
-                </h3>
-                <span className="shrink-0 text-xs tabular-nums text-[var(--color-text-secondary)]">{photo.year}</span>
-              </div>
-            </Link>
+        <ol className="rv-strip rv-strip--sheet" onPointerLeave={() => setInspected(null)}>
+          {allPhotos.map((photo, index) => (
+            <li key={photo.id} className="rv-strip__item" style={{ "--r": photo.width / photo.height, "--w": `${photo.width}px` } as CSSProperties}>
+              <Link
+                href={getPhotoHref(locale, photo.id)}
+                prefetch={false}
+                onPointerEnter={() => setInspected(index)}
+                onFocus={() => setInspected(index)}
+                onBlur={() => setInspected(null)}
+                onClick={() => {
+                  savePhotoReturn({
+                    locale,
+                    photoId: photo.id,
+                    returnHref: `/${locale}#gallery`,
+                    scrollY: window.scrollY,
+                    savedAt: Date.now(),
+                  });
+                }}
+                className="rv-sheet-frame group"
+                data-press-feedback
+                {...getCursorTargetAttributes({ type: "view", contrast: "dark" })}
+                aria-label={`${pad(index + 1)}. ${photo.title}, ${galleryDictionary.categories[photo.category]}, ${photo.year}`}
+              >
+                <NarrativeImage
+                  photo={photo}
+                  sizes="(max-width: 767px) 34vw, 14vw"
+                  imageClassName="transition-[filter] duration-300"
+                />
+                <span aria-hidden="true" className="rv-sheet-frame__number">{pad(index + 1)}</span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
 
         <Reveal className="mt-14 border-t border-border pt-8 lg:mt-20">
           <Link href={archivePageHref(locale)} className="rv-editorial-link">

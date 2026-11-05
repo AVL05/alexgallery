@@ -218,6 +218,7 @@ export function ArchivePage({
             </aside>
 
             <div>
+              <h2 className="sr-only">{dictionary.resultsHeading}</h2>
               <ArchiveResultsSummary
                 dictionary={dictionary}
                 state={state}
@@ -252,9 +253,9 @@ export function ArchivePage({
         <footer className="mt-20 grid gap-8 border-t border-border pt-8 md:grid-cols-12 md:items-end lg:mt-28">
           <div className="md:col-span-8">
             <p className="rv-kicker">{dictionary.endLabel}</p>
-            <h3 className="mt-4 max-w-[15ch] font-serif text-[clamp(2rem,4vw,4.5rem)] leading-tight tracking-[-0.035em]">
+            <h2 className="mt-4 max-w-[15ch] font-serif text-[clamp(2rem,4vw,4.5rem)] leading-tight tracking-[-0.035em]">
               {dictionary.endTitle}
-            </h3>
+            </h2>
             <p className="mt-5 max-w-xl text-[var(--color-text-secondary)]">
               {dictionary.endDescription}
             </p>

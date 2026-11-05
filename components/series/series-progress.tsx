@@ -24,7 +24,7 @@ export function SeriesProgress({ total, label }: { total: number; label: string 
   }, [total]);
 
   return (
-    <aside className="pointer-events-none sticky top-[calc(var(--layout-nav-height)+1rem)] z-20 ml-auto hidden w-fit border border-border bg-background/90 px-3 py-2 backdrop-blur-sm sm:block">
+    <aside className="pointer-events-none sticky top-[calc(var(--layout-nav-height)+1rem)] z-20 ml-auto hidden w-fit bg-background px-3 py-2 sm:block">
       <span className="sr-only">{label}</span>
       <span ref={valueRef} className="rv-index" aria-hidden="true">01 / {String(total).padStart(2, "0")}</span>
     </aside>

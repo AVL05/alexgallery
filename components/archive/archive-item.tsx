@@ -7,14 +7,13 @@ import type {
 } from "@/lib/archive/types";
 import { saveArchiveContext, savePhotoReturn } from "@/lib/archive/context";
 import type { GalleryDictionary, Locale } from "@/types/dictionary";
-import { ArrowUpRight } from "lucide-react";
 import { serializeArchiveState } from "@/lib/archive/url";
 import Image from "next/image";
 import { PhotoTransitionLink } from "@/components/motion/photo-transition-link";
-import { useState } from "react";
+import { type CSSProperties, useState } from "react";
 import { getCursorTargetAttributes } from "@/lib/interactions/cursor-target";
-import { getLocalizedSeries, getSeriesForPhoto } from "@/lib/series/selectors";
 import { homeExperienceConfig } from "@/lib/home/experience";
+import { getLocalizedSeries, getSeriesForPhoto } from "@/lib/series/selectors";
 
 const fallbackImage = "/photos/optimized/800/1.webp";
 
@@ -37,9 +36,9 @@ export function ArchiveItem({
 }) {
   const [source, setSource] = useState(photo.src);
   const [imageFailed, setImageFailed] = useState(false);
-  const href = `/${locale}/photo/${photo.id}${serializeArchiveState(state)}`;
   const rawSeries = getSeriesForPhoto(photo.id);
   const series = rawSeries ? getLocalizedSeries(rawSeries, locale) : null;
+  const href = `/${locale}/photo/${photo.id}${serializeArchiveState(state)}`;
   const sizes =
     variant === "featured" || variant === "panorama"
       ? "(max-width: 767px) 100vw, (max-width: 1023px) 92vw, 62vw"
@@ -67,7 +66,8 @@ export function ArchiveItem({
   return (
     <article
       id={`archive-photo-${photo.id}`}
-      className={`archive-item archive-item--${variant}`}
+      className={`archive-item archive-item--${variant} rv-strip__item`}
+      style={{ "--r": photo.width / photo.height, "--w": `${photo.width}px` } as CSSProperties}
       data-archive-item
       data-photo-id={photo.id}
     >
@@ -83,7 +83,7 @@ export function ArchiveItem({
       >
         <figure>
           <div
-            className="archive-item__media relative overflow-hidden border border-border bg-[var(--color-surface)] transition-colors duration-300 group-hover:border-[var(--color-border-strong)] group-focus-visible:border-accent"
+            className="archive-item__media relative overflow-hidden bg-[var(--color-surface)]"
             style={{
               aspectRatio: `${photo.width}/${photo.height}`,
             }}
@@ -98,7 +98,7 @@ export function ArchiveItem({
                 sizes={sizes}
                 placeholder={photo.blurDataURL && source === photo.src ? "blur" : undefined}
                 blurDataURL={photo.blurDataURL}
-                className="object-cover brightness-[0.96] transition-[transform,filter] duration-500 ease-[var(--ease-standard)] group-hover:scale-[1.015] group-hover:brightness-[0.92] group-focus-visible:scale-[1.015] group-focus-visible:brightness-[0.92]"
+                className="object-cover transition-[transform,filter] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.025] group-focus-visible:scale-[1.025]"
                 onError={() => {
                   if (source !== fallbackImage) setSource(fallbackImage);
                   else setImageFailed(true);
@@ -109,24 +109,18 @@ export function ArchiveItem({
                 <span className="rv-meta">{dictionary.imageError}</span>
               </div>
             )}
-            <span className="archive-item__index absolute left-3 top-3 bg-scrim/70 px-2 py-1 font-mono text-[10px] tracking-[0.12em] text-white/75">
-              {String(index + 1).padStart(2, "0")}
-            </span>
           </div>
-          <figcaption className="mt-4 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 border-t border-border pt-4">
-            <h3 className="font-serif text-[clamp(1.25rem,2vw,1.8rem)] leading-tight tracking-[-0.02em] text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground group-focus-visible:text-foreground">
+          <figcaption className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1">
+            <span className="archive-item__index rv-index pt-0.5">{String(index + 1).padStart(2, "0")}</span>
+            <h3 className="text-sm leading-snug text-[var(--color-text-secondary)] transition-colors group-hover:text-foreground group-focus-visible:text-foreground">
               {photo.title}
             </h3>
-            <ArrowUpRight
-              aria-hidden="true"
-              className="mt-1 size-4 text-[var(--color-text-muted)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent group-focus-visible:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:text-accent"
-            />
-            <p className="rv-meta col-span-2 flex flex-wrap items-center gap-x-3">
+            <p className="col-start-2 flex flex-wrap items-center gap-x-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
               <span>{dictionary.categories[photo.category]}</span>
-              <span aria-hidden="true">/</span>
+              <span aria-hidden="true">·</span>
               <span>{photo.year}</span>
-              {series ? <><span aria-hidden="true">/</span><span>{dictionary.seriesLabel}: {series.title}</span></> : null}
             </p>
+            {series ? <p className="col-start-2 text-xs leading-relaxed text-[var(--color-text-muted)]">{dictionary.seriesLabel}: {series.title}</p> : null}
           </figcaption>
         </figure>
       </PhotoTransitionLink>

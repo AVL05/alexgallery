@@ -143,13 +143,13 @@ export function Contact({ dictionary, locale }: { dictionary: ContactDictionary;
             <p className="rv-body-sm mt-5 max-w-md">{dictionary.description}</p>
           </div>
           <div className="contact-reveal lg:col-span-7 lg:self-end">
-          <p className="text-xs text-[var(--color-text-secondary)]">{dictionary.social}</p>
+          <p className="rv-slate">{dictionary.social}</p>
           <a
             href={`mailto:${contactEmail}`}
             data-press-feedback
-            className="mt-2 inline-flex min-h-11 max-w-full items-center text-[clamp(1.125rem,2.5vw,2.25rem)] leading-relaxed tracking-[-0.025em] text-foreground underline decoration-[var(--color-border-strong)] decoration-1 underline-offset-[0.2em] transition-colors hover:text-accent hover:decoration-accent"
+            className="rv-contact-email"
           >
-            <span className="break-all">{contactEmail}</span>
+            <span>{contactEmail}</span>
           </a>
           </div>
         </div>

@@ -30,7 +30,7 @@ export function ArchiveGrid({
   });
 
   return (
-    <div ref={rootRef} id="archive-results" className="archive-grid pt-8" tabIndex={-1}>
+    <div ref={rootRef} id="archive-results" className="archive-grid rv-strip pt-8" tabIndex={-1}>
       {photos.map((photo, index) => (
         <ArchiveItem
           key={photo.id}

@@ -7,6 +7,9 @@ export const heroImageConfig = {
   primaryId: String(homeCuration.heroPhotoId),
   fallbackId: "46",
   objectPosition: "50% 50%",
+  // Curated, reversible crop for narrow screens only: a square detail centred
+  // on the lightning. Wider screens always show the complete 2.17:1 frame.
+  mobileDetail: { ratio: 1, objectPosition: "46% 55%" },
 } as const;
 
 export type HeroArchiveFacts = {

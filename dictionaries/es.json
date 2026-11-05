@@ -25,7 +25,12 @@
     "photographs": "fotografías",
     "location": "Valencia, España",
     "imageAlt": "Un relámpago naranja atraviesa las nubes oscuras al caer la tarde",
-    "featured_tag": "Destacadas"
+    "featured_tag": "Destacadas",
+    "frame": "Fotograma",
+    "descriptor": "Archivo visual",
+    "format": "Formato",
+    "detail": "Detalle",
+    "of": "de"
   },
   "home": {
     "chapterLabel": "Capítulo {current} de {total}",
@@ -60,14 +65,18 @@
       "title": "Selección",
       "cta": "Ver fotografía",
       "empty": "La selección está temporalmente vacía. El archivo completo sigue disponible.",
-      "description": "Cuatro fotografías para empezar. Cada una, una razón para detenerse un poco más."
+      "description": "Cuatro fotografías para empezar. Cada una, una razón para detenerse un poco más.",
+      "frameLabel": "Fotograma",
+      "progress": "Fotograma {current} de {total}"
     },
     "series": {
       "title": "Series fotográficas",
       "description": "Tres recorridos fotográficos por lugares, momentos y encuentros.",
       "photographs": "fotografías",
       "cta": "Ver todas las series",
-      "archiveCta": "Abrir archivo"
+      "archiveCta": "Abrir archivo",
+      "reel": "Series",
+      "open": "Ver la serie"
     },
     "archive": {
       "title": "El archivo continúa.",
@@ -82,6 +91,14 @@
       "description": "raw.vives es un archivo abierto: cambia con cada viaje, cada paseo y cada escena que merece quedarse.",
       "archiveCta": "Explorar archivo",
       "contactCta": "Contactar"
+    },
+    "credits": {
+      "label": "Créditos",
+      "photography": "Fotografía",
+      "archive": "Archivo",
+      "from": "Desde",
+      "language": "Idiomas",
+      "languages": "Español · English"
     }
   },
   "nav": {
@@ -160,7 +177,9 @@
       "Personas": "Personas",
       "Meteorología": "Meteorología",
       "Virtual": "Virtual"
-    }
+    },
+    "contactSheet": "Hoja de contactos · orden del catálogo",
+    "resultsHeading": "Fotografías del archivo"
   },
   "photoDetail": {
     "back": "Volver al archivo",

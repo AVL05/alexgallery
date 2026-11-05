@@ -9,7 +9,9 @@ import type { ArchivePhoto } from "@/lib/archive/types";
 import {
   getLocalizedSeries,
   getNextSeries,
+  getPublishedSeries,
   resolveSeriesCover,
+  resolveSeriesPhotos,
 } from "@/lib/series/selectors";
 import type { PhotoSeries, SeriesEditorialBlock } from "@/lib/series/types";
 import type { Locale, SeriesDictionary } from "@/types/dictionary";
@@ -54,7 +56,10 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos, breadcrumbLa
   const followingBlocks = rawSeries.blocks.slice(1);
   const nextRaw = getNextSeries(series.id);
   const nextSeries = nextRaw ? getLocalizedSeries(nextRaw, locale) : null;
-  const nextCover = nextRaw ? resolveSeriesCover(nextRaw, photos) : null;
+  const nextFrames = nextRaw ? resolveSeriesPhotos(nextRaw, photos) : [];
+  const published = getPublishedSeries();
+  const seriesIndex = Math.max(0, published.findIndex((item) => item.id === series.id));
+  const nextIndex = nextRaw ? Math.max(0, published.findIndex((item) => item.id === nextRaw.id)) : 0;
   return (
     <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden pb-24 pt-28 lg:pb-36 lg:pt-32">
       <SeriesReturnFocus />
@@ -68,22 +73,22 @@ export function SeriesPage({ locale, dictionary, rawSeries, photos, breadcrumbLa
           ]}
           className="mb-6"
         />
-        <SeriesHero series={series} dictionary={dictionary} />
+        <SeriesHero series={series} dictionary={dictionary} index={seriesIndex} />
 
         <SeriesProgress total={series.photoIds.length} label={dictionary.progressLabel} />
 
         {cover ? (
-          <PhotoMotionGroup groupKey={`series-cover-${series.slug}`} editorial className="mt-8 lg:mt-10">
+          <PhotoMotionGroup groupKey={`series-cover-${series.slug}`} editorial className="mt-4 lg:mt-6">
             <EssayImage photo={cover} locale={locale} slug={series.slug} position={positions.get(cover.id) || 1} total={series.photoIds.length} priority size={essaySingleSize(cover)} />
           </PhotoMotionGroup>
         ) : null}
 
-        <PhotoMotionGroup groupKey={`series-sequence-${series.slug}`} className="mt-20 space-y-24 lg:mt-32 lg:space-y-40">
+        <PhotoMotionGroup groupKey={`series-sequence-${series.slug}`} className="mt-24 space-y-28 lg:mt-40 lg:space-y-48">
           {followingBlocks.map((block) => <EssayBlock key={`${block.layout}-${block.photoIds.join("-")}`} block={block} photos={byId} positions={positions} total={series.photoIds.length} locale={locale} slug={series.slug} />)}
         </PhotoMotionGroup>
 
         <div className="mt-24 lg:mt-40">
-          <SeriesFooter locale={locale} dictionary={dictionary} nextSeries={nextSeries} nextCover={nextCover} />
+          <SeriesFooter locale={locale} dictionary={dictionary} nextSeries={nextSeries} nextFrames={nextFrames} nextIndex={nextIndex} />
         </div>
       </Container>
     </main>

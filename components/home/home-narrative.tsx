@@ -18,7 +18,7 @@ import {
   orderHomeSeries,
 } from "@/lib/home/experience";
 import { getHomeNarrativeData, getNarrativePhotos } from "@/lib/home/selectors";
-import { getLocalizedSeries, getPublishedSeries, resolveSeriesCover } from "@/lib/series/selectors";
+import { getLocalizedSeries, getPublishedSeries, resolveSeriesCover, resolveSeriesPhotos } from "@/lib/series/selectors";
 import type { Dictionary, Locale } from "@/types/dictionary";
 import type { ImagesData } from "@/types/photo";
 import { Fragment, type ReactNode, useEffect, useMemo, useState } from "react";
@@ -49,7 +49,7 @@ export function HomeNarrative({
     const narrativePhotos = getNarrativePhotos(imagesData, locale);
     return orderHomeSeries(getPublishedSeries()).flatMap((rawSeries) => {
       const cover = resolveSeriesCover(rawSeries, narrativePhotos);
-      return cover ? [{ series: getLocalizedSeries(rawSeries, locale), cover }] : [];
+      return cover ? [{ series: getLocalizedSeries(rawSeries, locale), cover, frames: resolveSeriesPhotos(rawSeries, narrativePhotos) }] : [];
     }) as HomeSeriesEntry[];
   }, [imagesData, locale]);
 

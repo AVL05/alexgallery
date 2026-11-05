@@ -16,6 +16,7 @@ export function HeroMedia({
   slowImage,
   failImage,
   onStateChange,
+  mobileDetailPosition,
 }: {
   primary: OptimizedImageData;
   fallback: OptimizedImageData;
@@ -24,6 +25,8 @@ export function HeroMedia({
   slowImage: boolean;
   failImage: boolean;
   onStateChange: (state: HeroImageState) => void;
+  /** When set, narrow screens show a curated square detail of the primary photograph. */
+  mobileDetailPosition?: string;
 }) {
   const { refreshScrollTriggers } = useMotion();
   const [activeImage, setActiveImage] = useState(primary);
@@ -72,13 +75,14 @@ export function HeroMedia({
           src={activeImage.src}
           alt={alt}
           fill
-          sizes="(max-width: 767px) 100vw, 92vw"
+          sizes="100vw"
           priority
           loading="eager"
           fetchPriority="high"
           placeholder={activeImage.blurDataURL ? "blur" : "empty"}
           blurDataURL={activeImage.blurDataURL}
-          className={`object-contain transition-opacity duration-300 ${simulationReady ? "opacity-100" : "opacity-0"}`}
+          className={`object-contain transition-opacity duration-300 ${mobileDetailPosition && activeImage.id === primary.id ? "max-md:object-cover max-md:[object-position:var(--hero-detail-position)] portrait:object-cover portrait:[object-position:var(--hero-detail-position)]" : ""} ${simulationReady ? "opacity-100" : "opacity-0"}`}
+          style={mobileDetailPosition ? ({ "--hero-detail-position": mobileDetailPosition } as React.CSSProperties) : undefined}
           onLoad={() => {
             setImageState((state) => state === "fallback" ? "fallback" : "loaded");
             refreshScrollTriggers();

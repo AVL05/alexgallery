@@ -27,6 +27,7 @@
   --color-accent: #cfc6b5;
   --color-accent-strong: #e2d9c8;
   --color-scrim: #000;
+  --color-projection: #000;
   --color-error: #e58b84;
   --color-success: #92b69a;
   --color-warning: #d6b36a;
@@ -252,10 +253,11 @@
 
   .rv-home-heading {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.2vw, 3rem);
+    margin: 0;
+    font-size: clamp(2.5rem, 5.2vw, 5.25rem);
     font-weight: 400;
-    line-height: 1.15;
-    letter-spacing: -0.025em;
+    line-height: 1;
+    letter-spacing: -0.035em;
     text-wrap: balance;
   }
 
@@ -497,10 +499,12 @@
     border-color: var(--color-error);
   }
 
+  /* Light table: the archive as a justified contact sheet. Every frame keeps
+     its full proportions; rows share one image height (see .rv-strip). */
   .archive-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(3rem, 7vw, 5.5rem) clamp(1rem, 2.5vw, 2.25rem);
+    --strip-h: clamp(11rem, 19vw, 18.5rem);
+    row-gap: clamp(1.75rem, 3vw, 2.5rem);
+    column-gap: clamp(0.75rem, 1.4vw, 1.25rem);
   }
 
   .archive-item {
@@ -510,37 +514,11 @@
 
   .archive-item__media {
     width: 100%;
-    min-height: 12rem;
   }
 
-  @media (min-width: 30rem) {
+  @media (max-width: 29.99rem) {
     .archive-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .archive-item--featured,
-    .archive-item--panorama {
-      grid-column: span 2;
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .archive-grid {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      align-items: start;
-    }
-
-    .archive-item--standard,
-    .archive-item--sequence {
-      grid-column: span 4;
-    }
-
-    .archive-item--featured {
-      grid-column: span 8;
-    }
-
-    .archive-item--panorama {
-      grid-column: 1 / -1;
+      --strip-h: 12rem;
     }
   }
 }
@@ -635,12 +613,19 @@ html[data-input-modality="keyboard"] [data-magnetic-content] {
   transform: none !important;
 }
 
+/* Cinematic redesign: the native pointer is never hidden (DESIGN.md §10).
+   The cursor layer only adds a contextual label disc over photographs. */
+.rv-cursor__dot,
+.rv-cursor[data-state="default"] .rv-cursor__surface {
+  opacity: 0;
+}
+
+.rv-cursor .rv-cursor__surface {
+  /* Sit beside the native arrow instead of underneath it. */
+  margin: 2.85rem 0 0 2.85rem;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  html[data-custom-cursor="ready"],
-  html[data-custom-cursor="ready"] body,
-  html[data-custom-cursor="ready"] body * {
-    cursor: none;
-  }
 
   html[data-custom-cursor="ready"] body :where(
     textarea,
@@ -855,4 +840,819 @@ html[data-input-modality="keyboard"] [data-magnetic-content] {
 @media (prefers-reduced-motion: reduce) {
   .photo-process-after,
   .photo-process-divider { transition: none !important; }
+}
+
+/* Cinematic redesign — the projection room (hero) */
+@layer components {
+  .rv-slate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-technical);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rv-slate__rule {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1px;
+    background: var(--color-border-strong);
+  }
+
+  .rv-projection-room {
+    padding-top: var(--layout-nav-height);
+    background: var(--color-projection);
+  }
+
+  .rv-projection {
+    display: flex;
+    height: max(calc(100svh - var(--layout-nav-height)), 32rem);
+    flex-direction: column;
+  }
+
+  .rv-projection__band {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+  }
+
+  .rv-projection__band--top {
+    padding-block: clamp(0.75rem, 3vh, 2.25rem) clamp(1rem, 3vh, 2rem);
+  }
+
+  .rv-projection__band--bottom {
+    align-items: center;
+    padding-block: clamp(0.75rem, 2.4vh, 1.5rem) clamp(1rem, 3vh, 2rem);
+  }
+
+  .rv-projection__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2.35rem, 3.6vw, 3.6rem);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .rv-projection__figure {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  /* The stage is a size container so the screen can fit width AND height
+     without knowing the height of the bands around it. */
+  .rv-projection__stage {
+    display: grid;
+    min-height: 9rem;
+    flex: 1;
+    place-items: center;
+    container-type: size;
+  }
+
+  .rv-projection__screen {
+    width: 100%;
+    width: min(100cqw, 100cqh * var(--projection-ratio));
+    transform-origin: 50% 50%;
+  }
+
+  .rv-projection__frame {
+    aspect-ratio: var(--projection-ratio);
+  }
+
+  .rv-projection__detail-flag {
+    display: none;
+  }
+
+  /* Portrait screens (phones, upright tablets) show the curated square
+     detail; landscape screens always show the complete 2.17:1 frame. */
+  @media (max-width: 767px), (orientation: portrait) {
+    /* Set on the stage: the root carries the real ratio as an inline style. */
+    .rv-projection[data-mobile-detail] .rv-projection__stage {
+      --projection-ratio: 1;
+    }
+
+    .rv-projection[data-mobile-detail] .rv-projection__detail-flag {
+      display: inline-flex;
+    }
+  }
+
+  .rv-projection__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+  }
+
+  .rv-projection__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 2rem;
+  }
+
+  @media (max-width: 767px) {
+    .rv-projection__band--top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .rv-projection__title {
+      font-size: clamp(2.35rem, 11.5vw, 3.25rem);
+    }
+
+    .rv-projection__figure {
+      justify-content: center;
+    }
+
+    .rv-projection__stage {
+      display: block;
+      min-height: 0;
+      flex: none;
+      container-type: normal;
+    }
+
+    .rv-projection__screen {
+      width: 100%;
+    }
+
+    .rv-projection[data-mobile-detail] .rv-projection__frame {
+      aspect-ratio: 1;
+    }
+
+    .rv-projection__actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+}
+
+/* Cinematic redesign — the projection sequence (home selection) */
+@layer components {
+  .rv-sequence-section {
+    background: var(--color-projection);
+  }
+
+  .rv-sequence-intro {
+    display: grid;
+    gap: 1.25rem;
+    padding-bottom: clamp(3rem, 8vh, 5rem);
+  }
+
+  @media (min-width: 768px) {
+    .rv-sequence-intro {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: end;
+    }
+
+    .rv-sequence-intro > .rv-slate {
+      grid-column: 1 / -1;
+    }
+
+    .rv-sequence-intro > p:last-child {
+      justify-self: end;
+    }
+  }
+
+  .rv-sequence__slides {
+    display: grid;
+    gap: clamp(4.5rem, 14vh, 9rem);
+  }
+
+  .rv-sequence__link {
+    display: grid;
+    gap: 1.5rem;
+    outline-offset: 6px;
+  }
+
+  .rv-sequence__label {
+    display: grid;
+    align-content: end;
+    gap: 0.85rem;
+    order: 2;
+  }
+
+  .rv-sequence__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3.2vw, 3.4rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-wrap: balance;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .rv-sequence__link:hover .rv-sequence__title,
+  .rv-sequence__link:focus-visible .rv-sequence__title {
+    color: var(--color-accent-strong);
+  }
+
+  .rv-sequence__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.6rem;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .rv-sequence__note {
+    max-width: 38ch;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .rv-sequence__cue {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    color: var(--color-text);
+    font-size: var(--type-label);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 0.45rem;
+  }
+
+  .rv-sequence__link:hover .rv-sequence__cue {
+    text-decoration-color: var(--color-accent);
+  }
+
+  .rv-sequence__screen {
+    display: grid;
+    place-items: center;
+    order: 1;
+  }
+
+  /* Never larger than the source file, never cropped. */
+  .rv-sequence__print {
+    width: min(100%, var(--print-width), calc(76svh * var(--print-ratio)));
+  }
+
+  @media (min-width: 768px) {
+    .rv-sequence__link {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      align-items: end;
+      gap: clamp(2rem, 4vw, 4.5rem);
+    }
+
+    .rv-sequence__label,
+    .rv-sequence__screen {
+      order: 0;
+    }
+
+    .rv-sequence__screen {
+      justify-items: end;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .rv-sequence__note {
+      display: none;
+    }
+  }
+
+  /* Projected: one sticky screen, native scroll selects the frame. */
+  .rv-sequence[data-mode="projected"] {
+    position: relative;
+    height: calc(100svh - var(--layout-nav-height) + var(--sequence-count) * 85svh);
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__stage {
+    position: sticky;
+    top: var(--layout-nav-height);
+    display: flex;
+    height: calc(100svh - var(--layout-nav-height));
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__slides {
+    position: relative;
+    display: block;
+    flex: 1;
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__slide {
+    position: absolute;
+    inset: 0 var(--layout-gutter);
+    padding-block: clamp(1rem, 4vh, 2.5rem) 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 900ms var(--ease-standard);
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__slide[data-active="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__link {
+    height: 100%;
+    align-items: center;
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__screen {
+    height: 100%;
+    justify-items: center;
+    justify-items: center;
+    container-type: size;
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__print {
+    width: min(100cqw, 100cqh * var(--print-ratio), var(--print-width));
+    transform: scale(1.035);
+    transition: transform 1400ms var(--ease-enter);
+  }
+
+  .rv-sequence[data-mode="projected"] .rv-sequence__label {
+    transform: translateY(0.75rem);
+    transition: transform 900ms var(--ease-enter);
+  }
+
+  .rv-sequence[data-mode="projected"] [data-active="true"] .rv-sequence__print,
+  .rv-sequence[data-mode="projected"] [data-active="true"] .rv-sequence__label {
+    transform: none;
+  }
+
+  .rv-sequence__reel {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 1.25rem 1.75rem;
+  }
+
+  .rv-sequence__track {
+    position: relative;
+    height: 1px;
+    flex: 1;
+    background: var(--color-border);
+  }
+
+  .rv-sequence__track-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-text-secondary);
+    transform: scaleX(var(--sequence-progress, 0));
+    transform-origin: 0 50%;
+  }
+
+  .rv-sequence__ticks {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .rv-sequence__ticks > span {
+    width: 1.5rem;
+    height: 2px;
+    background: var(--color-border-strong);
+    transition: background var(--duration-normal) var(--ease-standard);
+  }
+
+  .rv-sequence__ticks > span[data-active] {
+    background: var(--color-text);
+  }
+
+  @media (forced-colors: active) {
+    .rv-sequence[data-mode="projected"] .rv-sequence__slide {
+      transition: none;
+    }
+  }
+}
+
+/* Cinematic redesign — reels, contact sheet and end credits */
+@layer components {
+  /* Justified strip: items grow in proportion to their ratio, so every row
+     shares one height and every frame keeps its full composition. */
+  .rv-strip {
+    --strip-h: 9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--strip-gap, 0.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rv-strip::after {
+    content: "";
+    flex: 999 1 0;
+  }
+
+  .rv-strip__item {
+    min-width: 0;
+    max-width: calc(var(--w) * 1.15);
+    flex: var(--r) 1 calc(var(--r) * var(--strip-h));
+  }
+
+  .rv-strip--reel {
+    --strip-h: clamp(7.5rem, 21vw, 21rem);
+    --strip-gap: clamp(0.375rem, 0.8vw, 0.75rem);
+  }
+
+  .rv-strip--sheet {
+    --strip-h: clamp(4.75rem, 8.5vw, 8.5rem);
+    --strip-gap: clamp(0.375rem, 0.7vw, 0.625rem);
+  }
+
+  .rv-reel {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .rv-reel__card {
+    display: grid;
+    gap: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+  }
+
+  .rv-reel__numeral {
+    color: var(--color-text-muted);
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.8;
+    transition: color var(--duration-normal) var(--ease-standard);
+  }
+
+  .rv-reel__title {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.6vw, 3.6rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-wrap: balance;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .rv-reel__description {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .rv-reel__cue {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--color-text);
+    font-size: var(--type-label);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-underline-offset: 0.45rem;
+  }
+
+  .rv-reel:hover .rv-reel__numeral,
+  .rv-reel:focus-visible .rv-reel__numeral {
+    color: var(--color-accent);
+  }
+
+  .rv-reel:hover .rv-reel__title,
+  .rv-reel:focus-visible .rv-reel__title {
+    color: var(--color-accent-strong);
+  }
+
+  .rv-reel:hover .rv-reel__cue {
+    text-decoration-color: var(--color-accent);
+  }
+
+  @media (min-width: 1024px) {
+    .rv-reel__card {
+      grid-template-columns: 6rem minmax(0, 6fr) minmax(0, 5fr) auto;
+      align-items: end;
+      gap: 2.5rem;
+    }
+  }
+
+  .rv-sheet-readout {
+    display: flex;
+    min-height: 1.75rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    margin: 0 0 1.25rem;
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .rv-sheet-frame {
+    position: relative;
+    display: block;
+    outline-offset: 3px;
+  }
+
+  .rv-sheet-frame__number {
+    display: block;
+    padding-top: 0.35rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-technical);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  /* Loupe: the sheet dims slightly so the inspected frame reads first. */
+  @media (hover: hover) and (pointer: fine) {
+    .rv-strip--sheet:hover .rv-sheet-frame img {
+      filter: brightness(0.62);
+    }
+
+    .rv-strip--sheet .rv-sheet-frame:hover img {
+      filter: none;
+    }
+  }
+
+  .rv-sheet-frame:hover .rv-sheet-frame__number,
+  .rv-sheet-frame:focus-visible .rv-sheet-frame__number {
+    color: var(--color-text);
+  }
+
+  .rv-credits {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-projection);
+  }
+
+  .rv-credits__card {
+    display: grid;
+    justify-items: center;
+    gap: 1.75rem;
+    max-width: 62rem;
+    margin-inline: auto;
+    padding-bottom: clamp(4rem, 10vw, 8rem);
+    text-align: center;
+  }
+
+  .rv-credits__statement {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6.4vw, 6.25rem);
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .rv-credits__lead {
+    max-width: 46ch;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .rv-credits__body {
+    display: grid;
+    gap: 3.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .rv-credits__roll {
+    display: grid;
+    margin: 2rem 0 0;
+  }
+
+  .rv-credits__roll > div {
+    display: grid;
+    grid-template-columns: minmax(6rem, 1fr) 2fr;
+    gap: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-block: 0.9rem;
+  }
+
+  .rv-credits__roll dt {
+    color: var(--color-text-muted);
+    font-family: var(--font-technical);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .rv-credits__roll dd {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 768px) {
+    .rv-credits__body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 8rem);
+    }
+  }
+}
+
+/* Cinematic redesign — series as films */
+@layer components {
+  .rv-titlecard {
+    display: grid;
+    align-content: end;
+    gap: clamp(1rem, 2.4vw, 1.75rem);
+    padding-block: clamp(0.5rem, 2vh, 1.5rem) clamp(1.75rem, 4.5vh, 3rem);
+  }
+
+  .rv-titlecard--compact {
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  .rv-titlecard__title {
+    max-width: 18ch;
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 6.2vw, 6.5rem);
+    font-weight: 400;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+    text-wrap: balance;
+  }
+
+  .rv-titlecard__body {
+    display: grid;
+    gap: 2rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.75rem;
+  }
+
+  .rv-titlecard__description {
+    max-width: 58ch;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    line-height: 1.75;
+  }
+
+  @media (min-width: 768px) {
+    .rv-titlecard__body {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      justify-content: space-between;
+      gap: clamp(2rem, 8vw, 8rem);
+    }
+  }
+
+  .rv-essay-figure {
+    margin: 0;
+  }
+
+  .rv-essay-print {
+    width: min(100%, var(--print-width), calc(var(--print-height) * var(--print-ratio)));
+    margin-inline: auto;
+  }
+
+  .rv-essay-figure--narrow .rv-essay-caption {
+    max-width: min(100%, var(--caption-width, 48rem));
+    margin-inline: auto;
+  }
+
+  .rv-essay-caption {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+  }
+
+  .rv-essay-caption__number {
+    min-width: 2.5ch;
+    color: var(--color-text-muted);
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+    line-height: 0.9;
+    transition: color var(--duration-normal) var(--ease-standard);
+  }
+
+  .rv-essay-caption__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+
+  .group:hover .rv-essay-caption__number,
+  .group:focus-visible .rv-essay-caption__number {
+    color: var(--color-accent);
+  }
+
+  .group:hover .rv-essay-caption__title,
+  .group:focus-visible .rv-essay-caption__title {
+    color: var(--color-accent-strong);
+  }
+
+  .rv-essay-diptych {
+    display: grid;
+    gap: clamp(3.5rem, 8vw, 5rem);
+  }
+
+  @media (min-width: 768px) {
+    .rv-essay-diptych {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: end;
+      gap: clamp(1.5rem, 3vw, 3rem);
+    }
+  }
+
+  .rv-endcard {
+    display: grid;
+    justify-items: center;
+    gap: 2rem;
+    border-block: 1px solid var(--color-border);
+    padding-block: clamp(4rem, 12vw, 9rem);
+    text-align: center;
+  }
+
+  .rv-endcard__title {
+    max-width: 18ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.4vw, 5.5rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+}
+
+/* Cinematic redesign — screening room (photo detail) */
+@layer components {
+  .rv-contact-email {
+    display: inline-flex;
+    min-height: 2.75rem;
+    max-width: 100%;
+    align-items: center;
+    margin-top: 0.75rem;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.8vw, 3.75rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-decoration-color: var(--color-border-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: color var(--duration-fast) var(--ease-standard), text-decoration-color var(--duration-fast) var(--ease-standard);
+  }
+
+  .rv-contact-email:hover {
+    color: var(--color-accent-strong);
+    text-decoration-color: var(--color-accent);
+  }
+
+  .rv-footer-wordmark {
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(3.25rem, 10vw, 9.5rem);
+    letter-spacing: -0.05em;
+    line-height: 0.85;
+  }
+
+  .rv-detail-title {
+    max-width: 18ch;
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4.8vw, 5rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
 }

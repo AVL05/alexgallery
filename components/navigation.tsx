@@ -62,7 +62,7 @@ function LocaleSwitch({
     <div className="flex items-center border-l border-border pl-4">
       <span
         aria-current="page"
-        className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-accent"
+        className="inline-flex size-11 items-center justify-center font-mono text-xs text-accent"
       >
         {currentLocale.toUpperCase()}
       </span>
@@ -72,7 +72,7 @@ function LocaleSwitch({
         hrefLang={alternateLocale}
         lang={alternateLocale}
         data-press-feedback
-        className="inline-flex size-11 items-center justify-center font-mono text-[10px] text-[var(--color-text-muted)] transition-colors hover:text-foreground"
+        className="inline-flex size-11 items-center justify-center font-mono text-xs text-[var(--color-text-muted)] transition-colors hover:text-foreground"
         aria-label={alternateLocaleLabel}
       >
         {alternateLocale.toUpperCase()}
@@ -275,9 +275,9 @@ export function Navigation({
         ref={headerRef}
         inert={isMobileMenuMounted}
         className={`fixed inset-x-0 top-0 z-[var(--z-nav)] border-b transition-[background-color,border-color] duration-300 ${
-          isScrolled || !isHome
-            ? "border-border bg-background"
-            : "border-transparent bg-background"
+          isHome
+            ? `bg-[var(--color-projection)] ${isScrolled ? "border-border" : "border-transparent"}`
+            : "border-border bg-background"
         }`}
       >
         <Container className="flex h-[var(--layout-nav-height)] items-center justify-between gap-8">
@@ -301,7 +301,7 @@ export function Navigation({
                   href={item.href}
                   aria-current={active && isRoute ? "page" : undefined}
                   data-press-feedback
-                  className={`inline-flex min-h-11 items-center text-[13px] transition-colors ${
+                  className={`inline-flex min-h-11 min-w-11 items-center justify-center text-[13px] transition-colors ${
                     active
                       ? "text-foreground underline decoration-accent underline-offset-8"
                       : "text-[var(--color-text-secondary)] hover:text-foreground"
@@ -331,7 +331,7 @@ export function Navigation({
             <button
               ref={mobileToggleRef}
               type="button"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground lg:hidden"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center text-xs font-semibold uppercase tracking-[0.16em] text-foreground lg:hidden"
               onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
               aria-label={isMobileMenuOpen ? closeMenuLabel : openMenuLabel}
               aria-expanded={isMobileMenuOpen}
@@ -365,7 +365,7 @@ export function Navigation({
               <button
                 autoFocus
                 type="button"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-xs font-semibold uppercase tracking-[0.16em] text-foreground"
                 onClick={closeMobileMenu}
                 aria-label={closeMenuLabel}
                 data-press-feedback

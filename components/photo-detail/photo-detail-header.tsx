@@ -10,11 +10,11 @@ export function PhotoDetailHeader({ dictionary, galleryDictionary }: { dictionar
   return (
     <header data-photo-motion-copy className="photo-detail-header border-b border-border pb-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="rv-kicker text-accent">{galleryDictionary.categories[current.category]} / {current.year}</p>
+        <p className="rv-slate">{galleryDictionary.categories[current.category]}<span aria-hidden="true" className="rv-slate__rule" />{current.year}</p>
         <p className="rv-index" aria-label={indexText}>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</p>
       </div>
       {contextLabel ? <p className="rv-meta mt-4">{contextLabel}</p> : null}
-      <h1 className="mt-8 max-w-[13ch] font-serif text-[clamp(2.8rem,7vw,7.5rem)] leading-[0.92] tracking-[-0.045em] text-balance">{current.title}</h1>
+      <h1 className="rv-detail-title mt-5">{current.title}</h1>
     </header>
   );
 }

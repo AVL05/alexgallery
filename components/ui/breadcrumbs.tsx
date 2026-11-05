@@ -27,7 +27,7 @@ export function Breadcrumbs({
           return (
             <Fragment key={`${item.label}-${index}`}>
               {index > 0 ? (
-                <span aria-hidden="true" className="font-mono text-[10px] text-[var(--color-text-muted)]">
+                <span aria-hidden="true" className="font-mono text-xs text-[var(--color-text-muted)]">
                   /
                 </span>
               ) : null}
@@ -36,14 +36,14 @@ export function Breadcrumbs({
                   <Link
                     href={item.href}
                     data-press-feedback
-                    className="inline-flex min-h-11 items-center font-mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-muted)] underline decoration-transparent underline-offset-8 transition-colors hover:text-foreground hover:decoration-accent"
+                    className="inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-[0.16em] text-[var(--color-text-muted)] underline decoration-transparent underline-offset-8 transition-colors hover:text-foreground hover:decoration-accent"
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <span
                     aria-current={isCurrent ? "page" : undefined}
-                    className={`inline-flex min-h-11 items-center font-mono text-[10px] uppercase tracking-[0.16em] ${
+                    className={`inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-[0.16em] ${
                       isCurrent ? "text-foreground" : "text-[var(--color-text-muted)]"
                     }`}
                   >

@@ -298,3 +298,48 @@ Estos intervalos son **orientativos**, no valores ya implementados. Reutilizar `
 - `docs/RAW_VIVES_DEPLOYMENT.md` y `docs/RAW_VIVES_RELEASE_CHECKLIST.md` para gates antes de publicación.
 
 **Un solo sistema autoritativo:** `PRODUCT.md` = misión y usuarios, `DESIGN.md` = dirección visual, `AGENTS.md` = arquitectura/procedimiento, código vigente = comportamiento real. Los documentos antiguos pueden narrar estados previos y no se deben aplicar literalmente si contradicen el código actual. Documentar nuevas decisiones después de verificarlas.
+
+## 12 — Dirección implementada: «Cinemascope Projection» (noviembre de 2026)
+
+> Registro de la dirección elegida tras inspeccionar el sitio y las fotografías reales. Verificado en navegador (Edge vía Playwright) a 375, 768, 1440 y 1920 px; no sustituye la revisión humana.
+
+**Tesis:** el archivo se proyecta. Cada superficie es una sala oscura en la que una fotografía real hace de pantalla, y la interfaz se comporta como créditos y cartelas fuera del encuadre.
+
+**Por qué esta dirección.** Se exploraron tres opciones:
+
+| Dirección | Decisión | Motivo |
+| --- | --- | --- |
+| Darkroom Sequence | Descartada como principal | La mayoría de las fuentes miden ~1024 px de ancho y una proyección a sangre a 1440–1920 px se vería blanda; el ritmo era monótono. |
+| Contact Sheet Index | Integrada como archivo | No da una primera imagen memorable y en móvil resulta demasiado densa. Sí funciona como mesa de luz. |
+| Cinemascope Projection | **Elegida** | La foto 3 (3831 px, 2.17:1, casi un fotograma de 70 mm) es la única panorámica de alta resolución y permite una pantalla real sin recorte. |
+
+**Superficies.**
+
+- **Hero:** pantalla 2.17:1 sobre negro de proyección, con los créditos de apertura en la banda superior y la cartela y las acciones en la inferior.
+  - En pantallas verticales se muestra un detalle cuadrado curado y reversible, rotulado «Detalle · 2.17:1» (`lib/hero/config.ts → mobileDetail`); el enlace abre la obra completa.
+- **Selección:** secuencia proyectada (`components/home/selected-work.tsx`). Un escenario sticky funde un fotograma con el siguiente con scroll nativo, sin scroll-jacking.
+  - Con reduced motion, sin JS o en pantallas estrechas, el mismo DOM se presenta apilado.
+- **Series:** «bobinas» (`components/series/series-reel.tsx`) con todos los fotogramas en orden editorial, en tira justificada y sin recorte.
+  - La ficha de cada serie funciona como una película: cartón de título, fotogramas numerados, cartón final y la siguiente bobina.
+- **Archivo:** mesa de luz, es decir, una hoja de contactos justificada (`.rv-strip`). Búsqueda, filtros, orden, URL y paginación no cambian.
+  - En la home, el índice completo incluye una lectura que nombra el fotograma bajo el puntero o el foco.
+- **Ficha:** sala de proyección sobre negro. Los controles salen de la imagen y la pantalla completa pasa a la fila de cartela.
+- **Cierre:** créditos finales (`home-manifesto`) con datos reales del catálogo, contacto `mailto:` y la marca como título final.
+
+**Sistema.**
+
+- `--color-projection: #000` se usa solo en superficies de proyección: hero, secuencia, créditos y ficha. `#080808` y `#0d0d0c` marcan pausas.
+- Tipografía: Prata y Manrope, más la pila mono local para las «claquetas» (`.rv-slate`, 12 px, tabular).
+- Clases nuevas en `app/globals.css`, en los bloques «Cinematic redesign».
+
+**Regla de imagen:** nunca se recorta salvo el detalle rotulado del hero, y nunca se amplía por encima de ~1.15–1.25× el ancho de la fuente.
+
+**Motivos de movimiento** (como máximo 3):
+
+1. Apertura del proyector: una rendija de luz que se abre en el hero mediante GSAP y `clip-path`, nunca bloqueante.
+2. Fundido entre fotogramas en la secuencia, con transiciones CSS de opacidad y transform.
+3. Cartela que asciende al activarse.
+
+Sin ScrollTrigger en el hero (contrato de test).
+
+**Cursor:** el puntero nativo ya no se oculta (§10). La capa contextual solo añade el disco con etiqueta junto a la flecha.

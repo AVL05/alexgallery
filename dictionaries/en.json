@@ -25,7 +25,12 @@
     "photographs": "photographs",
     "location": "Valencia, Spain",
     "imageAlt": "An orange lightning bolt cuts through dark clouds at dusk",
-    "featured_tag": "Highlights"
+    "featured_tag": "Highlights",
+    "frame": "Frame",
+    "descriptor": "Visual Archive",
+    "format": "Format",
+    "detail": "Detail",
+    "of": "of"
   },
   "home": {
     "chapterLabel": "Chapter {current} of {total}",
@@ -60,14 +65,18 @@
       "title": "Selected photographs",
       "cta": "View photograph",
       "empty": "The selection is temporarily empty. The full archive remains available.",
-      "description": "Four photographs to begin with. Each one, a reason to linger a little longer."
+      "description": "Four photographs to begin with. Each one, a reason to linger a little longer.",
+      "frameLabel": "Frame",
+      "progress": "Frame {current} of {total}"
     },
     "series": {
       "title": "Photographic series",
       "description": "Three photographic journeys through places, moments and encounters.",
       "photographs": "photographs",
       "cta": "View all series",
-      "archiveCta": "Open archive"
+      "archiveCta": "Open archive",
+      "reel": "Series",
+      "open": "View the series"
     },
     "archive": {
       "title": "The archive continues.",
@@ -82,6 +91,14 @@
       "description": "raw.vives is an open archive: it changes with every journey, every walk and every scene worth keeping.",
       "archiveCta": "Explore archive",
       "contactCta": "Get in touch"
+    },
+    "credits": {
+      "label": "Credits",
+      "photography": "Photography",
+      "archive": "Archive",
+      "from": "Based in",
+      "language": "Languages",
+      "languages": "Español · English"
     }
   },
   "nav": {
@@ -160,7 +177,9 @@
       "Personas": "People",
       "Meteorología": "Weather",
       "Virtual": "Virtual"
-    }
+    },
+    "contactSheet": "Contact sheet · catalogue order",
+    "resultsHeading": "Archive photographs"
   },
   "photoDetail": {
     "back": "Back to archive",

@@ -36,16 +36,16 @@ export function PhotoDetailPage({ locale, photoId, imagesData, dictionary }: { l
   ];
   return <PhotoDetailContextProvider locale={locale} currentId={photoId} imagesData={imagesData}>
     <PhotoDetailKeyboard />
-    <main id="main-content" tabIndex={-1} className={`photo-detail photo-detail--${orientation} overflow-hidden pt-28 sm:pt-32`}>
+    <main id="main-content" tabIndex={-1} className={`photo-detail photo-detail--${orientation} overflow-hidden bg-[var(--color-projection)] pt-28 sm:pt-32`}>
       <Container>
-        <div className="mb-10">
+        <div className="mb-8">
           <Breadcrumbs items={breadcrumbItems} ariaLabel={dictionary.nav.breadcrumb} />
           <PhotoDetailBackLink label={dictionary.photoDetail.back} seriesLabel={dictionary.series.backToSeries} selectionLabel={dictionary.photoDetail.backToSelection} className="mt-2" />
         </div>
         <PhotoDetailMotion photoId={photoId}>
           <PhotoDetailMedia dictionary={dictionary.photoDetail} />
 
-          <div className="mx-auto mt-14 w-full max-w-5xl lg:mt-20">
+          <div className="mx-auto mt-10 w-full max-w-5xl lg:mt-14">
             <PhotoDetailHeader dictionary={dictionary.photoDetail} galleryDictionary={dictionary.gallery} />
             <div className="mt-8">
               <PhotoDetailActions dictionary={dictionary.photoDetail} imageHref={optimized?.src || `/photos/optimized/original/${photoId}.webp`} />

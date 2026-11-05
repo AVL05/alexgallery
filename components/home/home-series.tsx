@@ -1,7 +1,6 @@
-import { PhotoMotionGroup } from "@/components/motion/photo-reveal";
 import { Reveal } from "@/components/motion/reveal";
+import { SeriesReel } from "@/components/series/series-reel";
 import { Container } from "@/components/ui/layout";
-import { SeriesEntry } from "@/components/series/series-entry";
 import type { NarrativePhoto } from "@/lib/home/selectors";
 import type { LocalizedPhotoSeries } from "@/lib/series/types";
 import type { HomeDictionary, Locale } from "@/types/dictionary";
@@ -12,38 +11,45 @@ import { homeExperienceConfig } from "@/lib/home/experience";
 export type HomeSeriesEntry = {
   series: LocalizedPhotoSeries;
   cover: NarrativePhoto;
+  frames: NarrativePhoto[];
 };
 
+// Each series is a reel: a title card, then every frame of the series in its
+// editorial order as a justified strip (see SeriesReel).
 export function HomeSeries({ entries, dictionary, locale }: {
   entries: HomeSeriesEntry[];
   dictionary: HomeDictionary;
   locale: Locale;
 }) {
   return (
-    <section id="series" className="rv-section bg-[var(--color-background-secondary)]">
+    <section id="series" aria-labelledby="home-series-title" className="rv-section bg-[var(--color-background)]">
       <Container>
-        <Reveal className="rv-home-section-header border-t border-border pt-6">
-          <h2 className="rv-home-heading">{dictionary.series.title}</h2>
-          <Link href={`/${locale}/series`} className="rv-editorial-link">{dictionary.series.cta}<ArrowRight aria-hidden="true" className="size-4" /></Link>
+        <Reveal className="rv-home-section-header">
+          <div>
+            <p className="rv-slate">{String(entries.length).padStart(2, "0")} <span aria-hidden="true" className="rv-slate__rule" /> {dictionary.series.reel}</p>
+            <h2 id="home-series-title" className="rv-home-heading mt-5">{dictionary.series.title}</h2>
+          </div>
+          <div className="grid justify-items-start gap-3 md:justify-items-end">
+            <p className="rv-body-sm max-w-[36ch] md:text-right">{dictionary.series.description}</p>
+            <Link href={`/${locale}/series`} className="rv-editorial-link">{dictionary.series.cta}<ArrowRight aria-hidden="true" className="size-4" /></Link>
+          </div>
         </Reveal>
 
-        <PhotoMotionGroup groupKey={`home-series-${entries.map(({ series }) => series.id).join("-")}`} className="grid items-start gap-x-12 gap-y-16 md:grid-cols-12 lg:gap-y-28">
-          {entries.map(({ series, cover }, index) => (
-            <div key={series.id} className={`min-w-0 ${index === 0 ? "md:col-span-12" : "md:col-span-5 md:col-start-2 last:md:col-start-8 last:md:pt-28"}`}>
-              <SeriesEntry
+        <ol className="grid gap-[clamp(4.5rem,10vw,9rem)]">
+          {entries.map(({ series, frames }, index) => (
+            <li key={series.id}>
+              <SeriesReel
                 series={series}
-                cover={cover}
-                locale={locale}
+                frames={frames}
                 index={index}
-                total={entries.length}
-                variant={index === 0 ? "offset-right" : "centered"}
-                prefetch={index === 0 ? homeExperienceConfig.prefetch.featuredSeries : homeExperienceConfig.prefetch.secondarySeries}
+                locale={locale}
                 photographsLabel={dictionary.series.photographs}
+                openLabel={dictionary.series.open}
+                prefetch={index === 0 ? homeExperienceConfig.prefetch.featuredSeries : homeExperienceConfig.prefetch.secondarySeries}
               />
-            </div>
+            </li>
           ))}
-        </PhotoMotionGroup>
-
+        </ol>
       </Container>
     </section>
   );

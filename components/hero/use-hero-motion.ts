@@ -37,6 +37,8 @@ export function useHeroMotion({
       const titleLines = gsap.utils.toArray<HTMLElement>("[data-hero-title-line]", root);
       const secondary = gsap.utils.toArray<HTMLElement>("[data-hero-secondary]", root);
       const entryMedia = root.querySelector<HTMLElement>("[data-hero-entry-media]");
+      const screen = root.querySelector<HTMLElement>("[data-hero-screen]");
+      const entryImage = entryMedia?.querySelector<HTMLElement>("img") ?? null;
       if (!entryMedia || titleLines.length === 0) {
         onPhaseChange("settled", 0);
         return;
@@ -47,10 +49,10 @@ export function useHeroMotion({
         reducedMotion: effectiveReducedMotion,
         isTouchDevice,
       });
-      const animatedElements = [entryMedia, ...titleLines, ...secondary];
+      const animatedElements = [entryMedia, ...titleLines, ...secondary, screen, entryImage].filter((element): element is HTMLElement => element !== null);
 
       if (effectiveReducedMotion || finalState) {
-        gsap.set(animatedElements, { clearProps: "opacity,visibility,transform" });
+        gsap.set(animatedElements, { clearProps: "opacity,visibility,transform,clipPath" });
         onPhaseChange("settled", 0);
         return;
       }
@@ -60,7 +62,10 @@ export function useHeroMotion({
         ...titleLines.map((line) => applyTemporaryWillChange(line, "transform")),
       ];
 
+      // Projector warm-up: a slit of light opens into the full screen.
       gsap.set(entryMedia, { opacity: 0 });
+      if (screen) gsap.set(screen, { clipPath: "inset(49.6% 0% 49.6% 0%)" });
+      if (entryImage) gsap.set(entryImage, { scale: 1.06 });
       gsap.set(titleLines, { yPercent: 112 });
       gsap.set(secondary, { opacity: 0, y: profile.entryDistance });
       onPhaseChange("playing", profile.entryDuration);
@@ -74,7 +79,9 @@ export function useHeroMotion({
       });
 
       entryTimeline
-        .to(entryMedia, { opacity: 1, duration: profile.entryDuration }, 0)
+        .to(entryMedia, { opacity: 1, duration: profile.entryDuration * 0.35 }, 0)
+        .to(screen, { clipPath: "inset(0% 0% 0% 0%)", duration: profile.entryDuration, ease: motionEase.cinematic, clearProps: "clipPath" }, 0.08)
+        .to(entryImage, { scale: 1, duration: profile.entryDuration * 1.2, ease: motionEase.enter, clearProps: "transform" }, 0.08)
         .to(titleLines, { yPercent: 0, duration: profile.entryDuration * 0.66, stagger: motionStagger.normal }, photoMotionTokens.hero.titleDelay)
         .to(secondary, { opacity: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, photoMotionTokens.hero.copyDelay);
 

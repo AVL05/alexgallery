@@ -4,7 +4,7 @@ import { HeroContent } from "@/components/hero/hero-content";
 import { HeroMedia, type HeroImageState } from "@/components/hero/hero-media";
 import { useHeroMotion } from "@/components/hero/use-hero-motion";
 import { useMotion } from "@/components/motion/motion-provider";
-import { getHeroArchiveFacts, getHeroImages } from "@/lib/hero/config";
+import { getHeroArchiveFacts, getHeroImages, heroImageConfig } from "@/lib/hero/config";
 import { photos } from "@/lib/gallery-data";
 import { getLocalizedPhotoContent } from "@/lib/photo-detail/content";
 import {
@@ -91,12 +91,12 @@ export function HeroSection({
     <section
       id="hero"
       ref={rootRef}
-      className="relative overflow-hidden bg-background pt-[var(--layout-nav-height)] text-foreground md:pt-[calc(var(--layout-nav-height)+1rem)]"
+      className="rv-projection-room relative overflow-hidden text-foreground"
       data-hero
       data-entry-ready={entryReady}
       data-image-state={imageState}
     >
-      <HeroContent dictionary={dictionary} facts={facts} locale={locale} photoId={photo.id} photoTitle={content.title} photoYear={photo.year} photoRatio={primary.width / primary.height}>
+      <HeroContent dictionary={dictionary} facts={facts} locale={locale} photoId={photo.id} photoTitle={content.title} photoYear={photo.year} photoRatio={primary.width / primary.height} frameNumber={photos.findIndex((item) => item.id === photo.id) + 1} mobileDetail={imageState !== "fallback" && imageState !== "failed"}>
         <HeroMedia
           primary={primary}
           fallback={fallback}
@@ -105,6 +105,7 @@ export function HeroSection({
           slowImage={preview.slowImage === true}
           failImage={preview.failImage === true}
           onStateChange={handleImageState}
+          mobileDetailPosition={heroImageConfig.mobileDetail.objectPosition}
         />
       </HeroContent>
     </section>
