@@ -1,11 +1,10 @@
 "use client";
 
 import { getHeroMotionProfile } from "@/lib/hero/config";
-import { motionEase, motionStagger } from "@/lib/motion/config";
+import { motionEase } from "@/lib/motion/config";
 import { gsap, useGSAP } from "@/lib/motion/gsap";
 import { applyTemporaryWillChange } from "@/lib/motion/will-change";
 import type { RefObject } from "react";
-import { photoMotionTokens } from "@/lib/motion/photo-motion";
 
 export function useHeroMotion({
   scope,
@@ -34,12 +33,10 @@ export function useHeroMotion({
         return;
       }
 
-      const titleLines = gsap.utils.toArray<HTMLElement>("[data-hero-title-line]", root);
-      const secondary = gsap.utils.toArray<HTMLElement>("[data-hero-secondary]", root);
       const entryMedia = root.querySelector<HTMLElement>("[data-hero-entry-media]");
       const screen = root.querySelector<HTMLElement>("[data-hero-screen]");
       const entryImage = entryMedia?.querySelector<HTMLElement>("img") ?? null;
-      if (!entryMedia || titleLines.length === 0) {
+      if (!entryMedia) {
         onPhaseChange("settled", 0);
         return;
       }
@@ -49,30 +46,30 @@ export function useHeroMotion({
         reducedMotion: effectiveReducedMotion,
         isTouchDevice,
       });
-      const animatedElements = [entryMedia, ...titleLines, ...secondary, screen, entryImage].filter((element): element is HTMLElement => element !== null);
+      const animatedElements = [entryMedia, screen, entryImage].filter((element): element is HTMLElement => element !== null);
 
-      if (effectiveReducedMotion || finalState) {
+      // A tab opened in the background has no animation frames to play the
+      // opening with; show the settled projection instead of a dark slit.
+      if (effectiveReducedMotion || finalState || document.hidden) {
         gsap.set(animatedElements, { clearProps: "opacity,visibility,transform,clipPath" });
         onPhaseChange("settled", 0);
         return;
       }
 
-      const restoreWillChange = [
-        applyTemporaryWillChange(entryMedia, "opacity"),
-        ...titleLines.map((line) => applyTemporaryWillChange(line, "transform")),
-      ];
+      const restoreWillChange = [applyTemporaryWillChange(entryMedia, "opacity")];
 
-      // Projector warm-up: a slit of light opens into the full screen.
+      // Projector warm-up: a slit of light opens into the full screen. Only the
+      // photograph takes part; the author's title, the label and the actions are
+      // part of the first paint and never wait on the timeline.
       gsap.set(entryMedia, { opacity: 0 });
       if (screen) gsap.set(screen, { clipPath: "inset(49.6% 0% 49.6% 0%)" });
       if (entryImage) gsap.set(entryImage, { scale: 1.06 });
-      gsap.set(titleLines, { yPercent: 112 });
-      gsap.set(secondary, { opacity: 0, y: profile.entryDistance });
       onPhaseChange("playing", profile.entryDuration);
 
       const entryTimeline = gsap.timeline({
         defaults: { ease: motionEase.enter },
         onComplete: () => {
+          window.clearTimeout(failSafe);
           restoreWillChange.forEach((restore) => restore());
           onPhaseChange("settled", profile.entryDuration);
         },
@@ -81,11 +78,14 @@ export function useHeroMotion({
       entryTimeline
         .to(entryMedia, { opacity: 1, duration: profile.entryDuration * 0.35 }, 0)
         .to(screen, { clipPath: "inset(0% 0% 0% 0%)", duration: profile.entryDuration, ease: motionEase.cinematic, clearProps: "clipPath" }, 0.08)
-        .to(entryImage, { scale: 1, duration: profile.entryDuration * 1.2, ease: motionEase.enter, clearProps: "transform" }, 0.08)
-        .to(titleLines, { yPercent: 0, duration: profile.entryDuration * 0.66, stagger: motionStagger.normal }, photoMotionTokens.hero.titleDelay)
-        .to(secondary, { opacity: 1, y: 0, duration: profile.entryDuration * 0.48, stagger: motionStagger.tight }, photoMotionTokens.hero.copyDelay);
+        .to(entryImage, { scale: 1, duration: profile.entryDuration * 1.2, ease: motionEase.enter, clearProps: "transform" }, 0.08);
+
+      // If frames stall (busy main thread, tab hidden mid-play), never leave the
+      // photograph closed: jump to the final state shortly after the planned end.
+      const failSafe = window.setTimeout(() => entryTimeline.progress(1), (entryTimeline.duration() + 1) * 1000);
 
       return () => {
+        window.clearTimeout(failSafe);
         entryTimeline.kill();
         restoreWillChange.forEach((restore) => restore());
       };

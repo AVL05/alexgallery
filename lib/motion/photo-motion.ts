@@ -50,8 +50,6 @@ export const photoMotionTokens = {
     touchDistance: 14,
     scale: 1.035,
     touchScale: 1.015,
-    titleDelay: 0.12,
-    copyDelay: 0.32,
     scrollScale: 1.025,
     scrollDistance: 22,
   },
