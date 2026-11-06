@@ -1,7 +1,6 @@
 "use client";
 
 import { NarrativeImage } from "@/components/home/narrative-image";
-import { useMotion } from "@/components/motion/motion-provider";
 import { PhotoTransitionLink } from "@/components/motion/photo-transition-link";
 import { Container } from "@/components/ui/layout";
 import { readPhotoReturn, savePhotoReturn } from "@/lib/archive/context";
@@ -32,18 +31,58 @@ export function SelectedWork({ photos, dictionary, galleryDictionary, locale, fa
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const sequenceRef = useRef<HTMLDivElement>(null);
-  const { prefersReducedMotion } = useMotion();
   const [mode, setMode] = useState<SequenceMode>("stacked");
   const [active, setActive] = useState(0);
+  // True once the layout mode has been decided on the client.
+  const [resolved, setResolved] = useState(false);
   const total = photos.length;
 
   useEffect(() => {
+    // Read both queries directly: the shared motion context reports reduced
+    // motion one render late, which would flash the projected layout (and move
+    // the photographs under the pointer) before settling on the stacked one.
     const wide = window.matchMedia("(min-width: 768px)");
-    const update = () => setMode(wide.matches && !prefersReducedMotion ? "projected" : "stacked");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      setMode(wide.matches && !reduced.matches ? "projected" : "stacked");
+      setResolved(true);
+    };
     update();
     wide.addEventListener("change", update);
-    return () => wide.removeEventListener("change", update);
-  }, [prefersReducedMotion]);
+    reduced.addEventListener("change", update);
+    return () => {
+      wide.removeEventListener("change", update);
+      reduced.removeEventListener("change", update);
+    };
+  }, []);
+
+  // The server HTML is the stacked layout; switching to the projected one makes
+  // the page taller after the browser already jumped to a #hash. Re-align the
+  // target once so deep links (#series, #gallery, #about…) land on their section.
+  // It also puts the visitor back on the photograph they opened from a later
+  // home section (the archive index) when they return with the browser or the
+  // "back" link.
+  const hashAligned = useRef(false);
+  useEffect(() => {
+    if (!resolved || hashAligned.current) return;
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    const target = id && id !== "selected-work" ? document.getElementById(id) : null;
+    if (!target) {
+      hashAligned.current = true;
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      hashAligned.current = true;
+      target.scrollIntoView({ block: "start", behavior: "instant" });
+      const saved = readPhotoReturn(locale);
+      if (saved?.returnHref !== `/${locale}#${id}`) return;
+      const link = target.querySelector<HTMLAnchorElement>(`a[href="${getPhotoHref(locale, saved.photoId)}"]`);
+      if (!link) return;
+      link.scrollIntoView({ block: "center", behavior: "instant" });
+      link.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [resolved, locale]);
 
   // Native scroll drives the active frame and the reel progress.
   useEffect(() => {

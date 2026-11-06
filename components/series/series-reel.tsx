@@ -48,7 +48,10 @@ export function SeriesReel({
   return (
     <Link
       href={getSeriesHref(locale, series.slug)}
-      prefetch={prefetch}
+      // `true` asks Next for a full RSC prefetch, which a static export cannot
+      // serve: the click on that link then does nothing. Use the default
+      // ("auto") when prefetch is wanted, never `true`.
+      prefetch={prefetch ? undefined : false}
       className="rv-reel group"
       data-press-feedback
       {...getCursorTargetAttributes({ type: "explore", contrast: "dark" })}
